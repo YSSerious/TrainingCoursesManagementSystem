@@ -9,6 +9,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
@@ -35,14 +37,14 @@ public class WebApp extends WebMvcConfigurerAdapter {
     @Bean
     public ViewResolver getViewResolver(){
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/view/");
+        resolver.setPrefix("/presentation/");
         resolver.setSuffix(".jsp");
         return resolver;
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/view/**").addResourceLocations("/view/");
+        registry.addResourceHandler("/presentation/**").addResourceLocations("/presentation/");
     }
 
     @Bean
@@ -67,6 +69,12 @@ public class WebApp extends WebMvcConfigurerAdapter {
     @Bean()
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(getDataSource());
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder;
     }
 
 }
