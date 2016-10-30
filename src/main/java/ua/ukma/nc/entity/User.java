@@ -17,7 +17,7 @@ public interface User extends Serializable {
 
     String getFirstName();
 
-    void setSecondName(String fName);
+    void setSecondName(String sName);
 
     String getSecondName();
 
