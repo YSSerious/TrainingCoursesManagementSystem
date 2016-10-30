@@ -1,8 +1,12 @@
 package ua.ukma.nc.entity.impl.real;
 
+import ua.ukma.nc.entity.Role;
+import ua.ukma.nc.entity.Status;
+import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Алексей on 21.10.2016.
@@ -12,14 +16,14 @@ public class UserImpl implements User{
     private static final long serialVersionUID = 1046417900828791006L;
 
     private Long id;
+    private String email;
     private String firstName;
     private String secondName;
     private String lastName;
-    private Timestamp registrationDate;
     private String password;
-    private String email;
     private boolean isActive;
-
+    private StudentStatus studentStatus;
+    private List<Role> roles;
 
     @Override
     public Long getId() {
@@ -62,16 +66,6 @@ public class UserImpl implements User{
     }
 
     @Override
-    public Timestamp getRegistrationDate() {
-        return registrationDate;
-    }
-
-    @Override
-    public void setRegistrationDate(Timestamp registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    @Override
     public String getPassword() {
         return password;
     }
@@ -101,4 +95,19 @@ public class UserImpl implements User{
         isActive = active;
     }
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public StudentStatus getStudentStatus() {
+        return studentStatus;
+    }
+
+    public void setStudentStatus(StudentStatus studentStatus) {
+        this.studentStatus = studentStatus;
+    }
 }

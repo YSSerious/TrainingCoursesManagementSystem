@@ -1,5 +1,7 @@
 package ua.ukma.nc.dao.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,6 +19,8 @@ import java.util.List;
  */
 @Repository
 public class UserDaoImpl implements UserDao{
+
+    private static Logger log = LoggerFactory.getLogger(UserDaoImpl.class.getName());
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -38,6 +42,7 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public User getById(Long id) {
+        log.info("Getting user with id = {}", id);
         return jdbcTemplate.queryForObject("select id, name, message from test where id = ?", new UserMapper(), id);//Test query from test table.
     }
 

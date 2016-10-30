@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Алексей on 15.10.2016.
  */
-public interface UserDao {
+public interface UserDao{
 
     User getByEmail(String email);
 
@@ -21,7 +21,7 @@ public interface UserDao {
 
     List<User> getAll();
 
-    int createUser(User user);
+  int createUser(User user);
 
 
 }

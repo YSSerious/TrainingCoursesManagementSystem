@@ -2,11 +2,12 @@ package ua.ukma.nc.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Алексей on 15.10.2016.
  */
-public interface User extends Serializable{
+public interface User extends Serializable {
 
     void setId(Long id);
 
@@ -24,10 +25,6 @@ public interface User extends Serializable{
 
     String getLastName();
 
-    void setRegistrationDate(Timestamp registrationDate);
-
-    Timestamp getRegistrationDate();
-
     void setPassword(String password);
 
     String getPassword();
@@ -39,5 +36,13 @@ public interface User extends Serializable{
     void setActive(boolean active);
 
     boolean isActive();
+
+    List<Role> getRoles();
+
+    void setRoles(List<Role> roles);
+
+    public StudentStatus getStudentStatus();
+
+    public void setStudentStatus(StudentStatus studentStatus);
 
 }
