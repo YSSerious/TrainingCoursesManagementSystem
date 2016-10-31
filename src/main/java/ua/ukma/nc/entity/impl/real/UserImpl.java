@@ -25,6 +25,18 @@ public class UserImpl implements User{
     private StudentStatus studentStatus;
     private List<Role> roles;
 
+    public UserImpl() {
+    }
+
+    public UserImpl(String email, String firstName, String secondName, String lastName, String password, boolean isActive) {
+        this.email = email;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.lastName = lastName;
+        this.password = password;
+        this.isActive = isActive;
+    }
+
     @Override
     public Long getId() {
         return id;
@@ -109,5 +121,54 @@ public class UserImpl implements User{
 
     public void setStudentStatus(StudentStatus studentStatus) {
         this.studentStatus = studentStatus;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserImpl user = (UserImpl) o;
+
+        if (isActive != user.isActive) return false;
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (secondName != null ? !secondName.equals(user.secondName) : user.secondName != null) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (studentStatus != null ? !studentStatus.equals(user.studentStatus) : user.studentStatus != null)
+            return false;
+        return roles != null ? roles.equals(user.roles) : user.roles == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (secondName != null ? secondName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (isActive ? 1 : 0);
+        result = 31 * result + (studentStatus != null ? studentStatus.hashCode() : 0);
+        result = 31 * result + (roles != null ? roles.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserImpl{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", isActive=" + isActive +
+                ", studentStatus=" + studentStatus +
+                ", roles=" + roles +
+                '}';
     }
 }
