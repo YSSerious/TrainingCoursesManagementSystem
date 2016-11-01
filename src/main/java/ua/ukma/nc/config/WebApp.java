@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -47,6 +48,12 @@ public class WebApp extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/presentation/**").addResourceLocations("/presentation/");
     }
 
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry){
+        registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/403").setViewName("403");
+    }
+
     @Bean
     public PlatformTransactionManager txManager() {
         DataSourceTransactionManager txManager = new DataSourceTransactionManager();
@@ -55,7 +62,7 @@ public class WebApp extends WebMvcConfigurerAdapter {
     }
 
 
-    @Bean
+    @Bean(name="dataSource")
     public DataSource getDataSource() {
         PGPoolingDataSource dataSource = new PGPoolingDataSource();
         dataSource.setServerName(env.getProperty("db.server.name"));

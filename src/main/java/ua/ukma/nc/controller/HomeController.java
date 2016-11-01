@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ua.ukma.nc.entity.User;
-import ua.ukma.nc.entity.impl.real.UserImpl;
 import ua.ukma.nc.service.UserService;
 
 /**
