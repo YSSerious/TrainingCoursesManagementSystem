@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import ua.ukma.nc.entity.User;
-import ua.ukma.nc.entity.impl.real.UserImpl;
 import ua.ukma.nc.service.UserService;
 
 /**
@@ -29,14 +28,14 @@ public class HomeController {
     public ModelAndView getUser() {
         ModelAndView model = new ModelAndView();
         log.info("User information sent");
-        model.addObject("user", userService.getAll());
+        model.addObject("user", userService.getById(41L));
         model.setViewName("home");
         return model;
     }
 
     @ResponseBody
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
-    public User deleteUser(@RequestParam Long id) {
+    public User getUser(@RequestParam Long id) {
         log.info("Sending user to frontend with id = {}", id);
         return userService.getById(id);
     }
