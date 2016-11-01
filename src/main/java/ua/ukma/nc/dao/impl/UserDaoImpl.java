@@ -7,18 +7,23 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ua.ukma.nc.dao.UserDao;
+import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
+import ua.ukma.nc.entity.impl.proxy.RoleProxy;
+import ua.ukma.nc.entity.impl.proxy.StudentStatusProxy;
+import ua.ukma.nc.entity.impl.real.RoleImpl;
 import ua.ukma.nc.entity.impl.real.UserImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Алексей on 21.10.2016.
  */
 @Repository
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
 
     private static Logger log = LoggerFactory.getLogger(UserDaoImpl.class.getName());
 
@@ -35,23 +40,27 @@ public class UserDaoImpl implements UserDao{
             user.setLastName(resultSet.getString("last_name"));
             user.setPassword(resultSet.getString("password"));
             user.setActive(resultSet.getBoolean("is_active"));
-            //
-            //
+            user.setRoles(getRoles(resultSet.getLong("id")));
+            user.setStudentStatus(new StudentStatusProxy(resultSet.getLong("id_status")));
             return user;
         }
     }
 
-    private static final String GET_ALL = "select id, email, first_name, second_name, last_name, password, is_active from tcms.user";
+    private static final String GET_ALL = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user INNER JOIN tcms.student_status ss ON tcms.user.id=ss.id_student";
 
-    private static final String GET_BY_ID = "select id, email, first_name, second_name, last_name, password, is_active from tcms.user where id = ?";
+    private static final String GET_BY_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user INNER JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id = ?";
 
-    private static final String GET_BY_EMAIL = "select id, email, first_name, second_name, last_name, password, is_active from tcms.user where email=?";
+    private static final String GET_BY_EMAIL = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user INNER JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE email=?";
 
-    private static final String DELETE_USER = "delete from tcms.user where id = ?";
+    private static final String DELETE_USER = "DELETE FROM tcms.user WHERE id = ?";
 
-    private static final String CREATE_USER = " insert into tcms.user (email, first_name, second_name, last_name, password, is_active) values (?,?,?,?,?,?)";
+    private static final String CREATE_USER = " INSERT INTO tcms.user (email, first_name, second_name, last_name, password, is_active) VALUES (?,?,?,?,?,?)";
 
     private static final String UPDATE_USER = "UPDATE tcms.user SET email = ?, first_name  = ?, second_name = ?, last_name = ?, password = ?, is_active = ? WHERE id = ?";
+
+    private static final String GET_ROLES_BY_ID = "SELECT id_user, id_role FROM tcms.user_role WHERE id_user = ?";
+
+    private static final String IS_EXIST = "SELECT EXISTS (SELECT email from tcms.user where email = ?)";
 
     @Override
     public User getByEmail(String email) {
@@ -91,7 +100,21 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public boolean isExist(User user) {
-        return false;
+        log.info("Is exist this user {} ?", user);
+        return jdbcTemplate.queryForObject(IS_EXIST, Boolean.class, user.getEmail());
+    }
+
+    private List<Role> getRoles(Long userID) {
+        log.info("Getting all roles with user id = {}", userID);
+        return jdbcTemplate.query(GET_ROLES_BY_ID, new UserRoleMapper(), userID);
+    }
+
+    public class UserRoleMapper implements RowMapper<Role> {
+        public Role mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            Role role = new RoleProxy();
+            role.setId(resultSet.getLong("id_role"));
+            return role;
+        }
     }
 
 }

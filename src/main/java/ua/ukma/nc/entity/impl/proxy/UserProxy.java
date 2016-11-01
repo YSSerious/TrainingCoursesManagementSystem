@@ -126,4 +126,9 @@ public class UserProxy implements User{
             user = (UserImpl) userService.getById(id);
         }
     }
+
+    @Override
+    public String toString() {
+        return ""+id;
+    }
 }
