@@ -16,16 +16,12 @@ import javax.servlet.ServletRegistration;
 public class AppInit implements WebApplicationInitializer {
 
     private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
-    private static final Class<?>[] CONFIG_CLASSES = new Class<?>[]{
-            WebApp.class,
-            WebSecurityConfig.class
-    };
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
 
-        ctx.register(CONFIG_CLASSES);
+        ctx.register(WebApp.class);
         servletContext.addListener(new ContextLoaderListener(ctx));
 
         ctx.setServletContext(servletContext);
