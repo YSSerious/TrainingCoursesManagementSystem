@@ -9,11 +9,11 @@ public interface ApplicationFormDao {
 
     ApplicationFormDao getById(Long id);
 
-    int deleteApplicationFormDao(ApplicationFormDao applicationFormDao);
+    int deleteApplicationForm(ApplicationFormDao applicationForm);
 
-    int updateApplicationFormDao(ApplicationFormDao applicationFormDao);
+    int updateApplicationForm(ApplicationFormDao applicationForm);
 
     List<ApplicationFormDao> getAll();
 
-    int createApplicationFormDao(ApplicationFormDao applicationFormDao);
+    int createApplicationForm(ApplicationFormDao applicationForm);
 }

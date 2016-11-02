@@ -23,6 +23,13 @@ public class UserProxy implements User{
     @Autowired
     private UserService userService;
 
+    public UserProxy() {
+    }
+
+    public UserProxy(Long id) {
+        this.id = id;
+    }
+
     @Override
     public void setId(Long id) {
         this.id = id;
@@ -41,6 +48,7 @@ public class UserProxy implements User{
 
     @Override
     public String getFirstName() {
+        downloadUser();
         return user.getFirstName();
     }
 
@@ -52,6 +60,7 @@ public class UserProxy implements User{
 
     @Override
     public String getSecondName() {
+        downloadUser();
         return user.getSecondName();
     }
 
@@ -63,6 +72,7 @@ public class UserProxy implements User{
 
     @Override
     public String getLastName() {
+        downloadUser();
         return user.getLastName();
     }
 
@@ -74,6 +84,7 @@ public class UserProxy implements User{
 
     @Override
     public String getPassword() {
+        downloadUser();
         return user.getPassword();
     }
 
@@ -85,6 +96,7 @@ public class UserProxy implements User{
 
     @Override
     public String getEmail() {
+        downloadUser();
         return user.getEmail();
     }
 
@@ -96,11 +108,13 @@ public class UserProxy implements User{
 
     @Override
     public boolean isActive() {
+        downloadUser();
         return user.isActive();
     }
 
     @Override
     public List<Role> getRoles() {
+        downloadUser();
         return user.getRoles();
     }
 
@@ -112,6 +126,7 @@ public class UserProxy implements User{
 
     @Override
     public StudentStatus getStudentStatus() {
+        downloadUser();
         return user.getStudentStatus();
     }
 
@@ -129,6 +144,6 @@ public class UserProxy implements User{
 
     @Override
     public String toString() {
-        return ""+id;
+        return "Proxy "+id;
     }
 }

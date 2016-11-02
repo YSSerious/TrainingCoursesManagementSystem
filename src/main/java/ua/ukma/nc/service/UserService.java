@@ -13,8 +13,6 @@ public interface UserService {
 
     User getById(Long id);
 
-    boolean isExist(User user);
-
     int deleteUser(User user);
 
     int updateUser(User user);
@@ -22,4 +20,6 @@ public interface UserService {
     List<User> getAll();
 
     int createUser(User user);
+
+    boolean isExist(User user);
 }

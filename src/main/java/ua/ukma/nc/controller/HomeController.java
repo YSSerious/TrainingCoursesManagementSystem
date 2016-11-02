@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import ua.ukma.nc.entity.Status;
 import ua.ukma.nc.entity.User;
+import ua.ukma.nc.entity.impl.real.StatusImpl;
+import ua.ukma.nc.service.StatusService;
 import ua.ukma.nc.service.UserService;
 
 /**
@@ -23,20 +23,19 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-    //this controller will deleted soon
+    @Autowired
+    private StatusService statusService;
+
+
     @RequestMapping("/")
     public ModelAndView getUser() {
         ModelAndView model = new ModelAndView();
-        log.info("User information sent");
-        model.addObject("user", userService.getByEmail("Ivanov@gmail.com"));
+        log.info("Sending........");
+        User user = userService.getById(41L);
+        model.addObject("user",user.getStudentStatus().getStatus());
         model.setViewName("home");
         return model;
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/getUser", method = RequestMethod.GET)
-    public User getUser(@RequestParam Long id) {
-        log.info("Sending user to frontend with id = {}", id);
-        return userService.getById(id);
-    }
+
 }

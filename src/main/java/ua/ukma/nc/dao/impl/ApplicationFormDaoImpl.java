@@ -22,25 +22,18 @@ public class ApplicationFormDaoImpl implements ApplicationFormDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public class ApplicationFormMapper implements RowMapper<ApplicationForm> {
-        public ApplicationForm mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            ApplicationForm applicationForm = new ApplicationForm();
-            return applicationForm;
-        }
-    }
-
     @Override
     public ApplicationFormDao getById(Long id) {
         return null;
     }
 
     @Override
-    public int deleteApplicationFormDao(ApplicationFormDao applicationFormDao) {
+    public int deleteApplicationForm(ApplicationFormDao applicationForm) {
         return 0;
     }
 
     @Override
-    public int updateApplicationFormDao(ApplicationFormDao applicationFormDao) {
+    public int updateApplicationForm(ApplicationFormDao applicationForm) {
         return 0;
     }
 
@@ -50,7 +43,16 @@ public class ApplicationFormDaoImpl implements ApplicationFormDao{
     }
 
     @Override
-    public int createApplicationFormDao(ApplicationFormDao applicationFormDao) {
+    public int createApplicationForm(ApplicationFormDao applicationForm) {
         return 0;
     }
+
+    public class ApplicationFormMapper implements RowMapper<ApplicationForm> {
+        public ApplicationForm mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            ApplicationForm applicationForm = new ApplicationForm();
+            return applicationForm;
+        }
+    }
+
+
 }

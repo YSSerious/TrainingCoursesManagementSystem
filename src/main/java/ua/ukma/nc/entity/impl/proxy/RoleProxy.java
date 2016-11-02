@@ -41,6 +41,7 @@ public class RoleProxy implements Role{
 
     @Override
     public String getTitle() {
+        downloadRole();
         return role.getTitle();
     }
 
@@ -52,6 +53,7 @@ public class RoleProxy implements Role{
 
     @Override
     public List<User> getUsers() {
+        downloadRole();
         return role.getUsers();
     }
 
@@ -69,6 +71,6 @@ public class RoleProxy implements Role{
 
     @Override
     public String toString() {
-        return ""+id;
+        return "Proxy "+id;
     }
 }

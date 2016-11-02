@@ -8,15 +8,15 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ua.ukma.nc.dao.UserDao;
 import ua.ukma.nc.entity.Role;
+import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.entity.impl.proxy.RoleProxy;
-import ua.ukma.nc.entity.impl.proxy.StudentStatusProxy;
-import ua.ukma.nc.entity.impl.real.RoleImpl;
+import ua.ukma.nc.entity.impl.proxy.StatusProxy;
+import ua.ukma.nc.entity.impl.proxy.UserProxy;
 import ua.ukma.nc.entity.impl.real.UserImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +41,7 @@ public class UserDaoImpl implements UserDao {
             user.setPassword(resultSet.getString("password"));
             user.setActive(resultSet.getBoolean("is_active"));
             user.setRoles(getRoles(resultSet.getLong("id")));
-            user.setStudentStatus(new StudentStatusProxy(resultSet.getLong("id_status")));
+            user.setStudentStatus(new StudentStatus(new UserProxy(resultSet.getLong("id")), new StatusProxy(resultSet.getLong("id_status"))));
             return user;
         }
     }
