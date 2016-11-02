@@ -28,7 +28,7 @@ public class HomeController {
     public ModelAndView getUser() {
         ModelAndView model = new ModelAndView();
         log.info("User information sent");
-        model.addObject("user", userService.getById(41L));
+        model.addObject("user", userService.getByEmail("Ivanov@gmail.com"));
         model.setViewName("home");
         return model;
     }

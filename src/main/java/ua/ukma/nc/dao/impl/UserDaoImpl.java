@@ -46,11 +46,11 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    private static final String GET_ALL = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user INNER JOIN tcms.student_status ss ON tcms.user.id=ss.id_student";
+    private static final String GET_ALL = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student";
 
-    private static final String GET_BY_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user INNER JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id = ?";
+    private static final String GET_BY_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id = ?";
 
-    private static final String GET_BY_EMAIL = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user INNER JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE email=?";
+    private static final String GET_BY_EMAIL = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE email=?";
 
     private static final String DELETE_USER = "DELETE FROM tcms.user WHERE id = ?";
 
