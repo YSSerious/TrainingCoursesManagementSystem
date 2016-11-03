@@ -1,6 +1,7 @@
 package ua.ukma.nc.entity.impl.proxy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ua.ukma.nc.entity.Status;
 import ua.ukma.nc.entity.impl.real.StatusImpl;
 import ua.ukma.nc.service.StatusService;
@@ -8,6 +9,7 @@ import ua.ukma.nc.service.StatusService;
 /**
  * Created by Алексей on 30.10.2016.
  */
+
 public class StatusProxy implements Status {
 
     private Long id;

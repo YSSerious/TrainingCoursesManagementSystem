@@ -31,8 +31,7 @@ public class HomeController {
     public ModelAndView getUser() {
         ModelAndView model = new ModelAndView();
         log.info("Sending........");
-        User user = userService.getById(41L);
-        model.addObject("user",user.getStudentStatus().getStatus());
+        model.addObject("user",userService.getById(41L).getRoles().get(0));
         model.setViewName("home");
         return model;
     }
