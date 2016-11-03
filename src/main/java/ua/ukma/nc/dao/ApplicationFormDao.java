@@ -1,5 +1,7 @@
 package ua.ukma.nc.dao;
 
+import ua.ukma.nc.entity.ApplicationForm;
+
 import java.util.List;
 
 /**
@@ -7,13 +9,13 @@ import java.util.List;
  */
 public interface ApplicationFormDao {
 
-    ApplicationFormDao getById(Long id);
+    ApplicationForm getByUserId(Long id);
 
-    int deleteApplicationForm(ApplicationFormDao applicationForm);
+    int deleteApplicationForm(ApplicationForm applicationForm);
 
-    int updateApplicationForm(ApplicationFormDao applicationForm);
+    int updateApplicationForm(ApplicationForm applicationForm);
 
-    List<ApplicationFormDao> getAll();
+    List<ApplicationForm> getAll();
 
-    int createApplicationForm(ApplicationFormDao applicationForm);
+    int createApplicationForm(ApplicationForm applicationForm);
 }

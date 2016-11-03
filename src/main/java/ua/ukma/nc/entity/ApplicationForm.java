@@ -8,16 +8,16 @@ import java.io.Serializable;
 public class ApplicationForm implements Serializable{
 
     private static final long serialVersionUID = -5984140317464083037L;
-    private Long id_user;
+    private User user;
     private String photoScope;
 
 
-    public Long getId_user() {
-        return id_user;
+    public User getUser() {
+        return user;
     }
 
-    public void setId_user(Long id_user) {
-        this.id_user = id_user;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getPhotoScope() {
@@ -35,14 +35,14 @@ public class ApplicationForm implements Serializable{
 
         ApplicationForm that = (ApplicationForm) o;
 
-        if (id_user != null ? !id_user.equals(that.id_user) : that.id_user != null) return false;
+        if (user != null ? !user.equals(that.user) : that.user != null) return false;
         return photoScope != null ? photoScope.equals(that.photoScope) : that.photoScope == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = id_user != null ? id_user.hashCode() : 0;
+        int result = user != null ? user.hashCode() : 0;
         result = 31 * result + (photoScope != null ? photoScope.hashCode() : 0);
         return result;
     }
@@ -50,7 +50,7 @@ public class ApplicationForm implements Serializable{
     @Override
     public String toString() {
         return "ApplicationForm{" +
-                "id_user=" + id_user +
+                "user=" + user +
                 ", photoScope='" + photoScope + '\'' +
                 '}';
     }

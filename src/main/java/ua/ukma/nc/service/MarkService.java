@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface MarkService {
-    Mark getById(Long id);
+    Mark getByValue(int value);
 
     int deleteMark(Mark mark);
 

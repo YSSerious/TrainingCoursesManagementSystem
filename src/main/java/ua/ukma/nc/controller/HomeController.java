@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import ua.ukma.nc.entity.ApplicationForm;
+import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.Status;
 import ua.ukma.nc.entity.User;
+import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.entity.impl.real.StatusImpl;
-import ua.ukma.nc.service.StatusService;
-import ua.ukma.nc.service.UserService;
+import ua.ukma.nc.service.*;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Алексей on 15.10.2016.
@@ -22,17 +27,16 @@ public class HomeController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
-    private StatusService statusService;
+    private FinalReviewService groupAttachmentService;
 
 
     @RequestMapping("/")
+
     public ModelAndView getUser() {
         ModelAndView model = new ModelAndView();
         log.info("Sending........");
-        User user = userService.getById(41L);
-        model.addObject("user",user.getStudentStatus().getStatus());
+        model.addObject("user", groupAttachmentService.getAll());
         model.setViewName("home");
         return model;
     }

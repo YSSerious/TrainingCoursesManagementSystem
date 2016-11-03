@@ -66,6 +66,6 @@ public class CategoryProxy implements Category{
 
     @Override
     public String toString() {
-        return ""+id;
+        return "Proxy "+id;
     }
 }

@@ -1,6 +1,6 @@
 package ua.ukma.nc.service;
 
-import ua.ukma.nc.dao.ApplicationFormDao;
+import ua.ukma.nc.entity.ApplicationForm;
 
 import java.util.List;
 
@@ -8,13 +8,13 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface ApplicationFormService {
-    ApplicationFormDao getById(Long id);
+    ApplicationForm getByUserId(Long id);
 
-    int deleteApplicationForm(ApplicationFormDao applicationForm);
+    int deleteApplicationForm(ApplicationForm applicationForm);
 
-    int updateApplicationForm(ApplicationFormDao applicationForm);
+    int updateApplicationForm(ApplicationForm applicationForm);
 
-    List<ApplicationFormDao> getAll();
+    List<ApplicationForm> getAll();
 
-    int createApplicationForm(ApplicationFormDao applicationForm);
+    int createApplicationForm(ApplicationForm applicationForm);
 }
