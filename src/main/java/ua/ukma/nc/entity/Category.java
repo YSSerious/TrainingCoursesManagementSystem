@@ -1,20 +1,25 @@
 package ua.ukma.nc.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Алексей on 30.10.2016.
  */
-public interface Category extends Serializable{
-     Long getId();
+public interface Category extends Serializable {
+	Long getId();
 
-     void setId(Long id);
+	void setId(Long id);
 
-     String getName();
+	String getName();
 
-     void setName(String name);
+	void setName(String name);
 
-     String getDescription();
+	String getDescription();
 
-     void setDescription(String description);
+	void setDescription(String description);
+
+	List<Criterion> getCriteria();
+
+	void setCriteria(List<Criterion> criteria);
 }

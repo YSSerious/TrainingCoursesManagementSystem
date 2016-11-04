@@ -40,4 +40,14 @@ public class ProjectServiceImpl implements ProjectService{
     public int createProject(Project project) {
         return projectDao.createProject(project);
     }
+
+	@Override
+	public List<Project> query(String query) {
+		return projectDao.query(query);
+	}
+
+	@Override
+	public Integer count(String query) {
+		return projectDao.count(query);
+	}
 }

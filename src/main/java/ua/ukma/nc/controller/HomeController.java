@@ -28,7 +28,7 @@ public class HomeController {
     @Autowired
     private UserService userService;
     @Autowired
-    private FinalReviewService groupAttachmentService;
+    private RoleService groupAttachmentService;
 
 
     @RequestMapping("/")

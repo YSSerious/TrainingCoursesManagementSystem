@@ -1,7 +1,10 @@
 package ua.ukma.nc.entity.impl.proxy;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.ukma.nc.entity.Category;
+import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.impl.real.CategoryImpl;
 import ua.ukma.nc.service.CategoryService;
 
@@ -68,4 +71,16 @@ public class CategoryProxy implements Category{
     public String toString() {
         return "Proxy "+id;
     }
+
+	@Override
+	public List<Criterion> getCriteria() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCriteria(List<Criterion> criteria) {
+		// TODO Auto-generated method stub
+		
+	}
 }
