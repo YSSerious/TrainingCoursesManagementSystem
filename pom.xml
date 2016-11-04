@@ -106,7 +106,15 @@
             <version>1.7.12</version>
         </dependency>
         <!--End Slf4j-->
-
+        
+		<!-- MAIL -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!-- End MAIL -->
+		
         <!-- JUNIT -->
         <dependency>
             <groupId>junit</groupId>
