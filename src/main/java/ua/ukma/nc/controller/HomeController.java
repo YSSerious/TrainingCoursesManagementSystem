@@ -28,7 +28,7 @@ public class HomeController {
     @Autowired
     private UserService userService;
     @Autowired
-    private StatusLogService groupAttachmentService;
+    private RoleService groupAttachmentService;
 
 
     @RequestMapping("/")
@@ -36,7 +36,7 @@ public class HomeController {
     public ModelAndView getUser() {
         ModelAndView model = new ModelAndView();
         log.info("Sending........");
-        model.addObject("user", groupAttachmentService.getById(1L));
+        model.addObject("user", groupAttachmentService.getAll());
         model.setViewName("home");
         return model;
     }

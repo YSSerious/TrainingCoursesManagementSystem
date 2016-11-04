@@ -18,6 +18,13 @@ public class MeetingReviewProxy implements MeetingReview {
     @Autowired
     private MeetingReviewService meetingReviewService;
 
+    public MeetingReviewProxy() {
+    }
+
+    public MeetingReviewProxy(Long id) {
+        this.id = id;
+    }
+
     @Override
     public Long getId() {
         return id;
