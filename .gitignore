@@ -4,5 +4,6 @@
 *.jar
 *.war
 .idea
+.metadata
 /src/main/resources/database.properties
 TrainingCoursesManagementSystem.iml
