@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,7 @@ import ua.ukma.nc.entity.User;
 import ua.ukma.nc.entity.impl.proxy.RoleProxy;
 import ua.ukma.nc.entity.impl.proxy.StatusProxy;
 import ua.ukma.nc.entity.impl.proxy.UserProxy;
+import ua.ukma.nc.entity.impl.real.RoleImpl;
 import ua.ukma.nc.entity.impl.real.UserImpl;
 
 import java.sql.ResultSet;
@@ -29,6 +31,10 @@ public class UserDaoImpl implements UserDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    //trying to fix proxies
+    @Autowired
+    private ApplicationContext appContext;
 
     public class UserMapper implements RowMapper<User> {
         public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -111,7 +117,7 @@ public class UserDaoImpl implements UserDao {
 
     public class UserRoleMapper implements RowMapper<Role> {
         public Role mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            Role role = new RoleProxy();
+            Role role = appContext.getBean(RoleProxy.class);
             role.setId(resultSet.getLong("id_role"));
             return role;
         }
