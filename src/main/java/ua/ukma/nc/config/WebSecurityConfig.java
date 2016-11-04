@@ -52,10 +52,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true)
                     .and()
-                .csrf()
-                    .and()
                 .exceptionHandling()
-                    .accessDeniedPage("/403");
+                    .accessDeniedPage("/403")
+                .and()
+                .csrf().disable();
     }
 
     //TO BE DELETED UNTIL RELEASE!!!!
