@@ -6,3 +6,7 @@
 .idea
 /src/main/resources/database.properties
 TrainingCoursesManagementSystem.iml
+/bin/
+.classpath
+.project
+.settings
