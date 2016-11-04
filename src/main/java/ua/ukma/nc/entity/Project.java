@@ -1,6 +1,7 @@
 package ua.ukma.nc.entity;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -19,11 +20,11 @@ public interface Project extends Serializable{
 
      void setDescription(String description);
 
-     Timestamp getStartDate();
+     Date getStartDate();
 
-     void setStartDate(Timestamp startDate);
+     void setStartDate(Date startDate);
 
-     Timestamp getFinishDate();
+     Date getFinishDate();
 
-     void setFinishDate(Timestamp finishDate);
+     void setFinishDate(Date finishDate);
 }

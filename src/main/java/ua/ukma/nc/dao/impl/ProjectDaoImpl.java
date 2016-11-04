@@ -18,62 +18,82 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 @Repository
-public class ProjectDaoImpl implements ProjectDao{
+public class ProjectDaoImpl implements ProjectDao {
 
-    private static Logger log = LoggerFactory.getLogger(ProjectDaoImpl.class.getName());
+	private static Logger log = LoggerFactory.getLogger(ProjectDaoImpl.class.getName());
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
-    public class ProjectMapper implements RowMapper<Project> {
-        public Project mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            Project project = new ProjectImpl();
-            project.setId(resultSet.getLong("id"));
-            project.setName(resultSet.getString("name"));
-            project.setDescription(resultSet.getString("description"));
-            project.setStartDate(resultSet.getTimestamp("start"));
-            project.setFinishDate(resultSet.getTimestamp("finish"));
-            return project;
-        }
-    }
+	public class ProjectMapper implements RowMapper<Project> {
+		public Project mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+			Project project = new ProjectImpl();
+			project.setId(resultSet.getLong("id"));
+			project.setName(resultSet.getString("name"));
+			project.setDescription(resultSet.getString("description"));
+			project.setStartDate(resultSet.getDate("start"));
+			project.setFinishDate(resultSet.getDate("finish"));
+			return project;
+		}
+	}
 
-    private static final String GET_ALL = "SELECT id, name, description, start, finish FROM tcms.project";
+	public class IntegerMapper implements RowMapper<Integer> {
+		public Integer mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+			return resultSet.getInt("QUANTITY");
+		}
+	}
 
-    private static final String GET_BY_ID = "SELECT id, name, description, start, finish FROM tcms.project WHERE id = ?";
+	private static final String GET_ALL = "SELECT id, name, description, start, finish FROM tcms.project";
 
-    private static final String DELETE_PROJECT = "DELETE FROM tcms.project WHERE id = ?";
+	private static final String GET_BY_ID = "SELECT id, name, description, start, finish FROM tcms.project WHERE id = ?";
 
-    private static final String CREATE_PROJECT = "INSERT INTO tcms.project (name, description, start, finish) VALUES (?,?,?,?)";
+	private static final String DELETE_PROJECT = "DELETE FROM tcms.project WHERE id = ?";
 
-    private static final String UPDATE_PROJECT = "UPDATE tcms.project SET name = ?, description = ?, start = ?, finish = ? WHERE id = ?";
+	private static final String CREATE_PROJECT = "INSERT INTO tcms.project (name, description, start, finish) VALUES (?,?,?,?)";
 
-    @Override
-    public Project getById(Long id) {
-        log.info("Getting project with id = {}", id);
-        return jdbcTemplate.queryForObject(GET_BY_ID, new ProjectMapper(), id);
-    }
+	private static final String UPDATE_PROJECT = "UPDATE tcms.project SET name = ?, description = ?, start = ?, finish = ? WHERE id = ?";
 
-    @Override
-    public int deleteProject(Project project) {
-        log.info("Deleting project with id = {}", project.getId());
-        return jdbcTemplate.update(DELETE_PROJECT, project.getId());
-    }
+	@Override
+	public Project getById(Long id) {
+		log.info("Getting project with id = {}", id);
+		return jdbcTemplate.queryForObject(GET_BY_ID, new ProjectMapper(), id);
+	}
 
-    @Override
-    public int updateProject(Project project) {
-        log.info("Updating project with id = {}", project.getId());
-        return jdbcTemplate.update(UPDATE_PROJECT,project.getName(),project.getDescription(), project.getStartDate(), project.getFinishDate(), project.getId());
-    }
+	@Override
+	public int deleteProject(Project project) {
+		log.info("Deleting project with id = {}", project.getId());
+		return jdbcTemplate.update(DELETE_PROJECT, project.getId());
+	}
 
-    @Override
-    public List<Project> getAll() {
-        log.info("Getting all projects");
-        return jdbcTemplate.query(GET_ALL, new ProjectMapper());
-    }
+	@Override
+	public int updateProject(Project project) {
+		log.info("Updating project with id = {}", project.getId());
+		return jdbcTemplate.update(UPDATE_PROJECT, project.getName(), project.getDescription(), project.getStartDate(),
+				project.getFinishDate(), project.getId());
+	}
 
-    @Override
-    public int createProject(Project project) {
-        log.info("Create new project with name = {}", project.getName());
-        return jdbcTemplate.update(CREATE_PROJECT, project.getName(), project.getDescription(), project.getStartDate(), project.getFinishDate());
-    }
+	@Override
+	public List<Project> getAll() {
+		log.info("Getting all projects");
+		return jdbcTemplate.query(GET_ALL, new ProjectMapper());
+	}
+
+	@Override
+	public int createProject(Project project) {
+		log.info("Create new project with name = {}", project.getName());
+		return jdbcTemplate.update(CREATE_PROJECT, project.getName(), project.getDescription(), project.getStartDate(),
+				project.getFinishDate());
+	}
+
+	@Override
+	public List<Project> query(String query) {
+		log.info("Getting query projects");
+		return jdbcTemplate.query(query, new ProjectMapper());
+	}
+
+	@Override
+	public Integer count(String query) {
+		log.info("Getting query projects");
+		return jdbcTemplate.queryForObject(query, new IntegerMapper());
+	}
 }

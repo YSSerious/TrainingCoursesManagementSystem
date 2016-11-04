@@ -19,4 +19,6 @@ public interface CategoryDao {
     List<Category> getAll();
 
     int createCategory(Category category);
+
+	List<Category> getAllAjax();
 }

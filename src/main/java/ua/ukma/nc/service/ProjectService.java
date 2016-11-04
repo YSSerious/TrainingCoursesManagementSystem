@@ -8,13 +8,17 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface ProjectService {
-    Project getById(Long id);
+	Project getById(Long id);
 
-    int deleteProject(Project project);
+	int deleteProject(Project project);
 
-    int updateProject(Project project);
+	int updateProject(Project project);
 
-    List<Project> getAll();
+	List<Project> getAll();
 
-    int createProject(Project project);
+	List<Project> query(String query);
+
+	Integer count(String query);
+
+	int createProject(Project project);
 }
