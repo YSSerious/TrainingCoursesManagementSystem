@@ -77,17 +77,17 @@ public class QueryBuilder {
 		if (!clause.isEmpty())
 			result += "WHERE ";
 
-		for (Clause clause : clause)
-			result += clause.generateClause() + " AND ";
-
-		if (!clause.isEmpty())
-			result = result.substring(0, result.length() - 4) + "\n";
-
-		if (orderBy != null && orderType != null)
-			result += "ORDER BY " + orderBy + " " + orderType + "\n";
-
-		if (currentPage != null && itemsPerPage != null)
-			result += "LIMIT " + itemsPerPage + " OFFSET " + (currentPage - 1) * itemsPerPage;
+//		for (Clause clause : clause)
+//			result += clause.generateClause() + " AND ";
+//
+//		if (!clause.isEmpty())
+//			result = result.substring(0, result.length() - 4) + "\n";
+//
+//		if (orderBy != null && orderType != null)
+//			result += "ORDER BY " + orderBy + " " + orderType + "\n";
+//
+//		if (currentPage != null && itemsPerPage != null)
+//			result += "LIMIT " + itemsPerPage + " OFFSET " + (currentPage - 1) * itemsPerPage;
 
 		return result;
 	}
@@ -97,15 +97,15 @@ public class QueryBuilder {
 			throw new NullPointerException("Table name can't be null");
 
 		String result = "SELECT COUNT(*) AS QUANTITY FROM " + table + "\n";
-
-		if (!clause.isEmpty())
-			result += "WHERE ";
-
-		for (Clause clause : clause)
-			result += clause.generateClause() + " AND ";
-
-		if (!clause.isEmpty())
-			result = result.substring(0, result.length() - 4) + "\n";
+//
+//		if (!clause.isEmpty())
+//			result += "WHERE ";
+//
+//		for (Clause clause : clause)
+//			result += clause.generateClause() + " AND ";
+//
+//		if (!clause.isEmpty())
+//			result = result.substring(0, result.length() - 4) + "\n";
 
 		return result;
 	}
