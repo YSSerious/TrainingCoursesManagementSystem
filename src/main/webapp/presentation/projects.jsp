@@ -6,13 +6,9 @@
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <script type="text/javascript"
-      src="
-      <c:url value="/presentation/resources/third-party/jquery.min.js" />
-      "></script>
+      src="<c:url value="/presentation/resources/third-party/jquery/jquery.min.js" />"></script>
       <script type="text/javascript"
-      src="
-      <c:url value="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"/>
-      "></script>
+      src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
       <script type="text/javascript"
       src="
       <c:url value="/presentation/resources/third-party/bootstrap/js/bootstrap.min.js" />
