@@ -7,7 +7,7 @@ import ua.ukma.nc.query.clause.general.Clause;
 
 public class QueryBuilder {
 
-	private List<Clause> clause;
+	private List<Clause> clauses;
 
 	private Integer itemsPerPage;
 	private Integer currentPage;
@@ -21,7 +21,7 @@ public class QueryBuilder {
 	private String table;
 
 	public QueryBuilder() {
-		clause = new ArrayList<Clause>();
+		clauses = new ArrayList<Clause>();
 	}
 
 	public int getItemsPerPage() {
@@ -65,7 +65,7 @@ public class QueryBuilder {
 	}
 
 	public void putClause(Clause param) {
-		clause.add(param);
+		clauses.add(param);
 	}
 
 	public String generateQuery() {
@@ -74,20 +74,20 @@ public class QueryBuilder {
 
 		String result = "SELECT * FROM " + table + "\n";
 
-		if (!clause.isEmpty())
+		if (!clauses.isEmpty())
 			result += "WHERE ";
 
-//		for (Clause clause : clause)
-//			result += clause.generateClause() + " AND ";
-//
-//		if (!clause.isEmpty())
-//			result = result.substring(0, result.length() - 4) + "\n";
-//
-//		if (orderBy != null && orderType != null)
-//			result += "ORDER BY " + orderBy + " " + orderType + "\n";
-//
-//		if (currentPage != null && itemsPerPage != null)
-//			result += "LIMIT " + itemsPerPage + " OFFSET " + (currentPage - 1) * itemsPerPage;
+		for (Clause clause : clauses)
+			result += clause.generateClause() + " AND ";
+
+		if (!clauses.isEmpty())
+			result = result.substring(0, result.length() - 4) + "\n";
+
+		if (orderBy != null && orderType != null)
+			result += "ORDER BY " + orderBy + " " + orderType + "\n";
+
+		if (currentPage != null && itemsPerPage != null)
+			result += "LIMIT " + itemsPerPage + " OFFSET " + (currentPage - 1) * itemsPerPage;
 
 		return result;
 	}
@@ -97,15 +97,15 @@ public class QueryBuilder {
 			throw new NullPointerException("Table name can't be null");
 
 		String result = "SELECT COUNT(*) AS QUANTITY FROM " + table + "\n";
-//
-//		if (!clause.isEmpty())
-//			result += "WHERE ";
-//
-//		for (Clause clause : clause)
-//			result += clause.generateClause() + " AND ";
-//
-//		if (!clause.isEmpty())
-//			result = result.substring(0, result.length() - 4) + "\n";
+
+		if (!clauses.isEmpty())
+			result += "WHERE ";
+
+		for (Clause clause : clauses)
+			result += clause.generateClause() + " AND ";
+
+		if (!clauses.isEmpty())
+			result = result.substring(0, result.length() - 4) + "\n";
 
 		return result;
 	}
