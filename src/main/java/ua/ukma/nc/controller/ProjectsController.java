@@ -51,7 +51,7 @@ public class ProjectsController {
 		return categoryService.getAllAjax();
 	}
 
-	@RequestMapping(value = "projects/create-project", method = RequestMethod.GET)
+	@RequestMapping(value = "/projects/create-project", method = RequestMethod.GET)
 	public ModelAndView showCreateProjectForm(Model model) {
 		return new ModelAndView("create-project").addObject("title", "Create project");
 	}

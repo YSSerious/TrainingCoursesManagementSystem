@@ -26,15 +26,15 @@ label.required:after,
     /*border: 1px solid red;*/
 /*}*/
 
-.default-form input[type="date"]::-webkit-calendar-picker-indicator{
+input[type="date"]::-webkit-calendar-picker-indicator{
     display: none;
 }
 
-.default-form input[type="date"]::-webkit-clear-button {
-    display: none;
-}
+/* input[type="date"]::-webkit-clear-button { */
+/*     display: none; */
+/* } */
 
-.default-form input[type="date"]::-webkit-inner-spin-button{
+input[type="date"]::-webkit-inner-spin-button{
     display: none;
 }
 
