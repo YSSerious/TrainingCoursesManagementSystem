@@ -3,7 +3,12 @@ package ua.ukma.nc.query.clause.project;
 import ua.ukma.nc.query.clause.general.Clause;
 
 public class CriterionLogicClause implements Clause {
+	
 	private Long criterionId;
+
+	public CriterionLogicClause(Long criterionId) {
+		this.criterionId = criterionId;
+	}
 
 	public Long getCriterionId() {
 		return criterionId;

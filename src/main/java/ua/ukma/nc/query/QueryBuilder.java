@@ -74,13 +74,16 @@ public class QueryBuilder {
 
 		String result = "SELECT * FROM " + table + "\n";
 
-		if (!clauses.isEmpty())
+		boolean concat = false;
+		if (!clauses.isEmpty()) {
+			concat = true;
 			result += "WHERE ";
+		}
 
 		for (Clause clause : clauses)
 			result += clause.generateClause() + " AND ";
 
-		if (!clauses.isEmpty())
+		if (concat)
 			result = result.substring(0, result.length() - 4) + "\n";
 
 		if (orderBy != null && orderType != null)

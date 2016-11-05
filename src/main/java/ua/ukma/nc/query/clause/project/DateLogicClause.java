@@ -1,12 +1,18 @@
 package ua.ukma.nc.query.clause.project;
 
-import java.sql.Date;
+import java.util.Date;
 
-import ua.ukma.nc.controller.ProjectsController;
+import ua.ukma.nc.query.ProjectSearch;
 import ua.ukma.nc.query.clause.general.Clause;
 import ua.ukma.nc.query.clause.general.WhereClause;
 
 public class DateLogicClause implements Clause {
+
+	public DateLogicClause(Date start, Date finish, String type) {
+		this.start = start;
+		this.finish = finish;
+		this.type = type;
+	}
 
 	private Date start;
 	private Date finish;
@@ -19,9 +25,9 @@ public class DateLogicClause implements Clause {
 		String query = null;
 
 		if (type == null || (start == null && finish == null))
-			return "";
+			throw new NullPointerException("type cannot be null");
 
-		if (type.equals(ProjectsController.START)) {
+		if (type.equals(ProjectSearch.START)) {
 
 			WhereClause whereParam = new WhereClause();
 
@@ -46,7 +52,7 @@ public class DateLogicClause implements Clause {
 				query += whereParam.generateClause();
 			}
 
-		} else if (type.equals(ProjectsController.END)) {
+		} else if (type.equals(ProjectSearch.END)) {
 
 			WhereClause whereParam = new WhereClause();
 

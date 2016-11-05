@@ -1,6 +1,7 @@
 package ua.ukma.nc.service;
 
 import ua.ukma.nc.entity.Project;
+import ua.ukma.nc.query.ProjectSearch;
 
 import java.util.List;
 
@@ -16,9 +17,9 @@ public interface ProjectService {
 
 	List<Project> getAll();
 
-	List<Project> query(String query);
+	List<Project> search(ProjectSearch projectSearch);
 
-	Integer count(String query);
+	Integer getMaxPage(ProjectSearch projectSearch);
 
 	int createProject(Project project);
 }

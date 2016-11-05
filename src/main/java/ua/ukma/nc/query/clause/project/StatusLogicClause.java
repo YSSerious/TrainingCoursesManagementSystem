@@ -2,12 +2,16 @@ package ua.ukma.nc.query.clause.project;
 
 import java.sql.Date;
 
-import ua.ukma.nc.controller.ProjectsController;
+import ua.ukma.nc.query.ProjectSearch;
 import ua.ukma.nc.query.clause.general.Clause;
 import ua.ukma.nc.query.clause.general.WhereClause;
 
 public class StatusLogicClause implements Clause {
 	private String status;
+	
+	public StatusLogicClause(String status){
+		this.status = status;
+	}
 
 	@Override
 	public String generateClause() {
@@ -19,7 +23,7 @@ public class StatusLogicClause implements Clause {
 		WhereClause whereParam2 = new WhereClause();
 
 		Date currentDate = new Date(System.currentTimeMillis());
-		if (status.equals(ProjectsController.ACTIVE)) {
+		if (status.equals(ProjectSearch.ACTIVE)) {
 			whereParam1.setColumn("start");
 			whereParam1.setOperation(WhereClause.LESS);
 			whereParam1.setParam(currentDate);
@@ -29,7 +33,7 @@ public class StatusLogicClause implements Clause {
 			whereParam2.setParam(currentDate);
 
 			query = "(" + whereParam1.generateClause() + " AND " + whereParam2.generateClause() + ")";
-		} else if (status.equals(ProjectsController.COMPLETED)) {
+		} else if (status.equals(ProjectSearch.COMPLETED)) {
 			whereParam2.setColumn("finish");
 			whereParam2.setOperation(WhereClause.LESS);
 			whereParam2.setParam(currentDate);

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <!DOCTYPE html>
 <html>
    <head>
@@ -35,51 +36,60 @@
    <body>
       <br/>
       <div class="search-field">
-         <form style="margin:0 auto; width:500px;">
+
+         <form:form modelAttribute="projectSearch" id="searchForm" style="margin:0 auto; width:500px;">
+            <form:hidden path="searchRequest" id="searchRequest" value="true"/>
             <div class="row">
                <div class="form-group col-xs-6">
-                  <input class="form-control" type="text" value="${textSearch}" name="text-search" /> 
+                  <form:input path="text" class="form-control" type="text" name="text-search" /> 
                </div>
                <div class="form-group col-xs-6" style="padding-top:5px;paddint-left:15px;">
-                  <input type="checkbox" name="status" value="${active}" ${activeValue}>Active 
-                  <input type="checkbox" name="status" value="${completed}" ${completedValue}>Completed
-                  <input type="checkbox" name="status" value="${upcoming}" ${upcomingValue}>Upcoming
+               		<form:select path="statuses" class="selectpicker">
+            			<option value="active" ${activeValue}>Active</option>
+            			<option value="completed" ${completedValue}>Completed</option>
+            			<option value="upcoming" ${upcomingValue}>Upcoming</option>
+            		</form:select>
+
                </div>
             </div>
             <div class="row">
                <div class="form-group col-xs-6">
-                  <input class="form-control" type="date" value="${start}" name="start-date" /> 
+               <form:input type="date" class="form-control" path="start"/>
+                 
                </div>
                <div class="form-group col-xs-6">
-                  <input class="form-control" type="date" value="${end}" name="end-date" />
+                  <form:input path="end" class="form-control" type="date"/>
                </div>
             </div>
-            <select class="form-control" name="date-type">
-            <option value="startType" ${defaultValue}>Default</option>
-            <option value="startType" ${startTypeValue}>Start</option>
-            <option value="endType" ${endTypeValue}>End</option>
-            <option value="startAndEndType" ${startAndEndTypeValue}>Start and end</option>
-            </select>
+            <form:select path="dateType" class="form-control" name="date-type">
+            	<option value="startType" ${defaultDateTypeValue}>Default</option>
+            	<option value="startType" ${startTypeValue}>Start</option>
+            	<option value="endType" ${endTypeValue}>End</option>
+            	<option value="startAndEndType" ${startAndEndTypeValue}>Start and end</option>
+            </form:select>
             <br/>
-            <select class="form-control" name="order">
-            <option value="" ${defaultValue}>Default</option>
-            <option value="nameasc" ${nameascValue}>by Name (ASC)</option>
-            <option value="namedesc" ${namedescValue}>by Name (DESC)</option>
-            <option value="startasc" ${startascValue}>by Start (ASC)</option>
-            <option value="startdesc" ${startdescValue}>by Start (DESC)</option>
-            <option value="finishasc" ${finishascValue}>by Finish (ASC)</option>
-            <option value="finishdesc" ${finishdescValue}>by Finish (DESC)</option>
-            </select>
+            <form:select path="order" class="form-control" name="order">
+            	<option value="" ${defaultOrderValue}>Default order</option>
+            	<option value="nameasc" ${nameascValue}>by Name (ASC)</option>
+            	<option value="namedesc" ${namedescValue}>by Name (DESC)</option>
+            	<option value="startasc" ${startascValue}>by Start (ASC)</option>
+            	<option value="startdesc" ${startdescValue}>by Start (DESC)</option>
+            	<option value="finishasc" ${finishascValue}>by Finish (ASC)</option>
+            	<option value="finishdesc" ${finishdescValue}>by Finish (DESC)</option>
+            </form:select>
+            <form:hidden path="page" id="hidden-page" />
             <br/>
             <center>
                <font class="show-select">ENABLE CRITERION SEARCH</font>
-               <select name="criteria" class="criteria-select" style="width: 200px;" multiple="multiple">
-               </select> 
+               
+               <form:select path="criteria" multiple="true" name="criteria" class="criteria-select" style="width: 200px;">
+               </form:select> 
+               
                <br/>
                <br/>
                <input type="submit"/>
             </center>
-         </form>
+         </form:form>
          <br/>
          <br/>
          <br/>
@@ -135,9 +145,10 @@
          	link_string : '?page={page_number}',
          	max_page:'${maxPage}',
          	paged: function(page) {
-         		var path = '${path}';
-         		window.location.href = "?page="+page+path;
-         		
+         		$("#hidden-page").val(page);
+         		$("#searchRequest").val('false');
+         		$("#searchForm").submit();
+
          	}
          });
       </script>
