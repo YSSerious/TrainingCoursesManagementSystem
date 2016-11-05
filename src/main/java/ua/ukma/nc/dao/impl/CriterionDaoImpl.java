@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -28,12 +29,15 @@ public class CriterionDaoImpl implements CriterionDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     public class CriterionMapper implements RowMapper<Criterion> {
         public Criterion mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             Criterion criterion = new CriterionImpl();
             criterion.setId(resultSet.getLong("id"));
             criterion.setTitle(resultSet.getString("name"));
-            criterion.setCategory(new CategoryProxy(resultSet.getLong("id_category")));
+            criterion.setCategory(applicationContext.getBean(CategoryProxy.class, resultSet.getLong("id_category")));
             criterion.setProjectList(getProjects(resultSet.getLong("id")));
             return criterion;
         }

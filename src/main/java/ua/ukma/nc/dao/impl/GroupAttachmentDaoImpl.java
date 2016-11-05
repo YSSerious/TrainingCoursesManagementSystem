@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -25,12 +26,15 @@ public class GroupAttachmentDaoImpl implements GroupAttachmentDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext context;
+
     public class GroupAttachmentMapper implements RowMapper<GroupAttachment> {
         public GroupAttachment mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             GroupAttachment groupAttachment = new GroupAttachment();
             groupAttachment.setId(resultSet.getLong("id"));
             groupAttachment.setName(resultSet.getString("name"));
-            groupAttachment.setGroup(new GroupProxy(resultSet.getLong("id_group")));
+            groupAttachment.setGroup(context.getBean(GroupProxy.class,resultSet.getLong("id_group")));
             groupAttachment.setAttachmentScope(resultSet.getString("attachment_scope"));
             return groupAttachment;
         }

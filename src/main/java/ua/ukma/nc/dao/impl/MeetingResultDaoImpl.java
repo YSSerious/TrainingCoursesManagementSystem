@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -27,13 +28,16 @@ public class MeetingResultDaoImpl implements MeetingResultDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext context;
+
     public class MeetingResultMapper implements RowMapper<MeetingResult> {
         public MeetingResult mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             MeetingResult meetingResult= new MeetingResult();
             meetingResult.setId(resultSet.getLong("id"));
-            meetingResult.setCriterion(new CriterionProxy(resultSet.getLong("id_criterion")));
+            meetingResult.setCriterion(context.getBean(CriterionProxy.class,resultSet.getLong("id_criterion")));
             meetingResult.setMeetingReview(new MeetingReviewProxy(resultSet.getLong("id_meeting_review")));
-            meetingResult.setMark(new MarkProxy(resultSet.getInt("id_mark")));
+            meetingResult.setMark(context.getBean(MarkProxy.class, resultSet.getInt("id_mark")));
             meetingResult.setCommentary(resultSet.getString("commentary"));
             return meetingResult;
         }

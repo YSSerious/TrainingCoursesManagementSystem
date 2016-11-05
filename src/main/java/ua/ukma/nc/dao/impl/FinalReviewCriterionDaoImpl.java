@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -27,13 +28,16 @@ public class FinalReviewCriterionDaoImpl implements FinalReviewCriterionDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext context;
+
     public class FinalReviewCriterionMapper implements RowMapper<FinalReviewCriterion> {
         public FinalReviewCriterion mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             FinalReviewCriterion finalReviewCriterion = new FinalReviewCriterion();
             finalReviewCriterion.setId(resultSet.getLong("id"));
-            finalReviewCriterion.setFinalReview(new FinalReviewProxy(resultSet.getLong("id_final_review")));
-            finalReviewCriterion.setCriterion(new CriterionProxy(resultSet.getLong("id_criterion")));
-            finalReviewCriterion.setMark(new MarkProxy(resultSet.getInt("id_mark")));
+            finalReviewCriterion.setFinalReview(context.getBean(FinalReviewProxy.class, resultSet.getLong("id_final_review")));
+            finalReviewCriterion.setCriterion(context.getBean(CriterionProxy.class, resultSet.getLong("id_criterion")));
+            finalReviewCriterion.setMark(context.getBean(MarkProxy.class, resultSet.getInt("id_mark")));
             finalReviewCriterion.setCommentary(resultSet.getString("commentary"));
             return finalReviewCriterion;
         }

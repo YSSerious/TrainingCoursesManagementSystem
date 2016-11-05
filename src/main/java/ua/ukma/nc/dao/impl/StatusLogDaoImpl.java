@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -27,6 +28,9 @@ public class StatusLogDaoImpl implements StatusLogDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    ApplicationContext context;
+
     public class StatusLogMapper implements RowMapper<StatusLog> {
         public StatusLog mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             StatusLog statusLog = new StatusLog();
@@ -37,7 +41,7 @@ public class StatusLogDaoImpl implements StatusLogDao{
             statusLog.setStudent(new UserProxy(resultSet.getLong("id_student")));
             statusLog.setEmployee(new UserProxy(resultSet.getLong("id_employee")));
             statusLog.setDate(resultSet.getTimestamp("date"));
-            statusLog.setGroup(new GroupProxy(resultSet.getLong("id_group")));
+            statusLog.setGroup(context.getBean(GroupProxy.class, resultSet.getLong("id_group")));
             return statusLog;
         }
     }

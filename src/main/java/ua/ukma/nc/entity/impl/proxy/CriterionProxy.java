@@ -1,5 +1,7 @@
 package ua.ukma.nc.entity.impl.proxy;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ua.ukma.nc.entity.Category;
 import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Project;
@@ -11,6 +13,8 @@ import java.util.List;
 /**
  * Created by Алексей on 30.10.2016.
  */
+@Component
+@Scope("prototype")
 public class CriterionProxy implements Criterion{
 
     private static final long serialVersionUID = 8371761992165080298L;

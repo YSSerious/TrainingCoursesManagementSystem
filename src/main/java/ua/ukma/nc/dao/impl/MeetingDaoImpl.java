@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -28,11 +29,14 @@ public class MeetingDaoImpl implements MeetingDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext context;
+
     public class MeetingMapper implements RowMapper<Meeting> {
         public Meeting mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             Meeting meeting = new MeetingImpl();
             meeting.setId(resultSet.getLong("id"));
-            meeting.setGroup(new GroupProxy(resultSet.getLong("id_group")));
+            meeting.setGroup(context.getBean(GroupProxy.class, resultSet.getLong("id_group")));
             meeting.setName(resultSet.getString("name"));
             meeting.setTime(resultSet.getTimestamp("time"));
             meeting.setPlace(resultSet.getString("place"));
@@ -90,7 +94,7 @@ public class MeetingDaoImpl implements MeetingDao{
 
     public class MeetingCriterionMapper implements RowMapper<Criterion> {
         public Criterion mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            Criterion criterion = new CriterionProxy();
+            Criterion criterion = context.getBean(CriterionProxy.class);
             criterion.setId(resultSet.getLong("id_criterion"));
             return criterion;
         }
