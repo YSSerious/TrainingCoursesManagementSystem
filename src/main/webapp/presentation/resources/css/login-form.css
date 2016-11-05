@@ -66,10 +66,8 @@
     color: #347bb7;
 }
 
-.login-success{
-    color: green;
-}
+.login-success,.login-error{
+    color: #ffffff;
+    font-size: 14px;
 
-.login-error{
-    color: #ff3059;
 }
