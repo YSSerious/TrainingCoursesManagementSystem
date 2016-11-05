@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -26,11 +27,14 @@ public class StudentStatusDaoImpl implements StudentStatusDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext appContext;
+
     public class StudentStatusMapper implements RowMapper<StudentStatus> {
         public StudentStatus mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             StudentStatus studentStatus = new StudentStatus();
-            studentStatus.setStudent(new UserProxy(resultSet.getLong("id_student")));
-            studentStatus.setStatus(new StatusProxy(resultSet.getLong("id_status")));
+            studentStatus.setStudent(appContext.getBean(UserProxy.class, resultSet.getLong("id_student")));
+            studentStatus.setStatus(appContext.getBean(StatusProxy.class,resultSet.getLong("id_status")));
             return studentStatus;
         }
     }

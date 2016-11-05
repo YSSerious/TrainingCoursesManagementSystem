@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -25,10 +26,13 @@ public class ApplicationFormDaoImpl implements ApplicationFormDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext appContext;
+
     public class ApplicationFormMapper implements RowMapper<ApplicationForm> {
         public ApplicationForm mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             ApplicationForm applicationForm = new ApplicationForm();
-            applicationForm.setUser(new UserProxy(resultSet.getLong("id_user")));
+            applicationForm.setUser(appContext.getBean(UserProxy.class, resultSet.getLong("id")));
             applicationForm.setPhotoScope(resultSet.getString("photo_scope"));
             return applicationForm;
         }

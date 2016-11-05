@@ -32,7 +32,6 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    //trying to fix proxies
     @Autowired
     private ApplicationContext appContext;
 
@@ -48,7 +47,8 @@ public class UserDaoImpl implements UserDao {
             user.setPassword(resultSet.getString("password"));
             user.setActive(resultSet.getBoolean("is_active"));
             user.setRoles(getRoles(resultSet.getLong("id")));
-            user.setStudentStatus(new StudentStatus(new UserProxy(resultSet.getLong("id")), new StatusProxy(resultSet.getLong("id_status"))));
+            user.setStudentStatus(new StudentStatus(appContext.getBean(UserProxy.class, resultSet.getLong("id")),
+                                                    appContext.getBean(StatusProxy.class, resultSet.getLong("id_status"))));
             return user;
         }
     }
@@ -118,8 +118,7 @@ public class UserDaoImpl implements UserDao {
 
     public class UserRoleMapper implements RowMapper<Role> {
         public Role mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            Role role = appContext.getBean(RoleProxy.class);
-            role.setId(resultSet.getLong("id_role"));
+            Role role = appContext.getBean(RoleProxy.class, resultSet.getLong("id_role"));
             return role;
         }
     }

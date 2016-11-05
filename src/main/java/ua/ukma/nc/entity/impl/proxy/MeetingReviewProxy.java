@@ -1,6 +1,8 @@
 package ua.ukma.nc.entity.impl.proxy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.MeetingReview;
 import ua.ukma.nc.entity.User;
@@ -10,6 +12,8 @@ import ua.ukma.nc.service.MeetingReviewService;
 /**
  * Created by Алексей on 30.10.2016.
  */
+@Component
+@Scope("prototype")
 public class MeetingReviewProxy implements MeetingReview {
 
     private static final long serialVersionUID = -7649589179537002324L;

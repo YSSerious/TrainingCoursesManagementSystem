@@ -1,6 +1,8 @@
 package ua.ukma.nc.entity.impl.proxy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
@@ -12,6 +14,8 @@ import java.util.List;
 /**
  * Created by Алексей on 30.10.2016.
  */
+@Component
+@Scope("prototype")
 public class UserProxy implements User{
 
     private static final long serialVersionUID = -203078030303968859L;

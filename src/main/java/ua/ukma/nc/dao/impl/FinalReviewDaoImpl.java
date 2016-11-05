@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -27,15 +28,18 @@ public class FinalReviewDaoImpl implements FinalReviewDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext appContext;
+
     public class FinalReviewMapper implements RowMapper<FinalReview> {
         public FinalReview mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             FinalReview finalReview = new FinalReviewImpl();
             finalReview.setId(resultSet.getLong("id"));
             finalReview.setDate(resultSet.getTimestamp("date"));
-            finalReview.setStudent(new UserProxy(resultSet.getLong("id_student")));
-            finalReview.setEmployee(new UserProxy(resultSet.getLong("id_employee")));
+            finalReview.setStudent(appContext.getBean(UserProxy.class, resultSet.getLong("id_student")));
+            finalReview.setEmployee(appContext.getBean(UserProxy.class, resultSet.getLong("id_employee")));
             finalReview.setType(resultSet.getString("type"));
-            finalReview.setProject(new ProjectProxy(resultSet.getLong("id_project")));
+            finalReview.setProject(appContext.getBean(ProjectProxy.class, resultSet.getLong("id_project")));
             finalReview.setCommentary(resultSet.getString("commentary"));
             return finalReview;
         }

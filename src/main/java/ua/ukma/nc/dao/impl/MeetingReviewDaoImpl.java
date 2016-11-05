@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -29,13 +30,16 @@ public class MeetingReviewDaoImpl implements MeetingReviewDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext appContext;
+
     public class MeetingReviewMapper implements RowMapper<MeetingReview> {
         public MeetingReview mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             MeetingReview meetingReview = new MeetingReviewImpl();
             meetingReview.setId(resultSet.getLong("id"));
-            meetingReview.setStudent(new UserProxy(resultSet.getLong("id_student")));
-            meetingReview.setMeeting(new MeetingProxy(resultSet.getLong("id_meeting")));
-            meetingReview.setMentor(new UserProxy(resultSet.getLong("id_mentor")));
+            meetingReview.setStudent(appContext.getBean(UserProxy.class, resultSet.getLong("id_student")));
+            meetingReview.setMeeting(appContext.getBean(MeetingProxy.class, resultSet.getLong("id_meeting")));
+            meetingReview.setMentor(appContext.getBean(UserProxy.class, resultSet.getLong("id_mentor")));
             meetingReview.setType(resultSet.getString("type"));
             meetingReview.setCommentary(resultSet.getString("commentary"));
             return meetingReview;

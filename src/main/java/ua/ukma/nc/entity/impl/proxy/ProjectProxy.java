@@ -1,6 +1,8 @@
 package ua.ukma.nc.entity.impl.proxy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.service.ProjectService;
@@ -10,6 +12,8 @@ import java.sql.Date;
 /**
  * Created by Алексей on 30.10.2016.
  */
+@Component
+@Scope("prototype")
 public class ProjectProxy implements Project {
 
 	private static final long serialVersionUID = 1163813234179514959L;

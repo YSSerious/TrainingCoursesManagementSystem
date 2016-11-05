@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -27,15 +28,18 @@ public class StatusLogDaoImpl implements StatusLogDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext appContext;
+
     public class StatusLogMapper implements RowMapper<StatusLog> {
         public StatusLog mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             StatusLog statusLog = new StatusLog();
             statusLog.setId(resultSet.getLong("id"));
-            statusLog.setOldStatus(new StatusProxy(resultSet.getLong("id_old_status")));
-            statusLog.setNewStatus(new StatusProxy(resultSet.getLong("id_new_status")));
+            statusLog.setOldStatus(appContext.getBean(StatusProxy.class, resultSet.getLong("id_old_status")));
+            statusLog.setNewStatus(appContext.getBean(StatusProxy.class, resultSet.getLong("id_new_status")));
             statusLog.setCommentary(resultSet.getString("commentary"));
-            statusLog.setStudent(new UserProxy(resultSet.getLong("id_student")));
-            statusLog.setEmployee(new UserProxy(resultSet.getLong("id_employee")));
+            statusLog.setStudent(appContext.getBean(UserProxy.class, resultSet.getLong("id_student")));
+            statusLog.setEmployee(appContext.getBean(UserProxy.class, resultSet.getLong("id_employee")));
             statusLog.setDate(resultSet.getTimestamp("date"));
             statusLog.setGroup(new GroupProxy(resultSet.getLong("id_group")));
             return statusLog;

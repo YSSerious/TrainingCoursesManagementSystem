@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -30,12 +31,15 @@ public class GroupDaoImpl implements GroupDao{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext appContext;
+
     public class GroupMapper implements RowMapper<Group> {
         public Group mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             Group group = new GroupImpl();
             group.setId(resultSet.getLong("id"));
             group.setName(resultSet.getString("name"));
-            group.setProject(new ProjectProxy(resultSet.getLong("id_project")));
+            group.setProject(appContext.getBean(ProjectProxy.class, resultSet.getLong("id_project")));
             group.setUsers(getUsers(resultSet.getLong("id")));
             return group;
         }
@@ -90,8 +94,7 @@ public class GroupDaoImpl implements GroupDao{
 
     public class UserGroupMapper implements RowMapper<User> {
         public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            User user = new UserProxy();
-            user.setId(resultSet.getLong("id_user"));
+            User user = appContext.getBean(UserProxy.class, resultSet.getLong("id_user"));
             return user;
         }
     }

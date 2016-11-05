@@ -3,6 +3,7 @@ package ua.ukma.nc.dao.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -27,12 +28,15 @@ public class RoleDaoImpl implements RoleDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ApplicationContext appContext;
+
     public class RoleMapper implements RowMapper<Role> {
         public Role mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             Role role = new RoleImpl();
             role.setId(resultSet.getLong("id"));
             role.setTitle(resultSet.getString("role"));
-            //role.setUsers(getUsers(resultSet.getLong("id")));
+            role.setUsers(getUsers(resultSet.getLong("id")));
             return role;
         }
     }
@@ -86,8 +90,7 @@ public class RoleDaoImpl implements RoleDao {
 
     public class RoleUserMapper implements RowMapper<User> {
         public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            User user = new UserProxy();
-            user.setId(resultSet.getLong("id_user"));
+            User user = appContext.getBean(UserProxy.class, resultSet.getLong("id_user"));
             return user;
         }
     }
