@@ -67,6 +67,13 @@
             <artifactId>spring-test</artifactId>
             <version>4.3.3.RELEASE</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.securiry}</version>
+        </dependency>
+
         <!-- End SPRING -->
 
         <!--EE-->

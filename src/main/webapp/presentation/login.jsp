@@ -15,23 +15,33 @@
         </div>
         <form class="form-horizontal" action="<c:url value='/login'/>" method="POST">
             <div class="col-sm-8 col-sm-offset-2">
+                <c:if test="${param.error != null}">
+                    <div class="login-error">
+                        Invalid username, password or role.
+                    </div>
+                    <br/>
+                </c:if>
+                <c:if test="${param.logout != null}">
+                    <div class="login-success">
+                        You have been logged out!
+                    </div>
+                    <br/>
+                </c:if>
                 <div class="form-group">
-                    <c:if test="${param.error != null}">
-                        <div class="login-error">
-                            Invalid username and password.
-                        </div>
-                        <br/>
-                    </c:if>
-                    <c:if test="${param.logout != null}">
-                        <div class="login-success">
-                            You have been logged out!
-                        </div>
-                        <br/>
-                    </c:if>
                     <input type="email" name="username" class="form-control" placeholder="Enter your email">
                 </div>
                 <div class="form-group">
                     <input type="password" name="password" class="form-control" placeholder="Enter your password">
+                </div>
+                <div class="form-group">
+                    <label for="select"></label>
+                    <select class="form-control"  name="chosenRole" id="select">
+                        <option value="" disabled selected hidden>Choose role...</option>
+                        <option>ADMIN</option>
+                        <option>MENTOR</option>
+                        <option>HR</option>
+                       <!--<option>STUDENT</option>-->
+                    </select>
                 </div>
             </div>
             <div class="col-sm-8 col-sm-offset-2 bottom-row">

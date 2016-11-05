@@ -3,6 +3,7 @@ package ua.ukma.nc.config;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -23,7 +24,7 @@ public class AppInit implements WebApplicationInitializer {
 
         ctx.register(WebApp.class);
         servletContext.addListener(new ContextLoaderListener(ctx));
-
+        servletContext.addListener(new RequestContextListener());
         ctx.setServletContext(servletContext);
 
         ServletRegistration.Dynamic servlet = servletContext.addServlet(DISPATCHER_SERVLET_NAME,
