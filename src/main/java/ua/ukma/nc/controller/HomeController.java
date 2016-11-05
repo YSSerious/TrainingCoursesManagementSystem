@@ -28,8 +28,6 @@ public class HomeController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private RoleService groupAttachmentService;
 
 
     @RequestMapping("/")
@@ -37,7 +35,7 @@ public class HomeController {
     public ModelAndView getUser(Principal principal) {
         ModelAndView model = new ModelAndView();
         log.info("Sending........");
-        model.addObject("user", userService.getById((long) 1).getRoles());
+        model.addObject("user", userService.getById(1L).getRoles().get(0).getTitle());
         if(principal!=null)
             model.addObject("username", principal.getName());
         model.setViewName("home");

@@ -82,10 +82,4 @@ public class WebApp extends WebMvcConfigurerAdapter {
         return encoder;
     }
 
-    //trying to fix proxies
-    @Bean
-    @Scope("prototype")
-    public RoleProxy getRoleProxy(){
-        return new RoleProxy();
-    }
 }

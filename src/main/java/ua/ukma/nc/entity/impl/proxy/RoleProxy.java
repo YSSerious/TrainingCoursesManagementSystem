@@ -1,7 +1,6 @@
 package ua.ukma.nc.entity.impl.proxy;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
@@ -16,6 +15,7 @@ import java.util.List;
 /**
  * Created by Алексей on 01.11.2016.
  */
+@Component
 @Scope("prototype")
 public class RoleProxy implements Role{
 

@@ -36,6 +36,7 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private ApplicationContext appContext;
 
+
     public class UserMapper implements RowMapper<User> {
         public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             User user = new UserImpl();
