@@ -28,6 +28,8 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('#start-date').datepicker({
         dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
         firstDay: 1,
         minDate: new Date(),
         onSelect: function () {
@@ -44,32 +46,48 @@ $(document).ready(function () {
     });
     $('#finish-date').datepicker({
         dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
         firstDay: 1,
         minDate: "+1d"
     });
 });
 
 /**
- * Set jquery datepickers to standart date fields
+ * Set jquery datepickers to search date fields
  */
 $(document).ready(function () {
     $('#start-search-date').datepicker({
         dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
         firstDay: 1,
-        minDate: new Date(),
         onSelect: function () {
-            var new_date = $('#start-search-date').val();
-            var new_date_parsed = $.datepicker.parseDate("yy-mm-dd", new_date);
-            var this_date_parsed = $.datepicker.parseDate("yy-mm-dd", $('#end-search-date').val());
-            if (new_date_parsed > this_date_parsed) {
-//	            $('#end-search-date').val(new_date);
-	            $('#end-search-date').datepicker("option", "minDate", new_date_parsed);
+            var start_date_parsed = $.datepicker.parseDate("yy-mm-dd", $('#start-search-date').val());
+            var end_date_parsed = $.datepicker.parseDate("yy-mm-dd", $('#end-search-date').val());
+            if (start_date_parsed > end_date_parsed) {
+	            $('#end-search-date').datepicker("option", "minDate", start_date_parsed);
             }
         }
     });
     $('#end-search-date').datepicker({
         dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
         firstDay: 1,
-        minDate: "+1d"
+        onSelect: function () {
+        	var start_date_parsed = $.datepicker.parseDate("yy-mm-dd", $('#start-search-date').val());
+            var end_date_parsed = $.datepicker.parseDate("yy-mm-dd", $('#end-search-date').val());
+            if (start_date_parsed < end_date_parsed) {
+	            $('#start-search-date').datepicker("option", "maxDate", end_date_parsed);
+            }
+        }
+    });
+    
+    $('#start-search-date').on("change", function(){
+    	console.log('changed');
+    	if ($('#start-search-date').val() == "") {
+    		$('#end-search-date').datepicker("option", "minDate", "");
+    	}
     });
 });
