@@ -1,5 +1,8 @@
 package ua.ukma.nc.dao;
 
+import ua.ukma.nc.entity.Role;
+import ua.ukma.nc.entity.Status;
+import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
 
 import java.util.List;
@@ -22,5 +25,9 @@ public interface UserDao {
     int createUser(User user);
 
     boolean isExist(User user);
+
+    int addRole(User user, Role role);
+
+    int setStatus(User user, Status status);
 
 }

@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ua.ukma.nc.dao.UserDao;
 import ua.ukma.nc.entity.Role;
+import ua.ukma.nc.entity.Status;
 import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.entity.impl.proxy.RoleProxy;
@@ -69,6 +70,10 @@ public class UserDaoImpl implements UserDao {
 
     private static final String IS_EXIST = "SELECT EXISTS (SELECT email from tcms.user where email = ?)";
 
+    private static final String ADD_ROLES = "insert into user_role (id_user, id_role) values (?, ?)";
+
+    private static final String SET_STUDENT_STATUS = "insert into student_status (id_student, id_status) values (?, ?)";
+
     @Override
     public User getByEmail(String email) {
         log.info("Getting user with email = {}", email);
@@ -109,6 +114,16 @@ public class UserDaoImpl implements UserDao {
     public boolean isExist(User user) {
         log.info("Is exist this user {} ?", user);
         return jdbcTemplate.queryForObject(IS_EXIST, Boolean.class, user.getEmail());
+    }
+
+    @Override
+    public int addRole(User user, Role role) {
+        return jdbcTemplate.update(ADD_ROLES, user.getId(), role.getId());
+    }
+
+    @Override
+    public int setStatus(User user, Status status) {
+        return jdbcTemplate.update(SET_STUDENT_STATUS, user.getId(), status.getId());
     }
 
     private List<Role> getRoles(Long userID) {

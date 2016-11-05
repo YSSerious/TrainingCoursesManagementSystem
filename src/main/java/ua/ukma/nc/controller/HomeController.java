@@ -6,17 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import ua.ukma.nc.entity.ApplicationForm;
-import ua.ukma.nc.entity.Project;
-import ua.ukma.nc.entity.Status;
-import ua.ukma.nc.entity.User;
-import ua.ukma.nc.entity.impl.real.ProjectImpl;
-import ua.ukma.nc.entity.impl.real.StatusImpl;
 import ua.ukma.nc.service.*;
 
 import java.security.Principal;
-import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Created by Алексей on 15.10.2016.
@@ -34,8 +26,6 @@ public class HomeController {
 
     public ModelAndView getUser(Principal principal) {
         ModelAndView model = new ModelAndView();
-        log.info("Sending........");
-        model.addObject("user", userService.getById(1L).getStudentStatus().getStatus().getTitle());
         if(principal!=null)
             model.addObject("username", principal.getName());
         model.setViewName("home");
