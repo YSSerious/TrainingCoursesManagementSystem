@@ -11,6 +11,8 @@
     <title>Title</title>
 </head>
 <body>
+Logged in as: ${username}
+<br/>
 ${user}
 </body>
 </html>
