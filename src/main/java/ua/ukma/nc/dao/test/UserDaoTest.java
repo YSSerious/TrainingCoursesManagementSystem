@@ -26,7 +26,7 @@ public class UserDaoTest {
     private UserDao userDao;
 
     @Test
-    public void getUserByIdTest() {
+    public void getByIdTest() {
         User user = userDao.getById(1L);
         Assert.assertNotNull(user);
         Assert.assertNotNull(user.getStudentStatus());
@@ -35,7 +35,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void getAllUsersTest() {
+    public void getAllTest() {
         List<User> user = userDao.getAll();
         Assert.assertNotNull(user);
     }
@@ -58,18 +58,18 @@ public class UserDaoTest {
     @Test
     @Transactional
     @Rollback
-    public void updateUserTest() {
+    public void updateTest() {
         User user = userDao.getById(1L);
         user.setEmail("email");
         Assert.assertEquals(1, userDao.updateUser(user));
         Assert.assertEquals(user.getEmail(), userDao.getById(1L).getEmail());
     }
 
-    @Test
-    @Transactional
-    @Rollback
-    public void deleteUserTest() {
-        User user = userDao.getById(8L);
-        Assert.assertEquals(1, userDao.deleteUser(user));
-    }
+//    @Test
+//    @Transactional
+//    @Rollback
+//    public void deleteTest() {
+//        User user = userDao.getById(8L);
+//        Assert.assertEquals(1, userDao.deleteUser(user));
+//    }
 }

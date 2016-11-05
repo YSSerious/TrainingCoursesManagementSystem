@@ -15,6 +15,13 @@ public class RoleImpl implements Role{
     private String title;
     private List<User> users;
 
+    public RoleImpl() {
+    }
+
+    public RoleImpl(String title) {
+        this.title = title;
+    }
+
     public Long getId() {
         return id;
     }

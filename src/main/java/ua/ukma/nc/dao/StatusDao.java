@@ -10,6 +10,8 @@ import java.util.List;
 public interface StatusDao {
     Status getById(Long id);
 
+    Status getByTitle(String title);
+
     int deleteStatus(Status status);
 
     int updateStatus(Status status);

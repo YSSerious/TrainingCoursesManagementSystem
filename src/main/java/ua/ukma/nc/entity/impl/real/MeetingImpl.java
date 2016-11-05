@@ -20,6 +20,15 @@ public class MeetingImpl implements Meeting{
     private String place;
     private List<Criterion> criterions;
 
+    public MeetingImpl() {
+    }
+
+    public MeetingImpl(String name, Timestamp time, String place) {
+        this.name = name;
+        this.time = time;
+        this.place = place;
+    }
+
     public Long getId() {
         return id;
     }

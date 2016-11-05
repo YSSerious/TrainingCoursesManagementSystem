@@ -23,6 +23,11 @@ public class StatusServiceImpl implements StatusService{
     }
 
     @Override
+    public Status getByTitle(String title) {
+        return statusDao.getByTitle(title);
+    }
+
+    @Override
     public int deleteStatus(Status status) {
         return statusDao.deleteStatus(status);
     }

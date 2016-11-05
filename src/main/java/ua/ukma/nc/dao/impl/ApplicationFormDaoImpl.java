@@ -32,7 +32,7 @@ public class ApplicationFormDaoImpl implements ApplicationFormDao{
     public class ApplicationFormMapper implements RowMapper<ApplicationForm> {
         public ApplicationForm mapRow(ResultSet resultSet, int rowNum) throws SQLException {
             ApplicationForm applicationForm = new ApplicationForm();
-            applicationForm.setUser(appContext.getBean(UserProxy.class, resultSet.getLong("id")));
+            applicationForm.setUser(appContext.getBean(UserProxy.class, resultSet.getLong("id_user")));
             applicationForm.setPhotoScope(resultSet.getString("photo_scope"));
             return applicationForm;
         }
