@@ -26,6 +26,7 @@ public class HomeController {
 
     public ModelAndView getUser(Principal principal) {
         ModelAndView model = new ModelAndView();
+        log.info("Sending........");
         if(principal!=null)
             model.addObject("username", principal.getName());
         model.setViewName("home");

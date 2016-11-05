@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>New project</title>
+<title>${title}</title>
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/third-party/bootstrap/css/bootstrap.css"/>">
 <link rel="stylesheet" type="text/css"
@@ -31,6 +31,8 @@
 	href="<c:url value="/presentation/resources/css/header.css"/>">
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/css/forms.css"/>">
+	<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/login-form.css"/>">
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/css/footer.css"/>">
 <!--Own js-->

@@ -37,6 +37,7 @@ public class ProjectsController {
 		model.addObject("criteria", projectSearch.getCriteria());
 		model.addObject("projects", projectService.search(projectSearch));
 		model.addObject("maxPage", projectService.getMaxPage(projectSearch));
+		model.addObject("title", "All projects");
 
 		model.setViewName("projects");
 		log.info("Projects information sent");
@@ -50,8 +51,8 @@ public class ProjectsController {
 		return categoryService.getAllAjax();
 	}
 
-	@RequestMapping(value = "projects/create-project", method = RequestMethod.GET)
+	@RequestMapping(value = "/projects/create-project", method = RequestMethod.GET)
 	public ModelAndView showCreateProjectForm(Model model) {
-		return new ModelAndView("create-project");
+		return new ModelAndView("create-project").addObject("title", "Create project");
 	}
 }
