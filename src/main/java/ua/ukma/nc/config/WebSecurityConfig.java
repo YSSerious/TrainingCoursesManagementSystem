@@ -67,14 +67,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     //TO BE DELETED UNTIL RELEASE!!!!
     //hardcode will exist while developing only
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        auth
-                .inMemoryAuthentication()
-                    .withUser("user").password("password").roles("STUDENT");
-        auth.inMemoryAuthentication()
-                .withUser("admin").password("admin").roles("ADMIN");
-        auth.inMemoryAuthentication()
-                .withUser("mentor").password("mentor").roles("MENTOR");
-    }
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+//        auth
+//                .inMemoryAuthentication()
+//                    .withUser("user").password("password").roles("STUDENT");
+//        auth.inMemoryAuthentication()
+//                .withUser("admin").password("admin").roles("ADMIN");
+//        auth.inMemoryAuthentication()
+//                .withUser("mentor").password("mentor").roles("MENTOR");
+//    }
 }

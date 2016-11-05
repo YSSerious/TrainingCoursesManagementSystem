@@ -65,3 +65,11 @@
 .login-form button:hover {
     color: #347bb7;
 }
+
+.login-success{
+    color: green;
+}
+
+.login-error{
+    color: #ff3059;
+}
