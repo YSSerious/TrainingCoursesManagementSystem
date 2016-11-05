@@ -1,0 +1,35 @@
+html {
+    background: -webkit-linear-gradient(
+            rgb(245, 243, 224) 70%,
+            rgba(103, 103, 103, 0.4)
+    );
+}
+
+body {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+body {
+    padding-bottom: 10px;
+}
+
+body > .container > .panel{
+    border-radius: 0 0 7px 7px;
+}
+
+@media (min-width: 1200px) {
+    body > .container {
+        width: 100%;
+        padding: 0;
+    }
+
+    body > .container > .panel {
+        margin: 0 25px;
+    }
+}
+
+@media (min-height: 300px) {
+    body > .container > .panel > .panel-body{
+        height: 550px;
+    }
+}

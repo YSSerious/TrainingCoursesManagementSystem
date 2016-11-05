@@ -1,0 +1,47 @@
+.nav .navbar-default {
+    height: 20px;
+}
+
+.net-navbar {
+    width: 100%;
+    background: linear-gradient(to right, #ffffff 20%, rgba(32, 77, 116, 1) 70%);
+    border-bottom: 1px solid #204D74;
+}
+
+.navbar-header img {
+    max-height: 100%;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.navbar-brand {
+    padding: 0px;
+}
+
+.navbar-right {
+    transform: translatey(25%);
+    top: 25%;
+}
+
+.navbar-right li {
+    margin-right: 10px;
+}
+
+.navbar-right li > .btn-link, .dropdown .btn-link{
+    color: #ffffff;
+    vertical-align: middle;
+}
+
+.navbar-right li:first-child .btn-link{
+    color: #5688ab;
+}
+
+.navbar-right li > .btn-link:hover, .dropdown .btn-link:hover,
+.navbar-right li > .btn-link:focus, .dropdown .btn-link:focus{
+    text-decoration: none;
+    color: #e6e1fc;
+    border-radius: 3px;
+    border: 1px solid #2e6da4;
+}
