@@ -18,7 +18,7 @@ import ua.ukma.nc.query.clause.project.StatusLogicClause;
 @Service
 public class ProjectParamResolver {
 
-	public static final int ITEMS_PER_PAGE = 2;
+	public static final int ITEMS_PER_PAGE = 5;
 
 	public QueryBuilder getQueryBuilder(ProjectSearch projectSearch) {
 

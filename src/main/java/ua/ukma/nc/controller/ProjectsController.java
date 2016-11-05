@@ -33,20 +33,6 @@ public class ProjectsController {
 
 		ModelAndView model = new ModelAndView();
 
-		if (projectSearch.getOrder() != null)
-			model.addObject(projectSearch.getOrder() + "Value", "selected");
-		else
-			model.addObject("defaultOrderValue", "selected");
-
-		if (projectSearch.getDateType() != null)
-			model.addObject(projectSearch.getDateType() + "Value", "selected");
-		else
-			model.addObject("defaultDateTypeValue", "selected");
-
-		if (projectSearch.getStatuses() != null)
-			for (String status : projectSearch.getStatuses())
-				model.addObject(status + "Value", "selected");
-
 		model.addObject("currPage", projectSearch.getPage());
 		model.addObject("criteria", projectSearch.getCriteria());
 		model.addObject("projects", projectService.search(projectSearch));
