@@ -12,15 +12,22 @@
 	href="<c:url value="/presentation/resources/third-party/jquery-ui/css/jquery-ui.css"/>">
 <script
 	src="<c:url value="/presentation/resources/third-party/jquery/jquery.min.js"/>">
+	
 </script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+	integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+	crossorigin="anonymous"></script>
 <script
-	src="<c:url value="/presentation/resources/third-party/jquery-ui/js/jquery-ui.js"/>"></script>
-<script src="<c:url value="/presentation/resources/third-party/bootstrap/js/bootstrap.min.js"/>"></script>
+	src="<c:url value="/presentation/resources/third-party/bootstrap/js/bootstrap.min.js"/>"></script>
 <!--Own styles-->
-<link rel="stylesheet" type="text/css" href="<c:url value="/presentation/resources/css/general.css"/>">
-<link rel="stylesheet" type="text/css" href="<c:url value="/presentation/resources/css/header.css"/>">
-<link rel="stylesheet" type="text/css" href="<c:url value="/presentation/resources/css/forms.css"/>">
-<link rel="stylesheet" type="text/css" href="<c:url value="/presentation/resources/css/footer.css"/>">
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/general.css"/>">
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/header.css"/>">
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/forms.css"/>">
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/footer.css"/>">
 <!--Own js-->
 <script src="<c:url value="/presentation/resources/js/forms.js"/>"></script>
 </head>
@@ -29,7 +36,8 @@
 		<nav class="nav navbar-default net-navbar">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<a href="#" class="navbar-brand"> <img src="<c:url value="/presentation/resources/imgs/logo.png"/>"
+					<a href="#" class="navbar-brand"> <img
+						src="<c:url value="/presentation/resources/imgs/logo.png"/>"
 						class="net-logo">
 					</a>
 				</div>
