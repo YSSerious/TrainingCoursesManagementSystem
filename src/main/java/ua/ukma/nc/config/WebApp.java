@@ -2,10 +2,7 @@ package ua.ukma.nc.config;
 
 import org.postgresql.ds.PGPoolingDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -87,7 +84,8 @@ public class WebApp extends WebMvcConfigurerAdapter {
 
     //trying to fix proxies
     @Bean
-    public RoleProxy roleProxy(){
+    @Scope("prototype")
+    public RoleProxy getRoleProxy(){
         return new RoleProxy();
     }
 }

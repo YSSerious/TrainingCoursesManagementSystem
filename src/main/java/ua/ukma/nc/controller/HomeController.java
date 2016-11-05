@@ -37,7 +37,7 @@ public class HomeController {
     public ModelAndView getUser(Principal principal) {
         ModelAndView model = new ModelAndView();
         log.info("Sending........");
-        model.addObject("user", groupAttachmentService.getAll());
+        model.addObject("user", userService.getById((long) 1).getRoles());
         if(principal!=null)
             model.addObject("username", principal.getName());
         model.setViewName("home");
