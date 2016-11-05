@@ -38,6 +38,9 @@ public class MeetingResultDaoImpl implements MeetingResultDao{
             meetingResult.setCriterion(new CriterionProxy(resultSet.getLong("id_criterion")));
             meetingResult.setMeetingReview(appContext.getBean(MeetingReviewProxy.class, resultSet.getLong("id_meeting_review")));
             meetingResult.setMark(new MarkProxy(resultSet.getInt("id_mark")));
+            meetingResult.setCriterion(context.getBean(CriterionProxy.class,resultSet.getLong("id_criterion")));
+            meetingResult.setMeetingReview(new MeetingReviewProxy(resultSet.getLong("id_meeting_review")));
+            meetingResult.setMark(context.getBean(MarkProxy.class, resultSet.getInt("id_mark")));
             meetingResult.setCommentary(resultSet.getString("commentary"));
             return meetingResult;
         }

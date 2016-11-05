@@ -37,7 +37,7 @@ public class CriterionDaoImpl implements CriterionDao{
             Criterion criterion = new CriterionImpl();
             criterion.setId(resultSet.getLong("id"));
             criterion.setTitle(resultSet.getString("name"));
-            criterion.setCategory(new CategoryProxy(resultSet.getLong("id_category")));
+            criterion.setCategory(applicationContext.getBean(CategoryProxy.class, resultSet.getLong("id_category")));
             criterion.setProjectList(getProjects(resultSet.getLong("id")));
             return criterion;
         }

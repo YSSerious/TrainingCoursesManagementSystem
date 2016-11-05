@@ -3,6 +3,8 @@ package ua.ukma.nc.entity.impl.proxy;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ua.ukma.nc.entity.Category;
 import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.impl.real.CategoryImpl;
@@ -11,6 +13,8 @@ import ua.ukma.nc.service.CategoryService;
 /**
  * Created by Алексей on 30.10.2016.
  */
+@Component
+@Scope("prototype")
 public class CategoryProxy implements Category{
 
     private static final long serialVersionUID = -7513199305076908631L;

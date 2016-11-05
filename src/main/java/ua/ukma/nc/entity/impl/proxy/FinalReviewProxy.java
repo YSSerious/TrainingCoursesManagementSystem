@@ -1,6 +1,8 @@
 package ua.ukma.nc.entity.impl.proxy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ua.ukma.nc.entity.FinalReview;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.User;
@@ -12,6 +14,8 @@ import java.sql.Timestamp;
 /**
  * Created by Алексей on 30.10.2016.
  */
+@Component
+@Scope("prototype")
 public class FinalReviewProxy implements FinalReview {
 
     private static final long serialVersionUID = -7681458788626650265L;
