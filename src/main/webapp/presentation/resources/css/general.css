@@ -27,9 +27,3 @@ body > .container > .panel{
         margin: 0 25px;
     }
 }
-
-@media (min-height: 300px) {
-    body > .container > .panel > .panel-body{
-        height: 550px;
-    }
-}
