@@ -23,7 +23,20 @@ $(document).ready(function () {
 });
 
 /**
- * Set jquery datepickers to standart date fields
+ * Single date fields datepickers
+ */
+$(document).ready(function () {
+    $('#single-date').datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+        firstDay: 1,
+        minDate: new Date()
+    });
+});
+
+/**
+ * Standart start date and finish date fields datepickers
  */
 $(document).ready(function () {
     $('#start-date').datepicker({
@@ -54,7 +67,7 @@ $(document).ready(function () {
 });
 
 /**
- * Set jquery datepickers to search date fields
+ * Search start date and finish date fields datepickers
  */
 $(document).ready(function () {
     $('#start-search-date').datepicker({
@@ -85,9 +98,14 @@ $(document).ready(function () {
     });
     
     $('#start-search-date').on("change", function(){
-    	console.log('changed');
     	if ($('#start-search-date').val() == "") {
     		$('#end-search-date').datepicker("option", "minDate", "");
+    	}
+    });
+    
+    $('#end-search-date').on("change", function(){
+    	if ($('#end-search-date').val() == "") {
+    		$('#start-search-date').datepicker("option", "maxDate", "");
     	}
     });
 });
