@@ -115,7 +115,9 @@
                     <div class="col-xs-6 col-md-4">
                     	<p>
                      		<br/>
+                        	<font color="blue">Start:</font> ${value.startDate}
                         	<br/>
+                        	<font color="blue">Finish:</font> ${value.finishDate}
                         	<br/>
                         	<a href="#" class="btn pull-right" >More</a>
                         </p>
