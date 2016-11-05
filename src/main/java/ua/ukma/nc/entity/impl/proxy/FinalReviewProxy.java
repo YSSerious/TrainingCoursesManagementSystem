@@ -20,6 +20,13 @@ public class FinalReviewProxy implements FinalReview {
     @Autowired
     private FinalReviewService finalReviewService;
 
+    public FinalReviewProxy() {
+    }
+
+    public FinalReviewProxy(Long id) {
+        this.id = id;
+    }
+
     @Override
     public Long getId() {
         return id;

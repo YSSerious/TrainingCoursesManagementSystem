@@ -14,6 +14,7 @@ import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.entity.impl.real.StatusImpl;
 import ua.ukma.nc.service.*;
 
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -28,15 +29,17 @@ public class HomeController {
     @Autowired
     private UserService userService;
     @Autowired
-    private FinalReviewService groupAttachmentService;
+    private RoleService groupAttachmentService;
 
 
     @RequestMapping("/")
 
-    public ModelAndView getUser() {
+    public ModelAndView getUser(Principal principal) {
         ModelAndView model = new ModelAndView();
         log.info("Sending........");
         model.addObject("user", groupAttachmentService.getAll());
+        if(principal!=null)
+            model.addObject("username", principal.getName());
         model.setViewName("home");
         return model;
     }

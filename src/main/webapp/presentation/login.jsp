@@ -31,7 +31,8 @@
     <div>
         <label>Password: <input type="password" name="password"/></label>
     </div>
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <!--<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    <input type='checkbox' name="tcms-remember-me-param"/>Remember Me? <br/>
     <div><input type="submit" value="Sign in"/></div>
 </form>
 </body>

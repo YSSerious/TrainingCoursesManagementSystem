@@ -32,7 +32,7 @@ public class RoleDaoImpl implements RoleDao {
             Role role = new RoleImpl();
             role.setId(resultSet.getLong("id"));
             role.setTitle(resultSet.getString("role"));
-            role.setUsers(getUsers(resultSet.getLong("id")));
+            //role.setUsers(getUsers(resultSet.getLong("id")));
             return role;
         }
     }

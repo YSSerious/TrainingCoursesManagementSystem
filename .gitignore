@@ -4,7 +4,8 @@
 *.jar
 *.war
 .idea
-**/database.properties
+.metadata
+src/main/resources/database.properties
 TrainingCoursesManagementSystem.iml
 /bin/
 .classpath

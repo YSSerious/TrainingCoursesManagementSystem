@@ -1,7 +1,42 @@
 package ua.ukma.nc.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ua.ukma.nc.dao.MeetingResultDao;
+import ua.ukma.nc.entity.MeetingResult;
+import ua.ukma.nc.service.MeetingResultService;
+
+import java.util.List;
+
 /**
  * Created by Алексей on 30.10.2016.
  */
-public class MeetingResultServiceImpl {
+@Service
+public class MeetingResultServiceImpl implements MeetingResultService{
+    @Autowired
+    private MeetingResultDao meetingResultDao;
+    @Override
+    public MeetingResult getById(Long id) {
+        return meetingResultDao.getById(id);
+    }
+
+    @Override
+    public int deleteMeetingResult(MeetingResult meetingResult) {
+        return meetingResultDao.deleteMeetingResult(meetingResult);
+    }
+
+    @Override
+    public int updateMeetingResult(MeetingResult meetingResult) {
+        return meetingResultDao.updateMeetingResult(meetingResult);
+    }
+
+    @Override
+    public List<MeetingResult> getAll() {
+        return meetingResultDao.getAll();
+    }
+
+    @Override
+    public int createMeetingResult(MeetingResult meetingResult) {
+        return meetingResultDao.createMeetingResult(meetingResult);
+    }
 }

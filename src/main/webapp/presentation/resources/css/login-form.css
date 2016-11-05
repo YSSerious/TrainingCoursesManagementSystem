@@ -1,0 +1,67 @@
+.form-wrapper {
+    margin-top: 70px;
+}
+
+.login-form {
+    padding: 15px;
+    border-radius: 5px;
+    background-color: rgba(32, 77, 116, 0.9);
+    border: 3px solid #fff;
+}
+
+.login-form h2 {
+    margin-bottom: 30px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.login-form .form-group:last-child div:first-child > div {
+    vertical-align: middle;
+    display: inline-block;
+    float: none;
+}
+
+.login-form .form-group:last-child {
+    /*margin-top: 25px;*/
+}
+
+.login-form .bottom-row {
+    padding: 0;
+}
+
+.login-form .bottom-row div {
+    vertical-align: middle;
+    padding: 0;
+}
+
+.login-form .bottom-row > div:first-child{
+    text-align: center;
+}
+
+
+.login-form .bottom-row > div:last-child button{
+    display: block;
+    margin: auto;
+}
+
+.remember-me {
+    display: inline-block;
+    margin: 0;
+    color: #fff;
+}
+
+.remember-me input {
+    width: 17px;
+    height: 17px;
+    padding: 0;
+    margin: 0;
+}
+
+.login-form button {
+    color: #204d74;
+    font-weight: bold;
+}
+
+.login-form button:hover {
+    color: #347bb7;
+}

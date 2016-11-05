@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import ua.ukma.nc.controller.auth.SecurityUserDetailService;
 
 import javax.sql.DataSource;
 
@@ -22,23 +23,15 @@ import javax.sql.DataSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    DataSource dataSource;
-
+    SecurityUserDetailService securityUserDetailService;
     @Autowired
     PasswordEncoder passwordEncoder;
 
     //dataSource-based authentication
-    //UNDER CONSTRUCTION (NO SQL QUERIES)
-//    @Autowired
-//    public void configAuthentification(AuthenticationManagerBuilder auth) throws Exception{
-//        auth.jdbcAuthentication()
-//                .passwordEncoder(passwordEncoder)
-//                .dataSource(dataSource)
-//                .usersByUsernameQuery(
-//                        "select email,password, is_active from users where email=?")
-//                .authoritiesByUsernameQuery(
-//                        "select email, role from user_roles where email=?");
-//    }
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception{
+        auth.userDetailsService(securityUserDetailService).passwordEncoder(passwordEncoder);
+    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception{
@@ -60,12 +53,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .deleteCookies("JSESSIONID")
                     .invalidateHttpSession(true)
                     .and()
-                .csrf()
+                .rememberMe()
+                    .key("rem-me-key")
+                    .rememberMeParameter("tcms-remember-me-param")
+                    .rememberMeCookieName("tcms-remember-me")
+                    .tokenValiditySeconds(86400)
                     .and()
                 .exceptionHandling()
-                    .accessDeniedPage("/403");
+                    .accessDeniedPage("/403")
+                .and()
+                .csrf().disable();
     }
 
+    //TO BE DELETED UNTIL RELEASE!!!!
+    //hardcode will exist while developing only
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
         auth

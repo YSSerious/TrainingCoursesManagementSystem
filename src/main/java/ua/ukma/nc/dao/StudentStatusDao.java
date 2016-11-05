@@ -9,11 +9,7 @@ import java.util.List;
  */
 public interface StudentStatusDao {
 
-    StudentStatus getByStatusId(Long id);
-
     StudentStatus getByUserId(Long id);
-
-    boolean isExist(StudentStatus studentStatus);
 
     int deleteStudentStatus(StudentStatus studentStatus);
 
