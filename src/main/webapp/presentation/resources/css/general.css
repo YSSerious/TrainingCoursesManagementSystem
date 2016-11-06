@@ -17,6 +17,11 @@ body > .container > .panel{
     border-radius: 0 0 7px 7px;
 }
 
+body > .container > .panel > .panel-body div:first-child {
+    position: relative;
+    z-index: 1;
+}
+
 @media (min-width: 1200px) {
     body > .container {
         width: 100%;

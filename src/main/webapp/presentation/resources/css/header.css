@@ -3,6 +3,7 @@
 }
 
 .net-navbar {
+	position: relative;
     width: 100%;
     background: linear-gradient(to right, #ffffff 20%, rgba(32, 77, 116, 1) 70%);
     border-bottom: 1px solid #204D74;
@@ -29,19 +30,27 @@
     margin-right: 10px;
 }
 
-.navbar-right li > .btn-link, .dropdown .btn-link{
+.navbar-right li .btn-link {
     color: #ffffff;
     vertical-align: middle;
 }
 
-.navbar-right li:first-child .btn-link{
-    color: #5688ab;
+.navbar-right li a.btn-link{
+    padding: 6px 12px;
 }
 
-.navbar-right li > .btn-link:hover, .dropdown .btn-link:hover,
-.navbar-right li > .btn-link:focus, .dropdown .btn-link:focus{
+.navbar-right li:first-child .btn-link{
+    color: #b5d3e2;
+}
+
+.navbar-right li .btn-link:hover, .btn-link:hover,
+.navbar-right li .btn-link:focus, .btn-link:focus{
     text-decoration: none;
-    color: #e6e1fc;
+    color: #e6e1fc !important;
     border-radius: 3px;
     border: 1px solid #2e6da4;
+}
+
+.nav {
+	z-index: 100;
 }
