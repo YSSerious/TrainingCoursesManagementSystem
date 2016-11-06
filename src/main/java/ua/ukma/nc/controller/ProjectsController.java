@@ -6,13 +6,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
+//import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import ua.ukma.nc.entity.Category;
+import ua.ukma.nc.entity.Project;
+import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.query.ProjectSearch;
 import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.ProjectService;
@@ -52,7 +56,30 @@ public class ProjectsController {
 	}
 
 	@RequestMapping(value = "/projects/create-project", method = RequestMethod.GET)
-	public ModelAndView showCreateProjectForm(Model model) {
-		return new ModelAndView("create-project").addObject("title", "Create project");
+	public String showCreateProjectForm(Model model) {
+		Project project = new ProjectImpl();
+		model.addAttribute("projectForm", project);
+		return "create-project";
+//		return new ModelAndView("create-project").addObject("title", "Create project");
+	}
+	
+	@RequestMapping(value = "/projects", method = RequestMethod.POST)
+	public String createProject(@ModelAttribute("projectForm") ProjectImpl project) {
+		projectService.createProject(project);
+		return "redirect:projects";
+	}
+	
+	@RequestMapping(value = "/projects/create-project/is-name-free")
+	public @ResponseBody String isNameFree(@RequestBody String name){
+		String result = "";
+		String nname = new String(name);
+		Project project = projectService.getByName(nname.trim());
+		if (project == null){
+			result = "true";
+		}
+		else {
+			result = "false";
+		}
+		return result;
 	}
 }

@@ -37,6 +37,7 @@
 	href="<c:url value="/presentation/resources/css/footer.css"/>">
 <!--Own js-->
 <script src="<c:url value="/presentation/resources/js/forms.js"/>"></script>
+<script src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>
 </head>
 <body>
 	<div class="container">

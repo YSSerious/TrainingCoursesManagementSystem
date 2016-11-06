@@ -53,8 +53,8 @@ $(document).ready(function () {
 	            // Case: if finish date must be at least tomorrow
 	            // var new_date_parsed = getFormattedDate($.datepicker.parseDate("yy-mm-dd", $('#start-date').val()), 1);
 	            $('#finish-date').val(new_date);
-	            $('#finish-date').datepicker("option", "minDate", new_date_parsed);
             }
+            $('#finish-date').datepicker("option", "minDate", new_date_parsed);
         }
     });
     $('#finish-date').datepicker({

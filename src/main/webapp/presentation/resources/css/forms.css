@@ -41,3 +41,8 @@ input[type="date"]::-webkit-inner-spin-button{
 input[type="date"]::-webkit-input-placeholder{
     visibility: hidden !important;
 }
+
+#name-message {
+	visibility: hidden;
+	display: none
+}
