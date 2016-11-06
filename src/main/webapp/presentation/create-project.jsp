@@ -11,6 +11,7 @@
 					 path="name" />
 				<label id="name-message"></label>
 				<form:errors path="name" />
+				<spring:message code="NotEmpty.projectForm.name"/>
 			</div>
 			<div class="form-group col-sm-5 required" data-provide="datepicker">
 				<form:label for="start-date" path="startDate">Start date</form:label>
