@@ -37,9 +37,9 @@
                     <label for="select"></label>
                     <select class="form-control"  name="chosenRole" id="select">
                         <option value="" disabled selected hidden>Choose role...</option>
-                        <option>ADMIN</option>
-                        <option>MENTOR</option>
-                        <option>HR</option>
+                        <option value="ROLE_ADMIN">ADMIN</option>
+                        <option value="ROLE_MENTOR">MENTOR</option>
+                        <option value="ROLE_HR">HR</option>
                        <!--<option>STUDENT</option>-->
                     </select>
                 </div>
