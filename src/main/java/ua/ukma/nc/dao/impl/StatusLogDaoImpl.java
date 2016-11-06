@@ -52,7 +52,7 @@ public class StatusLogDaoImpl implements StatusLogDao{
 
     private static final String DELETE_STATUS_LOG = "DELETE FROM tcms.status_log WHERE id = ?";
 
-    private static final String CREATE_STATUS_LOG = "INSERT INTO tcms.status_log (id_old_status, id_new_status, commentary, id_student, id_employee, date, id_group) VALUES (?,?,?,?,?,?,?,?)";
+    private static final String CREATE_STATUS_LOG = "INSERT INTO tcms.status_log (id_old_status, id_new_status, commentary, id_student, id_employee, date, id_group) VALUES (?,?,?,?,?,?,?)";
 
     private static final String UPDATE_STATUS_LOG = "UPDATE tcms.status_log SET id_old_status = ?, id_new_status = ?, commentary = ?, id_student = ?, id_employee = ?, date = ?, id_group = ? WHERE id = ?";
 

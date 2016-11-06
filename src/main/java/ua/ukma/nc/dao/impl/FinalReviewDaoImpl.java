@@ -51,7 +51,7 @@ public class FinalReviewDaoImpl implements FinalReviewDao{
 
     private static final String DELETE_FINAL_REVIEW = "DELETE FROM tcms.final_review WHERE id = ?";
 
-    private static final String CREATE_FINAL_REVIEW = "INSERT INTO tcms.final_review (date, id_student, id_employee, type, id_project, commentary) VALUES (?,?,?,?,?)";
+    private static final String CREATE_FINAL_REVIEW = "INSERT INTO tcms.final_review (date, id_student, id_employee, type, id_project, commentary) VALUES (?,?,?,?,?,?)";
 
     private static final String UPDATE_FINAL_REVIEW = "UPDATE tcms.final_review SET date = ?, id_student = ?, id_employee = ?, type = ?, id_project = ?, commentary = ? WHERE id = ?";
 
