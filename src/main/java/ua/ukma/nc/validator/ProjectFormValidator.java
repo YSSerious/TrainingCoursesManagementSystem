@@ -13,8 +13,8 @@ import ua.ukma.nc.service.ProjectService;
 @Component
 public class ProjectFormValidator implements Validator {
 
-//	@Autowired
-//	ProjectService projectService;
+	@Autowired
+	ProjectService projectService;
 	
 	@Override
 	public boolean supports(Class<?> arg0) {
@@ -28,7 +28,9 @@ public class ProjectFormValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "startDate", "NotEmpty.projectForm.startDate");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "finishDate", "NotEmpty.projectForm.finishDate");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "NotEmpty.projectForm.description");
-		
+		if ((project.getName() != null) && (projectService.getByName(project.getName()) != null)) {
+			errors.rejectValue("name", "NotAvailable.projectForm.name");
+		}
 	}
 	
 }
