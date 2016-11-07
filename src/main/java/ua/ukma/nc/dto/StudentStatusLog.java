@@ -2,6 +2,8 @@ package ua.ukma.nc.dto;
 
 import java.sql.Timestamp;
 
+import ua.ukma.nc.entity.StatusLog;
+
 public class StudentStatusLog {
 	private String statusDescription;
 	private String commentary;
@@ -11,6 +13,19 @@ public class StudentStatusLog {
 	private String secondName;
 	private Timestamp time;
 	
+	public StudentStatusLog(){
+		
+	}
+	
+	public StudentStatusLog(StatusLog statusLog) {
+		setCommentary(statusLog.getCommentary());
+		setDate(statusLog.getDate());
+		setEmployeeId(statusLog.getEmployee().getId());
+		setStatusDescription(statusLog.getNewStatus().getDescription());
+		setFirstName(statusLog.getEmployee().getFirstName());
+		setLastName(statusLog.getEmployee().getLastName());
+		setSecondName(statusLog.getEmployee().getSecondName());
+	}
 	public String getStatusDescription() {
 		return statusDescription;
 	}
@@ -50,6 +65,7 @@ public class StudentStatusLog {
 	public Timestamp getDate() {
 		return time;
 	}
+
 	public void setDate(Timestamp time) {
 		this.time = time;
 	}

@@ -59,58 +59,9 @@ public class MeetingResultServiceImpl implements MeetingResultService{
     }
 
 	@Override
-	public StudentProfile generateStudentProfile(long studentId, long projectId) {
-		List<MarkInformation> allMarkInfo = meetingResultDao.generateMarkInformation(studentId, projectId);
-		Map<String, List<MarkInformation>> separateInformation = new HashMap<String, List<MarkInformation>>();
-
-		for (MarkInformation markInformation : allMarkInfo) {
-			List<MarkInformation> currentInformation = separateInformation.get(markInformation.getCriterionName());
-			if (currentInformation != null)
-				currentInformation.add(markInformation);
-			else {
-				List<MarkInformation> newList = new ArrayList<MarkInformation>();
-				newList.add(markInformation);
-				separateInformation.put(markInformation.getCriterionName(), newList);
-			}
-		}
-
-		StudentProfile studentProfile = new StudentProfile();
-		studentProfile.setMarkInformation(separateInformation);
-
-		List<StatusLog> statusLoges = statusLogService.getByProjectStudent(projectId, studentId);
-		List<StudentStatusLog> studentStatusLoges = new ArrayList<StudentStatusLog>();
-
-		for (StatusLog statusLog : statusLoges) {
-			StudentStatusLog studentStatusLog = new StudentStatusLog();
-			studentStatusLog.setCommentary(statusLog.getCommentary());
-			studentStatusLog.setDate(statusLog.getDate());
-			studentStatusLog.setEmployeeId(statusLog.getEmployee().getId());
-			studentStatusLog.setStatusDescription(statusLog.getNewStatus().getDescription());
-			studentStatusLog.setFirstName(statusLog.getEmployee().getFirstName());
-			studentStatusLog.setLastName(statusLog.getEmployee().getLastName());
-			studentStatusLog.setSecondName(statusLog.getEmployee().getSecondName());
-			
-			studentStatusLoges.add(studentStatusLog);
-		}
-
-		studentProfile.setStudentStatuses(studentStatusLoges);
-
-		List<StudentMeetingReview> studentMeetingReviews = new ArrayList<StudentMeetingReview>();
-		List<MeetingReview> meetingReviews = meetingReviewService.getByProjectStudent(projectId, studentId);
-
-		for (MeetingReview meetingReview : meetingReviews) {
-			StudentMeetingReview studentMeetingReview = new StudentMeetingReview();
-			studentMeetingReview.setCommentary(meetingReview.getCommentary());
-			studentMeetingReview.setMeetingName(meetingReview.getMeeting().getName());
-			studentMeetingReview.setFirstName(meetingReview.getMentor().getFirstName());
-			studentMeetingReview.setSecondName(meetingReview.getMentor().getSecondName());
-			studentMeetingReview.setLastName(meetingReview.getMentor().getLastName());
-			studentMeetingReview.setType(meetingReview.getType());
-			
-			studentMeetingReviews.add(studentMeetingReview);
-		}
-
-		studentProfile.setMeetingReviews(studentMeetingReviews);
-		return studentProfile;
+	public List<MarkInformation> generateMarkInformation(long studentId, long projectId) {
+		return meetingResultDao.generateMarkInformation(studentId, projectId);
 	}
+
+	
 }

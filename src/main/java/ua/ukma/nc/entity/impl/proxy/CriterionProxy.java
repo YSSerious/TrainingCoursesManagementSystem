@@ -1,5 +1,6 @@
 package ua.ukma.nc.entity.impl.proxy;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ua.ukma.nc.entity.Category;
@@ -20,6 +21,8 @@ public class CriterionProxy implements Criterion{
     private static final long serialVersionUID = 8371761992165080298L;
     private Long id;
     private CriterionImpl criterion;
+    
+    @Autowired
     private CriterionService criterionService;
 
     public CriterionProxy() {

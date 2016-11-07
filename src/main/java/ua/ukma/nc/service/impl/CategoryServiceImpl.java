@@ -41,11 +41,6 @@ public class CategoryServiceImpl implements CategoryService{
     public List<Category> getAll() {
         return categoryDao.getAll();
     }
-    
-    @Override
-    public List<Category> getAllAjax() {
-        return categoryDao.getAllAjax();
-    }
 
     @Override
     public int createCategory(Category category) {

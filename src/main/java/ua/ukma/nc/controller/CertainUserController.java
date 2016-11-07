@@ -18,16 +18,16 @@ import java.util.List;
 import ua.ukma.nc.dto.StudentProfile;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.Role;
-import ua.ukma.nc.service.MeetingResultService;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.service.RoleService;
+import ua.ukma.nc.service.StudentService;
 
 
 @Controller 
 public class CertainUserController {
 	
 	@Autowired
-	private MeetingResultService meetingResultService;
+	private StudentService studentService;
 	
 	@Autowired
 	private RoleService roleService;
@@ -58,7 +58,7 @@ public class CertainUserController {
 	@RequestMapping("/ajaxstudentprofile")
 	@ResponseBody
 	public StudentProfile studentProfile(@RequestParam("student") Long studentId, @RequestParam("project") Long projectId) {
-		return meetingResultService.generateStudentProfile(studentId, projectId);
+		return studentService.generateStudentProfile(studentId, projectId);
 	}
 
 	@RequestMapping("/ajaxstudentprojects")

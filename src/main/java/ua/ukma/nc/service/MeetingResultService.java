@@ -21,5 +21,5 @@ public interface MeetingResultService {
 
     int createMeetingResult(MeetingResult meetingResult);
     
-    public StudentProfile generateStudentProfile(long studentId, long projectId);
+    List<MarkInformation> generateMarkInformation(long studentId, long projectId);
 }

@@ -18,8 +18,6 @@ public interface CategoryService {
     int updateCategory(Category category);
 
     List<Category> getAll();
-    
-    List<Category> getAllAjax();
 
     int createCategory(Category category);
 }

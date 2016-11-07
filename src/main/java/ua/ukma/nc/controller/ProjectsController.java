@@ -3,6 +3,8 @@ package ua.ukma.nc.controller;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ua.ukma.nc.entity.Category;
+import ua.ukma.nc.dto.CategoryDto;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.query.ProjectSearch;
@@ -61,9 +63,9 @@ public class ProjectsController {
 
 	@RequestMapping("/ajaxcategories")
 	@ResponseBody
-	public List<Category> ajaxCategories() {
+	public List<CategoryDto> ajaxCategories() {
 		log.info("Categories information sent (AJAX)");
-		return categoryService.getAllAjax();
+		return categoryService.getAll().stream().map(CategoryDto::new).collect(Collectors.toList());
 	}
 	
 	@InitBinder("projectForm")
