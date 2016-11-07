@@ -7,7 +7,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Oleh Khomandiak on 7 лист. 2016 р.
+ * @author Oleh Khomandiak
  */
 @Component
 public class Mail {

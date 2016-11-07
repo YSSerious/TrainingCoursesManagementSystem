@@ -1,4 +1,3 @@
-
 package ua.ukma.nc.config;
 
 import java.util.Properties;
@@ -10,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 /**
- * @author Oleh Khomandiak on 7 лист. 2016 р.
+ * @author Oleh Khomandiak
  */
 @Configuration
 @Configurable
