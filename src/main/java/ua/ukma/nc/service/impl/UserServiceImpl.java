@@ -36,6 +36,10 @@ public class UserServiceImpl implements UserService {
     public User getById(Long id) {
         return userDao.getById(id);
     }
+    @Override
+    public int count(){
+    	return userDao.count();
+    }
 
     @Override
     public boolean isExist(User user) {
@@ -65,6 +69,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         return userDao.getAll();
+    }
+    @Override
+    public List<User> getSome(int limit, int offset) {
+        return userDao.getSome(limit, offset);
     }
 
     @Override

@@ -28,4 +28,8 @@ public interface UserService {
     int addRole(User user, Role role);
 
     int setStatus(User user, Status status);
+
+	List<User> getSome(int limit, int offset);
+
+	int count();
 }

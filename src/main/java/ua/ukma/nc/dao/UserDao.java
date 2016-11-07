@@ -30,4 +30,8 @@ public interface UserDao {
 
     int setStatus(User user, Status status);
 
+	List<User> getSome(int limit, int offset);
+
+	int count();
+
 }
