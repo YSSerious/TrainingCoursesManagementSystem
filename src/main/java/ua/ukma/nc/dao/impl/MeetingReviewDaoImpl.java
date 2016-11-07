@@ -45,6 +45,8 @@ public class MeetingReviewDaoImpl implements MeetingReviewDao {
             return meetingReview;
         }
     }
+    
+    private static final String GET_BY_STUDENT_PROJECT = "SELECT * FROM tcms.meeting_review WHERE id_student = ? AND id_meeting IN (SELECT id FROM tcms.meeting WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project = ?))";
 
     private static final String GET_ALL = "SELECT id, id_student, id_meeting, id_mentor, type, commentary FROM tcms.meeting_review";
 
@@ -60,6 +62,11 @@ public class MeetingReviewDaoImpl implements MeetingReviewDao {
     public MeetingReview getById(Long id) {
         log.info("Getting meeting review with id = {}", id);
         return jdbcTemplate.queryForObject(GET_BY_ID, new MeetingReviewMapper(), id);
+    }
+    
+    @Override
+    public List<MeetingReview> getByProjectStudent(Long projectId, Long studentId) {
+        return jdbcTemplate.query(GET_BY_STUDENT_PROJECT, new MeetingReviewMapper(), studentId, projectId);
     }
 
     @Override

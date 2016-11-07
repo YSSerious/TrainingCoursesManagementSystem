@@ -41,4 +41,9 @@ public class StatusLogServiceImpl implements StatusLogService{
     public int createStatusLog(StatusLog statusLog) {
         return statusLogDao.createStatusLog(statusLog);
     }
+
+	@Override
+	public List<StatusLog> getByProjectStudent(Long projectId, Long studentId) {
+		return statusLogDao.getByProjectStudent(projectId, studentId);
+	}
 }

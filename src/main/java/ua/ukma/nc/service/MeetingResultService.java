@@ -1,8 +1,11 @@
 package ua.ukma.nc.service;
 
+import ua.ukma.nc.dto.MarkInformation;
+import ua.ukma.nc.dto.StudentProfile;
 import ua.ukma.nc.entity.MeetingResult;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Алексей on 30.10.2016.
@@ -17,4 +20,6 @@ public interface MeetingResultService {
     List<MeetingResult> getAll();
 
     int createMeetingResult(MeetingResult meetingResult);
+    
+    public StudentProfile generateStudentProfile(long studentId, long projectId);
 }

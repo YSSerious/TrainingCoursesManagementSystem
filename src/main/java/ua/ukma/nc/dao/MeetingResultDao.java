@@ -1,5 +1,6 @@
 package ua.ukma.nc.dao;
 
+import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.entity.MeetingResult;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface MeetingResultDao {
     List<MeetingResult> getAll();
 
     int createMeetingResult(MeetingResult meetingResult);
+    
+    List<MarkInformation> generateMarkInformation(long studentId, long projectId);
 }

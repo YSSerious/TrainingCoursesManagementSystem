@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ua.ukma.nc.dao.MeetingResultDao;
+import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.entity.MeetingResult;
 import ua.ukma.nc.entity.impl.proxy.CriterionProxy;
 import ua.ukma.nc.entity.impl.proxy.MarkProxy;
@@ -30,6 +31,18 @@ public class MeetingResultDaoImpl implements MeetingResultDao{
 
     @Autowired
     private ApplicationContext appContext;
+    
+    public class MarkInformationMapper implements RowMapper<MarkInformation> {
+        public MarkInformation mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+        	MarkInformation markInformation= new MarkInformation();
+        	markInformation.setCriterionName(resultSet.getString("criterion"));
+        	markInformation.setMeetingName(resultSet.getString("meeting"));
+        	markInformation.setMarkDescription(resultSet.getString("description"));
+            markInformation.setCommentary(resultSet.getString("commentary"));
+            markInformation.setMark(resultSet.getInt("mark"));
+            return markInformation;
+        }
+    }
 
     public class MeetingResultMapper implements RowMapper<MeetingResult> {
         public MeetingResult mapRow(ResultSet resultSet, int rowNum) throws SQLException {
@@ -56,6 +69,7 @@ public class MeetingResultDaoImpl implements MeetingResultDao{
 
     private static final String UPDATE_MEETING_RESULT = "UPDATE tcms.meeting_result SET id_criterion = ?, id_meeting_review = ?, id_mark = ?, commentary = ? WHERE id = ?";
 
+    private static final String GET_MARK_INFORMATION = "SELECT (SELECT description FROM tcms.mark WHERE value = id_mark), (SELECT name FROM tcms.criterion WHERE id = id_criterion) AS criterion, (SELECT name FROM tcms.meeting WHERE id IN (SELECT id_meeting FROM tcms.meeting_review WHERE id = id_meeting_review)) AS meeting, commentary, id_mark AS mark FROM tcms.meeting_result WHERE ? = (SELECT id_student FROM tcms.meeting_review WHERE id = id_meeting_review) AND ? = (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.meeting WHERE tcms.meeting.id IN (SELECT id_meeting FROM tcms.meeting_review WHERE tcms.meeting_review.id = tcms.meeting_result.id_meeting_review)))";
     @Override
     public MeetingResult getById(Long id) {
         log.info("Getting meeting result with id = {}", id);
@@ -87,4 +101,9 @@ public class MeetingResultDaoImpl implements MeetingResultDao{
         return jdbcTemplate.update(CREATE_MEETING_RESULT, meetingResult.getCriterion().getId(), meetingResult.getMeetingReview().getId(),
                 meetingResult.getMark().getValue(), meetingResult.getCommentary());
     }
+
+	@Override
+	public List<MarkInformation> generateMarkInformation(long studentId, long projectId) {
+		return jdbcTemplate.query(GET_MARK_INFORMATION, new MarkInformationMapper(), studentId, projectId);
+	}
 }

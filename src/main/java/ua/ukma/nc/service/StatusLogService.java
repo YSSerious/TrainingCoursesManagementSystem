@@ -17,4 +17,6 @@ public interface StatusLogService {
     List<StatusLog> getAll();
 
     int createStatusLog(StatusLog statusLog);
+    
+    List<StatusLog> getByProjectStudent(Long projectId, Long studentId);
 }
