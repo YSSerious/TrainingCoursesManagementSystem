@@ -5,19 +5,14 @@
   Time: 18:26
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>DMS: Access Denied</title>
-</head>
-<body>
-<h1>You do not have permission to access this page!
-</h1>
-<form action="/logout" method="post">
-    <input type="submit" value="Sign in as different user" />
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-</form>
-</body>
-</html>
+<%@include file="header.jsp"%>
+
+<div class="container error-forbidden-box">
+    <h1>403 Forbidden</h1>
+    <h3>Sorry, you have no permission to view this page!</h3>
+    <form:form method="POST" action="logout">
+        <button type="submit" class="btn btn-primary">Log in with different role or account</button>
+    </form:form>
+</div>
+
+<%@include file="footer.jsp"%>

@@ -71,3 +71,8 @@
     font-size: 14px;
 
 }
+
+/*for 403.jsp*/
+.error-forbidden-box{
+    text-align: center;
+}
