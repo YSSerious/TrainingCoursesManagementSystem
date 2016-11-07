@@ -11,3 +11,6 @@ TrainingCoursesManagementSystem.iml
 .classpath
 .project
 .settings
+#NetBeans gitignore
+**/META-INF
+nb-configuration.xml

@@ -1,5 +1,5 @@
 .form-wrapper {
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 40px;
 }
 
@@ -7,18 +7,26 @@
     margin-top: 30px;
 }
 
+.default-form > * {
+    display: inline-block;
+}
+
+.default-form > *:nth-child(-n + 2) {
+    /*margin-top: 10px;*/
+}
+
 .default-form > .form-group {
     padding: 0;
 }
 
 label.required:after,
-.form-group.required > label:first-child:after{
+.form-group.required label:first-child:after{
     content: "*";
     color: #ff0300;
 }
 
 .default-form textarea {
-    height: 80px;
+    height: 70px;
     resize: none;
 }
 
@@ -40,6 +48,13 @@ input[type="date"]::-webkit-inner-spin-button{
 
 input[type="date"]::-webkit-input-placeholder{
     visibility: hidden !important;
+}
+
+.form-error {
+    margin-left: 20px;
+    vertical-align: middle;
+    font-size: 13px;
+    color: #ff0000;
 }
 
 #name-message {

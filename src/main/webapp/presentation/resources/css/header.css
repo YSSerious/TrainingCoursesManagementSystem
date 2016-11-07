@@ -37,6 +37,7 @@
 
 .navbar-right li a.btn-link{
     padding: 6px 12px;
+    line-height: 1.42857;
 }
 
 .navbar-right li:first-child .btn-link{

@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@include file="header.jsp"%>
-<div class="col-sm-6 col-sm-offset-3 form-wrapper">
+<div class="col-sm-6 col-sm-offset-3 login-form-wrapper">
     <div class="container-fluid col-sm-10 col-sm-offset-1 login-form">
         <div class="col-sm-12 col-sm-offset-0">
             <h2 class="text-center">Welcome to TCMS!</h2>

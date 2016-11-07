@@ -42,15 +42,14 @@
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/css/header.css"/>">
 <link rel="stylesheet" type="text/css"
-	href="<c:url value="/presentation/resources/css/forms.css"/>">
-<link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/css/login-form.css"/>">
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/forms.css"/>">
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/css/footer.css"/>">
 <!--Own js-->
 <script src="<c:url value="/presentation/resources/js/forms.js"/>"></script>
-<script
-	src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>
+<!--<script src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>-->
 </head>
 <body>
 	<div class="container">
@@ -67,7 +66,7 @@
 						<ul class="nav navbar-nav navbar-right">
 							<li>
 								<a href="profile" class="btn btn-link" role="button">
-									<sec:authentication property="principal.username"></sec:authentication>
+									My profile
 								</a>
 							</li>
 							<li>
