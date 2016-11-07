@@ -22,12 +22,12 @@ import java.security.Principal;
 public class AuthController {
 
     @RequestMapping(value = "/cookie")
-    public String setRoleCookie(HttpServletRequest request, HttpServletResponse response){
+    public String setRoleCookie(HttpServletResponse response){
         UserDetails userDetails =
                 (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String chosen = userDetails.getAuthorities().iterator().next().toString();
         if (chosen!=null){
-            Cookie cookie = new Cookie("chosenRole", chosen);
+            Cookie cookie = new Cookie("tcms-chosen-role", chosen);
             cookie.setMaxAge(86400);
             response.addCookie(cookie);
         }

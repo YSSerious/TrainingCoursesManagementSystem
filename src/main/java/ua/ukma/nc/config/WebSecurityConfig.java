@@ -53,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessUrl("/login?logout")
                     .deleteCookies("JSESSIONID")
+                    .deleteCookies("tcms-chosen-role")
                     .invalidateHttpSession(true)
                     .and()
                 .rememberMe()
