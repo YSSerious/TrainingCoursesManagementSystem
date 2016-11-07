@@ -1,4 +1,4 @@
-.form-wrapper {
+.login-form-wrapper {
     margin-top: 70px;
 }
 
@@ -70,4 +70,9 @@
     color: #ffffff;
     font-size: 14px;
 
+}
+
+/*for 403.jsp*/
+.error-forbidden-box{
+    text-align: center;
 }

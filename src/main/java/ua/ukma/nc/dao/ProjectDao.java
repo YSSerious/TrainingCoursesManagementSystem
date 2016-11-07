@@ -19,6 +19,10 @@ public interface ProjectDao {
 	List<Project> getAll();
 
 	List<Project> query(String query);
+	
+	List<Project> getStudentProjects(Long userId);
+	
+	List<Project> getMentorProjects(Long userId);
 
 	Integer count(String query);
 

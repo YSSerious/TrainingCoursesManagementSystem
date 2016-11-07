@@ -40,7 +40,7 @@ public class SecurityUserDetailService implements UserDetailsService {
         String chosenRole = request.getParameter("chosenRole");
         if(chosenRole==null)
             for(Cookie cookie : request.getCookies())
-                if(cookie.getName().equals("chosenRole"))
+                if(cookie.getName().equals("tcms-chosen-role"))
                     chosenRole = cookie.getValue();
         if(chosenRole!=null){
             for(Role role : user.getRoles())

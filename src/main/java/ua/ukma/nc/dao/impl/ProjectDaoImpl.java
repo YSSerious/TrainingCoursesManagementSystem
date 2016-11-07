@@ -43,10 +43,14 @@ public class ProjectDaoImpl implements ProjectDao {
 		}
 	}
 
+	private static final String GET_MENTOR_PROJECTS = "SELECT * FROM tcms.project WHERE id IN (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?)) AND id NOT IN (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?))";
+	
+	private static final String GET_STUDENT_PROJECTS = "SELECT * FROM tcms.project WHERE id IN (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?))";
+
 	private static final String GET_ALL = "SELECT id, name, description, start, finish FROM tcms.project";
 
 	private static final String GET_BY_ID = "SELECT id, name, description, start, finish FROM tcms.project WHERE id = ?";
-	
+
 	private static final String GET_BY_NAME = "SELECT id, name, description, start, finish FROM tcms.project WHERE name=trim(?)";
 
 	private static final String DELETE_PROJECT = "DELETE FROM tcms.project WHERE id = ?";
@@ -60,14 +64,13 @@ public class ProjectDaoImpl implements ProjectDao {
 		log.info("Getting project with id = {}", id);
 		return jdbcTemplate.queryForObject(GET_BY_ID, new ProjectMapper(), id);
 	}
-	
+
 	@Override
 	public Project getByName(String name) {
 		log.info("Getting project with name = {}", name);
-		List<Project> resultSet = jdbcTemplate.query(GET_BY_NAME, new Object[] {name}, new ProjectMapper());
+		List<Project> resultSet = jdbcTemplate.query(GET_BY_NAME, new Object[] { name }, new ProjectMapper());
 		log.info("resultSet: " + resultSet);
-		if (resultSet.isEmpty())
-		{
+		if (resultSet.isEmpty()) {
 			return null;
 		}
 		return resultSet.get(0);
@@ -109,5 +112,15 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Integer count(String query) {
 		log.info("Getting query projects");
 		return jdbcTemplate.queryForObject(query, new IntegerMapper());
+	}
+
+	@Override
+	public List<Project> getStudentProjects(Long userId) {
+		return jdbcTemplate.query(GET_STUDENT_PROJECTS, new ProjectMapper(), userId);
+	}
+	
+	@Override
+	public List<Project> getMentorProjects(Long userId) {
+		return jdbcTemplate.query(GET_MENTOR_PROJECTS, new ProjectMapper(), userId, userId);
 	}
 }
