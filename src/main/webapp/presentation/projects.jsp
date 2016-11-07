@@ -1,19 +1,21 @@
 <%@include file="header.jsp"%>
-<div class="col-sm-11 col-sm-offset-1 top-info">
+<div class="col-sm-11 col-sm-offset-1">
 	<div class="col-sm-11">
-            <c:if test="${not empty msg}">
-                <div class="row">
-                    <div class="col-sm-6 col-sm-offset-3 alert alert-success fade in">
-                        <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        ${msg}
+            <div class="top-info">
+                <c:if test="${not empty msg}">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 alert alert-success fade in">
+                            <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            ${msg}
+                        </div>
                     </div>
+                </c:if>
+                <div class="row">
+                    <h2 class="col-sm-3">Projects</h2>
+                    <sec:authorize access="hasRole('ADMIN')">
+                        <a href="/projects/create-project" class="btn btn-primary pull-right">Create project</a>
+                    </sec:authorize>
                 </div>
-            </c:if>
-            <div class="row">
-            <h2 class="col-sm-3">Projects</h2>
-		<sec:authorize access="hasRole('ADMIN')">
-                    <a href="/projects/create-project" class="btn btn-primary pull-right">Create project</a>
-		</sec:authorize>
             </div>
 		<hr />
 		<div class="row">
