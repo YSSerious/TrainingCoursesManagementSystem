@@ -68,4 +68,9 @@ public class ProjectServiceImpl implements ProjectService {
 
 		return maxPage;
 	}
+
+	@Override
+	public List<Project> getStudentProjects(Long userId) {
+		return projectDao.getStudentProjects(userId);
+	}
 }

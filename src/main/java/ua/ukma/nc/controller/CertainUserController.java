@@ -12,25 +12,15 @@ import org.springframework.ui.Model;
 
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.UserService;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.dto.StudentProfile;
-import ua.ukma.nc.entity.Category;
+import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.Role;
-import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.MeetingResultService;
+import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.service.RoleService;
-import ua.ukma.nc.service.UserService;
 
 
 @Controller 
@@ -44,6 +34,9 @@ public class CertainUserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ProjectService projectService;
 	
 	@RequestMapping(value = "/certainUser", method = RequestMethod.GET)
 	public String getCertainUser(Model model,Principal principal){
@@ -64,8 +57,13 @@ public class CertainUserController {
 	
 	@RequestMapping("/ajaxstudentprofile")
 	@ResponseBody
-	public StudentProfile ajaxCategories(@RequestParam("student") Long studentId, @RequestParam("project") Long projectId) {
+	public StudentProfile studentProfile(@RequestParam("student") Long studentId, @RequestParam("project") Long projectId) {
 		return meetingResultService.generateStudentProfile(studentId, projectId);
 	}
-	
+
+	@RequestMapping("/ajaxstudentprojects")
+	@ResponseBody
+	public List<Project> studentProjects(@RequestParam("user") Long userId) {
+		return projectService.getStudentProjects(userId);
+	}
 }
