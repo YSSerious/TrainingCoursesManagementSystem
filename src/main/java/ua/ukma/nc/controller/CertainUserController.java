@@ -66,4 +66,10 @@ public class CertainUserController {
 	public List<Project> studentProjects(@RequestParam("user") Long userId) {
 		return projectService.getStudentProjects(userId);
 	}
+	
+	@RequestMapping("/ajaxmentorprojects")
+	@ResponseBody
+	public List<Project> mentorProjects(@RequestParam("user") Long userId) {
+		return projectService.getMentorProjects(userId);
+	}
 }

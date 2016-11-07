@@ -73,4 +73,9 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<Project> getStudentProjects(Long userId) {
 		return projectDao.getStudentProjects(userId);
 	}
+	
+	@Override
+	public List<Project> getMentorProjects(Long userId) {
+		return projectDao.getMentorProjects(userId);
+	}
 }

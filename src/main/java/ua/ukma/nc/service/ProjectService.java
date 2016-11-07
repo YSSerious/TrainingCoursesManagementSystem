@@ -26,4 +26,6 @@ public interface ProjectService {
 	int createProject(Project project);
 	
 	List<Project> getStudentProjects(Long userId);
+	
+	List<Project> getMentorProjects(Long userId);
 }

@@ -1,7 +1,11 @@
 <%@include file="header.jsp"%>
 <div class="col-sm-11 col-sm-offset-1">
 	<div class="col-sm-11">
-		<h2>Projects</h2>
+		<h2>Projects
+		<sec:authorize access="hasRole('ADMIN')">
+            <button type="button" class="btn btn-primary pull-right">Create project</button>
+		</sec:authorize>
+		</h2>
 		<hr />
 		<div class="row">
 			<div class="col-md-9">
@@ -110,7 +114,7 @@
 						<div class="col-md-12 text-center">
 							Active
 							<form:checkbox path="statuses" value="active" />
-							Ended
+							Finished
 							<form:checkbox path="statuses" value="completed" />
 							Upcoming
 							<form:checkbox path="statuses" value="upcoming" />
@@ -123,7 +127,7 @@
 
 							<div class="show-select">
 								<button type="button" style="min-width: 100%;"
-									class="btn btn-primary">ENABLE CRITERION SEARCH</button>
+									class="btn btn-default">ENABLE CRITERION SEARCH</button>
 							</div>
 						</div>
 
@@ -136,7 +140,7 @@
 					<br/>
 					<div class="row">
 						<div class="col-md-12">
-							<input type=submit class="form-control" />
+							<input type=submit class="form-control btn btn-primary" />
 						</div>
 					</div>
 				</form:form>
@@ -179,6 +183,7 @@
 		</c:forEach>
 
 		if (jsCriteria.length > 0) {
+			$(".criteria-select").hide();
 			$.get("/ajaxcategories", function(data, status) {
 				jQuery.each(data, function(i, category) {
 					select += '<optgroup label="' + category.name + '">\n';
@@ -192,6 +197,7 @@
 				$(".criteria-select").append(select);
 				$(".criteria-select").select2();
 				$('.show-select').hide();
+				$(".criteria-select").show();
 				$(".criteria-select").val(jsCriteria).trigger("change");
 			});
 
