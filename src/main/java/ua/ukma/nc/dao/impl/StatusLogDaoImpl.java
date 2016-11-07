@@ -45,6 +45,8 @@ public class StatusLogDaoImpl implements StatusLogDao{
             return statusLog;
         }
     }
+    
+    private static final String GET_BY_STUDENT_PROJECT = "SELECT id, id_old_status, id_new_status, commentary, id_student, id_employee, date, id_group FROM tcms.status_log WHERE id_student = ? AND id_group IN (SELECT id FROM tcms.group WHERE id_project = ?)";
 
     private static final String GET_ALL = "SELECT id, id_old_status, id_new_status, commentary, id_student, id_employee, date, id_group FROM tcms.status_log";
 
@@ -52,7 +54,7 @@ public class StatusLogDaoImpl implements StatusLogDao{
 
     private static final String DELETE_STATUS_LOG = "DELETE FROM tcms.status_log WHERE id = ?";
 
-    private static final String CREATE_STATUS_LOG = "INSERT INTO tcms.status_log (id_old_status, id_new_status, commentary, id_student, id_employee, date, id_group) VALUES (?,?,?,?,?,?,?,?)";
+    private static final String CREATE_STATUS_LOG = "INSERT INTO tcms.status_log (id_old_status, id_new_status, commentary, id_student, id_employee, date, id_group) VALUES (?,?,?,?,?,?,?)";
 
     private static final String UPDATE_STATUS_LOG = "UPDATE tcms.status_log SET id_old_status = ?, id_new_status = ?, commentary = ?, id_student = ?, id_employee = ?, date = ?, id_group = ? WHERE id = ?";
 
@@ -62,6 +64,11 @@ public class StatusLogDaoImpl implements StatusLogDao{
         return jdbcTemplate.queryForObject(GET_BY_ID, new StatusLogMapper(), id);
     }
 
+    @Override
+    public List<StatusLog> getByProjectStudent(Long projectId, Long studentId) {
+    	return jdbcTemplate.query(GET_BY_STUDENT_PROJECT, new StatusLogMapper(), studentId, projectId);
+    }
+    
     @Override
     public int deleteStatusLog(StatusLog statusLog) {
         log.info("Deleting status log with id = {}", statusLog.getId());

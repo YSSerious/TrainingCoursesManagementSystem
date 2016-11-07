@@ -65,3 +65,9 @@
 .login-form button:hover {
     color: #347bb7;
 }
+
+.login-success,.login-error{
+    color: #ffffff;
+    font-size: 14px;
+
+}

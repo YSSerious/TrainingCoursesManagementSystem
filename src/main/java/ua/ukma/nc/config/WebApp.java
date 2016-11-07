@@ -8,8 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -79,6 +81,11 @@ public class WebApp extends WebMvcConfigurerAdapter {
     public PasswordEncoder passwordEncoder(){
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder;
+    }
+
+    @Bean
+    public RequestContextListener requestContextListener(){
+        return new RequestContextListener();
     }
 
 }

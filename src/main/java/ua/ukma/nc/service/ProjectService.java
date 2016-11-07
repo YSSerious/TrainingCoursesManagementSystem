@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface ProjectService {
 	Project getById(Long id);
+	
+	Project getByName(String name);
 
 	int deleteProject(Project project);
 

@@ -16,6 +16,14 @@ public class CategoryImpl implements Category {
 	private String description;
 	private List<Criterion> criteria;
 
+	public CategoryImpl() {
+	}
+
+	public CategoryImpl(String name, String description) {
+		this.name = name;
+		this.description = description;
+	}
+
 	public void setCriteria(List<Criterion> criteria) {
 		this.criteria = criteria;
 	}

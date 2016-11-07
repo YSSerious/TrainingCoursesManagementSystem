@@ -1,5 +1,7 @@
 package ua.ukma.nc.service;
 
+import ua.ukma.nc.entity.Role;
+import ua.ukma.nc.entity.Status;
 import ua.ukma.nc.entity.User;
 
 import java.util.List;
@@ -19,7 +21,11 @@ public interface UserService {
 
     List<User> getAll();
 
-    int createUser(User user);
+    void createUser(User user, List<Role> roles);
 
     boolean isExist(User user);
+
+    int addRole(User user, Role role);
+
+    int setStatus(User user, Status status);
 }

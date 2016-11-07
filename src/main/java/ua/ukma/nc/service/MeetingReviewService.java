@@ -17,4 +17,6 @@ public interface MeetingReviewService {
     List<MeetingReview> getAll();
 
     int createMeetingReview(MeetingReview meetingReview);
+    
+	List<MeetingReview> getByProjectStudent(Long projectId, Long studentId);
 }

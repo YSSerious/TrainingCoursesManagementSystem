@@ -12,7 +12,6 @@
     <properties>
         <java.version>1.8</java.version>
         <postgres.version>9.2-1003-jdbc4</postgres.version>
-        <spring.mvc>4.1.6.RELEASE</spring.mvc>
         <spring.securiry>4.0.1.RELEASE</spring.securiry>
         <javax.servlet>3.0.1</javax.servlet>
     </properties>
@@ -30,8 +29,9 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${spring.mvc}</version>
+            <version>4.3.3.RELEASE</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
@@ -55,13 +55,25 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <version>4.1.6.RELEASE</version>
+            <version>4.3.3.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>4.2.5.RELEASE</version>
+            <version>4.3.3.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.3.3.RELEASE</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.securiry}</version>
+        </dependency>
+
         <!-- End SPRING -->
 
         <!--EE-->
@@ -111,7 +123,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
         </dependency>
         <!-- End JUNIT -->
 

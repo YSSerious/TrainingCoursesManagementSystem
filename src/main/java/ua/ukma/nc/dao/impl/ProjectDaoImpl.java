@@ -46,6 +46,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String GET_ALL = "SELECT id, name, description, start, finish FROM tcms.project";
 
 	private static final String GET_BY_ID = "SELECT id, name, description, start, finish FROM tcms.project WHERE id = ?";
+	
+	private static final String GET_BY_NAME = "SELECT id, name, description, start, finish FROM tcms.project WHERE name=trim(?)";
 
 	private static final String DELETE_PROJECT = "DELETE FROM tcms.project WHERE id = ?";
 
@@ -57,6 +59,18 @@ public class ProjectDaoImpl implements ProjectDao {
 	public Project getById(Long id) {
 		log.info("Getting project with id = {}", id);
 		return jdbcTemplate.queryForObject(GET_BY_ID, new ProjectMapper(), id);
+	}
+	
+	@Override
+	public Project getByName(String name) {
+		log.info("Getting project with name = {}", name);
+		List<Project> resultSet = jdbcTemplate.query(GET_BY_NAME, new Object[] {name}, new ProjectMapper());
+		log.info("resultSet: " + resultSet);
+		if (resultSet.isEmpty())
+		{
+			return null;
+		}
+		return resultSet.get(0);
 	}
 
 	@Override

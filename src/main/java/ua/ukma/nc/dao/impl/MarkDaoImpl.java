@@ -36,7 +36,7 @@ public class MarkDaoImpl implements MarkDao{
 
     private static final String GET_ALL = "SELECT value, description FROM tcms.mark";
 
-    private static final String GET_BY_VALUE = "SELECT value, description FROM tcms.mark WHERE id = ?";
+    private static final String GET_BY_VALUE = "SELECT value, description FROM tcms.mark WHERE value = ?";
 
     private static final String DELETE_MARK = "DELETE FROM tcms.mark WHERE value = ?";
 

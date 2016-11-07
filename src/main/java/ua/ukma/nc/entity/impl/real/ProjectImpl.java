@@ -16,6 +16,16 @@ public class ProjectImpl implements Project {
 	private Date startDate;
 	private Date finishDate;
 
+	public ProjectImpl() {
+	}
+
+	public ProjectImpl(String name, String description, Date startDate, Date finishDate) {
+		this.name = name;
+		this.description = description;
+		this.startDate = startDate;
+		this.finishDate = finishDate;
+	}
+
 	public Long getId() {
 		return id;
 	}

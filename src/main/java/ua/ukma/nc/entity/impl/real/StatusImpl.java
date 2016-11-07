@@ -12,6 +12,14 @@ public class StatusImpl implements Status{
     private String title;
     private String description;
 
+    public StatusImpl() {
+    }
+
+    public StatusImpl(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }

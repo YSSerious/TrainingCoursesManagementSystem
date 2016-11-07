@@ -11,6 +11,13 @@ public class ApplicationForm implements Serializable{
     private User user;
     private String photoScope;
 
+    public ApplicationForm() {
+    }
+
+    public ApplicationForm(User user, String photoScope) {
+        this.user = user;
+        this.photoScope = photoScope;
+    }
 
     public User getUser() {
         return user;

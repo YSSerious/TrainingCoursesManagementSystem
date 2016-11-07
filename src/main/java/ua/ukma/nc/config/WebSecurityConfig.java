@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ua.ukma.nc.controller.auth.SecurityUserDetailService;
 
@@ -38,6 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .authorizeRequests()
                     .antMatchers("/", "/home").permitAll()
+                    .antMatchers("/cookie").hasAnyRole("ADMIN", "MENTOR", "HR", "STUDENT")
                     .antMatchers("/projects").hasAnyRole("ADMIN", "MENTOR", "HR")
                     .antMatchers("/getuser").hasRole("ADMIN")     //for testing
                     .and()
@@ -45,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .usernameParameter("username")
                     .passwordParameter("password")
-                    .defaultSuccessUrl("/", false)
+                    .defaultSuccessUrl("/cookie")
                     .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -64,17 +66,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();
     }
-
-    //TO BE DELETED UNTIL RELEASE!!!!
-    //hardcode will exist while developing only
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        auth
-                .inMemoryAuthentication()
-                    .withUser("user").password("password").roles("STUDENT");
-        auth.inMemoryAuthentication()
-                .withUser("admin").password("admin").roles("ADMIN");
-        auth.inMemoryAuthentication()
-                .withUser("mentor").password("mentor").roles("MENTOR");
-    }
+    
 }

@@ -17,4 +17,6 @@ public interface MeetingReviewDao {
     List<MeetingReview> getAll();
 
     int createMeetingReview(MeetingReview meetingReview);
+
+	List<MeetingReview> getByProjectStudent(Long projectId, Long studentId);
 }

@@ -39,6 +39,8 @@ public class StatusDaoImpl implements StatusDao{
 
     private static final String GET_BY_ID = "SELECT id, name, description FROM tcms.status WHERE id = ?";
 
+    private static final String GET_BY_TITLE = "SELECT id, name, description FROM tcms.status WHERE name = ?";
+
     private static final String DELETE_STATUS = "DELETE FROM tcms.status WHERE id = ?";
 
     private static final String CREATE_STATUS = "INSERT INTO tcms.status (name, description) VALUES (?,?)";
@@ -49,6 +51,11 @@ public class StatusDaoImpl implements StatusDao{
     public Status getById(Long id) {
         log.info("Getting status with id = {}", id);
         return jdbcTemplate.queryForObject(GET_BY_ID, new StatusMapper(), id);
+    }
+
+    @Override
+    public Status getByTitle(String title) {
+        return jdbcTemplate.queryForObject(GET_BY_TITLE, new StatusMapper(), title);
     }
 
     @Override

@@ -41,4 +41,9 @@ public class MeetingReviewServiceImpl implements MeetingReviewService{
     public int createMeetingReview(MeetingReview meetingReview) {
         return meetingReviewDao.createMeetingReview(meetingReview);
     }
+
+	@Override
+	public List<MeetingReview> getByProjectStudent(Long projectId, Long studentId) {
+		return meetingReviewDao.getByProjectStudent(projectId, studentId);
+	}
 }

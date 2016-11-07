@@ -11,6 +11,14 @@ public class MarkImpl implements Mark {
     private int value;
     private String description;
 
+    public MarkImpl() {
+    }
+
+    public MarkImpl(int value, String description) {
+        this.value = value;
+        this.description = description;
+    }
+
     public int getValue() {
         return value;
     }

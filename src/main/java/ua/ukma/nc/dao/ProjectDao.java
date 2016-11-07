@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface ProjectDao {
 	Project getById(Long id);
+	
+	Project getByName(String name);
 
 	int deleteProject(Project project);
 

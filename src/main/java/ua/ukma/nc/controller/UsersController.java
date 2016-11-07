@@ -18,43 +18,40 @@ import ua.ukma.nc.service.RoleService;
 import ua.ukma.nc.service.UserService;
 
 /**
- * @author Oleh Khomandiak on 4 лист. 2016 р.
- *
+ * @author Oleh Khomandiak on 4 пїЅпїЅпїЅпїЅ. 2016 пїЅ.
  */
 @Controller
 public class UsersController {
 
-	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private RoleService roleService;
-	
-	//private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
-	
-	@RequestMapping(value = "/allUsers", method = RequestMethod.GET)
-	public String getAllUsers(Model model, Principal principal){
-	
-		
-		List<User> users = userService.getAll();
-		for(User user : users){
-			if(user.getRoles().size()>0){
-			List<Role> roles = new ArrayList<Role>();
-			roles.add(roleService.getById(user.getRoles().get(0).getId()));
-			if(user.getRoles().size()>1)
-					roles.add(roleService.getById(user.getRoles().get(1).getId()));
-			if(user.getRoles().size()>2)
-				roles.add(roleService.getById(user.getRoles().get(2).getId()));
-			user.setRoles(roles);}
-		}
-		//System.out.println(users.get(0).getRoles().get(0).getTitle());
-		model.addAttribute("users", users);
-		
-		
-		
-		
+    @Autowired
+    private UserService userService;
 
-		return "allUsers";
-	}
-	
+    @Autowired
+    private RoleService roleService;
+
+    //private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
+
+    @RequestMapping(value = "/allUsers", method = RequestMethod.GET)
+    public String getAllUsers(Model model, Principal principal) {
+
+
+        List<User> users = userService.getAll();
+        for (User user : users) {
+            if (user.getRoles().size() > 0) {
+                List<Role> roles = new ArrayList<Role>();
+                roles.add(roleService.getById(user.getRoles().get(0).getId()));
+                if (user.getRoles().size() > 1)
+                    roles.add(roleService.getById(user.getRoles().get(1).getId()));
+                if (user.getRoles().size() > 2)
+                    roles.add(roleService.getById(user.getRoles().get(2).getId()));
+                user.setRoles(roles);
+            }
+        }
+        //System.out.println(users.get(0).getRoles().get(0).getTitle());
+        model.addAttribute("users", users);
+
+
+        return "allUsers";
+    }
+
 }
