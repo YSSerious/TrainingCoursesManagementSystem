@@ -1,9 +1,12 @@
 package ua.ukma.nc.controller;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -65,6 +68,7 @@ public class ProjectsController {
 	@InitBinder("projectForm")
 	public void initBinder(WebDataBinder binder) {
 		binder.setValidator(projectFromValidator);
+                binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
 	}
 	
 	@RequestMapping(value = "/projects/create-project", method = RequestMethod.GET)
