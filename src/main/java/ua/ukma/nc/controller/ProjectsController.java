@@ -19,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ua.ukma.nc.entity.Category;
 import ua.ukma.nc.entity.Project;
@@ -68,7 +69,9 @@ public class ProjectsController {
 	@InitBinder("projectForm")
 	public void initBinder(WebDataBinder binder) {
 		binder.setValidator(projectFromValidator);
-                binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                sdf.setLenient(true);
+                binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
 	}
 	
 	@RequestMapping(value = "/projects/create-project", method = RequestMethod.GET)
@@ -79,14 +82,15 @@ public class ProjectsController {
 	}
 	
 	@RequestMapping(value = "/projects/create-project", method = RequestMethod.POST)
-	public String createProject(@ModelAttribute("projectForm") @Validated ProjectImpl project, BindingResult result) {
-		if (!result.hasErrors()){
-			projectService.createProject(project);
-			return "redirect:/projects";
-		} else {
-			log.info("Errors EXIST");
-			return "create-project";
-		}
+	public String createProject(@ModelAttribute("projectForm") @Validated ProjectImpl project,
+            BindingResult result, final RedirectAttributes redirectAttributes) {
+            if (!result.hasErrors()) {
+                projectService.createProject(project);
+                redirectAttributes.addFlashAttribute("msg", "Project added successfully!");
+                return "redirect:/projects";
+            } else {
+                return "create-project";
+            }
 	}
 	
 	@RequestMapping(value = "/projects/create-project/is-name-free")

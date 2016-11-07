@@ -1,13 +1,10 @@
 package ua.ukma.nc.validator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import ua.ukma.nc.dao.impl.MeetingReviewDaoImpl;
 
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
@@ -15,8 +12,6 @@ import ua.ukma.nc.service.ProjectService;
 
 @Component
 public class ProjectFormValidator implements Validator {
-
-    private static Logger log = LoggerFactory.getLogger(MeetingReviewDaoImpl.class.getName());
     
     @Autowired
     ProjectService projectService;
@@ -28,8 +23,6 @@ public class ProjectFormValidator implements Validator {
 
     @Override
     public void validate(Object arg0, Errors errors) {
-        log.info("validate before");
-        System.out.println("validate before");
         Project project = (Project) arg0;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty.projectForm.name");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "startDate", "NotEmpty.projectForm.startDate");
@@ -46,6 +39,9 @@ public class ProjectFormValidator implements Validator {
         }
         if ((project.getStartDate() != null) && (project.getFinishDate() != null) && (project.getFinishDate().compareTo(project.getStartDate()) < 0)) {
             errors.rejectValue("finishDate", "NotValid.projectForm.finishDate");
+        }
+        if ((project.getStartDate() == null)) {
+            errors.rejectValue("startDate", "Null.projectForm.startDate");
         }
     }
 

@@ -18,8 +18,18 @@ body > .container > .panel{
 }
 
 body > .container > .panel > .panel-body div:first-child {
-    position: relative;
-    z-index: 1;
+/*    position: relative;
+    z-index: 1;*/
+}
+
+.top-info .row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.top-info h1,
+.top-info h2 {
+    margin: 0;
 }
 
 @media (min-width: 1200px) {

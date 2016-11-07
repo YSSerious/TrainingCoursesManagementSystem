@@ -4,7 +4,7 @@
     <div class="col-sm-10 col-sm-offset-1 form-wrapper">
         <h2>Create new project</h2>
         <form:form class="default-form col-sm-12" id='create-project-form' method="post"
-                   modelAttribute="projectForm" action="${projectsUrl}">
+                   modelAttribute="projectForm" action="${projectsUrl}" novalidate="">
             <div class="form-group col-sm-12 required">
                 <div class="col-sm-12">
                     <form:label for="project-name" path="name">Name</form:label>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-sm-6">
                     <form:input type="date" class="form-control" id="start-date"
-                                path="startDate" />
+                                path="startDate"/>
                 </div>
             </div>
             <div class="form-group col-sm-12 required">
