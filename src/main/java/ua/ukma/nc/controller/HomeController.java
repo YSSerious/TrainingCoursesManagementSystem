@@ -19,28 +19,28 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * Created by Алексей on 15.10.2016.
+ * Created by Ð�Ð»ÐµÐºÑ�ÐµÐ¹ on 15.10.2016.
  */
 @Controller
 public class HomeController {
 
-    private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
+	private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
 
-    @RequestMapping("/")
+	@RequestMapping("/")
 
-    public ModelAndView getUser(Principal principal) {
-        ModelAndView model = new ModelAndView();
-        log.info("Sending........");
-        model.addObject("user", userService.getById(1L).getStudentStatus().getStatus().getTitle());
-        if(principal!=null)
-            model.addObject("username", principal.getName());
-        model.setViewName("home");
-        return model;
-    }
+	public ModelAndView getUser(Principal principal) {
+		ModelAndView model = new ModelAndView();
+		log.info("Sending........");
+		model.addObject("user", userService.getById(1L).getStudentStatus().getStatus().getTitle());
+		if(principal!=null)
+			model.addObject("username", principal.getName());
+		model.setViewName("home");
+		return model;
+	}
 
 
 }
