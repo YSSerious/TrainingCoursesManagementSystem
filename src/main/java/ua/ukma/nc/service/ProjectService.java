@@ -24,4 +24,8 @@ public interface ProjectService {
 	Integer getMaxPage(ProjectSearch projectSearch);
 
 	int createProject(Project project);
+	
+	List<Project> getStudentProjects(Long userId);
+	
+	List<Project> getMentorProjects(Long userId);
 }
