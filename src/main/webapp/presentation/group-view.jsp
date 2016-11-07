@@ -32,8 +32,8 @@ ${group-name}
 	<div
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 		<!--Data from DB to be inserted here -->
-		<c:forEach items="${users}" var="value">
-			${value.firstName}
+		<c:forEach items="${students}" var="student">
+			${student.firstName}
 			<br/> 
 		</c:forEach>
 	</div>
@@ -48,7 +48,11 @@ ${group-name}
 	<div
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 		<!--Data from DB to be inserted here -->
-		test value
+		<c:forEach items="${mentors}" var="mentor">
+			${mentor.firstName}
+			<br/> 
+		</c:forEach>
+		
 	</div>
 	<br />
 </div>

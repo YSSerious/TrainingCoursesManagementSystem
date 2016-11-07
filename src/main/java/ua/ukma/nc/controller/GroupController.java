@@ -1,6 +1,9 @@
 
 package ua.ukma.nc.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +15,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Project;
+import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.entity.impl.real.GroupImpl;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.service.GroupService;
+import ua.ukma.nc.service.RoleService;
 
 /**
  * Created by Nastasia on 05.11.2016.
@@ -26,7 +31,8 @@ public class GroupController {
 
     @Autowired
     private GroupService groupService;
-
+    @Autowired
+    private RoleService roleService;
     private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
     
     @RequestMapping(value = "add", method = RequestMethod.POST)
@@ -50,18 +56,34 @@ public class GroupController {
 
 		ModelAndView model = new ModelAndView();
 		Group group = groupService.getById(id);
-		
-	//	System.out.println("group name : "+group.getName()+" project: "+group.getProject().getName());
+		List<User> users = group.getUsers();
+		List<User> students = new ArrayList<User>();
+		List<User> mentors = new ArrayList<User>();
+		for(User us: users){
+			boolean isMentor=false;
+			List<Role> roles = us.getRoles();
+			for(Role r : roles){
+				System.out.println(r.getTitle());
+				if(r.getTitle().equals("ROLE_MENTOR")){
+					mentors.add(us);
+					isMentor=true;
+				}
+				
+			}
+			if(!isMentor) students.add(us);
+		}
 		model.addObject("group-name",group.getName());
 		model.addObject("group-project",group.getProject().getName());
-		model.addObject("users",group.getUsers());
+		model.addObject("students",students);
+		model.addObject("mentors",mentors);
+	//	model.addObject("users",users);
 		model.setViewName("group-view");
-	//	System.out.println(group.getUsers().size());
-		for(User us : group.getUsers()){
-			log.info("users name : "+ us.getFirstName());
+	
+		for(User user : group.getUsers()){
+			log.info("users name : "+ user.getFirstName() + " users' role"+ user.getRoles());
 		}
 		
-		log.info("Getting group with name : "+group.getName()+"and project: "+group.getProject().getName());
+		log.info("Getting group with name : "+group.getName()+" and project: "+group.getProject().getName());
 		log.info("Group information sent");
 		return model;
 	}
