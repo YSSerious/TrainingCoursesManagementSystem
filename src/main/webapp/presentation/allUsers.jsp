@@ -20,7 +20,7 @@
 			</thead>
 			<c:forEach items="${users}" var="user">
 				<tr>
-					<td><font size="3"><b><a href ="users/${user.id}">${user.firstName}</a></b></font></td>
+					<td><font size="3"><b><a href ="certainUser/${user.id}">${user.firstName}</a></b></font></td>
 					<td><font size="3"><b>${user.lastName}</b></font></td>
 					<c:if test="${user.roles.size()==1}">
 						<td><font size="3"><b>${user.roles.get(0).getTitle()}</b></font></td>

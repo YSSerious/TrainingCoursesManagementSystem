@@ -33,7 +33,7 @@ Active: ${user.active} <br/>
     	    	s+= '</div>';
 
     	    	if(jQuery.isEmptyObject(data))
-    	    		s= '<br/>Passive student';
+    	    		s= '<br/>No projects (student)';
     	    	
     	    	$('.student-projects').html(s);
     	    	
@@ -96,7 +96,7 @@ Active: ${user.active} <br/>
     	    	
     	    	s+= '</div>';
     	    	if(jQuery.isEmptyObject(data))
-    	    		s= '<br/>Passive mentor';
+    	    		s= '<br/>No projects (mentor)';
     	    	
     	    		
     	    	$('.mentor-projects').html(s);
