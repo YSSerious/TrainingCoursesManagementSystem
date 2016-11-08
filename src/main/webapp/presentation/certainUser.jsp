@@ -1,7 +1,7 @@
 
 <%@include file="header.jsp"%>
 <div style="width:30%;height:100%;margin-left:30%;">
-     <img style="height:250px;width:100%;" src='<c:url value="/presentation/resources/imgs/profile_picture.png" />'>  
+     <img style="height:70%;width:70%;" src='<c:url value="/presentation/resources/imgs/profile_picture.png" />'>  
  
  <br/> 
  

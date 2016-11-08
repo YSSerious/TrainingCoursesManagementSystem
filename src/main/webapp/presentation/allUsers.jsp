@@ -20,7 +20,7 @@
 			</thead>
 			<c:forEach items="${users}" var="user">
 				<tr>
-					<td><font size="3"><b>${user.firstName}</b></font></td>
+					<td><font size="3"><b><a href ="users/${user.id}">${user.firstName}</a></b></font></td>
 					<td><font size="3"><b>${user.lastName}</b></font></td>
 					<c:if test="${user.roles.size()==1}">
 						<td><font size="3"><b>${user.roles.get(0).getTitle()}</b></font></td>
@@ -37,7 +37,7 @@
 
 	<%--For displaying Previous link except for the 1st page --%>
     <c:if test="${currentPage != 1}">
-        <td><a href="employee.do?page=${currentPage - 1}">Previous</a></td>
+        <td><a href="allUsers?page=${currentPage - 1}">Previous</a></td>
     </c:if>
  
     <%--For displaying Page numbers. 
@@ -59,6 +59,6 @@
      
     <%--For displaying Next link --%>
     <c:if test="${currentPage lt noOfPages}">
-        <td><a href="employee.do?page=${currentPage + 1}">Next</a></td>
+        <td><a href="allUsers?page=${currentPage + 1}">Next</a></td>
     </c:if>
 	<%@include file="footer.jsp"%>

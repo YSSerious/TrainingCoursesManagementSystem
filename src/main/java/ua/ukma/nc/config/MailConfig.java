@@ -2,10 +2,13 @@ package ua.ukma.nc.config;
 
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 /**
@@ -14,15 +17,11 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @Configuration
 @Configurable
 @ComponentScan(basePackages = "ua.ukma.nc")
+@PropertySource("classpath:mail.properties")
 public class MailConfig {
 
-	private String host = "smtp.gmail.com";
-
-	private int port = 587;
-
-	private String username = "devcor2015@gmail.com";
-
-	private String password = "devcorMade2016";
+	@Autowired
+	Environment env;
 
 	@Bean
 	public JavaMailSenderImpl javaMailService() {
@@ -33,10 +32,10 @@ public class MailConfig {
 	}
 
 	private void applyProperties(JavaMailSenderImpl sender) {
-		sender.setHost(host);
-		sender.setPort(port);
-		sender.setUsername(username);
-		sender.setPassword(password);
+		sender.setHost(env.getProperty("mail.host"));
+		sender.setPort(Integer.parseInt(env.getProperty("mail.port")));
+		sender.setUsername(env.getProperty("mail.username"));
+		sender.setPassword(env.getProperty("mail.password"));
 		sender.setJavaMailProperties(asProperties());
 	}
 
