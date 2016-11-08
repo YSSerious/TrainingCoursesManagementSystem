@@ -83,6 +83,11 @@ public class CategoryImpl implements Category {
 
 	@Override
 	public String toString() {
-		return "CategoryImpl{" + "id=" + id + ", name='" + name + '\'' + ", description='" + description + '\'' + '}';
+		return "CategoryImpl{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", description='" + description + '\'' +
+				", criteria=" + criteria +
+				'}';
 	}
 }
