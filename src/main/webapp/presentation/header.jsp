@@ -76,16 +76,16 @@
 										Navigate <span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu dropdown-menu-left" role="menu">
-										<li><a href="projects">Projects</a></li>
+										<li><a href="/projects">Projects</a></li>
 										<sec:authorize access="hasRole('ADMIN')">
-											<li><a href="users">Users</a></li>
-											<li><a href="criteria">Criteria</a></li>
+											<li><a href="/allUsers">Users</a></li>
+											<li><a href="/criteria">Criteria</a></li>
 										</sec:authorize>
 										<sec:authorize access="hasAnyRole('MENTOR', 'HR')">
-											<li><a href="students">Students</a></li>
+											<li><a href="/students">Students</a></li>
 										</sec:authorize>
 										<sec:authorize access="hasAnyRole('ADMIN', 'HR')">
-											<li><a href="reports">Reports</a></li>
+											<li><a href="/reports">Reports</a></li>
 										</sec:authorize>
 									</ul>
 								</div>
