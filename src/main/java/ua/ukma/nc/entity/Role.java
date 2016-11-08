@@ -14,8 +14,4 @@ public interface Role extends Serializable{
      String getTitle();
 
      void setTitle(String title);
-
-     List<User> getUsers();
-
-     void setUsers(List<User> users);
 }

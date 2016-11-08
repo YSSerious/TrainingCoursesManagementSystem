@@ -13,7 +13,6 @@ public class RoleImpl implements Role{
     private static final long serialVersionUID = -5795710302084316125L;
     private Long id;
     private String title;
-    private List<User> users;
 
     public RoleImpl() {
     }
@@ -38,13 +37,6 @@ public class RoleImpl implements Role{
         this.title = title;
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -54,8 +46,7 @@ public class RoleImpl implements Role{
         RoleImpl role = (RoleImpl) o;
 
         if (id != null ? !id.equals(role.id) : role.id != null) return false;
-        if (title != null ? !title.equals(role.title) : role.title != null) return false;
-        return users != null ? users.equals(role.users) : role.users == null;
+        return title != null ? title.equals(role.title) : role.title == null;
 
     }
 
@@ -63,7 +54,6 @@ public class RoleImpl implements Role{
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (users != null ? users.hashCode() : 0);
         return result;
     }
 
@@ -72,7 +62,6 @@ public class RoleImpl implements Role{
         return "RoleImpl{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", users=" + users +
                 '}';
     }
 }

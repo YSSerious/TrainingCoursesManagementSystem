@@ -38,7 +38,6 @@ public class CriterionDaoImpl implements CriterionDao{
             criterion.setId(resultSet.getLong("id"));
             criterion.setTitle(resultSet.getString("name"));
             criterion.setCategory(appContext.getBean(CategoryProxy.class, resultSet.getLong("id_category")));
-            //criterion.setProjectList(getProjects(resultSet.getLong("id")));
             return criterion;
         }
     }
@@ -85,15 +84,15 @@ public class CriterionDaoImpl implements CriterionDao{
         return jdbcTemplate.update(CREATE_CRITERION, criterion.getTitle(), criterion.getCategory().getId());
     }
 
-    private List<Project> getProjects(Long criterionID) {
-        log.info("Getting all projects with criterion id = {}", criterionID);
-        return jdbcTemplate.query(GET_PROJECTS_BY_ID, new ProjectCriterionMapper(), criterionID);
-    }
-
-    public class ProjectCriterionMapper implements RowMapper<Project> {
-        public Project mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            Project project = appContext.getBean(ProjectProxy.class, resultSet.getLong("id_project"));
-            return project;
-        }
-    }
+//    private List<Project> getProjects(Long criterionID) {
+//        log.info("Getting all projects with criterion id = {}", criterionID);
+//        return jdbcTemplate.query(GET_PROJECTS_BY_ID, new ProjectCriterionMapper(), criterionID);
+//    }
+//
+//    public class ProjectCriterionMapper implements RowMapper<Project> {
+//        public Project mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+//            Project project = appContext.getBean(ProjectProxy.class, resultSet.getLong("id_project"));
+//            return project;
+//        }
+//    }
 }

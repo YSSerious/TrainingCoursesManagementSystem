@@ -15,7 +15,6 @@ public class CriterionImpl implements Criterion{
     private Long id;
     private String title;
     private Category category;
-    private List<Project> projectList;
 
     public CriterionImpl() {
     }
@@ -48,13 +47,6 @@ public class CriterionImpl implements Criterion{
         this.category = category;
     }
 
-    public List<Project> getProjectList() {
-        return projectList;
-    }
-
-    public void setProjectList(List<Project> projectList) {
-        this.projectList = projectList;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -65,8 +57,7 @@ public class CriterionImpl implements Criterion{
 
         if (id != null ? !id.equals(criterion.id) : criterion.id != null) return false;
         if (title != null ? !title.equals(criterion.title) : criterion.title != null) return false;
-        if (category != null ? !category.equals(criterion.category) : criterion.category != null) return false;
-        return projectList != null ? projectList.equals(criterion.projectList) : criterion.projectList == null;
+        return category != null ? category.equals(criterion.category) : criterion.category == null;
 
     }
 
@@ -75,7 +66,6 @@ public class CriterionImpl implements Criterion{
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
-        result = 31 * result + (projectList != null ? projectList.hashCode() : 0);
         return result;
     }
 
@@ -85,7 +75,6 @@ public class CriterionImpl implements Criterion{
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", category=" + category +
-                ", projectList=" + projectList +
                 '}';
     }
 }

@@ -57,18 +57,6 @@ public class RoleProxy implements Role{
         role.setTitle(title);
     }
 
-    @Override
-    public List<User> getUsers() {
-        downloadRole();
-        return role.getUsers();
-    }
-
-    @Override
-    public void setUsers(List<User> users) {
-        downloadRole();
-        role.setUsers(users);
-    }
-
     private void downloadRole() {
         if (role == null) {
             role = (RoleImpl) roleService.getById(id);

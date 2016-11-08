@@ -36,7 +36,6 @@ public class RoleDaoImpl implements RoleDao {
             Role role = new RoleImpl();
             role.setId(resultSet.getLong("id"));
             role.setTitle(resultSet.getString("role"));
-            //role.setUsers(getUsers(resultSet.getLong("id")));
             return role;
         }
     }
@@ -83,17 +82,17 @@ public class RoleDaoImpl implements RoleDao {
         return jdbcTemplate.update(CREATE_ROLE, role.getTitle());
     }
 
-    private List<User> getUsers(Long roleID) {
-        log.info("Getting all users with role id = {}", roleID);
-        return jdbcTemplate.query(GET_USERS_BY_ID, new RoleUserMapper(), roleID);
-    }
-
-    public class RoleUserMapper implements RowMapper<User> {
-        public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            User user = appContext.getBean(UserProxy.class, resultSet.getLong("id_user"));
-            return user;
-        }
-    }
+//    private List<User> getUsers(Long roleID) {
+//        log.info("Getting all users with role id = {}", roleID);
+//        return jdbcTemplate.query(GET_USERS_BY_ID, new RoleUserMapper(), roleID);
+//    }
+//
+//    public class RoleUserMapper implements RowMapper<User> {
+//        public User mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+//            User user = appContext.getBean(UserProxy.class, resultSet.getLong("id_user"));
+//            return user;
+//        }
+//    }
 
     @Override
     public boolean isExist(Role role) {

@@ -66,18 +66,6 @@ public class CriterionProxy implements Criterion{
         criterion.setCategory(category);
     }
 
-    @Override
-    public List<Project> getProjectList() {
-        downloadCriterion();
-        return criterion.getProjectList();
-    }
-
-    @Override
-    public void setProjectList(List<Project> projectList) {
-        downloadCriterion();
-        criterion.setProjectList(projectList);
-    }
-
     private void downloadCriterion() {
         if (criterion == null) {
             criterion = (CriterionImpl) criterionService.getById(id);

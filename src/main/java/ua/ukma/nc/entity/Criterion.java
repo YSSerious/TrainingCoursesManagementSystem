@@ -18,8 +18,4 @@ public interface Criterion extends Serializable{
      Category getCategory();
 
      void setCategory(Category category);
-
-      List<Project> getProjectList();
-
-      void setProjectList(List<Project> projectList);
 }

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,25 +28,25 @@ public class UsersController {
 
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private Mail mail;
 
     int limit = 10;
-    
-    //private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
+
+    private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
     @RequestMapping(value = "/allUsers", method = RequestMethod.GET)
     public String getAllUsers(Model model, Principal principal) {
 
     	int count = userService.count();
-    	
+
         List<User> users = userService.getSome(limit, 0);
         mail.sendMail("devcor2015@gmail.com", "xoma02@gmail.com", "a", "a");
         model.addAttribute("users", users);
-    	
-       
-    	
+
+
+
         return "allUsers";
     }
 

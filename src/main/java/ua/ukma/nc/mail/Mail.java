@@ -14,8 +14,8 @@ public class Mail {
 
 	@Autowired
 	private JavaMailSenderImpl mailSender;
-	
-		
+
+
 	Mail(JavaMailSenderImpl mailSender) {
 		this.mailSender = mailSender;
 	}
@@ -32,5 +32,5 @@ public class Mail {
 			e.printStackTrace(System.out);
 		}
 	}
-	
+
 }
