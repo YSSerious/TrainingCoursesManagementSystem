@@ -2,10 +2,12 @@ package ua.ukma.nc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ua.ukma.nc.dto.StudentProfile;
+import ua.ukma.nc.dto.UserDto;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.service.ProjectService;
@@ -53,6 +56,15 @@ public class CertainUserController {
 		
 		model.addAttribute("user", user);
 		return "certainUser";
+	}
+	
+	@RequestMapping("/users/{id}")
+	public ModelAndView viewUser(@PathVariable("id") Long id) {
+		ModelAndView model = new ModelAndView();
+		UserDto userDto = new UserDto(userService.getById(id));
+		model.addObject("user", userDto);
+		model.setViewName("user");
+		return model;
 	}
 	
 	@RequestMapping("/ajaxstudentprofile")
