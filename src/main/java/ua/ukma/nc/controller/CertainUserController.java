@@ -41,9 +41,9 @@ public class CertainUserController {
 	@Autowired
 	private ProjectService projectService;
 	
-	@RequestMapping(value = "/certainUser", method = RequestMethod.GET)
-	public String getCertainUser(Model model,Principal principal){
-		User user=userService.getById((long) 1);
+	@RequestMapping(value = "/certainUser/{id}", method = RequestMethod.GET)
+	public String getCertainUser(Model model,Principal principal,@PathVariable("id") Long id){
+		User user=userService.getById(id);
 		model.addAttribute("user", user);
 		return "certainUser";
 	}
