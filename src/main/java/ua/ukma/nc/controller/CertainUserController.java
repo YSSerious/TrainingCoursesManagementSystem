@@ -44,16 +44,6 @@ public class CertainUserController {
 	@RequestMapping(value = "/certainUser", method = RequestMethod.GET)
 	public String getCertainUser(Model model,Principal principal){
 		User user=userService.getById((long) 1);
-		if(user.getRoles().size()>0){
-			List<Role> roles = new ArrayList<Role>();
-			roles.add(roleService.getById(user.getRoles().get(0).getId()));
-			if(user.getRoles().size()>1)
-					roles.add(roleService.getById(user.getRoles().get(1).getId()));
-			if(user.getRoles().size()>2)
-				roles.add(roleService.getById(user.getRoles().get(2).getId()));
-			user.setRoles(roles);}
-	 
-		
 		model.addAttribute("user", user);
 		return "certainUser";
 	}
