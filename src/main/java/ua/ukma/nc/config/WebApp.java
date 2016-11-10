@@ -50,6 +50,7 @@ public class WebApp extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry){
         registry.addViewController("/403").setViewName("403");
+        registry.addViewController("/roles").setViewName("chooseRole");
     }
 
     @Bean

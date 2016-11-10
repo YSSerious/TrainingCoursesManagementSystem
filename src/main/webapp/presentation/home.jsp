@@ -25,5 +25,8 @@ ${user}
 <sec:authorize access="hasRole('ROLE_HR')">
     Logged in as HR
 </sec:authorize>
+<sec:authorize access="hasRole('ROLE_TEMP')">
+    Logged in as TEMP
+</sec:authorize>
 </body>
 </html>

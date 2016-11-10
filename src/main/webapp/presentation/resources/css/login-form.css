@@ -9,7 +9,7 @@
     border: 3px solid #fff;
 }
 
-.login-form h2 {
+.login-form h2{
     margin-bottom: 30px;
     font-weight: bold;
     color: #fff;
@@ -70,6 +70,14 @@
     color: #ffffff;
     font-size: 14px;
 
+}
+
+.role-chooser h3{
+    color: #fff;
+}
+
+.role-chooser{
+    text-align: center;
 }
 
 /*for 403.jsp*/

@@ -63,7 +63,7 @@
                         class="net-logo">
                 </a>
             </div>
-            <sec:authorize access="isAuthenticated()">
+            <sec:authorize access="hasAnyRole('ADMIN', 'MENTOR', 'HR')">
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
