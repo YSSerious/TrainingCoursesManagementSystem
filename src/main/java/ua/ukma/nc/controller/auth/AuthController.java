@@ -1,5 +1,6 @@
 package ua.ukma.nc.controller.auth;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,17 +39,15 @@ public class AuthController {
         User user = userService.getByEmail(principal.getName());
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
         String chosenRole = request.getParameter("chosenRole");
-        if(chosenRole==null)
-            for(Cookie cookie : request.getCookies())
-                if(cookie.getName().equals("tcms-chosen-role"))
-                    chosenRole = cookie.getValue();
         if(chosenRole!=null){
+            System.out.println("Chosen NOT NULL");
             for(Role role : user.getRoles())
                 if(role.getTitle().equals(chosenRole))
                     grantedAuthorityList.add(new SimpleGrantedAuthority(role.getTitle()));
         }
         //if role not chosen or chosen incorrectly
         else {
+            System.out.println("ELSE");
             if(user.getRoles().get(0)!=null)
                 grantedAuthorityList.add(new SimpleGrantedAuthority(user.getRoles().get(0).getTitle()));
         }
@@ -58,9 +57,8 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/cookie")
-    public String setRoleCookie(HttpServletResponse response, Principal principal){
+    public String setRoleCookie(HttpServletResponse response){
         String chosen = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
-        System.out.println(chosen);
         if (chosen != null) {
             Cookie cookie = new Cookie("tcms-chosen-role", chosen);
             cookie.setMaxAge(86400);
@@ -80,5 +78,14 @@ public class AuthController {
             mv.setViewName("redirect:/");
         }
         return mv;
+    }
+
+    @RequestMapping(value = "/roles_def", method = {RequestMethod.GET, RequestMethod.POST})
+    public String rolesHandler(HttpServletRequest request){
+        //check if it's remember-me-token auth or not
+        for(Cookie cookie : request.getCookies())
+            if(cookie.getName().equals("tcms-chosen-role"))
+                return "redirect:/";
+        return "redirect:/roles";
     }
 }

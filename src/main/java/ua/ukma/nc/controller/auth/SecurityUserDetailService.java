@@ -34,7 +34,13 @@ public class SecurityUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userService.getByEmail(email);
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
-        grantedAuthorityList.add(new SimpleGrantedAuthority("ROLE_TEMP"));
-         return new org.springframework.security.core.userdetails.User(email, user.getPassword(), grantedAuthorityList);
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String role = "ROLE_TEMP";
+        for (Cookie cookie : request.getCookies())
+            if (cookie.getName().equals("tcms-chosen-role"))
+                role = cookie.getValue();
+
+        grantedAuthorityList.add(new SimpleGrantedAuthority(role));
+        return new org.springframework.security.core.userdetails.User(email, user.getPassword(), grantedAuthorityList);
     }
 }

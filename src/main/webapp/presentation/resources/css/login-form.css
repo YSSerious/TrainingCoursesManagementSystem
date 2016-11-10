@@ -84,3 +84,6 @@
 .error-forbidden-box{
     text-align: center;
 }
+.error-forbidden-box .btn{
+    margin: 10px;
+}
