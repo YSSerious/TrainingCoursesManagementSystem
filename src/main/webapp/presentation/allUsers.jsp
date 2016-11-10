@@ -13,22 +13,21 @@
 			<thead bgcolor="#8FBC8F">
 
 				<tr>
-					<th>First Name</th>
-					<th>Last Name</th>
+					<th>User</th>
 					<th>User role</th>
 				</tr>
 			</thead>
 			<c:forEach items="${users}" var="user">
 				<tr>
-					<td><font size="3"><b><a href ="certainUser/${user.id}">${user.firstName}</a></b></font></td>
-					<td><font size="3"><b>${user.lastName}</b></font></td>
-					<c:if test="${user.roles.size()==1}">
-						<td><font size="3"><b>${user.roles.get(0).getTitle()}</b></font></td>
-					</c:if>
-					<c:if test="${user.roles.size()==2}">
-						<td><font size="3"><b>${user.roles.get(0).getTitle()}</b><b>,
-									${user.roles.get(1).getTitle()}</b></font></td>
-					</c:if>
+					<td><font size="3"><b>
+					<a href ="certainUser/${user.id}">
+					${user.firstName} ${user.secondName} ${user.lastName}
+					</a></b></font></td>
+					<td><font size="3">
+					<c:forEach items="${user.roles}" var = "role">
+						<b>${role.getTitle()}</b>
+					</c:forEach>
+					</font></td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -36,29 +35,24 @@
 	<br />
 
 	<%--For displaying Previous link except for the 1st page --%>
+	<div class="pagination">
+   
     <c:if test="${currentPage != 1}">
-        <td><a href="allUsers?page=${currentPage - 1}">Previous</a></td>
+   <a class="previous" href="/allUsers/${currentPage - 1}">Previous</a>
     </c:if>
  
     <%--For displaying Page numbers. 
     The when condition does not display a link for the current page--%>
-    <table border="1" cellpadding="5" cellspacing="5">
-        <tr>
+    
             <c:forEach begin="1" end="${noOfPages}" var="i">
-                <c:choose>
-                    <c:when test="${currentPage eq i}">
-                        <td>${i}</td>
-                    </c:when>
-                    <c:otherwise>
-                        <td><a href="allUsers?page=${i}">${i}</a></td>
-                    </c:otherwise>
-                </c:choose>
+                        <a href="/allUsers/${i}">${i}</a>
             </c:forEach>
-        </tr>
-    </table>
-     
+      
+    
     <%--For displaying Next link --%>
     <c:if test="${currentPage lt noOfPages}">
-        <td><a href="allUsers?page=${currentPage + 1}">Next</a></td>
+        <a class="next" href="/allUsers/${currentPage + 1}">Next</a>
     </c:if>
+
+    </div>
 	<%@include file="footer.jsp"%>
