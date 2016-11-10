@@ -3,22 +3,18 @@ package ua.ukma.nc.controller.auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.UserService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -39,7 +35,6 @@ public class SecurityUserDetailService implements UserDetailsService {
         for (Cookie cookie : request.getCookies())
             if (cookie.getName().equals("tcms-chosen-role"))
                 role = cookie.getValue();
-
         grantedAuthorityList.add(new SimpleGrantedAuthority(role));
         return new org.springframework.security.core.userdetails.User(email, user.getPassword(), grantedAuthorityList);
     }

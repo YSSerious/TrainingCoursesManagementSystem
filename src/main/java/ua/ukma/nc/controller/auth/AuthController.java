@@ -1,13 +1,11 @@
 package ua.ukma.nc.controller.auth;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,8 +17,6 @@ import ua.ukma.nc.service.UserService;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,14 +36,12 @@ public class AuthController {
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
         String chosenRole = request.getParameter("chosenRole");
         if(chosenRole!=null){
-            System.out.println("Chosen NOT NULL");
             for(Role role : user.getRoles())
                 if(role.getTitle().equals(chosenRole))
                     grantedAuthorityList.add(new SimpleGrantedAuthority(role.getTitle()));
         }
         //if role not chosen or chosen incorrectly
         else {
-            System.out.println("ELSE");
             if(user.getRoles().get(0)!=null)
                 grantedAuthorityList.add(new SimpleGrantedAuthority(user.getRoles().get(0).getTitle()));
         }

@@ -18,7 +18,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import ua.ukma.nc.controller.auth.SecurityUserDetailService;
 
+import javax.print.attribute.Size2DSyntax;
 import javax.sql.DataSource;
 
 /**
@@ -60,6 +62,10 @@ public class WebApp extends WebMvcConfigurerAdapter {
         return txManager;
     }
 
+    @Bean
+    public SecurityUserDetailService getUDS(){
+        return new SecurityUserDetailService();
+    }
 
     @Bean(name="dataSource")
     public DataSource getDataSource() {
