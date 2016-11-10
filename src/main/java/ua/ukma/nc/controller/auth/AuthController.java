@@ -33,7 +33,7 @@ public class AuthController {
     @Autowired
     UserService userService;
 
-    @RequestMapping (value = "/set_role")
+    @RequestMapping (value = "/set_role", method = RequestMethod.POST)
     public String setRole(HttpServletRequest request, Principal principal){
         User user = userService.getByEmail(principal.getName());
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
@@ -54,15 +54,14 @@ public class AuthController {
         }
         //set the authentication of the current Session context
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal.getName(), user.getPassword(), grantedAuthorityList));
-        return "redirect:/";
+        return "redirect:/cookie";
     }
 
     @RequestMapping(value = "/cookie")
-    public String setRoleCookie(HttpServletResponse response){
-        UserDetails userDetails =
-                (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String chosen = userDetails.getAuthorities().iterator().next().toString();
-        if (chosen!=null){
+    public String setRoleCookie(HttpServletResponse response, Principal principal){
+        String chosen = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
+        System.out.println(chosen);
+        if (chosen != null) {
             Cookie cookie = new Cookie("tcms-chosen-role", chosen);
             cookie.setMaxAge(86400);
             response.addCookie(cookie);
