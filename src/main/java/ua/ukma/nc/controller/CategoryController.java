@@ -3,6 +3,7 @@ package ua.ukma.nc.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ua.ukma.nc.dto.CategoryDto;
 import ua.ukma.nc.entity.Category;
 import ua.ukma.nc.entity.impl.real.CategoryImpl;
@@ -14,12 +15,23 @@ import java.util.List;
 /**
  * Created by Алексей on 08.11.2016.
  */
-@RestController
-@RequestMapping("/category")
+@Controller
 public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @RequestMapping("/category")
+    public ModelAndView getUser() {
+        ModelAndView model = new ModelAndView("category");
+        List<CategoryDto> categories = new ArrayList<>();
+        for(Category category: categoryService.getAll()){
+            categories.add(new CategoryDto(category));
+        }
+            model.addObject("categories",categories);
+
+        return model;
+    }
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public String my(@RequestParam String name, @RequestParam int age) {
