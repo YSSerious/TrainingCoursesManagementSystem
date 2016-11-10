@@ -10,8 +10,10 @@
 <head>
 <meta charset="UTF-8">
 <title>${title}</title>
+<!--<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 <link rel="stylesheet" type="text/css"
-	href="<c:url value="/presentation/resources/third-party/bootstrap/css/bootstrap.css"/>">
+	href="<c:url value="/presentation/resources/third-party/bootstrap/css/bootstrap.min.css"/>">
+<link href="<c:url value="/presentation/resources/third-party/bootstrap/fonts/glyphicons-halflings-regular.woff"/>">
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/third-party/jquery-ui/css/jquery-ui.css"/>">
 <script
@@ -65,7 +67,7 @@
 					<div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav navbar-right">
 							<li>
-								<a href="profile" class="btn btn-link" role="button">
+								<a href="/profile" class="btn btn-link" role="button">
 									My profile
 								</a>
 							</li>
