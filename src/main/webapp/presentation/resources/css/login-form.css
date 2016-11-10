@@ -9,7 +9,7 @@
     border: 3px solid #fff;
 }
 
-.login-form h2 {
+.login-form h2{
     margin-bottom: 30px;
     font-weight: bold;
     color: #fff;
@@ -72,7 +72,18 @@
 
 }
 
+.role-chooser h3{
+    color: #fff;
+}
+
+.role-chooser{
+    text-align: center;
+}
+
 /*for 403.jsp*/
 .error-forbidden-box{
     text-align: center;
+}
+.error-forbidden-box .btn{
+    margin: 10px;
 }

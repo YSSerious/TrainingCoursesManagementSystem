@@ -38,7 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
                 .authorizeRequests()
-                    .antMatchers("/", "/home").permitAll()
+                    .antMatchers("/", "/home").hasAnyRole("ADMIN", "MENTOR", "HR", "STUDENT")
+                    .antMatchers("/roles", "/set_role").hasAnyRole("ADMIN", "MENTOR", "HR", "STUDENT", "TEMP")
                     .antMatchers("/cookie").hasAnyRole("ADMIN", "MENTOR", "HR", "STUDENT")
                     .antMatchers("/projects").hasAnyRole("ADMIN", "MENTOR", "HR")
                     .antMatchers("/getuser").hasRole("ADMIN")     //for testing
@@ -47,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .usernameParameter("username")
                     .passwordParameter("password")
-                    .defaultSuccessUrl("/cookie")
+                    .defaultSuccessUrl("/roles_def")
                     .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

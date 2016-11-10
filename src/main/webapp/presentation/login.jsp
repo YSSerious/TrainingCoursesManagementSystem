@@ -33,23 +33,23 @@
                 <div class="form-group">
                     <input type="password" name="password" class="form-control" placeholder="Enter your password">
                 </div>
-                <div class="form-group">
-                    <label for="select"></label>
-                    <select class="form-control"  name="chosenRole" id="select">
-                        <option value="" disabled selected hidden>Choose role...</option>
-                        <option value="ROLE_ADMIN">ADMIN</option>
-                        <option value="ROLE_MENTOR">MENTOR</option>
-                        <option value="ROLE_HR">HR</option>
-                       <!--<option>STUDENT</option>-->
-                    </select>
-                </div>
+                <%--<div class="form-group">--%>
+                    <%--<label for="select"></label>--%>
+                    <%--<select class="form-control"  name="chosenRole" id="select">--%>
+                        <%--<option value="" disabled selected hidden>Choose role...</option>--%>
+                        <%--<option value="ROLE_ADMIN">ADMIN</option>--%>
+                        <%--<option value="ROLE_MENTOR">MENTOR</option>--%>
+                        <%--<option value="ROLE_HR">HR</option>--%>
+                       <%--<!--<option>STUDENT</option>-->--%>
+                    <%--</select>--%>
+                <%--</div>--%>
             </div>
             <div class="col-sm-8 col-sm-offset-2 bottom-row">
-                <div class="col-sm-5 col-sm-offset-1">
-                    <label class="remember-me"><input type="checkbox"  name="tcms-remember-me-param">Remember me</label>
+                <div class="col-md-7 ">
+                    <label class="remember-me checkbox-inline"><input type="checkbox"  name="tcms-remember-me-param"> Remember me</label>
                 </div>
-                <div class="col-sm-5">
-                    <button type="submit" class="btn btn-default">Submit</button>
+                <div class="col-md-4 col-md-offset-1">
+                    <button type="submit" class="btn btn-default">Sign in</button>
                 </div>
             </div>
         </form>
