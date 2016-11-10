@@ -1,55 +1,89 @@
-// Name: <input type="text"  id="nameId"/> <br/>
-//     Age :<input type="text" id="ageId"/> <br/>
-//     <button class="btn btn-sm btn-success" type="submit" id="submitId">Submit</button>
-
-
 $(document).ready(function () {
 
+    $("#saveCategory").click(function () {
+        $.ajax({
+            url: "/addCategory",
+            type: "POST",
+            data: {name: $("#categoryName").val(), "description": $("#categoryDescription").val()},
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
+    });
 
+    $("#deleteCategoryModal").click(function () {
+        $.ajax({
+            url: "/deleteCategory",
+            type: "POST",
+            data: {categoryId: categoryId},
+            success: function (data) {
+                console.log(data);
+                $('#categoryPanelId-'+categoryId).remove();
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
+    });
 
-    // $("#submitId").click(function () {
-    //     $.ajax({
-    //         url: "/category/post",
-    //         type: "POST",
-    //         data: {name: $("#nameId").val(), "age": $("#ageId").val()},
-    //         success: function (data) {
-    //             console.log(data);
-    //             $("#label").text(data);
-    //         },
-    //         error: function (textStatus) {
-    //             console.log(textStatus);
-    //         }
-    //     });
-    //
-    // });
-    //
-    // function getAllCategory() {
-    //     $.ajax({
-    //         url: "/category/getAllCategory",
-    //         type: "GET",
-    //         success: function (data) {
-    //             console.log(data);
-    //             categories = data;
-    //             display(categories);
-    //
-    //         },
-    //         error: function (textStatus) {
-    //             console.log(textStatus);
-    //         }
-    //     });
-    // }
-    //
-    // $("#submitId").click(function(){
-    //     categories.splice(0,1);
-    //     document.getElementById('tbody').innerHTML = '';
-    //     display(categories);
-    // });
+    $("#editCategoryModal").click(function () {
+        $.ajax({
+            url: "/editCategory",
+            type: "POST",
+            data: {id: categoryId, name: $("#editCategoryName").val(), description: $("#editCategoryDescription").val()},
+            success: function (data) {
+                console.log(data);
+                $('#aEditId-'+categoryId).html("<b>"+data.name+"</b>");
+                $('#divEditId-'+categoryId).html(data.description);
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
+    });
+
+    $("#saveCriteria").click(function () {
+        $.ajax({
+            url: "/saveCriteria",
+            type: "POST",
+            data: {categoryId: categoryId, name: $("#criteriaName").val()},
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
+    });
+
+    $("#deleteCriteriaModal").click(function () {
+        $.ajax({
+            url: "/deleteCriteria",
+            type: "POST",
+            data: {criteriaId: criteriaId},
+            success: function (data) {
+                console.log(data);
+                $('#criteriaId-'+criteriaId).remove();
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
+    });
 
 });
 
-function showId(id) {
-    console.log(id);
+var categoryId;
+var criteriaId;
+
+
+function setCriteria(id) {
+    criteriaId = id;
 }
 
-function deleteCategory() {
+function setCategory(id) {
+    categoryId = id;
 }

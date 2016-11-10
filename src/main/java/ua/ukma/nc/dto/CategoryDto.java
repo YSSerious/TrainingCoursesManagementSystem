@@ -16,6 +16,11 @@ public class CategoryDto {
 
 	}
 
+	public CategoryDto(String name, String description) {
+		this.name = name;
+		this.description = description;
+	}
+
 	public CategoryDto(Category category) {
 		setId(category.getId());
 		setName(category.getName());

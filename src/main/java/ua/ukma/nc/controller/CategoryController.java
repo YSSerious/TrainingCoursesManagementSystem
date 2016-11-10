@@ -33,19 +33,39 @@ public class CategoryController {
         return model;
     }
 
-    @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public String my(@RequestParam String name, @RequestParam int age) {
-        System.out.println(name+" "+age);
-        return "NICE++++";
+    @RequestMapping(value = "/addCategory", method = RequestMethod.POST)
+    @ResponseBody
+    public String addCategory(@RequestParam String name, @RequestParam String description) {
+        System.out.println(name+" "+description);
+        return "Category was added successfully";
     }
 
-    @RequestMapping(value = "/getAllCategory", method = RequestMethod.GET)
-    public List<CategoryDto> getAllCategory() {
-        List<CategoryDto> categories = new ArrayList<>();
-        for(Category category: categoryService.getAll()){
-            categories.add(new CategoryDto(category));
-        }
-        return categories;
+
+    @RequestMapping(value = "/deleteCriteria", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteCriteria(@RequestParam Long criteriaId) {
+        System.out.println(criteriaId);
+        return "Criteria was deleted successfully";
     }
 
+    @RequestMapping(value = "/deleteCategory", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteCategory(@RequestParam Long categoryId) {
+        System.out.println(categoryId);
+        return "Category was deleted successfully";
+    }
+
+    @RequestMapping(value = "/editCategory", method = RequestMethod.POST)
+    @ResponseBody
+    public CategoryDto editCategory(@RequestParam Long id, @RequestParam String name, @RequestParam String description) {
+        System.out.println(id+" "+name+" "+ description);
+        return new CategoryDto(name, description);
+    }
+
+    @RequestMapping(value = "/saveCriteria", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveCriteria(@RequestParam Long categoryId, @RequestParam String name) {
+        System.out.println(categoryId+" "+name);
+        return "Criteria was added successfully";
+    }
 }
