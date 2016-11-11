@@ -105,17 +105,22 @@ public class GroupController {
 			if(attach.getGroup().equals(group))
 				groupAttachmentsFinal.add(attach);			
 		}
-		
-		groupAttachments=null;
-<<<<<<< HEAD
-	 
+		//Test of attachment
+		GroupAttachment attachment =new GroupAttachment();
+		attachment.setAttachmentScope("https://www.tutorialspoint.com/java/java_tutorial.pdf");
+		attachment.setGroup(groupService.getById((long) 8));
+		attachment.setName("Example");
+		groupAttachmentService.updateGroupAttachment(attachment);
+		groupAttachmentsFinal.add(attachment);
+		//groupAttachments=null;
+ 
 		model.addObject("group-name",group.getName());
 		model.addObject("group-project",group.getProject().getName());
-=======
+ 
 		String projectName = group.getProject().getName();
 		model.addObject("group",group);
 		model.addObject("projectName",projectName);
->>>>>>> origin/master
+ 
 		model.addObject("students",students);
 		model.addObject("mentors",mentors);
 		model.addObject("attachments",groupAttachmentsFinal);
