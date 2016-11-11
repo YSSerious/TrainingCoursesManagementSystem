@@ -83,6 +83,7 @@ public class GroupController {
 				groupAttachmentsFinal.add(attach);			
 		}
 		groupAttachments=null;
+	 
 		model.addObject("group-name",group.getName());
 		model.addObject("group-project",group.getProject().getName());
 		model.addObject("students",students);
@@ -101,7 +102,7 @@ public class GroupController {
 		return model;
 	}
 	
-	@RequestMapping(value = "addAttachment", method = RequestMethod.POST)
+	@RequestMapping(value = "addAttachment", method = RequestMethod.GET)
 	public void addGroupAttachment(@RequestParam("id_group") Long idGroup,@RequestParam("name") String name,
 		@RequestParam("attachment_scope") String attachmentScope){
 		GroupAttachment attachment =new GroupAttachment();
@@ -111,5 +112,5 @@ public class GroupController {
 		groupAttachmentService.updateGroupAttachment(attachment);
 		
 	}
-
+	
 }
