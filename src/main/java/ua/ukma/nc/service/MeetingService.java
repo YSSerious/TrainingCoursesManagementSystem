@@ -8,6 +8,10 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface MeetingService {
+	List<Meeting> getByStudentProject(Long studentId, Long projectId);
+	
+	List<Meeting> getByStudentProjectType(Long studentId, Long projectId, Character type);
+	
     Meeting getById(Long id);
 
     int deleteMeeting(Meeting meeting);

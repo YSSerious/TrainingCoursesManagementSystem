@@ -41,6 +41,8 @@ public class CriterionDaoImpl implements CriterionDao{
             return criterion;
         }
     }
+    
+    private static final String GET_BY_PROJECT = "SELECT id, name, id_category FROM tcms.criterion WHERE id IN (SELECT id_criterion FROM tcms.project_criterion WHERE id_project = ?)";
 
     private static final String GET_ALL = "SELECT id, name, id_category FROM tcms.criterion";
 
@@ -102,6 +104,12 @@ public class CriterionDaoImpl implements CriterionDao{
         log.info("Create new criterion with title = {}", criterion.getTitle());
         return jdbcTemplate.update(CREATE_CRITERION, criterion.getTitle(), criterion.getCategory().getId());
     }
+
+	@Override
+	public List<Criterion> getByProject(Long projectId) {
+        log.info("Getting all criterion");
+        return jdbcTemplate.query(GET_BY_PROJECT, new CriterionMapper(), projectId);
+	}
 
     @Override
     public int createCriterion(String title, Long categoryId) {

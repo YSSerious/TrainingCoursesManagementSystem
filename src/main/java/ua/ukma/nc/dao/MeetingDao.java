@@ -16,6 +16,10 @@ public interface MeetingDao {
 
     List<Meeting> getAll();
     
+    List<Meeting> getByStudentProject(Long studentId, Long projectId);
+    
+    List<Meeting> getByStudentProjectType(Long studentId, Long projectId, Character type);
+    
     List<Meeting> getByGroup(Long groupId);
 
     int createMeeting(Meeting meeting);

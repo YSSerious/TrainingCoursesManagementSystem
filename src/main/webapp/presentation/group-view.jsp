@@ -80,7 +80,7 @@
             <button type="submit" class="btn btn-default btn-success pull-center" 
             id="submitButton"><span class="glyphicon glyphicon-off"
              
-            ></span>Submit</button>
+            ></span>Send</button>
           </form>
         </div>
         <div class="modal-footer">
@@ -93,29 +93,31 @@
       
     </div>
   </div>
+   
   <!--  -->
   
 	<button type="button" class="btn btn-default btn-xs" value="addAttachment" 
            id="addGroupAttachmentButton">Upload</button>
-	<button type="button" class="btn btn-default btn-xs">Edit</button>
+	 
 	<br />
 	
 	<div
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 		<!--Data from DB to be inserted here -->
-		test value
-		<c:forEach items="attachments" var="attachment">
-     ${attachment.getName()}<br/> 
-    ${attachment.getAttachmentScope()}<br/>
+	<!--  test value-->	
+ 
+<c:forEach items="${attachments}" var="attachment">
+  
+  <a href="${attachment.attachmentScope}" >   ${attachment.name}</a><br/>
     
     </c:forEach>
-		
-	<script type="text/javascript">	$(document).ready(function(){
+	<script type="text/javascript">	
+ 
+	$(document).ready(function(){
      $("#addGroupAttachmentButton").click(function(){
          $("#addGroupAttachmentModal").modal();
      });
  });
- 
  
  $(document).ready(function() {
      $("#addGroupAttachmentButton").click(function(event) {
@@ -125,10 +127,14 @@
              data: {"id_group" : $(group-id), 
             	 "name" : $("#groupAttachmentName").val(),
             	 "attachment_scope": $("#groupAttachment").val()}
-             
+            	   
+            		  
+            	  });
+      
          });
      });
- });
+ 
+ 
  </script>
 	
 	</div>

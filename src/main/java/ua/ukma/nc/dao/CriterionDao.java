@@ -21,6 +21,8 @@ public interface CriterionDao {
     int updateCriterion(Criterion criterion);
 
     List<Criterion> getAll();
+    
+    List<Criterion> getByProject(Long projectId);
 
     int createCriterion(Criterion criterion);
 
