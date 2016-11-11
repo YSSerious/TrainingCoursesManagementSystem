@@ -104,6 +104,7 @@
 	<div
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 		<!--Data from DB to be inserted here -->
+
 	<!--  test value-->	
 	 
 <c:forEach items="${attachments}" var="attachment" >
