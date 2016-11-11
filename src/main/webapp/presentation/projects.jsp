@@ -72,6 +72,7 @@
 				<form:form modelAttribute="projectSearch" id="searchForm">
 					<form:hidden path="searchRequest" id="searchRequest" value="true" />
 					<div class="row">
+					<h4 style="margin-left:15px;">Key word & Order:</h4>
 						<div class="col-md-12">
 								<form:input path="text" class="form-control" type="text"
 									placeholder="Search for..." />
@@ -93,6 +94,7 @@
 					</div>
 					<br />
 					<div class="row">
+					<h4 style="margin-left:15px;">Start and Finish date:</h4>
 						<div class="col-md-12">
 
 							<form:input type="date" class="form-control" path="start"
@@ -108,6 +110,7 @@
 					</div>
 					<br />
 					<div class="row">
+					<h4 style="margin-left:15px;">Date checking type:</h4>
 						<div class="col-md-12">
 							<form:select path="dateType" class="form-control"
 								name="date-type">
@@ -122,6 +125,7 @@
 					<br />
 
 					<div class="row">
+						<h4 style="margin-left:15px;">Status:</h4>
 						<div class="col-md-12 text-center">
 							Active
 							<form:checkbox path="statuses" value="active" />
@@ -151,13 +155,13 @@
 					<br/>
 					<div class="row">
 						<div class="col-md-12">
-							<input type=submit class="form-control btn btn-primary" />
+							<input type=submit class="form-control btn btn-primary" value="Search!" />
 						</div>
 					</div>
 				</form:form>
 			</div>
 		</div>
-		<div class="col-sm-3 col-sm-offset-3">
+		<div style="min-width:260px;" class="col-sm-3 col-sm-offset-3">
 			<c:if test="${not empty projects}">
 				<div class="pagination">
 					<a href="#" class="first" data-action="first">&laquo;</a> <a
