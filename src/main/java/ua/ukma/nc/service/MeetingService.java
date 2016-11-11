@@ -15,6 +15,8 @@ public interface MeetingService {
     int updateMeeting(Meeting meeting);
 
     List<Meeting> getAll();
+    
+    List<Meeting> getByGroup(Long groupId);
 
     int createMeeting(Meeting meeting);
 }

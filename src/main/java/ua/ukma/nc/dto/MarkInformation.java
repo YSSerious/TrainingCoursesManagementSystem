@@ -3,6 +3,7 @@ package ua.ukma.nc.dto;
 public class MarkInformation {
 
 	private String criterionName;
+	private String category;
 
 	private int mark;
 	private String markDescription;
@@ -47,6 +48,14 @@ public class MarkInformation {
 
 	public void setMeetingName(String meetingName) {
 		this.meetingName = meetingName;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 }

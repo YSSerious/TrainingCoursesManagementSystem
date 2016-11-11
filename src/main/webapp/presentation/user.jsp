@@ -19,7 +19,7 @@ Active: ${user.active} <br/>
     	    'url' : '/ajaxstudentprojects',
     	    'type' : 'GET',
     	    'data' : {
-    	    'user' : ${user.id},
+    	    'user' : "${user.id}",
     	    },
     	    'success' : function(data) {
     	    	var s = '<br/><div>';
@@ -44,7 +44,7 @@ Active: ${user.active} <br/>
 	    	 	    	    'url' : '/ajaxstudentprofile',
 	    	 	    	    'type' : 'GET',
 	    	 	    	    'data' : {
-	    	 	    	      'student' : ${user.id},
+	    	 	    	      'student' : "${user.id};",
 	    	 	    	      'project' : value.id
 	    	 	    	    },
 	    	 	    	    'success' : function(data) {
@@ -83,7 +83,7 @@ Active: ${user.active} <br/>
     	    'url' : '/ajaxmentorprojects',
     	    'type' : 'GET',
     	    'data' : {
-    	      'user' : ${user.id},
+    	      'user' : "${user.id}",
     	    },
     	    'success' : function(data) {
     	    	var s = '<br/><div>';
