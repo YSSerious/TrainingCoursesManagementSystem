@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Created by Алексей on 30.10.2016.
+ * Created by Ð�Ð»ÐµÐºÑ�ÐµÐ¹ on 30.10.2016.
  */
 @Repository
 public class MeetingDaoImpl implements MeetingDao{
@@ -56,7 +56,9 @@ public class MeetingDaoImpl implements MeetingDao{
     private static final String UPDATE_MEETING = "UPDATE tcms.meeting SET id_group = ?, name = ?, time = ?, place =? WHERE id = ?";
 
     private static final String GET_CRITERION_BY_ID = "SELECT id_criterion FROM tcms.meeting_criterion WHERE id_meeting = ?";
-
+    
+    private static final String GET_BY_GROUP = "SELECT  id, id_group, name, time, place FROM  tcms.meeting WHERE id_group = ?";
+    
     @Override
     public Meeting getById(Long id) {
         log.info("Getting meeting with id = {}", id);
@@ -80,7 +82,14 @@ public class MeetingDaoImpl implements MeetingDao{
         log.info("Getting all meetings");
         return jdbcTemplate.query(GET_ALL, new MeetingMapper());
     }
-
+    
+    @Override
+	public List<Meeting> getByGroup(Long groupId) {
+		log.info("Getting all meeting with group id={}",groupId);
+		
+		return jdbcTemplate.query(GET_BY_GROUP,new MeetingMapper(),groupId);
+	}
+    
     @Override
     public int createMeeting(Meeting meeting) {
         log.info("Create new meeting with name = {}", meeting.getName());
@@ -99,4 +108,6 @@ public class MeetingDaoImpl implements MeetingDao{
             return criterion;
         }
     }
+
+	
 }

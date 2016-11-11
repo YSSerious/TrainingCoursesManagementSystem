@@ -6,9 +6,8 @@
                   type="#fff";
                   border="#7FFF00";
 				%>
-<h1>Projects' name</h1>${group-project}
-<h2>Groups' name</h2>
-${group-name}
+<h1>Project: </h1>${group.project.name}
+<h2>Group:</h2> ${group.name}
 <br />
 
 <div class="meetings_template">
@@ -18,8 +17,10 @@ ${group-name}
 	<div
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 
-		<!--Data from DB to be inserted here -->
-		test value
+		<c:forEach items="${meetings}" var="meeting">
+			${meeting.name}
+			<br/> 
+		</c:forEach>
 	</div>
 	<br />
 </div>

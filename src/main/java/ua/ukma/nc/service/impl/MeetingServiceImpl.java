@@ -41,4 +41,9 @@ public class MeetingServiceImpl implements MeetingService{
     public int createMeeting(Meeting meeting) {
         return meetingDao.createMeeting(meeting);
     }
+
+	@Override
+	public List<Meeting> getByGroup(Long groupId) {
+		return meetingDao.getByGroup(groupId);
+	}
 }
