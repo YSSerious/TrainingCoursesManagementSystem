@@ -107,15 +107,14 @@ public class GroupController {
 		}
 		
 		groupAttachments=null;
-<<<<<<< HEAD
 	 
 		model.addObject("group-name",group.getName());
 		model.addObject("group-project",group.getProject().getName());
-=======
+
 		String projectName = group.getProject().getName();
 		model.addObject("group",group);
 		model.addObject("projectName",projectName);
->>>>>>> origin/master
+
 		model.addObject("students",students);
 		model.addObject("mentors",mentors);
 		model.addObject("attachments",groupAttachmentsFinal);

@@ -52,7 +52,7 @@
 						<div class="row">
 							<div class="col-xs-12 col-sm-6 col-md-8">
 								<p style="margin-top: -5px; margin-left: 15px;">
-									<br /> <font size="5"><b> ${value.name}</b></font>
+									<br /> <font size="5"><b><a href ="certainProject/${value.id}">${value.name}</a></b></font>
 								</p>
 							</div>
 
