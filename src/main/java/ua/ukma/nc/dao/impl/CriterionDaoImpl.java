@@ -98,19 +98,17 @@ public class CriterionDaoImpl implements CriterionDao{
         return jdbcTemplate.update(CREATE_CRITERION, criterion.getTitle(), criterion.getCategory().getId());
     }
 
-<<<<<<< HEAD
 	@Override
 	public List<Criterion> getByProject(Long projectId) {
         log.info("Getting all criterion");
         return jdbcTemplate.query(GET_BY_PROJECT, new CriterionMapper(), projectId);
 	}
-=======
+
     @Override
     public int createCriterion(String title, Long categoryId) {
         log.info("Create new criterion with title = {}", title);
         return jdbcTemplate.update(CREATE_CRITERION, title, categoryId);
     }
->>>>>>> origin/master
 
 //    private List<Project> getProjects(Long criterionID) {
 //        log.info("Getting all projects with criterion id = {}", criterionID);
