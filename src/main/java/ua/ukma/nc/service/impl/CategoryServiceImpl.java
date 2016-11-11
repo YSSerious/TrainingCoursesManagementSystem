@@ -2,7 +2,10 @@ package ua.ukma.nc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ua.ukma.nc.dao.CategoryDao;
+import ua.ukma.nc.dao.CriterionDao;
 import ua.ukma.nc.entity.Category;
 import ua.ukma.nc.service.CategoryService;
 
@@ -16,6 +19,9 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Autowired
     private CategoryDao categoryDao;
+    @Autowired
+    private CriterionDao criterionDao;
+
 
     @Override
     public Category getById(Long id) {
@@ -33,8 +39,15 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    @Transactional(propagation= Propagation.REQUIRED, rollbackFor=Exception.class)
+    public void deleteCategory(Long id) {
+        categoryDao.deleteCategory(id);
+        criterionDao.deleteByCategoryId(id);
+    }
+
+    @Override
     public int updateCategory(Category category) {
-        return 0;
+        return categoryDao.updateCategory(category);
     }
 
     @Override
@@ -44,6 +57,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public int createCategory(Category category) {
-        return 0;
+        return categoryDao.createCategory(category);
     }
 }

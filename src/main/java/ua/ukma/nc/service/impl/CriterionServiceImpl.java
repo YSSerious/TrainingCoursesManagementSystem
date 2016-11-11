@@ -28,6 +28,11 @@ public class CriterionServiceImpl implements CriterionService{
     }
 
     @Override
+    public int deleteCriterion(Long id) {
+        return criterionDao.deleteCriterion(id);
+    }
+
+    @Override
     public int updateCriterion(Criterion criterion) {
         return criterionDao.updateCriterion(criterion);
     }
@@ -40,5 +45,10 @@ public class CriterionServiceImpl implements CriterionService{
     @Override
     public int createCriterion(Criterion criterion) {
         return criterionDao.createCriterion(criterion);
+    }
+
+    @Override
+    public int createCriterion(String title, Long categoryId) {
+        return criterionDao.createCriterion(title, categoryId);
     }
 }

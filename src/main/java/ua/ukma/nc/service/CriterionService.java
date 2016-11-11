@@ -12,9 +12,13 @@ public interface CriterionService {
 
     int deleteCriterion(Criterion criterion);
 
+    int deleteCriterion(Long id);
+
     int updateCriterion(Criterion criterion);
 
     List<Criterion> getAll();
 
     int createCriterion(Criterion criterion);
+
+    int createCriterion(String title, Long categoryId);
 }

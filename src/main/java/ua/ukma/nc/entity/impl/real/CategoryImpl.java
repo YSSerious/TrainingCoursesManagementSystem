@@ -19,6 +19,12 @@ public class CategoryImpl implements Category {
 	public CategoryImpl() {
 	}
 
+	public CategoryImpl(Long id, String name, String description) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+	}
+
 	public CategoryImpl(String name, String description) {
 		this.name = name;
 		this.description = description;
