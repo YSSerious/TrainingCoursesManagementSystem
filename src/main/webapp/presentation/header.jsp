@@ -49,6 +49,8 @@
           href="<c:url value="/presentation/resources/css/forms.css"/>">
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/presentation/resources/css/footer.css"/>">
+    <link rel="stylesheet" type="text/css"
+    href="<c:url value="/presentation/resources/css/certainProject.css"/>">
     <!--Own js-->
     <script src="<c:url value="/presentation/resources/js/forms.js"/>"></script>
     <!--<script src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>-->
