@@ -39,6 +39,7 @@
             crossorigin="anonymous"></script>
     <script
             src="<c:url value="/presentation/resources/third-party/bootstrap/js/bootstrap.min.js"/>"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
     <!--Own styles-->
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/presentation/resources/css/general.css"/>">
@@ -53,6 +54,7 @@
 
     <!--Own js-->
     <script src="<c:url value="/presentation/resources/js/forms.js"/>"></script>
+    <script src="<c:url value="/presentation/resources/js/charts.js"/>"></script>
     <!--<script src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>-->
 </head>
 <body>

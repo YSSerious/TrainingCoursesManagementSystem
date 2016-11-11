@@ -11,7 +11,7 @@ import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.UserService;
 
 /**
- *@author Oleh Khomandiak on 10 лист. 2016 р.
+ *@author Oleh Khomandiak
 */
 @Configurable
 @Service
