@@ -105,8 +105,11 @@ public class GroupController {
 			if(attach.getGroup().equals(group))
 				groupAttachmentsFinal.add(attach);			
 		}
+		
 		groupAttachments=null;
+		String projectName = group.getProject().getName();
 		model.addObject("group",group);
+		model.addObject("projectName",projectName);
 		model.addObject("students",students);
 		model.addObject("mentors",mentors);
 		model.addObject("attachments",groupAttachmentsFinal);

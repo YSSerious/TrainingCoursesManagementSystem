@@ -17,4 +17,5 @@ public interface GroupDao {
     List<Group> getAll();
 
     int createGroup(Group group);
+    
 }

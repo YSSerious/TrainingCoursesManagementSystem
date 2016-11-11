@@ -6,7 +6,7 @@
                   type="#fff";
                   border="#7FFF00";
 				%>
-<h1>Project: </h1>${group.project.name}
+<h1>Project: </h1>${projectName}
 <h2>Group:</h2> ${group.name}
 <br />
 
@@ -18,7 +18,8 @@
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 
 		<c:forEach items="${meetings}" var="meeting">
-			${meeting.name}
+			${meeting.name} <span style='padding-left:10px;'> </span> ${meeting.time} <span style='padding-left:10px;'> </span>
+			${meeting.place}
 			<br/> 
 		</c:forEach>
 	</div>
@@ -34,7 +35,7 @@
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 		<!--Data from DB to be inserted here -->
 		<c:forEach items="${students}" var="student">
-			${student.firstName}
+			${student.firstName} <span style='padding-left:10px;'> </span> ${student.lastName}
 			<br/> 
 		</c:forEach>
 	</div>
@@ -50,7 +51,7 @@
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 		<!--Data from DB to be inserted here -->
 		<c:forEach items="${mentors}" var="mentor">
-			${mentor.firstName}
+			${mentor.firstName} <span style='padding-left:10px;'> </span> ${mentor.lastName}
 			<br/> 
 		</c:forEach>
 		
