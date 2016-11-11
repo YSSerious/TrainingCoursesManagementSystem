@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ua.ukma.nc.dao.CriterionDao;
 import ua.ukma.nc.dto.CategoryDto;
+import ua.ukma.nc.dto.CriterionDto;
 import ua.ukma.nc.entity.Category;
 import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.impl.real.CategoryImpl;
@@ -34,17 +36,33 @@ public class CategoryController {
             categories.add(new CategoryDto(category));
         }
             model.addObject("categories",categories);
-
         return model;
     }
 
     @RequestMapping(value = "/addCategory", method = RequestMethod.POST)
     @ResponseBody
-    public String addCategory(@RequestParam String name, @RequestParam String description) {
-        int check = categoryService.createCategory(new CategoryImpl(name, description));
-        if(check==1)
-            return "Category was added successfully";
-        return "fail";
+    public CategoryDto addCategory(@RequestParam String name, @RequestParam String description) {
+        categoryService.createCategory(new CategoryImpl(name, description));
+        Category created = categoryService.getByName(name);
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setId(created.getId());
+        categoryDto.setName(created.getName());
+        categoryDto.setDescription(created.getDescription());
+        return categoryDto;
+    }
+
+    @RequestMapping(value = "/saveCriteria", method = RequestMethod.POST)
+    @ResponseBody
+    public CriterionDto saveCriteria(@RequestParam Long categoryId, @RequestParam String name) {
+        Criterion criterion = new CriterionImpl(name);
+        criterion.setCategory(categoryService.getById(categoryId));
+        criterionService.createCriterion(criterion);
+        Criterion created=criterionService.getByName(name);
+        CriterionDto criterionDto = new CriterionDto();
+        criterionDto.setId(created.getId());
+        criterionDto.setTitle(created.getTitle());
+        criterionDto.setCategoryId(created.getCategory().getId());
+        return criterionDto;
     }
 
 
@@ -71,16 +89,5 @@ public class CategoryController {
         if(check==1)
         return new CategoryDto(name, description);
         return null;
-    }
-
-    @RequestMapping(value = "/saveCriteria", method = RequestMethod.POST)
-    @ResponseBody
-    public String saveCriteria(@RequestParam Long categoryId, @RequestParam String name) {
-        Criterion criterion = new CriterionImpl(name);
-        criterion.setCategory(categoryService.getById(categoryId));
-        int check = criterionService.createCriterion(criterion);
-        if(check==1)
-        return "Criteria was added successfully";
-        return "fail";
     }
 }

@@ -11,6 +11,8 @@ public interface CategoryService {
 
     Category getById(Long id);
 
+    Category getByName(String name);
+
     boolean isExist(Category category);
 
     int deleteCategory(Category category);

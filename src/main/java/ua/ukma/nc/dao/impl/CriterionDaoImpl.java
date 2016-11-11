@@ -46,6 +46,8 @@ public class CriterionDaoImpl implements CriterionDao{
 
     private static final String GET_BY_ID = "SELECT id, name, id_category FROM tcms.criterion WHERE id = ?";
 
+    private static final String GET_BY_NAME = "SELECT id, name, id_category FROM tcms.criterion WHERE name = ?";
+
     private static final String DELETE_CRITERION = "DELETE FROM tcms.criterion WHERE id = ?";
 
     private static final String DELETE_BY_CATEGORY_ID = "DELETE FROM tcms.criterion WHERE id_category = ?";
@@ -60,6 +62,11 @@ public class CriterionDaoImpl implements CriterionDao{
     public Criterion getById(Long id) {
         log.info("Getting criterion with id = {}", id);
         return jdbcTemplate.queryForObject(GET_BY_ID, new CriterionMapper(), id);
+    }
+
+    @Override
+    public Criterion getByName(String name) {
+        return jdbcTemplate.queryForObject(GET_BY_NAME, new CriterionMapper(), name);
     }
 
     @Override

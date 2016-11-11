@@ -11,7 +11,9 @@
         type="text/javascript">
 </script>
 <style>
-    .diver { cursor: pointer; }
+    .diver {
+        cursor: pointer;
+    }
 </style>
 
 <div class="col-sm-11 col-sm-offset-1">
@@ -27,14 +29,13 @@
             </div>
         </div>
         <hr/>
-
         <div class="panel-group" id="panelGroupId">
             <c:forEach items="${categories}" var="category" varStatus="loop">
-            <div class="panel panel-default" id="categoryPanelId-${category.id}">
+                <div class="panel panel-default" id="categoryPanelId-${category.id}">
                     <div class="panel-heading">
                         <h4 class="panel-title row">
                             <div data-toggle="collapse" class="diver col-sm-4" id="aEditId-${category.id}"
-                               data-target="#collapseIn-${category.id}"><b>${category.name}</b>
+                                 data-target="#collapseIn-${category.id}"><b>${category.name}</b>
                             </div>
                             <div id="divEditId-${category.id}" class="col-sm-7">${category.description}</div>
                             <button class="btn btn-primary btn-sm"
@@ -52,28 +53,28 @@
                         </h4>
                     </div>
                     <div id="collapseIn-${category.id}" class="panel-collapse collapse">
-                         <div class="panel-body row">
-                             <div class="col-sm-2"><b>Add new Criteria</b></div>
-                            <button  class="btn btn-primary btn-xs"
-                                     data-toggle="modal"
-                                     data-target="#addCriteria"
-                                     onclick="setCategory(${category.id})">
+                        <div class="panel-body row">
+                            <div class="col-sm-2"><b>Add new Criteria</b></div>
+                            <button class="btn btn-primary btn-xs"
+                                    data-toggle="modal"
+                                    data-target="#addCriteria"
+                                    onclick="setCategory(${category.id})">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
-                       </div>
+                        </div>
                         <c:forEach items="${category.criteria}" var="criteria" varStatus="loop">
-                        <div class="panel-body row" id="criteriaId-${criteria.id}">
+                            <div class="panel-body row" id="criteriaId-${criteria.id}">
                                 <div class="col-sm-2">${criteria.title}</div>
-                                <button  class="btn btn-danger btn-xs"
-                                         data-toggle="modal"
-                                         data-target="#deleteCriteria"
+                                <button class="btn btn-danger btn-xs"
+                                        data-toggle="modal"
+                                        data-target="#deleteCriteria"
                                         onclick="setCriteria(${criteria.id})">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
-                        </div>
+                            </div>
                         </c:forEach>
                     </div>
-            </div>
+                </div>
             </c:forEach>
         </div>
 
@@ -194,7 +195,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" type="button" data-dismiss="modal" id="editCategoryModal">Save changes</button>
+                        <button class="btn btn-primary" type="button" data-dismiss="modal" id="editCategoryModal">Save
+                            changes
+                        </button>
                     </div>
                 </div>
             </div>

@@ -29,6 +29,11 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    public Category getByName(String name) {
+        return categoryDao.getByName(name);
+    }
+
+    @Override
     public boolean isExist(Category category) {
         return false;
     }

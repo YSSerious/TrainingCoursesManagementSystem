@@ -5,6 +5,7 @@ import ua.ukma.nc.entity.Criterion;
 public class CriterionDto {
 	private Long id;
 	private String title;
+	private Long categoryId;
 
 	public CriterionDto() {
 
@@ -29,5 +30,13 @@ public class CriterionDto {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 }

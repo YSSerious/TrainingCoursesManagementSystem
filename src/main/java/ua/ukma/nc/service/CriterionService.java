@@ -10,6 +10,8 @@ import java.util.List;
 public interface CriterionService {
     Criterion getById(Long id);
 
+    Criterion getByName(String name);
+
     int deleteCriterion(Criterion criterion);
 
     int deleteCriterion(Long id);

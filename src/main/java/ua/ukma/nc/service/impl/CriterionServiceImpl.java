@@ -23,6 +23,11 @@ public class CriterionServiceImpl implements CriterionService{
     }
 
     @Override
+    public Criterion getByName(String name) {
+        return criterionDao.getByName(name);
+    }
+
+    @Override
     public int deleteCriterion(Criterion criterion) {
         return criterionDao.deleteCriterion(criterion);
     }
