@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ua.ukma.nc.entity.Group;
+import ua.ukma.nc.entity.GroupAttachment;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.entity.impl.real.GroupImpl;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
+import ua.ukma.nc.service.GroupAttachmentService;
 import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.RoleService;
 
@@ -28,7 +30,8 @@ import ua.ukma.nc.service.RoleService;
 @Controller
 @RequestMapping("/groups")
 public class GroupController {
-
+	@Autowired
+	private GroupAttachmentService groupAttachmentService;
     @Autowired
     private GroupService groupService;
     @Autowired
@@ -59,6 +62,8 @@ public class GroupController {
 		List<User> users = group.getUsers();
 		List<User> students = new ArrayList<User>();
 		List<User> mentors = new ArrayList<User>();
+		List<GroupAttachment> groupAttachments= new ArrayList<GroupAttachment>();
+		List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
 		for(User us: users){
 			boolean isMentor=false;
 			List<Role> roles = us.getRoles();
@@ -72,11 +77,19 @@ public class GroupController {
 			}
 			if(!isMentor) students.add(us);
 		}
+		
+		for(GroupAttachment attach:groupAttachments){
+			if(attach.getGroup().equals(group))
+				groupAttachmentsFinal.add(attach);			
+		}
+		groupAttachments=null;
 		model.addObject("group-name",group.getName());
 		model.addObject("group-project",group.getProject().getName());
 		model.addObject("students",students);
 		model.addObject("mentors",mentors);
 	//	model.addObject("users",users);
+		model.addObject("attachments",groupAttachmentsFinal);
+		model.addObject("group-id",group.getId());
 		model.setViewName("group-view");
 	
 		for(User user : group.getUsers()){
@@ -87,6 +100,16 @@ public class GroupController {
 		log.info("Group information sent");
 		return model;
 	}
-
+	
+	@RequestMapping(value = "addAttachment", method = RequestMethod.POST)
+	public void addGroupAttachment(@RequestParam("id_group") Long idGroup,@RequestParam("name") String name,
+		@RequestParam("attachment_scope") String attachmentScope){
+		GroupAttachment attachment =new GroupAttachment();
+		attachment.setAttachmentScope(attachmentScope);
+		attachment.setGroup(groupService.getById(idGroup));
+		attachment.setName(name);
+		groupAttachmentService.updateGroupAttachment(attachment);
+		
+	}
 
 }

@@ -58,15 +58,36 @@ ${group-name}
 </div>
 
 <div class="attachments_template">
-	<label>Attachments</label>
-	<button type="button" class="btn btn-default btn-xs">Upload</button>
+	<label>Attachments</label><br/>
+	<label for="groupAttachmentName"> Attachment name: </label><br/>
+	<input type=text class="form-control" id="groupAttachmentName" placeholder="Enter attachment name" >  
+	<label for="groupAttachment"> Attachment: </label><br/>
+	<input type=text class="form-control" id="groupAttachment" placeholder="Enter attachment" >  
+	<button type="button" class="btn btn-default btn-xs" value="addAttachment" id="addGroupAttachmentButton">Upload</button>
 	<button type="button" class="btn btn-default btn-xs">Edit</button>
 	<br />
 	<div
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 		<!--Data from DB to be inserted here -->
 		test value
-
+	<script type="text/javascript">	$(document).ready(function(){
+     $("#addGroupAttachmentButton").click(function(){
+         $("#addGroupAttachmentModal").modal();
+     });
+ });
+ 
+ 
+ $(document).ready(function() {
+     $("#addGroupAttachmentButton").click(function(event) {
+         $.ajax({
+             url: "/group/addAttachment",
+             type: "POST",
+             data: {"id_group" : $(group-id), "name" : $("#groupAttachmentName").val(),"attachment_scope": $("#groupAttachment").val()}
+         });
+     });
+ });
+ </script>
+	
 	</div>
 	<br />
 </div>
