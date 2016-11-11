@@ -51,4 +51,9 @@ public class MeetingServiceImpl implements MeetingService{
 	public List<Meeting> getByStudentProject(Long studentId, Long projectId) {
 		return meetingDao.getByStudentProject(studentId, projectId);
 	}
+
+	@Override
+	public List<Meeting> getByStudentProjectType(Long studentId, Long projectId, Character type) {
+		return meetingDao.getByStudentProjectType(studentId, projectId, type);
+	}
 }

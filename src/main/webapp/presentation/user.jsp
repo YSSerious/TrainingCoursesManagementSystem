@@ -44,12 +44,28 @@ Active: ${user.active} <br/>
 	    	 	    	    'url' : '/ajaxstudentprofile',
 	    	 	    	    'type' : 'GET',
 	    	 	    	    'data' : {
-	    	 	    	      'student' : "${user.id};",
+	    	 	    	      'student' : "${user.id}",
 	    	 	    	      'project' : value.id
 	    	 	    	    },
 	    	 	    	    'success' : function(data) {
+	    	 	    	    	
+	    	 	    	    	var table = '<br/>Table: <table><tr><th></th>';
+	    	 	    	    	$.each(data.markTableDto.meetings, function( key, value ) {
+	    	 	    	    		table+= '<th style="margin:10px;padding:10px;">' + value + '</th>';
+	    	 	    	    	});
+	    	 	    	    	table+= '</tr>';
+	    	 	    	    	
+	    	 	    	    	$.each(data.markTableDto.tableData, function( key, value ) {
+	    	 	    	    		table+= '<tr>';
+	    	 	    	    		table+= '<td>' + data.markTableDto.criteria[key] + '</td>';
+	    	 	    	    		$.each(value, function(index, mark) {
+		    	 	    	    		table+= '<td style="margin:10px;padding:10px;">' + mark + '</td>';
+		    	 	    	    	});
+	    	 	    	    		
+	    	 	    	    		table+= '</tr>';
+	    	 	    	    	});
 								
-	    	 	    	    	var marks = 'Marks: <br/>';
+	    	 	    	    	var marks = '<br/>Marks: <br/>';
 	    	 	    	    	$.each(data.markInformation, function( key, value ) {
 	    	 	    	    		marks+= key + ': ';
 	    	 	    	    		$.each(value, function(index, mark) {
@@ -61,7 +77,7 @@ Active: ${user.active} <br/>
 	    	 	    	    	if(jQuery.isEmptyObject(data.markInformation))
 	    	 	    	    		marks = '<br/>No marks...';
 	    	 	    	    	
-	    	 	    	    	$('#sub'+value.id).html(marks);
+	    	 	    	    	$('#sub'+value.id).html(marks+table);
 	    	 	    	    }
 	    	 	    	  });
 	    			});

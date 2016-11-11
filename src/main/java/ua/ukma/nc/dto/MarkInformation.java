@@ -2,12 +2,16 @@ package ua.ukma.nc.dto;
 
 public class MarkInformation {
 
+	private Long criterionId;
 	private String criterionName;
+	
 	private String category;
 
 	private int mark;
 	private String markDescription;
 	private String commentary;
+	
+	private Long meetingId;
 	private String meetingName;
 
 	public String getCriterionName() {
@@ -56,6 +60,22 @@ public class MarkInformation {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public Long getCriterionId() {
+		return criterionId;
+	}
+
+	public void setCriterionId(Long criterionId) {
+		this.criterionId = criterionId;
+	}
+
+	public Long getMeetingId() {
+		return meetingId;
+	}
+
+	public void setMeetingId(Long meetingId) {
+		this.meetingId = meetingId;
 	}
 
 }
