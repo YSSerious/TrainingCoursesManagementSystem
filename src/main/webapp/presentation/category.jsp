@@ -10,6 +10,9 @@
         src="<c:url value="/presentation/resources/js/category.js"/>"
         type="text/javascript">
 </script>
+<style>
+    .diver { cursor: pointer; }
+</style>
 
 <div class="col-sm-11 col-sm-offset-1">
     <div class="col-sm-11">
@@ -30,16 +33,17 @@
             <div class="panel panel-default" id="categoryPanelId-${category.id}">
                     <div class="panel-heading">
                         <h4 class="panel-title row">
-                            <a data-toggle="collapse" class="col-sm-5" id="aEditId-${category.id}"
-                               data-target="#collapseIn-${category.id}"><b>${category.name}</b></a>
-                            <div id="divEditId-${category.id}" class="col-sm-6">${category.description}</div>
-                            <button class="btn btn-primary"
+                            <div data-toggle="collapse" class="diver col-sm-4" id="aEditId-${category.id}"
+                               data-target="#collapseIn-${category.id}"><b>${category.name}</b>
+                            </div>
+                            <div id="divEditId-${category.id}" class="col-sm-7">${category.description}</div>
+                            <button class="btn btn-primary btn-sm"
                                     data-toggle="modal"
                                     data-target="#editCategory"
                                     onclick="setCategory(${category.id})">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </button>
-                            <button class="btn btn-danger"
+                            <button class="btn btn-danger btn-sm"
                                     data-toggle="modal"
                                     data-target="#deleteCategory"
                                     onclick="setCategory(${category.id})">

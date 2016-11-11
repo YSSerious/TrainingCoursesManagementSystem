@@ -66,6 +66,11 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	@Override
+	public int deleteCategory(Long id) {
+		return jdbcTemplate.update(DELETE_CATEGORY, id);
+	}
+
+	@Override
 	public int updateCategory(Category category) {
 		log.info("Updating role with id = {}", category.getId());
 		return jdbcTemplate.update(UPDATE_CATEGORY, category.getName(), category.getDescription(), category.getId());
@@ -96,6 +101,7 @@ public class CategoryDaoImpl implements CategoryDao {
 	public class CategoryCriterionMapper implements RowMapper<Criterion> {
 		public Criterion mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 			Criterion criterion = appContext.getBean(CriterionProxy.class, resultSet.getLong("id"));
+			criterion.setTitle(resultSet.getString("name"));
             return criterion;
 		}
 	}

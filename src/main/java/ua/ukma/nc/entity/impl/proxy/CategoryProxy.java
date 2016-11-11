@@ -33,6 +33,8 @@ public class CategoryProxy implements Category{
         this.id = id;
     }
 
+
+
     @Override
     public Long getId() {
         return id;

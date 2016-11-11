@@ -23,6 +23,8 @@ public class CriterionImpl implements Criterion{
         this.title = title;
     }
 
+
+
     public Long getId() {
         return id;
     }

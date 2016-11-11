@@ -50,6 +50,8 @@ public class CriterionDaoImpl implements CriterionDao{
 
     private static final String DELETE_CRITERION = "DELETE FROM tcms.criterion WHERE id = ?";
 
+    private static final String DELETE_BY_CATEGORY_ID = "DELETE FROM tcms.criterion WHERE id_category = ?";
+
     private static final String CREATE_CRITERION = "INSERT INTO tcms.criterion (name, id_category) VALUES (?,?)";
 
     private static final String UPDATE_CRITERION = "UPDATE tcms.criterion SET name = ?, id_category = ? WHERE id = ?";
@@ -66,6 +68,16 @@ public class CriterionDaoImpl implements CriterionDao{
     public int deleteCriterion(Criterion criterion) {
         log.info("Deleting criterion with id = {}", criterion.getId());
         return jdbcTemplate.update(DELETE_CRITERION, criterion.getId());
+    }
+
+    @Override
+    public int deleteCriterion(Long id) {
+        return jdbcTemplate.update(DELETE_CRITERION, id);
+    }
+
+    @Override
+    public int deleteByCategoryId(Long id) {
+        return jdbcTemplate.update(DELETE_BY_CATEGORY_ID, id);
     }
 
     @Override
@@ -86,11 +98,19 @@ public class CriterionDaoImpl implements CriterionDao{
         return jdbcTemplate.update(CREATE_CRITERION, criterion.getTitle(), criterion.getCategory().getId());
     }
 
+<<<<<<< HEAD
 	@Override
 	public List<Criterion> getByProject(Long projectId) {
         log.info("Getting all criterion");
         return jdbcTemplate.query(GET_BY_PROJECT, new CriterionMapper(), projectId);
 	}
+=======
+    @Override
+    public int createCriterion(String title, Long categoryId) {
+        log.info("Create new criterion with title = {}", title);
+        return jdbcTemplate.update(CREATE_CRITERION, title, categoryId);
+    }
+>>>>>>> origin/master
 
 //    private List<Project> getProjects(Long criterionID) {
 //        log.info("Getting all projects with criterion id = {}", criterionID);
