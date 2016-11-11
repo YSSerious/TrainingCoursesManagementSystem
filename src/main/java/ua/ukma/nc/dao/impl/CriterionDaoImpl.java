@@ -41,12 +41,16 @@ public class CriterionDaoImpl implements CriterionDao{
             return criterion;
         }
     }
+    
+    private static final String GET_BY_PROJECT = "SELECT id, name, id_category FROM tcms.criterion WHERE id IN (SELECT id_criterion FROM tcms.project_criterion WHERE id_project = ?)";
 
     private static final String GET_ALL = "SELECT id, name, id_category FROM tcms.criterion";
 
     private static final String GET_BY_ID = "SELECT id, name, id_category FROM tcms.criterion WHERE id = ?";
 
     private static final String DELETE_CRITERION = "DELETE FROM tcms.criterion WHERE id = ?";
+
+    private static final String DELETE_BY_CATEGORY_ID = "DELETE FROM tcms.criterion WHERE id_category = ?";
 
     private static final String CREATE_CRITERION = "INSERT INTO tcms.criterion (name, id_category) VALUES (?,?)";
 
@@ -67,6 +71,16 @@ public class CriterionDaoImpl implements CriterionDao{
     }
 
     @Override
+    public int deleteCriterion(Long id) {
+        return jdbcTemplate.update(DELETE_CRITERION, id);
+    }
+
+    @Override
+    public int deleteByCategoryId(Long id) {
+        return jdbcTemplate.update(DELETE_BY_CATEGORY_ID, id);
+    }
+
+    @Override
     public int updateCriterion(Criterion criterion) {
         log.info("Updating criterion with id = {}", criterion.getId());
         return jdbcTemplate.update(UPDATE_CRITERION, criterion.getTitle(),criterion.getCategory().getId(), criterion.getId());
@@ -82,6 +96,18 @@ public class CriterionDaoImpl implements CriterionDao{
     public int createCriterion(Criterion criterion) {
         log.info("Create new criterion with title = {}", criterion.getTitle());
         return jdbcTemplate.update(CREATE_CRITERION, criterion.getTitle(), criterion.getCategory().getId());
+    }
+
+	@Override
+	public List<Criterion> getByProject(Long projectId) {
+        log.info("Getting all criterion");
+        return jdbcTemplate.query(GET_BY_PROJECT, new CriterionMapper(), projectId);
+	}
+
+    @Override
+    public int createCriterion(String title, Long categoryId) {
+        log.info("Create new criterion with title = {}", title);
+        return jdbcTemplate.update(CREATE_CRITERION, title, categoryId);
     }
 
 //    private List<Project> getProjects(Long criterionID) {

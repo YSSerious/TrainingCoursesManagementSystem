@@ -20,6 +20,7 @@ public class CriterionProxy implements Criterion{
 
     private static final long serialVersionUID = 8371761992165080298L;
     private Long id;
+    private String title;
     private CriterionImpl criterion;
     
     @Autowired
@@ -44,14 +45,16 @@ public class CriterionProxy implements Criterion{
 
     @Override
     public String getTitle() {
-        downloadCriterion();
-        return criterion.getTitle();
+//        downloadCriterion();
+//        return criterion.getTitle();
+        return title;
     }
 
     @Override
     public void setTitle(String title) {
-        downloadCriterion();
-        criterion.setTitle(title);
+//        downloadCriterion();
+//        criterion.setTitle(title);
+        this.title=title;
     }
 
     @Override

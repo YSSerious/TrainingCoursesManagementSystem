@@ -1,9 +1,4 @@
-
 /* Move down content because we have a fixed navbar that is 50px tall */
-body {
-  padding-top: 50px;
-  padding-bottom: 20px;
-}
 
 .panel.panel-horizontal {
     display:table;
@@ -26,7 +21,7 @@ body {
     border-top-right-radius: 0;
     border-bottom-left-radius: 4px;
     width: min-intrinsic;
-    padding-right: !important;
+    padding-right: 0 !important;
     width: 150px;
 }
 

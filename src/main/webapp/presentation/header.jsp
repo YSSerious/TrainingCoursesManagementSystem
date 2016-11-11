@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html;charset=UTF-8"
          pageEncoding="UTF-8" %>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@taglib prefix="sec"
@@ -38,6 +39,7 @@
             crossorigin="anonymous"></script>
     <script
             src="<c:url value="/presentation/resources/third-party/bootstrap/js/bootstrap.min.js"/>"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
     <!--Own styles-->
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/presentation/resources/css/general.css"/>">
@@ -49,10 +51,10 @@
           href="<c:url value="/presentation/resources/css/forms.css"/>">
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/presentation/resources/css/footer.css"/>">
-    <link rel="stylesheet" type="text/css"
-    href="<c:url value="/presentation/resources/css/certainProject.css"/>">
+
     <!--Own js-->
     <script src="<c:url value="/presentation/resources/js/forms.js"/>"></script>
+    <script src="<c:url value="/presentation/resources/js/charts.js"/>"></script>
     <!--<script src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>-->
 </head>
 <body>

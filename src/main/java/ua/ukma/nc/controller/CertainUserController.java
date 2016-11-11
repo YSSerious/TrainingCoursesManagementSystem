@@ -18,12 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import ua.ukma.nc.dto.MarkTableDto;
 import ua.ukma.nc.dto.StudentProfile;
 import ua.ukma.nc.dto.StudyResultDto;
 import ua.ukma.nc.dto.UserDto;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.service.ChartService;
+import ua.ukma.nc.service.MarkTableService;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.service.RoleService;
 import ua.ukma.nc.service.StudentService;
@@ -39,7 +41,7 @@ public class CertainUserController {
 	private StudentService studentService;
 	
 	@Autowired
-	private RoleService roleService;
+	private MarkTableService markTableService;
 	
 	@Autowired
 	private UserService userService;
@@ -79,6 +81,12 @@ public class CertainUserController {
 	@ResponseBody
 	public List<Project> mentorProjects(@RequestParam("user") Long userId) {
 		return projectService.getMentorProjects(userId);
+	}
+	
+	@RequestMapping("/ajaxstudenttable")
+	@ResponseBody
+	public MarkTableDto tableData(@RequestParam("student") Long studentId, @RequestParam("project") Long projectId) {
+		return markTableService.getMarkTableDto(studentId, projectId);
 	}
 	
 	@RequestMapping("/ajaxchartdata")

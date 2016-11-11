@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -44,6 +45,8 @@ public class MeetingDaoImpl implements MeetingDao{
             return meeting;
         }
     }
+    
+    private static final String GET_BY_STUDENT_PROJECT = "SELECT id, id_group, time, place, name FROM tcms.meeting WHERE (id_group IN (SELECT id FROM tcms.group WHERE id_project = ?)) AND (id_group IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?)) ORDER BY time desc";
 
     private static final String GET_ALL = "SELECT id, id_group, name, time, place FROM tcms.meeting";
 
@@ -108,6 +111,12 @@ public class MeetingDaoImpl implements MeetingDao{
             return criterion;
         }
     }
+
+	@Override
+	public List<Meeting> getByStudentProject(Long studentId, Long projectId) {
+		log.info("Getting all meetings");
+        return jdbcTemplate.query(GET_BY_STUDENT_PROJECT, new MeetingMapper(),projectId, studentId);
+	}
 
 	
 }

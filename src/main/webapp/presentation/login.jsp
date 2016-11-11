@@ -9,7 +9,7 @@
 <div class="col-sm-6 col-sm-offset-3 login-form-wrapper">
     <div class="container-fluid col-sm-10 col-sm-offset-1 login-form">
         <div class="col-sm-12 col-sm-offset-0">
-            <h2 class="text-center">Welcome to TCMS!</h2>
+            <h2 class="text-center"><spring:message code="welcome"/></h2>
         </div>
         <div class="row">
         </div>
@@ -46,10 +46,10 @@
             </div>
             <div class="col-sm-8 col-sm-offset-2 bottom-row">
                 <div class="col-md-7 ">
-                    <label class="remember-me checkbox-inline"><input type="checkbox"  name="tcms-remember-me-param"> Remember me</label>
+                    <label class="remember-me checkbox-inline"><input type="checkbox"  name="tcms-remember-me-param"><spring:message code="remember.me"/></label>
                 </div>
                 <div class="col-md-4 col-md-offset-1">
-                    <button type="submit" class="btn btn-default">Sign in</button>
+                    <button type="submit" class="btn btn-default"><spring:message code="sign.in"/></button>
                 </div>
             </div>
         </form>

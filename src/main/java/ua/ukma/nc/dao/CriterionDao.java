@@ -12,9 +12,17 @@ public interface CriterionDao {
 
     int deleteCriterion(Criterion criterion);
 
+    int deleteCriterion(Long id);
+
+    int deleteByCategoryId(Long id);
+
     int updateCriterion(Criterion criterion);
 
     List<Criterion> getAll();
+    
+    List<Criterion> getByProject(Long projectId);
 
     int createCriterion(Criterion criterion);
+
+    int createCriterion(String title, Long categoryId);
 }
