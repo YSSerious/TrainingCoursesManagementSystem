@@ -82,4 +82,9 @@ public class AuthController {
                 return "redirect:/";
         return "redirect:/roles";
     }
+    
+    @RequestMapping (value = "/roles", method = RequestMethod.GET)
+    public String roles() {
+        return "chooseRole";
+    }
 }
