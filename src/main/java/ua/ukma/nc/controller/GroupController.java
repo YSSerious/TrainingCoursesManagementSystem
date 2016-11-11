@@ -13,8 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import ua.ukma.nc.dto.GroupDto;
+import ua.ukma.nc.dto.MeetingDto;
+import ua.ukma.nc.dto.UserDto;
 import ua.ukma.nc.entity.Group;
+
+import ua.ukma.nc.entity.Meeting;
+
 import ua.ukma.nc.entity.GroupAttachment;
+
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
@@ -22,6 +29,7 @@ import ua.ukma.nc.entity.impl.real.GroupImpl;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.service.GroupAttachmentService;
 import ua.ukma.nc.service.GroupService;
+import ua.ukma.nc.service.MeetingService;
 import ua.ukma.nc.service.RoleService;
 
 /**
@@ -34,8 +42,13 @@ public class GroupController {
 	private GroupAttachmentService groupAttachmentService;
     @Autowired
     private GroupService groupService;
+    
     @Autowired
     private RoleService roleService;
+    
+    @Autowired
+    private MeetingService meetingService;
+    
     private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
     
     @RequestMapping(value = "add", method = RequestMethod.POST)
@@ -58,18 +71,20 @@ public class GroupController {
 	public ModelAndView getGroup(@RequestParam Long id) {
 
 		ModelAndView model = new ModelAndView();
-		Group group = groupService.getById(id);
-		List<User> users = group.getUsers();
-		List<User> students = new ArrayList<User>();
-		List<User> mentors = new ArrayList<User>();
+		GroupDto group = new GroupDto(groupService.getById(id));
+		List<UserDto> users = group.getUsers();
+		List<UserDto> students = new ArrayList<UserDto>();
+		List<UserDto> mentors = new ArrayList<UserDto>();
+		
+
 		List<GroupAttachment> groupAttachments= new ArrayList<GroupAttachment>();
 		List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
-		for(User us: users){
+		for(UserDto us: users){
+
 			boolean isMentor=false;
-			List<Role> roles = us.getRoles();
-			for(Role r : roles){
-				System.out.println(r.getTitle());
-				if(r.getTitle().equals("ROLE_MENTOR")){
+			List<String> roles = us.getRoles();
+			for(String r : roles){
+				if(r.equals("ROLE_MENTOR")){
 					mentors.add(us);
 					isMentor=true;
 				}
@@ -77,25 +92,39 @@ public class GroupController {
 			}
 			if(!isMentor) students.add(us);
 		}
+
+		List<MeetingDto> meetings = new ArrayList<MeetingDto>();
+		for(Meeting mt : meetingService.getByGroup(id) ){
+			meetings.add(new MeetingDto(mt));
+		}
+		
+		
+
 		
 		for(GroupAttachment attach:groupAttachments){
 			if(attach.getGroup().equals(group))
 				groupAttachmentsFinal.add(attach);			
 		}
+		
 		groupAttachments=null;
+<<<<<<< HEAD
 	 
 		model.addObject("group-name",group.getName());
 		model.addObject("group-project",group.getProject().getName());
+=======
+		String projectName = group.getProject().getName();
+		model.addObject("group",group);
+		model.addObject("projectName",projectName);
+>>>>>>> origin/master
 		model.addObject("students",students);
 		model.addObject("mentors",mentors);
-	//	model.addObject("users",users);
 		model.addObject("attachments",groupAttachmentsFinal);
 		model.addObject("group-id",group.getId());
 		model.setViewName("group-view");
 	
-		for(User user : group.getUsers()){
-			log.info("users name : "+ user.getFirstName() + " users' role"+ user.getRoles());
-		}
+		//for(User user : group.getUsers()){
+		//	log.info("users name : "+ user.getFirstName() + " users' role"+ user.getRoles());
+	//	}
 		
 		log.info("Getting group with name : "+group.getName()+" and project: "+group.getProject().getName());
 		log.info("Group information sent");
