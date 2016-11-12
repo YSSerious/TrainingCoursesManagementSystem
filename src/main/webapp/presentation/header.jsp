@@ -39,7 +39,7 @@
             crossorigin="anonymous"></script>
     <script
             src="<c:url value="/presentation/resources/third-party/bootstrap/js/bootstrap.min.js"/>"></script>
-    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <!--Own styles-->
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/presentation/resources/css/general.css"/>">
@@ -50,11 +50,13 @@
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/presentation/resources/css/forms.css"/>">
     <link rel="stylesheet" type="text/css"
+          href="<c:url value="/presentation/resources/css/charts.css"/>">
+    <link rel="stylesheet" type="text/css"
           href="<c:url value="/presentation/resources/css/footer.css"/>">
-
+    
     <!--Own js-->
-    <script src="<c:url value="/presentation/resources/js/forms.js"/>"></script>
-    <script src="<c:url value="/presentation/resources/js/charts.js"/>"></script>
+    <script src="<c:url value="/presentation/resources/js/forms.js"/>" defer="defer"></script>
+    <script src="<c:url value="/presentation/resources/js/charts.js"/>" defer="defer"></script>
     <!--<script src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>-->
 </head>
 <body>

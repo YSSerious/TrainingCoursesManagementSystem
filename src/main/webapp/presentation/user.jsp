@@ -26,7 +26,6 @@
     				});
     			</script>
   			</c:if>
-  
    			<c:if test="${item eq 'ROLE_MENTOR'}">
     			<div class="mentor-projects">
     				Loading projects(mentor role)...
@@ -40,7 +39,9 @@
     			</script>
   			</c:if>
 		</c:forEach>
+                        <div id="chart"></div>
+                        <svg width="50" height="50">
+                        </svg>
 	</div>
 </div>
-
 <%@include file="footer.jsp"%>

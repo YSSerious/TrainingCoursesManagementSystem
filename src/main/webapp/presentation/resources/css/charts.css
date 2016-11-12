@@ -1,0 +1,21 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 12, 2016, 11:12:58 AM
+    Author     : michael
+*/
+
+.chart-bar {
+    fill: #4267a3;
+}
+
+.chart-bar:hover {
+    fill: #003284;
+}
+
+.chart-tip {
+    fill: white;
+}

@@ -8,6 +8,9 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface GroupService {
+	
+	List<Group> getByProjectId(Long projectId);
+	
     Group getById(Long id);
 
     int deleteGroup(Group group);

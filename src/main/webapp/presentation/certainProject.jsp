@@ -39,15 +39,11 @@
             <a href="" class="btn btn-default btn-xs pull-right-btn"> Add</a>
           </div>
           <ul class="list-group">
+          <c:forEach items="${groups}" var="group">
             <li class="list-group-item">
-              Group_1
+              <a href="/groups/group?id=${group.id}">${group.name}</a>
             </li>
-            <li class="list-group-item">
-              Group_1
-            </li>
-            <li class="list-group-item">
-              Group_1
-            </li>
+            </c:forEach>
           </ul>
         </div>
       </div>

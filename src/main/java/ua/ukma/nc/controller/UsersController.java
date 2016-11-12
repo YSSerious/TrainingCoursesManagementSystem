@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.mail.Mail;
@@ -31,18 +32,20 @@ public class UsersController {
 
 	private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
-
-
-	@RequestMapping(value = "/allUsers/{page}", method = RequestMethod.GET)
-	public String getAllUsersPage(Model model, Principal principal, @PathVariable("page") int page) {
-
+	@RequestMapping(value = "/allUsers", method = RequestMethod.GET)
+	public String getAllUsersPage(Model model, Principal principal,
+			@RequestParam(value = "page", required = false) Integer page) {
+		
+		if (page == null)
+			page = 1;
+		
 		int count = userService.count();
 		int noOfPages;
-		if(count%limit>0)
-			noOfPages = (count/limit)+1;
+		if (count % limit > 0)
+			noOfPages = (count / limit) + 1;
 		else
-			noOfPages = (count/limit);
-		List<User> users = userService.getSome(limit, limit*(page-1));
+			noOfPages = (count / limit);
+		List<User> users = userService.getSome(limit, limit * (page - 1));
 		model.addAttribute("users", users);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("noOfPages", noOfPages);
