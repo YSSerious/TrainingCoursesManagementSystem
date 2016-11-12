@@ -46,9 +46,9 @@ public class MeetingDaoImpl implements MeetingDao{
         }
     }
     
-    private static final String GET_BY_STUDENT_PROJECT_TYPE = "SELECT id, id_group, time, place, name FROM tcms.meeting WHERE (id_group IN (SELECT id FROM tcms.group WHERE id_project = ?)) AND (id_group IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?)) AND (id IN (SELECT id_meeting FROM tcms.meeting_review WHERE id_student = ? AND type = ?)) ORDER BY time desc";
+    private static final String GET_BY_STUDENT_PROJECT_TYPE = "SELECT id, id_group, time, place, name FROM tcms.meeting WHERE (id_group IN (SELECT id FROM tcms.group WHERE id_project = ?)) AND (id_group IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?)) AND (id IN (SELECT id_meeting FROM tcms.meeting_review WHERE id_student = ? AND type = ?)) ORDER BY time asc";
     
-    private static final String GET_BY_STUDENT_PROJECT = "SELECT id, id_group, time, place, name FROM tcms.meeting WHERE (id_group IN (SELECT id FROM tcms.group WHERE id_project = ?)) AND (id_group IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?)) ORDER BY time desc";
+    private static final String GET_BY_STUDENT_PROJECT = "SELECT id, id_group, time, place, name FROM tcms.meeting WHERE (id_group IN (SELECT id FROM tcms.group WHERE id_project = ?)) AND (id_group IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?)) ORDER BY time asc";
 
     private static final String GET_ALL = "SELECT id, id_group, name, time, place FROM tcms.meeting";
 

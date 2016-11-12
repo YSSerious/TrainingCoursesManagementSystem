@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ua.ukma.nc.dto.CertainMarkDto;
 import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.dto.MarkTableDto;
 import ua.ukma.nc.entity.Criterion;
@@ -26,13 +27,13 @@ public class MarkTableServiceImpl implements MarkTableService {
 	private CriterionService criterionService;
 
 	@Override
-	public MarkTableDto getMarkTableDto(Long studentId, Long projectId, List<MarkInformation> marksInformation ) {
+	public MarkTableDto getMarkTableDto(Long studentId, Long projectId, List<MarkInformation> marksInformation) {
 
 		List<Meeting> meetings = meetingService.getByStudentProject(studentId, projectId);
 		List<Meeting> absentMeetings = meetingService.getByStudentProjectType(studentId, projectId, 'A');
 		List<Meeting> leaveMeetings = meetingService.getByStudentProjectType(studentId, projectId, 'L');
 		List<Criterion> criteria = criterionService.getByProject(projectId);
-		
+
 		MarkTableDto markTableDto = new MarkTableDto();
 
 		List<Long> meetingId = new ArrayList<Long>();
@@ -71,19 +72,24 @@ public class MarkTableServiceImpl implements MarkTableService {
 
 		}
 
-		Map<String, String[][]> dataTable = new TreeMap<String, String[][]>();
+		Map<String, CertainMarkDto[][]> dataTable = new TreeMap<String, CertainMarkDto[][]>();
 
 		for (String key : criterionNames.keySet()) {
-			String[][] tempData = new String[criterionNames.get(key).size()][meetingNames.size() + 1];
+			CertainMarkDto[][] tempData = new CertainMarkDto[criterionNames.get(key).size()][meetingNames.size() + 1];
 			for (int i = 0; i < criterionNames.get(key).size(); i++) {
-				tempData[i][0] = criterionNames.get(key).get(i);
-				for (int j = 1; j < meetingNames.size() + 1; j++)
-					tempData[i][j] = "-";
+				tempData[i][0] = new CertainMarkDto();
+				tempData[i][0].setValue(criterionNames.get(key).get(i));
+				for (int j = 1; j < meetingNames.size() + 1; j++) {
+					tempData[i][j] = new CertainMarkDto();
+					tempData[i][j].setValue("-");
+					tempData[i][j].setCommentary("");
+					tempData[i][j].setDescription("Okay. Maybe next time.");
+				}
 			}
 
 			dataTable.put(key, tempData);
 		}
-		
+
 		markTableDto.setTableData(dataTable);
 
 		for (Meeting meeting : meetings) {
@@ -96,7 +102,10 @@ public class MarkTableServiceImpl implements MarkTableService {
 				int xIndex = criterionId.get(categoryName).indexOf(checkCriterionId);
 				int yIndex = meetingId.indexOf(checMeetingId);
 
-				dataTable.get(categoryName)[xIndex][yIndex + 1] = "U";
+				dataTable.get(categoryName)[xIndex][yIndex + 1] = new CertainMarkDto();
+				dataTable.get(categoryName)[xIndex][yIndex + 1].setValue("U");
+				dataTable.get(categoryName)[xIndex][yIndex + 1].setCommentary("");
+				dataTable.get(categoryName)[xIndex][yIndex + 1].setDescription("Maybe next time...");
 			}
 		}
 
@@ -111,7 +120,11 @@ public class MarkTableServiceImpl implements MarkTableService {
 				int xIndex = criterionId.get(categoryName).indexOf(checkCriterionId);
 				int yIndex = meetingId.indexOf(checMeetingId);
 
-				dataTable.get(categoryName)[xIndex][yIndex + 1] = "A";
+				dataTable.get(categoryName)[xIndex][yIndex + 1] = new CertainMarkDto();
+				dataTable.get(categoryName)[xIndex][yIndex + 1].setValue("A");
+				dataTable.get(categoryName)[xIndex][yIndex + 1].setCommentary("");
+				dataTable.get(categoryName)[xIndex][yIndex + 1].setDescription("Very-very bad...");
+
 			}
 		}
 
@@ -126,7 +139,11 @@ public class MarkTableServiceImpl implements MarkTableService {
 				int xIndex = criterionId.get(categoryName).indexOf(checkCriterionId);
 				int yIndex = meetingId.indexOf(checMeetingId);
 
-				dataTable.get(categoryName)[xIndex][yIndex + 1] = "L";
+				dataTable.get(categoryName)[xIndex][yIndex + 1] = new CertainMarkDto();
+				dataTable.get(categoryName)[xIndex][yIndex + 1].setValue("L");
+				dataTable.get(categoryName)[xIndex][yIndex + 1].setCommentary("");
+				dataTable.get(categoryName)[xIndex][yIndex + 1].setDescription("That's all...");
+
 			}
 		}
 
@@ -137,7 +154,10 @@ public class MarkTableServiceImpl implements MarkTableService {
 			int xIndex = criterionNames.get(categoryName).indexOf(markInformation.getCriterionName());
 			int yIndex = meetingNames.indexOf(markInformation.getMeetingName());
 
-			dataTable.get(categoryName)[xIndex][yIndex] = String.valueOf(markInformation.getMark());
+			dataTable.get(categoryName)[xIndex][yIndex + 1] = new CertainMarkDto();
+			dataTable.get(categoryName)[xIndex][yIndex + 1].setCommentary(markInformation.getCommentary());
+			dataTable.get(categoryName)[xIndex][yIndex + 1].setDescription(markInformation.getMarkDescription());
+			dataTable.get(categoryName)[xIndex][yIndex + 1].setValue(String.valueOf(markInformation.getMark()));
 		}
 		return markTableDto;
 	}

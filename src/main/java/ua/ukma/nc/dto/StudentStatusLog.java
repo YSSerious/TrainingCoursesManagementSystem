@@ -1,6 +1,7 @@
 package ua.ukma.nc.dto;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import ua.ukma.nc.entity.StatusLog;
 
@@ -11,7 +12,7 @@ public class StudentStatusLog {
 	private String firstName;
 	private String lastName;
 	private String secondName;
-	private Timestamp time;
+	private String date;
 	
 	public StudentStatusLog(){
 		
@@ -62,11 +63,11 @@ public class StudentStatusLog {
 	public void setSecondName(String secondName) {
 		this.secondName = secondName;
 	}
-	public Timestamp getDate() {
-		return time;
+	public String getDate() {
+		return date;
 	}
 
 	public void setDate(Timestamp time) {
-		this.time = time;
+		this.date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(time);
 	}
 }
