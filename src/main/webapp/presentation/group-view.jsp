@@ -94,8 +94,7 @@
     </div>
   </div>
    
-  <!--  -->
-  
+   <!--  -->
 	<button type="button" class="btn btn-default btn-xs" value="addAttachment" 
            id="addGroupAttachmentButton">Upload</button>
 	 
@@ -105,11 +104,19 @@
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 		<!--Data from DB to be inserted here -->
 	<!--  test value-->	
- 
-<c:forEach items="${attachments}" var="attachment">
-  
-  <a href="${attachment.attachmentScope}" >   ${attachment.name}</a><br/>
-    
+ <c:set var="count" value="0"  />
+
+
+<c:forEach items="${attachments}" var="attachment" >
+  <div class="bl-row">
+  <a href="${attachment.attachmentScope}" >   ${attachment.name}</a>
+  <div class="btn-group">
+    <button class="btn btn-xs btn-warning edit">Edit </button>
+    <button class="btn btn-xs btn-danger delete">Delete </button>
+    </div>
+    </div>
+    <br/>
+    <c:set var="count" value="${count + 1}"  />
     </c:forEach>
 	<script type="text/javascript">	
  
@@ -118,15 +125,41 @@
          $("#addGroupAttachmentModal").modal();
      });
  });
+	$(document).ready(function(){
+		 var ITEM_TEMPLATE = $(".bl-row").html();
+		 var node =$(ITEM_TEMPLATE);
+	     $("#editGroupAttachmentButton").click(function(){
+	         $("#editGroupAttachmentModal").modal();
+	     });
+	 });
  
  $(document).ready(function() {
-     $("#addGroupAttachmentButton").click(function(event) {
+     $("#submitButton").click(function(event) {
          $.ajax({
              url: "/groups/addAttachment",
-             type: "GET",
-             data: {"id_group" : $(group-id), 
+             type: "POST",
+             data: {"id_group" : "${groupId}", 
             	 "name" : $("#groupAttachmentName").val(),
             	 "attachment_scope": $("#groupAttachment").val()}
+            	   
+            		  
+            	  });
+      
+         });
+     });
+ $(document).ready(function() {
+
+     $("#editGroupAttachmentButton").click(function(event) {
+         $.ajax({
+             url: "/groups/editAttachment",
+             type: "POST",
+             data: {"id_group" : $(group-id), 
+            	 "name" : $("#groupAttachmentName").val(),
+            	 "attachment_scope": $("#groupAttachment").val()
+             }
+            	 
+             
+             
             	   
             		  
             	  });
