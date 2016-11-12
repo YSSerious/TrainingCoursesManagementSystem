@@ -41,4 +41,9 @@ public class GroupServiceImpl implements GroupService{
     public int createGroup(Group group) {
         return groupDao.createGroup(group);
     }
+
+	@Override
+	public List<Group> getByProjectId(Long projectId) {
+		return groupDao.getByProjectId(projectId);
+	}
 }

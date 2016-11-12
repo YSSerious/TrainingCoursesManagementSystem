@@ -44,6 +44,7 @@ public class GroupDaoImpl implements GroupDao{
             return group;
         }
     }
+    private static final String GET_BY_PROJECT_ID = "SELECT id, id_project, name FROM tcms.group WHERE id_project = ?";
 
     private static final String GET_ALL = "SELECT id, id_project, name FROM tcms.group";
 
@@ -79,6 +80,12 @@ public class GroupDaoImpl implements GroupDao{
     public List<Group> getAll() {
         log.info("Getting all groups");
         return jdbcTemplate.query(GET_ALL, new GroupMapper());
+    }
+    
+    @Override
+    public List<Group> getByProjectId(Long projectId) {
+        log.info("Getting all groups");
+        return jdbcTemplate.query(GET_BY_PROJECT_ID, new GroupMapper(), projectId);
     }
 
     @Override
