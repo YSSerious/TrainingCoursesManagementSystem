@@ -47,6 +47,7 @@ public class CategoryProxy implements Category{
 
     @Override
     public String getName() {
+    	downloadCategory();
         return category.getName();
     }
 

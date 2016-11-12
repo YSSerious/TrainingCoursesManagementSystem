@@ -14,6 +14,7 @@ import ua.ukma.nc.dto.StudentProfile;
 import ua.ukma.nc.dto.StudentStatusLog;
 import ua.ukma.nc.entity.MeetingReview;
 import ua.ukma.nc.entity.StatusLog;
+import ua.ukma.nc.service.ChartService;
 import ua.ukma.nc.service.MarkTableService;
 import ua.ukma.nc.service.MeetingResultService;
 import ua.ukma.nc.service.MeetingReviewService;
@@ -24,14 +25,17 @@ import ua.ukma.nc.service.StudentService;
 public class StudentServiceImpl implements StudentService {
 	
 	@Autowired
+	private ChartService chartService;
+
+	@Autowired
 	private MeetingResultService meetingResultService;
-	
+
 	@Autowired
 	private StatusLogService statusLogService;
-	
+
 	@Autowired
 	private MeetingReviewService meetingReviewService;
-	
+
 	@Autowired
 	private MarkTableService markTableService;
 
@@ -69,13 +73,14 @@ public class StudentServiceImpl implements StudentService {
 
 		for (MeetingReview meetingReview : meetingReviews) {
 			StudentMeetingReview studentMeetingReview = new StudentMeetingReview(meetingReview);
-			
 			studentMeetingReviews.add(studentMeetingReview);
 		}
 
 		studentProfile.setMeetingReviews(studentMeetingReviews);
+
+		studentProfile.setMarkTableDto(markTableService.getMarkTableDto(studentId, projectId, allMarkInfo));
 		
-		studentProfile.setMarkTableDto(markTableService.getMarkTableDto(studentId, projectId));
+		studentProfile.setChartInfo(chartService.getChartData(projectId, studentId));
 		return studentProfile;
 	}
 

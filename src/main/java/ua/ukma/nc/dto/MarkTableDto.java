@@ -1,12 +1,12 @@
 package ua.ukma.nc.dto;
 
 import java.util.List;
+import java.util.Map;
 
 public class MarkTableDto {
 	private List<String> meetings;
-	private List<String> criteria;
 	
-	private String[][] tableData;
+	private Map<String, String[][]> tableData;
 
 	public List<String> getMeetings() {
 		return meetings;
@@ -16,19 +16,11 @@ public class MarkTableDto {
 		this.meetings = meetings;
 	}
 
-	public List<String> getCriteria() {
-		return criteria;
-	}
-
-	public void setCriteria(List<String> criteria) {
-		this.criteria = criteria;
-	}
-
-	public String[][] getTableData() {
+	public Map<String, String[][]> getTableData() {
 		return tableData;
 	}
 
-	public void setTableData(String[][] tableData) {
-		this.tableData = tableData;
+	public void setTableData(Map<String, String[][]> dataTable) {
+		this.tableData = dataTable;
 	}
 }

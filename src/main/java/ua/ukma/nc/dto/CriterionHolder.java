@@ -5,6 +5,7 @@ import java.util.List;
 public class CriterionHolder {
 	private String category;
 	private List<Integer> marks;
+	
 	public List<Integer> getMarks() {
 		return marks;
 	}

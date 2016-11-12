@@ -8,6 +8,7 @@ public class StudentProfile {
 	private List<StudentStatusLog> studentStatuses;
 	private List<StudentMeetingReview> meetingReviews;
 	private MarkTableDto markTableDto;
+	private Map<String, List<StudyResultDto>> chartInfo;
 
 	public Map<String, List<MarkInformation>> getMarkInformation() {
 		return markInformation;
@@ -39,5 +40,13 @@ public class StudentProfile {
 
 	public void setMarkTableDto(MarkTableDto markTableDto) {
 		this.markTableDto = markTableDto;
+	}
+
+	public Map<String, List<StudyResultDto>> getChartInfo() {
+		return chartInfo;
+	}
+
+	public void setChartInfo(Map<String, List<StudyResultDto>> chartInfo) {
+		this.chartInfo = chartInfo;
 	}
 }
