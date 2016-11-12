@@ -13,6 +13,7 @@ import ua.ukma.nc.entity.impl.real.CategoryImpl;
 import ua.ukma.nc.entity.impl.real.CriterionImpl;
 import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.CriterionService;
+import ua.ukma.nc.util.exception.CriteriaDeleteException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,9 @@ public class CategoryController {
 
     @RequestMapping(value = "/deleteCriteria", method = RequestMethod.POST)
     @ResponseBody
-    public String deleteCriteria(@RequestParam Long criteriaId) {
+    public String deleteCriteria(@RequestParam Long criteriaId) throws CriteriaDeleteException {
+        if(criterionService.isExistInProjects(criteriaId))
+            throw new CriteriaDeleteException("Criteria is used in some projects, and cannot be deleted");
         int check = criterionService.deleteCriterion(criteriaId);
         if(check==1)
         return "Criteria was deleted successfully";
@@ -77,7 +80,10 @@ public class CategoryController {
 
     @RequestMapping(value = "/deleteCategory", method = RequestMethod.POST)
     @ResponseBody
-    public String deleteCategory(@RequestParam Long categoryId) {
+    public String deleteCategory(@RequestParam Long categoryId) throws CriteriaDeleteException {
+        Category category= categoryService.getById(categoryId);
+        if(isCriteriaUsing(category))
+            throw new CriteriaDeleteException("Criteria from this category used in some projects, so this category cannot be deleted");
         categoryService.deleteCategory(categoryId);
         return "Category was deleted successfully";
     }
@@ -89,5 +95,13 @@ public class CategoryController {
         if(check==1)
         return new CategoryDto(name, description);
         return null;
+    }
+
+    boolean isCriteriaUsing(Category category){
+        for(Criterion criterion: category.getCriteria()){
+        if(criterionService.isExistInProjects(criterion.getId()))
+            return true;
+        }
+        return false;
     }
 }

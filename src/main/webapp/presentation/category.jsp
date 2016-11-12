@@ -203,6 +203,34 @@
             </div>
         </div>
         <!-- finish edit category modal -->
+        <!-- start criteriaDeleteError modal -->
+        <div id="criteriaDeleteError" class="modal fade static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal"><span
+                                class="glyphicon glyphicon-remove"></span></button>
+                        <h4 class="modal-title">Criteria is used in some projects, and cannot be deleted</h4>
+                        <button data-dismiss="modal" class="btn btn-link">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- finish criteriaDeleteError modal -->
+        <!-- start categoryDeleteError modal -->
+        <div id="categoryDeleteError" class="modal fade static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal"><span
+                                class="glyphicon glyphicon-remove"></span></button>
+                        <h4 class="modal-title">Criteria from this category used in some projects, so this category cannot be deleted</h4>
+                        <button data-dismiss="modal" class="btn btn-link">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- finish categoryDeleteError modal -->
     </div>
 </div>
 

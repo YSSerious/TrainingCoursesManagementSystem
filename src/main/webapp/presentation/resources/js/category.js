@@ -43,6 +43,8 @@ $(document).ready(function () {
             },
             error: function (textStatus) {
                 console.log(textStatus);
+                $('#categoryDeleteError').modal('show');
+
             }
         });
     });
@@ -74,6 +76,7 @@ $(document).ready(function () {
             },
             error: function (textStatus) {
                 console.log(textStatus);
+                $('#criteriaDeleteError').modal('show');
             }
         });
     });

@@ -61,4 +61,9 @@ public class CriterionServiceImpl implements CriterionService{
     public int createCriterion(String title, Long categoryId) {
         return criterionDao.createCriterion(title, categoryId);
     }
+
+    @Override
+    public boolean isExistInProjects(Long id) {
+        return criterionDao.isExistInProjects(id);
+    }
 }

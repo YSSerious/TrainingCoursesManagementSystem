@@ -60,6 +60,9 @@ public class CriterionDaoImpl implements CriterionDao{
 
     private static final String GET_PROJECTS_BY_ID = "SELECT id_project FROM tcms.project_criterion WHERE id_criterion = ?";
 
+    private static final String IS_USED_IN_PROJECTS = "SELECT EXISTS (SELECT * from tcms.project_criterion where id_criterion = ?)";
+
+
     @Override
     public Criterion getById(Long id) {
         log.info("Getting criterion with id = {}", id);
@@ -115,6 +118,11 @@ public class CriterionDaoImpl implements CriterionDao{
     public int createCriterion(String title, Long categoryId) {
         log.info("Create new criterion with title = {}", title);
         return jdbcTemplate.update(CREATE_CRITERION, title, categoryId);
+    }
+
+    @Override
+    public boolean isExistInProjects(Long id) {
+        return jdbcTemplate.queryForObject(IS_USED_IN_PROJECTS, Boolean.class, id);
     }
 
 //    private List<Project> getProjects(Long criterionID) {

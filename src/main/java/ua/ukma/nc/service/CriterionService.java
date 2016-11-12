@@ -25,4 +25,6 @@ public interface CriterionService {
     int createCriterion(Criterion criterion);
 
     int createCriterion(String title, Long categoryId);
+
+    boolean isExistInProjects(Long id);
 }
