@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface UserService {
 	
+	boolean canView(Long id);
+	
 	void changeStatus(Long id, Long statusId, String commentary);
 
     User getByEmail(String email);

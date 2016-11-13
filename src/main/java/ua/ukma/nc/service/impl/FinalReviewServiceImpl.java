@@ -46,4 +46,9 @@ public class FinalReviewServiceImpl implements FinalReviewService{
 	public boolean exists(Long studentId, Long groupId, String type) {
 		return finalReviewDao.exists(studentId, groupId, type);
 	}
+
+	@Override
+	public FinalReview getByStudent(Long projectId, Long studentId, String type) {
+		return finalReviewDao.getByStudent(projectId, studentId, type);
+	}
 }

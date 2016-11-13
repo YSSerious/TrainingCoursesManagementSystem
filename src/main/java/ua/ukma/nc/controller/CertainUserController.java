@@ -25,49 +25,49 @@ import ua.ukma.nc.service.ChartService;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.service.StudentService;
 
-
-@Controller 
+@Controller
 public class CertainUserController {
-	
+
 	@Autowired
 	private ChartService chartService;
-	
+
 	@Autowired
 	private StudentService studentService;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private ProjectService projectService;
-	
+
 	@RequestMapping(value = "/certainUser/{id}", method = RequestMethod.GET)
-	public String getCertainUser(Model model,Principal principal,@PathVariable("id") Long id){
-		User user=userService.getById(id);
+	public String getCertainUser(Model model, Principal principal, @PathVariable("id") Long id) {
+		User user = userService.getById(id);
 		model.addAttribute("user", user);
 		return "certainUser";
 	}
-	
+
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.POST)
-	public ModelAndView changeStatus(@PathVariable("id") Long id, @RequestParam("commentary") String commentary, @RequestParam("status") Long statusId) {
-		
+	public ModelAndView changeStatus(@PathVariable("id") Long id, @RequestParam("commentary") String commentary,
+			@RequestParam("status") Long statusId) {
+
 		ModelAndView model = new ModelAndView();
-		try{
-		userService.changeStatus(id, statusId, commentary);
-		model.addObject("success", "Successfully changed!");
-		}catch(IllegalArgumentException e){
+		try {
+			userService.changeStatus(id, statusId, commentary);
+			model.addObject("success", "Successfully changed!");
+		} catch (IllegalArgumentException e) {
 			model.addObject("error", e.getMessage());
-		}catch(Exception e){
+		} catch (Exception e) {
 			model.addObject("error", "Check your permission and student information!");
 		}
-		
+
 		UserDto userDto = new UserDto(userService.getById(id));
 
 		model.addObject("user", userDto);
 		model.setViewName("user");
 		return model;
 	}
-	
+
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public ModelAndView viewUser(@PathVariable("id") Long id) {
 		ModelAndView model = new ModelAndView();
@@ -76,11 +76,15 @@ public class CertainUserController {
 		model.setViewName("user");
 		return model;
 	}
-	
+
 	@RequestMapping("/ajaxstudentprofile")
 	@ResponseBody
-	public StudentProfile studentProfile(@RequestParam("student") Long studentId, @RequestParam("project") Long projectId) {
-		return studentService.generateStudentProfile(studentId, projectId);
+	public StudentProfile studentProfile(@RequestParam("student") Long studentId,
+			@RequestParam("project") Long projectId) {
+		if (userService.canView(studentId))
+			return studentService.generateStudentProfile(studentId, projectId);
+		
+		return null;
 	}
 
 	@RequestMapping("/ajaxstudentprojects")
@@ -88,16 +92,10 @@ public class CertainUserController {
 	public List<Project> studentProjects(@RequestParam("user") Long userId) {
 		return projectService.getStudentProjects(userId);
 	}
-	
+
 	@RequestMapping("/ajaxmentorprojects")
 	@ResponseBody
 	public List<Project> mentorProjects(@RequestParam("user") Long userId) {
 		return projectService.getMentorProjects(userId);
-	}
-	
-	@RequestMapping("/ajaxchartdata")
-	@ResponseBody
-	public Map<String, List<StudyResultDto>> chartData(@RequestParam("student") Long studentId, @RequestParam("project") Long projectId) {
-		return chartService.getChartData(projectId, studentId);
 	}
 }

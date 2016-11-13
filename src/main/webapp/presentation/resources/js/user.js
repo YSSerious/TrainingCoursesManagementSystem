@@ -84,7 +84,10 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><h2>Grades:</h2><table class="table table-bordered"><tr><th>#</th>';
     	 	    	    	$.each(data.markTableDto.meetings, function( key, value ) {
-    	 	    	    		table+= '<th>' + value + '</th>';
+    	 	    	    		if(key<data.markTableDto.meetings.length-1)
+    	 	    	    			table+= '<th>M' + (key+1) + '</th>';
+    	 	    	    		else
+    	 	    	    			table+= '<th>F</th>';
     	 	    	    	});
     	 	    	    	table+= '</tr>';
     	 	    	    	
@@ -124,12 +127,12 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	table+= '</table>';
     	 	    	    	
     	 	    	    	table+= '<br/><h2>Meeting reviews: </h2>';
-    	 	    	    	table+= '<table class="table table-bordered"><tr><th>Name</th>';
+    	 	    	    	table+= '<table class="table table-bordered"><tr><th>ID</th><th>Name</th>';
     	 	    	    	table+= '<th>Type</th>';
     	 	    	    	table+= '<th>Employee</th>';
     	 	    	    	table+= '<th>Commentary</th></tr>';
     	 	    	    	$.each(data.meetingReviews, function( key, value ) {
-    	 	    	    		table+= '<tr'+getRow(value.type)+'><td>'+value.meetingName+'</td>';
+    	 	    	    		table+= '<tr'+getRow(value.type)+'><td>M'+(key+1)+'</td><td>'+value.meetingName+'</td>';
     	 	    	    		table+= '<td>'+value.type+'</td>';
     	 	    	    		table+= '<td>'+value.firstName+' '+value.secondName+' '+value.lastName+'</td>';
         	 	    	    	table+= '<td>'+value.commentary+'</td></tr>';

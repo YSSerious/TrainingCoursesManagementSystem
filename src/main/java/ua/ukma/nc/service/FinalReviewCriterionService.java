@@ -8,6 +8,9 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface FinalReviewCriterionService {
+	
+	List<FinalReviewCriterion> getByFinalReview(Long id);
+	
     FinalReviewCriterion getById(Long id);
 
     int deleteFinalReviewCriterion(FinalReviewCriterion finalReviewCriterion);

@@ -9,6 +9,7 @@ public class StudentProfile {
 	private List<StudentMeetingReview> meetingReviews;
 	private MarkTableDto markTableDto;
 	private Map<String, List<StudyResultDto>> chartInfo;
+	private Map<String, List<StudyResultDto>> chartInfoFinal;
 
 	public Map<String, List<MarkInformation>> getMarkInformation() {
 		return markInformation;
@@ -48,5 +49,13 @@ public class StudentProfile {
 
 	public void setChartInfo(Map<String, List<StudyResultDto>> chartInfo) {
 		this.chartInfo = chartInfo;
+	}
+
+	public Map<String, List<StudyResultDto>> getChartInfoFinal() {
+		return chartInfoFinal;
+	}
+
+	public void setChartInfoFinal(Map<String, List<StudyResultDto>> chartInfoFinal) {
+		this.chartInfoFinal = chartInfoFinal;
 	}
 }

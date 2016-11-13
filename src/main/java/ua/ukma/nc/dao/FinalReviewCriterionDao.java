@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface FinalReviewCriterionDao {
     FinalReviewCriterion getById(Long id);
+    
+    List<FinalReviewCriterion> getByFinalReview(Long id);
 
     int deleteFinalReviewCriterion(FinalReviewCriterion finalReviewCriterion);
 

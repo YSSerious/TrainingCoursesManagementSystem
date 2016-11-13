@@ -56,6 +56,7 @@ public class StudentServiceImpl implements StudentService {
 		}
 
 		StudentProfile studentProfile = new StudentProfile();
+
 		studentProfile.setMarkInformation(separateInformation);
 
 		List<StatusLog> statusLoges = statusLogService.getByProjectStudent(projectId, studentId);
@@ -77,10 +78,10 @@ public class StudentServiceImpl implements StudentService {
 		}
 
 		studentProfile.setMeetingReviews(studentMeetingReviews);
-
 		studentProfile.setMarkTableDto(markTableService.getMarkTableDto(studentId, projectId, allMarkInfo));
 		
 		studentProfile.setChartInfo(chartService.getChartData(projectId, studentId));
+		studentProfile.setChartInfoFinal(chartService.getChartDataFinalReview(projectId, studentId));
 		return studentProfile;
 	}
 

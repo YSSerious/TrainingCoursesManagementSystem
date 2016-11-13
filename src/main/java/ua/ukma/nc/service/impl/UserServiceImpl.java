@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
 				throw new IllegalArgumentException("Student hasn't final review!");
 			else
 				changeStatus(id, statusId, oldStatus, name, commentary);
-			
+
 		} else if (oldStatus == 2 && statusId == 1 && (isHR || isMentor)) {
 			changeStatus(id, statusId, oldStatus, name, commentary);
 
@@ -240,5 +240,20 @@ public class UserServiceImpl implements UserService {
 		studentStatus.setStatus(status);
 
 		studentStatusService.updateStudentStatus(studentStatus);
+	}
+
+	@Override
+	public boolean canView(Long id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		boolean showAllUsers = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
+				|| authorities.contains(new SimpleGrantedAuthority("ROLE_HR"));
+
+		if (!showAllUsers){
+			String name = authentication.getName();
+			return userDao.canView(name, id);
+		}
+
+		return true;
 	}
 }
