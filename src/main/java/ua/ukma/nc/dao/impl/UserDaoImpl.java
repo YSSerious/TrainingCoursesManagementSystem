@@ -63,6 +63,8 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String COUNT = "SELECT COUNT(*) FROM tcms.user";
 	
+	private static final String DELETE_ROLES = "DELETE FROM tcms.user_role WHERE id_user = ?";
+	
 	private static final String DELETE_USER = "DELETE FROM tcms.user WHERE id = ?";
 
 	private static final String CREATE_USER = " INSERT INTO tcms.user (email, first_name, second_name, last_name, password, is_active) VALUES (?,?,?,?,?,?)";
@@ -73,7 +75,7 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String IS_EXIST = "SELECT EXISTS (SELECT email from tcms.user where email = ?)";
 
-	private static final String ADD_ROLES = "insert into user_role (id_user, id_role) values (?, ?)";
+	private static final String ADD_ROLES = "insert into tcms.user_role (id_user, id_role) values (?, ?)";
 
 	private static final String SET_STUDENT_STATUS = "insert into student_status (id_student, id_status) values (?, ?)";
 
@@ -159,6 +161,12 @@ public class UserDaoImpl implements UserDao {
 		log.info("Is exist this user {} ?");
 		return jdbcTemplate.queryForObject(MENTOR_CHECK, Boolean.class, studentId, mentorEmail, mentorEmail);
 	
+	}
+
+	@Override
+	public void deleteRoles(User user) {
+		jdbcTemplate.update(DELETE_ROLES, user.getId());
+		
 	}
 
 }

@@ -32,10 +32,38 @@
 		Roles: ${user.roles} <br/>
 		Active: ${user.active} <br/>
 	</div>
+		<div class="col-sm-4">
+		<sec:authorize access="hasRole('ADMIN')">
+		<div class="row">
 		
+	<form action="/manageRoles" method="post">
+	<div class="col-sm-6">
+	<c:forEach var="role" items="${roles}">
+	<div class="checkbox">
+  		<label><input type="checkbox" name="roles" 
+  		
+  		<c:forEach var="userRole" items="${user.roles}">
+			<c:if test="${role.title eq userRole}">
+				checked
+			</c:if>
+		</c:forEach>
+		
+  		value="${role.id}">${role.title}</label>
+	</div>
+	</c:forEach>
+	</div>
+	<div class="col-sm-6">
+	<br/>
+	<br/>
+	<input type="hidden" name="student" value="${user.id}">
+	<center><button type="submit" class="btn btn-primary">Submit</button></center>
+	</div>
+	</form>
+	</div>
+	</sec:authorize>
 		<c:forEach var="item" items="${user.roles}">
 			<c:if test="${item eq 'Student'}">
-			<div class="col-sm-4">
+			
 				Status: ${user.statusTitle} <br/>
 				
 				<sec:authorize access="hasRole('HR')">
@@ -101,10 +129,11 @@
 						</sec:authorize>
 					</c:if>
 				</sec:authorize>
-				</div>
+				
 				
 			</c:if>
 		</c:forEach>
+		</div>
 		</div>
 		<br/>
 			

@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int addRole(User user, Role role) {
-		return 0;
+		return userDao.addRole(user, role);
 	}
 
 	@Override
@@ -255,5 +255,10 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return true;
+	}
+
+	@Override
+	public void deleteRoles(User user) {
+		userDao.deleteRoles(user);
 	}
 }

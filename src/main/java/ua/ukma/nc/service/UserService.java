@@ -35,5 +35,7 @@ public interface UserService {
 
 	List<User> getSome(int limit, int offset);
 
+	void deleteRoles(User user);
+	
 	int count();
 }

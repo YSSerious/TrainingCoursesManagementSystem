@@ -29,6 +29,8 @@ public interface UserDao {
     boolean isExist(User user);
 
     int addRole(User user, Role role);
+    
+    void deleteRoles(User user);
 
     int setStatus(User user, Status status);
 

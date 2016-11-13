@@ -16,20 +16,24 @@ import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.UserService;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import ua.ukma.nc.dto.CategoryDto;
 import ua.ukma.nc.dto.StudentProfile;
 import ua.ukma.nc.dto.StudyResultDto;
 import ua.ukma.nc.dto.UserDto;
+import ua.ukma.nc.dto.RoleDto;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.service.ChartService;
 import ua.ukma.nc.service.ProjectService;
+import ua.ukma.nc.service.RoleService;
 import ua.ukma.nc.service.StudentService;
 
 @Controller
 public class CertainUserController {
-
+	
 	@Autowired
-	private ChartService chartService;
+	private RoleService roleService;
 
 	@Autowired
 	private StudentService studentService;
@@ -46,6 +50,18 @@ public class CertainUserController {
 		model.addAttribute("user", user);
 		return "certainUser";
 	}
+	
+	@RequestMapping(value = "/manageRoles", method = RequestMethod.POST)
+	public ModelAndView changeRole(@RequestParam("student") Long student, @RequestParam("roles") Long[] chroles){
+		User user = userService.getById(student);
+		userService.deleteRoles(user);
+		
+		for(Long roleId: chroles)
+			userService.addRole(user, roleService.getById(roleId));
+		
+		return new ModelAndView("redirect:" + "users/"+student);
+	}
+	
 
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.POST)
 	public ModelAndView changeStatus(@PathVariable("id") Long id, @RequestParam("commentary") String commentary,
@@ -65,6 +81,10 @@ public class CertainUserController {
 
 		model.addObject("user", userDto);
 		model.setViewName("user");
+		
+		List<RoleDto> roles = roleService.getAll().stream().map(RoleDto::new).collect(Collectors.toList());
+		model.addObject("roles", roles);
+		
 		return model;
 	}
 
@@ -74,6 +94,10 @@ public class CertainUserController {
 		UserDto userDto = new UserDto(userService.getById(id));
 		model.addObject("user", userDto);
 		model.setViewName("user");
+
+		List<RoleDto> roles = roleService.getAll().stream().map(RoleDto::new).collect(Collectors.toList());
+		model.addObject("roles", roles);
+		
 		return model;
 	}
 
