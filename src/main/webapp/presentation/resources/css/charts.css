@@ -8,6 +8,14 @@ and open the template in the editor.
     Author     : michael
 */
 
+.charts-wrapper {
+    vertical-align: top;
+}
+
+.chart {
+    margin: 10px;
+}
+
 .chart-bar {
     fill: #4267a3;
 }
@@ -18,4 +26,21 @@ and open the template in the editor.
 
 .chart-tip {
     fill: white;
+    pointer-events: none;
 }
+
+.axis-x path.domain,
+.axis-x line{
+   fill: none;
+   stroke: none;
+}
+
+path.domain {
+    stroke: none;
+}
+
+.axis-y .tick line {
+   stroke-width: 1;
+   stroke: rgba(0, 0, 0, 0.2);
+}
+

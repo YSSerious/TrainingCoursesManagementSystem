@@ -53,14 +53,14 @@ function createStudentProjectsInfo(userId, divInside){
 	    	$.each( data, function( key, value ) {
 	    		s+= '<div class="panel panel-default"><div id="pr'+value.id+'" class="panel-heading">' + value.name;
 	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
- 	    		s+= '</div><div id="sub'+value.id+'"><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><h4><br/>'+value.description+'</h4><br/><h2>Charts:</h2><div class="col-sm-8 col-sm-offset-2" id="chart'+value.id+'">Loading...</div></div></div></div></div></div>';
+ 	    		s+= '</div><div id="sub'+value.id+'"><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><h4>'+value.description+'</h4><div class="col-sm-8 col-sm-offset-2 charts-wrapper" id="chart'+value.id+'"></div></div></div></div></div></div>';
 	    	});
 
 	    	if(jQuery.isEmptyObject(data))
 	    		s= '<br/>No projects (student)';
 	    	
 	    	$(divInside).html(s);
-	    	
+                
 	    	$.each(data, function(key, value) {
 	    		$('#sub'+value.id).hide();
 	    		$('#pr'+value.id).click(function() {
@@ -79,31 +79,7 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    },
     	 	    	    
     	 	    	    'success' : function(data) {
-    	 	    	    	
-    	 	    	    	$('#chart'+value.id).html('');
-    	 	    	    	
-    	 	    	    	$.each(data.chartInfo, function( key, value1 ) {
-    	 	    	    		var text = '<div id="ch'+value.id+key+'"></div><br/>';
-    	 	    	    		$('#chart'+value.id).append(text);
-    	 	    	    	});
-    	 	    	    	
-    	 	    	    	$.each(data.chartInfo, function( key, value1 ) {
-    	 	    	    		if(value1.length=1){
-    	 	    	    			value1.unshift({ criterionName: '', averageValue: null});
-    	 	    	    			value1.unshift({ criterionName: '', averageValue: null});
-    	 	    	    		}
-    	 	    	    		
-    	 	    	    		Morris.Bar({
-    	 	    	    			  element: 'ch'+value.id+key+'',
-    	 	    	    			  data: value1,
-    	 	    	    			  ymax: 5,
-    	 	    	    			  grid: true,
-    	 	    	    			  ymin: 1,
-    	 	    	    			  xkey: 'criterionName',
-    	 	    	    			  ykeys: ['averageValue'],
-    	 	    	    			  labels: [key]
-    	 	    	    			});
-    	 	    	    	});
+                                createCharts(data.chartInfo, value.id);
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><h2>Grades:</h2><table class="table table-bordered"><tr><th>#</th>';
     	 	    	    	$.each(data.markTableDto.meetings, function( key, value ) {
@@ -168,3 +144,39 @@ function createStudentProjectsInfo(userId, divInside){
 	    }
 	  });
 };
+
+function createCharts(data, projectId) {
+    var chartBlock = $('#chart' + projectId);
+    var chartTabs = "<ul class='nav nav-pills' id='chart-pills'>";
+    var categories = [];
+    for (var i in data) {
+        categories.push(data[i]);
+        chartTabs += "<li><a data-toggle='pill' href='#chart" + i + "'>" + i + "</a></li>";
+    }
+    chartTabs += "</ul>";
+    chartBlock.append(chartTabs);
+    var tabContent = $("<div class='tab-content'></div>");
+    chartBlock.append(tabContent);
+    $('#chart-pills li:first-child').attr("class", "active");
+    var criteriaValues = [];
+    $.each(categories, function (index, value) {
+        $.each(value, function (index, value) {
+            criteriaValues.push(value.averageValue);
+        });
+    });
+    var maxYAxisValue = Math.max.apply(null, criteriaValues);
+
+    $.each(data, function (key, value) {
+        var text = '<div class="tab-pane fade chart" id="chart' + key + '"></div>';
+        $(text).appendTo(tabContent);
+    });
+    $("div:first-child", tabContent).addClass("in active");
+    $.each(data, function (key, value) {
+
+        if (value.length === 1) {
+//    	 	    	    			value1.unshift({ criterionName: 'd', averageValue: 4});
+            value.push({criterionName: 'd', averageValue: 4});
+        }
+        drawCriteriaChart(value, '#chart' + key, maxYAxisValue, key);
+    });
+}

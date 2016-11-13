@@ -39,9 +39,6 @@
     			</script>
   			</c:if>
 		</c:forEach>
-                        <div id="chart"></div>
-                        <svg width="50" height="50">
-                        </svg>
 	</div>
 </div>
 <%@include file="footer.jsp"%>
