@@ -60,6 +60,7 @@
 </div>
 
 <div class="attachments_template">
+ 
 	<label>Attachments</label><br/>
 	
 	 <div class="modal fade" id="addGroupAttachmentModal" role="dialog">
@@ -104,20 +105,24 @@
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 		<!--Data from DB to be inserted here -->
 	<!--  test value-->	
- <c:set var="count" value="0"  />
-
-
+	 
 <c:forEach items="${attachments}" var="attachment" >
-  <div class="bl-row">
+ 
+    <li class="list-group-item">
   <a href="${attachment.attachmentScope}" >   ${attachment.name}</a>
+ 
   <div class="btn-group">
-    <button class="btn btn-xs btn-warning edit">Edit </button>
-    <button class="btn btn-xs btn-danger delete">Delete </button>
+    <button id="e${attachment.id}"class="btn btn-xs btn-warning edit ${attachment.id}">Edit </button>
+    <button id="d${attachment.id}" class="btn btn-xs btn-danger delete ${attachment.id}">Delete </button>
     </div>
-    </div>
+    
     <br/>
-    <c:set var="count" value="${count + 1}"  />
+    
+  
     </c:forEach>
+    
+  
+ 
 	<script type="text/javascript">	
  
 	$(document).ready(function(){
@@ -126,8 +131,7 @@
      });
  });
 	$(document).ready(function(){
-		 var ITEM_TEMPLATE = $(".bl-row").html();
-		 var node =$(ITEM_TEMPLATE);
+		 
 	     $("#editGroupAttachmentButton").click(function(){
 	         $("#editGroupAttachmentModal").modal();
 	     });
@@ -166,7 +170,14 @@
       
          });
      });
- 
+ $('.delete').click(function(event){
+	   var idOfAttachment = event.target.id;
+	   idOfAttachment = idOfAttachment.substring(1,idOfAttachment.length);
+	   $.ajax({
+		   url: "/groups/deleteAttachment",
+	   		data:{ "id":idOfAttachment}
+	   
+	   });
  
  </script>
 	

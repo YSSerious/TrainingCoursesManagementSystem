@@ -69,16 +69,18 @@ public class GroupController {
 	
 	@RequestMapping(value = "/group", method = RequestMethod.GET)
 	public ModelAndView getGroup(@RequestParam Long id) {
-
+		
 		ModelAndView model = new ModelAndView();
 		GroupDto group = new GroupDto(groupService.getById(id));
 		List<UserDto> users = group.getUsers();
 		List<UserDto> students = new ArrayList<UserDto>();
 		List<UserDto> mentors = new ArrayList<UserDto>();
-		
+		 
+	 
 
-		List<GroupAttachment> groupAttachments= new ArrayList<GroupAttachment>();
-		List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
+		List<GroupAttachment> groupAttachments= groupAttachmentService.getAll();
+		System.out.println(groupAttachments.size()+"Size of ");
+		//List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
 		for(UserDto us: users){
 
 			boolean isMentor=false;
@@ -97,24 +99,18 @@ public class GroupController {
 		for(Meeting mt : meetingService.getByGroup(id) ){
 			meetings.add(new MeetingDto(mt));
 		}
-		
-		
-
-		
+ 
+	 
+		/*
 		for(GroupAttachment attach:groupAttachments){
 			if(attach.getGroup().equals(group))
 				groupAttachmentsFinal.add(attach);			
 		}
- 
-		//Test of attachment
-		GroupAttachment attachment =new GroupAttachment();
-		attachment.setAttachmentScope("https://www.tutorialspoint.com/java/java_tutorial.pdf");
-		attachment.setGroup(groupService.getById((long) 8));
-		attachment.setName("Example");
-		groupAttachmentService.updateGroupAttachment(attachment);
-		groupAttachmentsFinal.add(attachment);
-		//groupAttachments=null;
- 
+ */
+	
+	//	groupAttachmentsFinal.add(attachment);
+	 
+		 
 		model.addObject("group-name",group.getName());
 		model.addObject("group-project",group.getProject().getName());
  
@@ -122,7 +118,7 @@ public class GroupController {
 		model.addObject("group",group);
 		model.addObject("projectName",projectName);
  		
-		groupAttachments=null;
+ 
 	 
 		model.addObject("group-name",group.getName());
 		model.addObject("group-project",group.getProject().getName());
@@ -134,7 +130,7 @@ public class GroupController {
  
 		model.addObject("students",students);
 		model.addObject("mentors",mentors);
-		model.addObject("attachments",groupAttachmentsFinal);
+		model.addObject("attachments",groupAttachments);
 		model.addObject("groupId",group.getId());
 		model.setViewName("group-view");
 	
