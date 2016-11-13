@@ -8,6 +8,8 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface RoleService {
+	
+	List<Role> getByUserId(String email, Long userId);
 
     Role getById(Long id);
 

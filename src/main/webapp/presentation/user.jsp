@@ -6,16 +6,110 @@
 
 <div class="col-sm-11 col-sm-offset-1">
 	<div class="col-sm-11">
+	
+		<c:if test="${not empty error}">
+			<div class="alert alert-danger">
+  				<strong>Danger!</strong> ${error}
+			</div>
+			<br/>
+		</c:if>
+	
+		<c:if test="${not empty success}">
+			<div class="alert alert-success">
+  				<strong>Success!</strong> ${success}
+			</div>
+			<br/>
+		</c:if>
+	<div class="row">
+	<div class="col-sm-4">
+	<img style="height:70%;width:70%;" src='<c:url value="/presentation/resources/imgs/profile_picture.png" />'>
+	</div>
+	<div class="col-sm-4">
 		Email: ${user.email} <br/>
 		First name: ${user.firstName} <br/>
 		Last name: ${user.lastName} <br/>
 		Second name: ${user.secondName} <br/>
 		Roles: ${user.roles} <br/>
 		Active: ${user.active} <br/>
+	</div>
+		
+		<c:forEach var="item" items="${user.roles}">
+			<c:if test="${item eq 'Student'}">
+			<div class="col-sm-4">
+				Status: ${user.statusTitle} <br/>
+				
+				<sec:authorize access="hasRole('HR')">
+					<c:if test="${user.statusId eq 1}">
+						<div class="showactions">
+							<button type="submit" class="btn btn-primary">Switch status</button>
+						</div>
+						<div class="actions">
+							<form method="post">
+							<br/>
+								<input type="radio" name="status" value="3" checked>Interview offer  <button type="submit" class="btn btn-primary">Submit</button><br/><br/>
+								<textarea name="commentary" class="form-control" rows="2" id="comment" required></textarea>
+								
+							</form>
+						</div>
+					</c:if>
+				</sec:authorize>
+				
+				<c:if test="${user.statusId eq 2}">
+					<sec:authorize access="hasRole('MENTOR')">
+					<div class="showactions">
+						<button type="submit" class="btn btn-primary">Switch status</button>
+					</div>
+					<div class="actions">
+						<form method="post">
+						<br/>
+							<input type="radio" name="status" value="1" checked>Inactive  <button type="submit" class="btn btn-primary">Submit</button><br/><br/>
+							<textarea name="commentary" class="form-control" rows="2" id="comment" required></textarea>
+						</form>
+						</div>
+					</sec:authorize>
+					<sec:authorize access="hasRole('HR')">
+					<div class="actions">
+						<div class="showactions">
+							<button type="submit" class="btn btn-primary">Switch status</button>
+						</div>
+						<form method="post">
+							<br/>
+							<input type="radio" name="status" value="1" checked>Inactive 
+							<input type="radio" name="status" value="3">Interview offer <button type="submit" class="btn btn-primary">Submit</button><br/><br/>
+							<textarea name="commentary" class="form-control" rows="2" id="comment" required></textarea>
+							
+						</form>
+						</div>
+					</sec:authorize>
+				</c:if>
+				
+				<sec:authorize access="hasRole('HR')">
+					<c:if test="${user.statusId eq 3}">
+						<sec:authorize access="hasRole('HR')">
+						<div class="showactions">
+							<button type="submit" class="btn btn-primary">Switch status</button>
+						</div>
+						<div class="actions">
+						<form method="post">
+						<br/>
+							<input type="radio" name="status" value="1" checked>Inactive 
+							<input type="radio" name="status" value="4">Job offer  <button type="submit" class="btn btn-primary">Submit</button><br/><br/>
+							<textarea name="commentary" class="form-control" rows="2" id="comment" required></textarea>
+							
+						</form>
+						</div>
+						</sec:authorize>
+					</c:if>
+				</sec:authorize>
+				</div>
+				
+			</c:if>
+		</c:forEach>
+		</div>
 		<br/>
 			
 		<c:forEach var="item" items="${user.roles}">
-			<c:if test="${item eq 'ROLE_STUDENT'}">
+			<c:if test="${item eq 'Student'}">
     			<div class="student-projects">
     				Loading projects(student role)...
     				<br/>
@@ -26,7 +120,7 @@
     				});
     			</script>
   			</c:if>
-   			<c:if test="${item eq 'ROLE_MENTOR'}">
+   			<c:if test="${item eq 'Mentor'}">
     			<div class="mentor-projects">
     				Loading projects(mentor role)...
     				<br/>
@@ -41,4 +135,14 @@
 		</c:forEach>
 	</div>
 </div>
+
+<script>
+	$(document).ready(function() {
+    	$(".actions").hide();
+    	$(".showactions").click(function() {
+    		$(".actions").show();
+    		$(".showactions").hide();
+    	});
+    });
+</script>
 <%@include file="footer.jsp"%>

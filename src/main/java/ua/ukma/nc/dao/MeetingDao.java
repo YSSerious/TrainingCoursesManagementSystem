@@ -8,6 +8,8 @@ import java.util.List;
  * Created by Ð�Ð»ÐµÐºÑ�ÐµÐ¹ on 30.10.2016.
  */
 public interface MeetingDao {
+	List<Meeting> getWithoutReview(Long groupId, Long studentId);
+	
     Meeting getById(Long id);
 
     int deleteMeeting(Meeting meeting);

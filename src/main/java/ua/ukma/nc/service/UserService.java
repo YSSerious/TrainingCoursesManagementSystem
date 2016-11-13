@@ -10,6 +10,8 @@ import java.util.List;
  * Created by Алексей on 15.10.2016.
  */
 public interface UserService {
+	
+	void changeStatus(Long id, Long statusId, String commentary);
 
     User getByEmail(String email);
 

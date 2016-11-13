@@ -52,7 +52,9 @@ public class UserDaoImpl implements UserDao {
 			return user;
 		}
 	}
-
+	
+	private static final String MENTOR_CHECK = "SELECT EXISTS (SELECT * FROM tcms.user WHERE id = ? AND id IN (SELECT id_user FROM tcms.user_group WHERE id_group IN (SELECT id_group FROM tcms.user_group WHERE id_user = (SELECT id FROM tcms.user WHERE email = ?)) AND id_group NOT IN (SELECT id_group FROM tcms.status_log WHERE id_student IN (SELECT id FROM tcms.user WHERE email = ?))))";
+	
 	private static final String GET_ALL = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student";
 
 	private static final String GET_BY_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id = ?";
@@ -150,6 +152,13 @@ public class UserDaoImpl implements UserDao {
 			Role role = appContext.getBean(RoleProxy.class, resultSet.getLong("id_role"));
 			return role;
 		}
+	}
+
+	@Override
+	public boolean canView(String mentorEmail, Long studentId) {
+		log.info("Is exist this user {} ?");
+		return jdbcTemplate.queryForObject(MENTOR_CHECK, Boolean.class, studentId, mentorEmail, mentorEmail);
+	
 	}
 
 }

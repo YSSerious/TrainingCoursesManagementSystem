@@ -1,13 +1,21 @@
 package ua.ukma.nc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ua.ukma.nc.dao.ProjectDao;
 import ua.ukma.nc.entity.Project;
+import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.query.ProjectParamResolver;
 import ua.ukma.nc.query.ProjectSearch;
 import ua.ukma.nc.service.ProjectService;
+import ua.ukma.nc.service.RoleService;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,6 +23,9 @@ import java.util.List;
  */
 @Service
 public class ProjectServiceImpl implements ProjectService {
+	
+	@Autowired
+	private RoleService roleService;
 
 	@Autowired
 	private ProjectParamResolver projectParamResolver;
@@ -71,6 +82,15 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public List<Project> getStudentProjects(Long userId) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String name = authentication.getName();
+		
+		List<Role> roles = roleService.getByUserId(name, userId);
+		
+		for(Role role: roles)
+			if(role.getTitle().equals("ROLE_STUDENT"))
+				return new ArrayList<Project>();
+		
 		return projectDao.getStudentProjects(userId);
 	}
 	

@@ -99,7 +99,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li><form:form method="POST" action="logout">
+                    <li><form:form method="POST" action="/logout">
                         <button type="submit" class="btn btn-link">Log out</button>
                     </form:form></li>
                 </ul>

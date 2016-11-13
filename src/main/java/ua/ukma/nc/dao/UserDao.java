@@ -11,6 +11,8 @@ import java.util.List;
  * Created by Алексей on 15.10.2016.
  */
 public interface UserDao {
+	
+	boolean canView(String mentorEmail, Long studentId);
 
     User getByEmail(String email);
 

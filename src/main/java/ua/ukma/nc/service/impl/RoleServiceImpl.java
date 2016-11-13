@@ -47,4 +47,9 @@ public class RoleServiceImpl implements RoleService{
     public int createRole(Role role) {
         return roleDao.createRole(role);
     }
+
+	@Override
+	public List<Role> getByUserId(String email, Long userId) {
+		return roleDao.getByUserId(email, userId);
+	}
 }

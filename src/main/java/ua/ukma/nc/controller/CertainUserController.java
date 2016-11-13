@@ -48,7 +48,27 @@ public class CertainUserController {
 		return "certainUser";
 	}
 	
-	@RequestMapping("/users/{id}")
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.POST)
+	public ModelAndView changeStatus(@PathVariable("id") Long id, @RequestParam("commentary") String commentary, @RequestParam("status") Long statusId) {
+		
+		ModelAndView model = new ModelAndView();
+		try{
+		userService.changeStatus(id, statusId, commentary);
+		model.addObject("success", "Successfully changed!");
+		}catch(IllegalArgumentException e){
+			model.addObject("error", e.getMessage());
+		}catch(Exception e){
+			model.addObject("error", "Check your permission and student information!");
+		}
+		
+		UserDto userDto = new UserDto(userService.getById(id));
+
+		model.addObject("user", userDto);
+		model.setViewName("user");
+		return model;
+	}
+	
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public ModelAndView viewUser(@PathVariable("id") Long id) {
 		ModelAndView model = new ModelAndView();
 		UserDto userDto = new UserDto(userService.getById(id));

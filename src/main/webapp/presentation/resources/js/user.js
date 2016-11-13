@@ -28,14 +28,14 @@ function createMentorProjectsInfo(userId, divInside){
 	    'success' : function(data) {
 	    	var s = '';
 	    	$.each( data, function( key, value ) {
-	    		s+= '<div class="panel panel-default"><div id="mpr'+value.id+'" class="panel-heading">' + value.name;
+	    		s+= '<h2>Mentor projects: </h2><hr/><div class="panel panel-default"><div id="mpr'+value.id+'" class="panel-heading">' + value.name;
 	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
  	    		s+= '</div><div id="ms'+value.id+'"><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><h4>'+value.description+'</h4></div></div></div></div></div>';
 	    	
 	    	});
 
 	    	if(jQuery.isEmptyObject(data))
-	    		s= '<br/>No projects (mentor)';
+	    		s= '<br/><h2>Mentor projects: </h2><hr/><h4>No projects</h4>';
 	    		
 	    	$(divInside).html(s);
 	    }
@@ -51,13 +51,13 @@ function createStudentProjectsInfo(userId, divInside){
 	    'success' : function(data) {
 	    	var s = '';
 	    	$.each( data, function( key, value ) {
-	    		s+= '<div class="panel panel-default"><div id="pr'+value.id+'" class="panel-heading">' + value.name;
+	    		s+= '<h2>Student projects: </h2><hr/><div class="panel panel-default"><div id="pr'+value.id+'" class="panel-heading">' + value.name;
 	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
- 	    		s+= '</div><div id="sub'+value.id+'"><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><h4>'+value.description+'</h4><div class="col-sm-8 col-sm-offset-2 charts-wrapper" id="chart'+value.id+'"></div></div></div></div></div></div>';
+ 	    		s+= '</div><div id="sub'+value.id+'"><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><h4>'+value.description+'</h4><div class="col-sm-8 col-sm-offset-2 charts-wrapper" id="chart'+value.id+'">Loading...</div></div></div></div></div></div>';
 	    	});
 
 	    	if(jQuery.isEmptyObject(data))
-	    		s= '<br/>No projects (student)';
+	    		s= '<br/><h2>Student projects: </h2><hr/><h4>No projects</h4>';
 	    	
 	    	$(divInside).html(s);
                 
@@ -79,7 +79,8 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    },
     	 	    	    
     	 	    	    'success' : function(data) {
-                                createCharts(data.chartInfo, value.id);
+    	 	    	    	$('#chart'+value.id).html('');
+                            createCharts(data.chartInfo, value.id);
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><h2>Grades:</h2><table class="table table-bordered"><tr><th>#</th>';
     	 	    	    	$.each(data.markTableDto.meetings, function( key, value ) {
