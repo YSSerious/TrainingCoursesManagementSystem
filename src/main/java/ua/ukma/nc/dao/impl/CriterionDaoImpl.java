@@ -59,10 +59,14 @@ public class CriterionDaoImpl implements CriterionDao{
     private static final String UPDATE_CRITERION = "UPDATE tcms.criterion SET name = ?, id_category = ? WHERE id = ?";
 
     private static final String GET_PROJECTS_BY_ID = "SELECT id_project FROM tcms.project_criterion WHERE id_criterion = ?";
+    
+    private static final String GET_BY_MEETING = "SELECT id, name, id_category FROM tcms.criterion WHERE id IN (SELECT id_criterion FROM tcms.meeting_criterion WHERE id_meeting = ?)";
 
     private static final String IS_USED_IN_PROJECTS = "SELECT EXISTS (SELECT * from tcms.project_criterion where id_criterion = ?)";
 
-    private static final String GET_BY_MEETING = "SELECT * FROM tcms.criterion WHERE id IN (SELECT id_criterion FROM tcms.meeting_criterion WHERE id_meeting = ?)";
+    private static final String GET_PROJECT_UNUSED_CRITERIA = "select id, name, id_category FROM tcms.criterion " +
+                                                                "where id not in (select id_criterion from tcms.project_criterion where id_project =?)";
+
     @Override
     public Criterion getById(Long id) {
         log.info("Getting criterion with id = {}", id);
@@ -72,6 +76,11 @@ public class CriterionDaoImpl implements CriterionDao{
     @Override
     public Criterion getByName(String name) {
         return jdbcTemplate.queryForObject(GET_BY_NAME, new CriterionMapper(), name);
+    }
+
+    @Override
+    public List<Criterion> getProjectUnusedCriteria(Long projectId) {
+        return jdbcTemplate.query(GET_PROJECT_UNUSED_CRITERIA, new CriterionMapper(), projectId);
     }
 
     @Override
@@ -113,6 +122,12 @@ public class CriterionDaoImpl implements CriterionDao{
         log.info("Getting all criterion");
         return jdbcTemplate.query(GET_BY_PROJECT, new CriterionMapper(), projectId);
 	}
+	
+	@Override
+	public List<Criterion> getByMeeting(Long meetingId) {
+        log.info("Getting all criterion");
+        return jdbcTemplate.query(GET_BY_MEETING, new CriterionMapper(), meetingId);
+	}
 
     @Override
     public int createCriterion(String title, Long categoryId) {
@@ -125,10 +140,6 @@ public class CriterionDaoImpl implements CriterionDao{
         return jdbcTemplate.queryForObject(IS_USED_IN_PROJECTS, Boolean.class, id);
     }
 
-    @Override
-    public List<Criterion> getByMeeting(Long meetingId) {
-        return jdbcTemplate.query(GET_BY_MEETING, new CriterionMapper(), meetingId);
-    }
 
 //    private List<Project> getProjects(Long criterionID) {
 //        log.info("Getting all projects with criterion id = {}", criterionID);

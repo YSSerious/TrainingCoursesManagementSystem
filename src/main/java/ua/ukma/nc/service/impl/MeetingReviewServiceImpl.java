@@ -21,6 +21,11 @@ public class MeetingReviewServiceImpl implements MeetingReviewService{
     public MeetingReview getById(Long id) {
         return meetingReviewDao.getById(id);
     }
+    
+    @Override
+    public List<MeetingReview> getByMeeting(Long id) {
+        return meetingReviewDao.getByMeeting(id);
+    }
 
     @Override
     public int deleteMeetingReview(MeetingReview meetingReview) {

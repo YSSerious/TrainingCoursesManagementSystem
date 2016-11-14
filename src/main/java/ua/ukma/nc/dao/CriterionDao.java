@@ -12,6 +12,8 @@ public interface CriterionDao {
 
     Criterion getByName(String name);
 
+    List<Criterion> getProjectUnusedCriteria (Long projectId);
+
     int deleteCriterion(Criterion criterion);
 
     int deleteCriterion(Long id);
@@ -29,6 +31,6 @@ public interface CriterionDao {
     int createCriterion(String title, Long categoryId);
 
     boolean isExistInProjects(Long id);
-
-    List<Criterion> getByMeeting(Long meetingId);
+    
+	List<Criterion> getByMeeting(Long meetingId);
 }

@@ -1,58 +1,59 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
-         pageEncoding="UTF-8" %>
+	pageEncoding="UTF-8"%>
 
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="sec"
-          uri="http://www.springframework.org/security/tags" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>${title}</title>
-    <!--<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-    <link rel="stylesheet" type="text/css"
-          href="<c:url value="/presentation/resources/third-party/bootstrap/css/bootstrap.min.css"/>">
-    <link href="<c:url value="/presentation/resources/third-party/bootstrap/fonts/glyphicons-halflings-regular.woff"/>">
-    <link rel="stylesheet" type="text/css"
-          href="<c:url value="/presentation/resources/third-party/jquery-ui/css/jquery-ui.css"/>">
-    <script
-            src="<c:url value="/presentation/resources/third-party/jquery/jquery.min.js"/>">
-
-    </script>
-    <script type="text/javascript"
-            src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"/> ">
-
-    </script>
-    <link rel="stylesheet"
-          href=" <c:url value="/presentation/resources/third-party/jqpagination/css/jqpagination.css" />"
-          type="text/css">
-    <script
-            src="<c:url value="/presentation/resources/third-party/jqpagination/js/jquery.jqpagination.js" />"
-            type="text/javascript"></script>
-    <link
-            href="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />"
-            type="text/css" rel="stylesheet"/>
-    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-            crossorigin="anonymous"></script>
-    <script
-            src="<c:url value="/presentation/resources/third-party/bootstrap/js/bootstrap.min.js"/>"></script>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <!--Own styles-->
-    <link rel="stylesheet" type="text/css"
-          href="<c:url value="/presentation/resources/css/general.css"/>">
-    <link rel="stylesheet" type="text/css"
-          href="<c:url value="/presentation/resources/css/header.css"/>">
-    <link rel="stylesheet" type="text/css"
-          href="<c:url value="/presentation/resources/css/login-form.css"/>">
-    <link rel="stylesheet" type="text/css"
-          href="<c:url value="/presentation/resources/css/forms.css"/>">
-    <link rel="stylesheet" type="text/css"
-          href="<c:url value="/presentation/resources/css/charts.css"/>">
-    <link rel="stylesheet" type="text/css"
-          href="<c:url value="/presentation/resources/css/footer.css"/>">
+<meta charset="UTF-8">
+<title>${title}</title>
+<!--<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/third-party/bootstrap/css/bootstrap.min.css"/>">
+<link
+	href="<c:url value="/presentation/resources/third-party/bootstrap/fonts/glyphicons-halflings-regular.woff"/>">
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/third-party/jquery-ui/css/jquery-ui.css"/>">
+<script
+	src="<c:url value="/presentation/resources/third-party/jquery/jquery.min.js"/>">
+	
+</script>
+<script type="text/javascript"
+	src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"/> ">
+	
+</script>
+<link rel="stylesheet"
+	href=" <c:url value="/presentation/resources/third-party/jqpagination/css/jqpagination.css" />"
+	type="text/css">
+<script
+	src="<c:url value="/presentation/resources/third-party/jqpagination/js/jquery.jqpagination.js" />"
+	type="text/javascript"></script>
+<link
+	href="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />"
+	type="text/css" rel="stylesheet" />
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+	integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+	crossorigin="anonymous"></script>
+<script
+	src="<c:url value="/presentation/resources/third-party/bootstrap/js/bootstrap.min.js"/>"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+<!--Own styles-->
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/general.css"/>">
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/header.css"/>">
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/login-form.css"/>">
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/forms.css"/>">
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/table.css"/>">
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/footer.css"/>">
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/presentation/resources/css/certainProject.css"/>">
     

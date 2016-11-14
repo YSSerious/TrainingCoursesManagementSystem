@@ -62,6 +62,11 @@ public class MeetingResultServiceImpl implements MeetingResultService{
 	public List<MarkInformation> generateMarkInformation(long studentId, long projectId) {
 		return meetingResultDao.generateMarkInformation(studentId, projectId);
 	}
+	
+	@Override
+    public List<MarkInformation> getByMeeting(long studentId, long meetingId) {
+		return meetingResultDao.getByMeeting(studentId, meetingId);
+	}
 
     @Override
     public List<MeetingResult> getByReview(long review) {
