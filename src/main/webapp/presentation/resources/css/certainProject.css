@@ -1,43 +1,44 @@
+
 /* Move down content because we have a fixed navbar that is 50px tall */
 
-.panel.panel-horizontal {
+.certain-project .panel.panel-horizontal {
     display:table;
-    width: 450px;
+    width: 350px;
    
 }
-.panel.panel-horizontal > .panel-title .h3{
+.certain-project .panel.panel-horizontal > .panel-title .h3{
 	padding-left: inherit;
 }
-.panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-body, .panel.panel-horizontal > .panel-footer {
+.certain-project .panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-body, .panel.panel-horizontal > .panel-footer {
     display:table-cell;
 }
-.panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-footer {
+.certain-project .panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-footer {
     
     border:0;
     vertical-align: middle;
 }
-.panel.panel-horizontal > .panel-heading {
+.certain-project .panel.panel-horizontal > .panel-heading {
     border-right: 1px solid #ddd;
     border-top-right-radius: 0;
     border-bottom-left-radius: 4px;
     width: min-intrinsic;
-    padding-right: 0 !important;
+    padding-right: !important;
     width: 150px;
 }
 
-.panel.panel-horizontal.top-panel {
+.certain-project .panel.panel-horizontal.top-panel {
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     margin-bottom: 0px;
 }
 
-.panel.panel-default.panel-horizontal.bottom-panel {
+.certain-project .panel.panel-default.panel-horizontal.bottom-panel {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     border-top: none;
 }
 
-.panel-btn{
+.certain-project .panel-btn{
 	padding-bottom: 10px;
     background-color: #ddd;
     margin-bottom: 0px;
@@ -46,19 +47,19 @@
     border-bottom-right-radius: 0px;
 }
 
-.pull-right-btn {
+.certain-project .pull-right-btn {
     float: right!important;
     margin-right: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
-.list-group-item:first-child {
+.certain-project .list-group-item:first-child {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
 }
 
-.glyphicon{
+.certain-project .glyphicon{
 	font-size: 20px;
 }
 

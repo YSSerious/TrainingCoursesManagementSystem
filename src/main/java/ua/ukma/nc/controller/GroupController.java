@@ -40,6 +40,7 @@ import ua.ukma.nc.service.RoleService;
 public class GroupController {
 	@Autowired
 	private GroupAttachmentService groupAttachmentService;
+	
     @Autowired
     private GroupService groupService;
     
@@ -153,6 +154,7 @@ public class GroupController {
 		groupAttachmentService.createGroupAttachment(attachment);
 		
 	}
+	
 	@RequestMapping(value = "editAttachment", method = RequestMethod.POST)
 	public void editGroupAttachment(@RequestParam("id_group") Long idGroup,@RequestParam("name") String name,
 		@RequestParam("attachment_scope") String attachmentScope,@RequestParam("id") Long idAttachment){

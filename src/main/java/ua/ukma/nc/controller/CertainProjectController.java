@@ -11,7 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ua.ukma.nc.dto.ProjectDto;
 import ua.ukma.nc.entity.Group;
+import ua.ukma.nc.entity.ProjectAttachment;
 import ua.ukma.nc.service.GroupService;
+import ua.ukma.nc.service.ProjectAttachmentService;
 import ua.ukma.nc.service.ProjectService;
 
 @Controller
@@ -23,6 +25,9 @@ public class CertainProjectController {
 	@Autowired
 	private GroupService groupService;
 	
+	@Autowired
+	private ProjectAttachmentService attachmentService;
+	
 	@RequestMapping(value = "/certainProject/{id}", method = RequestMethod.GET)
 	public ModelAndView viewProject(@PathVariable("id") Long id) {
 		ModelAndView model = new ModelAndView();
@@ -30,10 +35,19 @@ public class CertainProjectController {
 		ProjectDto prDto = new ProjectDto(projectService.getById(id));
 		model.addObject("project",prDto);
 		
-		List<Group> groups = groupService.getByProjectId(id);
-		model.addObject("groups", groups);
+		//Group set
+		List<Group> groupList = groupService.getByProjectId(id);
+		model.addObject("groups", groupList);
+		
+		//Criteria set
+		
+		//Attachment set
+		List<ProjectAttachment> attachmentList = attachmentService.getAll();
+		model.addObject("attachments", attachmentList);
 		
 		model.setViewName("certainProject");
 		return model;
 	}
+	
+	
 }

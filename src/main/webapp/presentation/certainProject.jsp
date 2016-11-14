@@ -1,6 +1,6 @@
 <%@include file="header.jsp" %>
 
-<div class="container">
+<div class="container certain-project">
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-12">
@@ -34,6 +34,7 @@
             Groups
             </h2>
           <div class="panel panel-btn"> 
+            <a href="" class="btn btn-default btn-xs pull-right-btn">Set meetings schedule</a>
 	        <a href="" class="btn btn-default btn-xs pull-right-btn">Remove</a>
 	        <a href="" class="btn btn-default btn-xs pull-right-btn">Edit</a>
             <a href="" class="btn btn-default btn-xs pull-right-btn"> Add</a>
@@ -82,15 +83,11 @@
             <a href="#" class="btn btn-default btn-xs pull-right-btn">Add</a>
           </div>
           <ul class="list-group">
+            <c:forEach items="${attachments}" var="attachment">
             <li class="list-group-item">
-              Attachment_1
+              <a href="">${attachment.name}</a>
             </li>
-            <li class="list-group-item">
-              Attachment_1
-            </li>
-            <li class="list-group-item">
-              Attachment_1
-            </li>
+            </c:forEach>
           </ul>
         </div>
       </div>
