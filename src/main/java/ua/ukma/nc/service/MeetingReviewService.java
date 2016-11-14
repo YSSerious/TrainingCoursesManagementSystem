@@ -19,4 +19,6 @@ public interface MeetingReviewService {
     int createMeetingReview(MeetingReview meetingReview);
     
 	List<MeetingReview> getByProjectStudent(Long projectId, Long studentId);
+
+    MeetingReview getByMeetingStudent(Long meetingId, Long studentId);
 }

@@ -22,4 +22,6 @@ public interface MeetingResultService {
     int createMeetingResult(MeetingResult meetingResult);
     
     List<MarkInformation> generateMarkInformation(long studentId, long projectId);
+
+    List<MeetingResult> getByReview(long review);
 }

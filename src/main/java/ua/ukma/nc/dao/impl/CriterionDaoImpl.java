@@ -62,7 +62,7 @@ public class CriterionDaoImpl implements CriterionDao{
 
     private static final String IS_USED_IN_PROJECTS = "SELECT EXISTS (SELECT * from tcms.project_criterion where id_criterion = ?)";
 
-
+    private static final String GET_BY_MEETING = "SELECT * FROM tcms.criterion WHERE id IN (SELECT id_criterion FROM tcms.meeting_criterion WHERE id_meeting = ?)";
     @Override
     public Criterion getById(Long id) {
         log.info("Getting criterion with id = {}", id);
@@ -123,6 +123,11 @@ public class CriterionDaoImpl implements CriterionDao{
     @Override
     public boolean isExistInProjects(Long id) {
         return jdbcTemplate.queryForObject(IS_USED_IN_PROJECTS, Boolean.class, id);
+    }
+
+    @Override
+    public List<Criterion> getByMeeting(Long meetingId) {
+        return jdbcTemplate.query(GET_BY_MEETING, new CriterionMapper(), meetingId);
     }
 
 //    private List<Project> getProjects(Long criterionID) {

@@ -5,17 +5,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ua.ukma.nc.entity.Meeting;
-import ua.ukma.nc.entity.MeetingReview;
-import ua.ukma.nc.entity.User;
+import ua.ukma.nc.entity.*;
 import ua.ukma.nc.entity.impl.real.MeetingReviewImpl;
-import ua.ukma.nc.service.MeetingReviewService;
-import ua.ukma.nc.service.MeetingService;
-import ua.ukma.nc.service.StudentService;
-import ua.ukma.nc.service.UserService;
+import ua.ukma.nc.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -37,6 +34,12 @@ public class MeetingEvaluationController {
     @Autowired
     MeetingReviewService meetingReviewService;
 
+    @Autowired
+    MeetingResultService meetingResultService;
+
+    @Autowired
+    CriterionService criterionService;
+
     @RequestMapping (value = "/set_no_attendance", method = RequestMethod.POST)
     public @ResponseBody String setAttendance(@RequestParam Long studentId, @RequestParam Long meetingId){
         MeetingReview review = new MeetingReviewImpl();
@@ -50,9 +53,33 @@ public class MeetingEvaluationController {
     }
 
     @RequestMapping (value = "/evaluate", method = RequestMethod.GET)
-    public ModelAndView evaluate(){
+    public ModelAndView evaluate(@RequestParam Long studentId, @RequestParam Long meetingId){
         ModelAndView mv = new ModelAndView("evaluateStudent");
-
+        MeetingReview review = meetingReviewService.getByMeetingStudent(meetingId, studentId);
+        User student = userService.getById(studentId);
+        List<MeetingResult> results;
+        if(review==null){
+            User mentor = userService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+            review = new MeetingReviewImpl();
+            review.setMentor(mentor);
+            review.setMeeting(meetingService.getById(meetingId));
+            review.setStudent(student);
+            review.setType("L");
+            meetingReviewService.createMeetingReview(review);
+            results = new LinkedList<MeetingResult>();
+            for(Criterion criterion :criterionService.getByMeeting(meetingId)){
+                MeetingResult mr = new MeetingResult();
+//                mr.setMeetingReview(review);
+                mr.setCriterion(criterion);
+                results.add(mr);
+            }
+        }
+        else {
+            results = meetingResultService.getByReview(review.getId());
+        }
+        mv.addObject("results", results);
+        mv.addObject("student", student);
+        mv.addObject("review", review);
         return mv;
     }
 }

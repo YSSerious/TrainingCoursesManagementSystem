@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -58,6 +59,8 @@ public class MeetingReviewDaoImpl implements MeetingReviewDao {
 
     private static final String UPDATE_MEETING_CRITERION = "UPDATE tcms.meeting_review SET id_student = ?, id_meeting = ?, id_mentor = ?, type = ?, commentary = ? WHERE id = ?";
 
+    private static final String GET_BY_MEETING_STUDENT = "SELECT * FROM tcms.meeting_review WHERE id_meeting = ? AND id_student = ?";
+
     @Override
     public MeetingReview getById(Long id) {
         log.info("Getting meeting review with id = {}", id);
@@ -67,6 +70,15 @@ public class MeetingReviewDaoImpl implements MeetingReviewDao {
     @Override
     public List<MeetingReview> getByProjectStudent(Long projectId, Long studentId) {
         return jdbcTemplate.query(GET_BY_STUDENT_PROJECT, new MeetingReviewMapper(), studentId, projectId);
+    }
+
+    @Override
+    public MeetingReview getByMeetingStudent(Long meetingId, Long studentId) {
+        try{
+           return jdbcTemplate.queryForObject(GET_BY_MEETING_STUDENT, new MeetingReviewMapper(), meetingId, studentId);
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     @Override
