@@ -179,8 +179,8 @@ function createCharts(data, projectId) {
 
         if (value.length === 1) {
 //    	 	    	    			value1.unshift({ criterionName: 'd', averageValue: 4});
-            value.push({criterionName: 'd', averageValue: 4});
+//            value.push({criterionName: 'd', averageValue: 4});
         }
-        drawCriteriaChart(value, '#chart' + key, maxYAxisValue, key);
+        drawCriteriaChart(value, '#chart' + key, 6, key);
     });
 }
