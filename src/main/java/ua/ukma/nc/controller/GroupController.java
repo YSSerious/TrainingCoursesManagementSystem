@@ -40,6 +40,7 @@ import ua.ukma.nc.service.RoleService;
 public class GroupController {
 	@Autowired
 	private GroupAttachmentService groupAttachmentService;
+	
     @Autowired
     private GroupService groupService;
     
@@ -69,16 +70,18 @@ public class GroupController {
 	
 	@RequestMapping(value = "/group", method = RequestMethod.GET)
 	public ModelAndView getGroup(@RequestParam Long id) {
-
+		
 		ModelAndView model = new ModelAndView();
 		GroupDto group = new GroupDto(groupService.getById(id));
 		List<UserDto> users = group.getUsers();
 		List<UserDto> students = new ArrayList<UserDto>();
 		List<UserDto> mentors = new ArrayList<UserDto>();
-		
+		 
+	 
 
-		List<GroupAttachment> groupAttachments= new ArrayList<GroupAttachment>();
-		List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
+		List<GroupAttachment> groupAttachments= groupAttachmentService.getAll();
+		System.out.println(groupAttachments.size()+"Size of ");
+		//List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
 		for(UserDto us: users){
 
 			boolean isMentor=false;
@@ -97,24 +100,44 @@ public class GroupController {
 		for(Meeting mt : meetingService.getByGroup(id) ){
 			meetings.add(new MeetingDto(mt));
 		}
-		
-		
-
-		
+ 
+	 
+		/*
 		for(GroupAttachment attach:groupAttachments){
 			if(attach.getGroup().equals(group))
 				groupAttachmentsFinal.add(attach);			
 		}
-		
-		groupAttachments=null;
+ */
+	
+	//	groupAttachmentsFinal.add(attachment);
+	 
+		 
+		model.addObject("group-name",group.getName());
+		model.addObject("group-project",group.getProject().getName());
+ 
 		String projectName = group.getProject().getName();
 		model.addObject("group",group);
 		model.addObject("projectName",projectName);
+ 		
+ 
+	 
+		model.addObject("group-name",group.getName());
+		model.addObject("group-project",group.getProject().getName());
+
+	//	String projectName = group.getProject().getName();
+		model.addObject("group",group);
+		model.addObject("projectName",projectName);
+
+ 
 		model.addObject("students",students);
 		model.addObject("mentors",mentors);
 		model.addObject("meetings",meetings);
-		model.addObject("attachments",groupAttachmentsFinal);
+		//model.addObject("attachments",groupAttachmentsFinal);
 		model.addObject("group-id",group.getId());
+
+		model.addObject("attachments",groupAttachments);
+		model.addObject("groupId",group.getId());
+
 		model.setViewName("group-view");
 	
 		//for(User user : group.getUsers()){
@@ -133,8 +156,27 @@ public class GroupController {
 		attachment.setAttachmentScope(attachmentScope);
 		attachment.setGroup(groupService.getById(idGroup));
 		attachment.setName(name);
+		groupAttachmentService.createGroupAttachment(attachment);
+		
+	}
+	
+	@RequestMapping(value = "editAttachment", method = RequestMethod.POST)
+	public void editGroupAttachment(@RequestParam("id_group") Long idGroup,@RequestParam("name") String name,
+		@RequestParam("attachment_scope") String attachmentScope,@RequestParam("id") Long idAttachment){
+		GroupAttachment attachment =new GroupAttachment();
+		attachment.setId(idAttachment);
+		attachment.setAttachmentScope(attachmentScope);
+		attachment.setGroup(groupService.getById(idGroup));
+		attachment.setName(name);
 		groupAttachmentService.updateGroupAttachment(attachment);
 		
 	}
-
+	@RequestMapping(value = "deleteAttachment", method = RequestMethod.POST)
+	public void deleteGroupAttachment(@RequestParam("id") Long idAttachment){
+		GroupAttachment attachment =groupAttachmentService.getById(idAttachment);
+		groupAttachmentService.deleteGroupAttachment(attachment);
+		
+	}
+	
+	
 }

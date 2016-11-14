@@ -33,6 +33,8 @@ public class CategoryProxy implements Category{
         this.id = id;
     }
 
+
+
     @Override
     public Long getId() {
         return id;
@@ -45,6 +47,7 @@ public class CategoryProxy implements Category{
 
     @Override
     public String getName() {
+    	downloadCategory();
         return category.getName();
     }
 

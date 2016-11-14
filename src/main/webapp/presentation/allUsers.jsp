@@ -20,7 +20,7 @@
 			<c:forEach items="${users}" var="user">
 				<tr>
 					<td><font size="3"><b>
-					<a href ="certainUser/${user.id}">
+					<a href ="/certainUser/${user.id}">
 					${user.firstName} ${user.secondName} ${user.lastName}
 					</a></b></font></td>
 					<td><font size="3">
@@ -33,26 +33,25 @@
 		</table>
 	</div>
 	<br />
+	
+				<div class="pagination">
+					<a href="#" class="first" data-action="first">&laquo;</a> <a
+						href="#" class="previous" data-action="previous">&lsaquo;</a> <input
+						type="text" readonly="readonly" data-current-page="${currentPage}"
+						data-max-page="${noOfPages}" /> <a href="#" class="next"
+						data-action="next">&rsaquo;</a> <a href="#" class="last"
+						data-action="last">&raquo;</a>
+				</div>
+	
+	<script>
+		$('.pagination').jqPagination({
+			link_string : '?page={page_number}',
+			max_page : "${noOfPages}",
+			paged : function(page) {
+				window.location.href = "?page="+page;
+				
+			}
+		});
+	</script>
 
-	<%--For displaying Previous link except for the 1st page --%>
-	<div class="pagination">
-   
-    <c:if test="${currentPage != 1}">
-   <a class="previous" href="/allUsers/${currentPage - 1}">Previous</a>
-    </c:if>
- 
-    <%--For displaying Page numbers. 
-    The when condition does not display a link for the current page--%>
-    
-            <c:forEach begin="1" end="${noOfPages}" var="i">
-                        <a href="/allUsers/${i}">${i}</a>
-            </c:forEach>
-      
-    
-    <%--For displaying Next link --%>
-    <c:if test="${currentPage lt noOfPages}">
-        <a class="next" href="/allUsers/${currentPage + 1}">Next</a>
-    </c:if>
-
-    </div>
 	<%@include file="footer.jsp"%>

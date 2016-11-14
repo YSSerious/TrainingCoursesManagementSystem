@@ -41,18 +41,27 @@ public class CriterionDaoImpl implements CriterionDao{
             return criterion;
         }
     }
+    
+    private static final String GET_BY_PROJECT = "SELECT id, name, id_category FROM tcms.criterion WHERE id IN (SELECT id_criterion FROM tcms.project_criterion WHERE id_project = ?)";
 
     private static final String GET_ALL = "SELECT id, name, id_category FROM tcms.criterion";
 
     private static final String GET_BY_ID = "SELECT id, name, id_category FROM tcms.criterion WHERE id = ?";
 
+    private static final String GET_BY_NAME = "SELECT id, name, id_category FROM tcms.criterion WHERE name = ?";
+
     private static final String DELETE_CRITERION = "DELETE FROM tcms.criterion WHERE id = ?";
+
+    private static final String DELETE_BY_CATEGORY_ID = "DELETE FROM tcms.criterion WHERE id_category = ?";
 
     private static final String CREATE_CRITERION = "INSERT INTO tcms.criterion (name, id_category) VALUES (?,?)";
 
     private static final String UPDATE_CRITERION = "UPDATE tcms.criterion SET name = ?, id_category = ? WHERE id = ?";
 
     private static final String GET_PROJECTS_BY_ID = "SELECT id_project FROM tcms.project_criterion WHERE id_criterion = ?";
+
+    private static final String IS_USED_IN_PROJECTS = "SELECT EXISTS (SELECT * from tcms.project_criterion where id_criterion = ?)";
+
 
     @Override
     public Criterion getById(Long id) {
@@ -61,9 +70,24 @@ public class CriterionDaoImpl implements CriterionDao{
     }
 
     @Override
+    public Criterion getByName(String name) {
+        return jdbcTemplate.queryForObject(GET_BY_NAME, new CriterionMapper(), name);
+    }
+
+    @Override
     public int deleteCriterion(Criterion criterion) {
         log.info("Deleting criterion with id = {}", criterion.getId());
         return jdbcTemplate.update(DELETE_CRITERION, criterion.getId());
+    }
+
+    @Override
+    public int deleteCriterion(Long id) {
+        return jdbcTemplate.update(DELETE_CRITERION, id);
+    }
+
+    @Override
+    public int deleteByCategoryId(Long id) {
+        return jdbcTemplate.update(DELETE_BY_CATEGORY_ID, id);
     }
 
     @Override
@@ -82,6 +106,23 @@ public class CriterionDaoImpl implements CriterionDao{
     public int createCriterion(Criterion criterion) {
         log.info("Create new criterion with title = {}", criterion.getTitle());
         return jdbcTemplate.update(CREATE_CRITERION, criterion.getTitle(), criterion.getCategory().getId());
+    }
+
+	@Override
+	public List<Criterion> getByProject(Long projectId) {
+        log.info("Getting all criterion");
+        return jdbcTemplate.query(GET_BY_PROJECT, new CriterionMapper(), projectId);
+	}
+
+    @Override
+    public int createCriterion(String title, Long categoryId) {
+        log.info("Create new criterion with title = {}", title);
+        return jdbcTemplate.update(CREATE_CRITERION, title, categoryId);
+    }
+
+    @Override
+    public boolean isExistInProjects(Long id) {
+        return jdbcTemplate.queryForObject(IS_USED_IN_PROJECTS, Boolean.class, id);
     }
 
 //    private List<Project> getProjects(Long criterionID) {

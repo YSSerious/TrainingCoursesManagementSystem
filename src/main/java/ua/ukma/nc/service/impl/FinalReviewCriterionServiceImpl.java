@@ -40,4 +40,9 @@ public class FinalReviewCriterionServiceImpl implements FinalReviewCriterionServ
     public int createFinalReviewCriterion(FinalReviewCriterion finalReviewCriterion) {
         return finalReviewCriterionDao.createFinalReviewCriterion(finalReviewCriterion);
     }
+
+	@Override
+	public List<FinalReviewCriterion> getByFinalReview(Long id) {
+		return finalReviewCriterionDao.getByFinalReview(id);
+	}
 }

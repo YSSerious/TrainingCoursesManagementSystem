@@ -10,6 +10,11 @@
         src="<c:url value="/presentation/resources/js/category.js"/>"
         type="text/javascript">
 </script>
+<style>
+    .diver {
+        cursor: pointer;
+    }
+</style>
 
 <div class="col-sm-11 col-sm-offset-1">
     <div class="col-sm-11">
@@ -24,22 +29,22 @@
             </div>
         </div>
         <hr/>
-
         <div class="panel-group" id="panelGroupId">
             <c:forEach items="${categories}" var="category" varStatus="loop">
-            <div class="panel panel-default" id="categoryPanelId-${category.id}">
+                <div class="panel panel-default" id="categoryPanelId-${category.id}">
                     <div class="panel-heading">
                         <h4 class="panel-title row">
-                            <a data-toggle="collapse" class="col-sm-5" id="aEditId-${category.id}"
-                               data-target="#collapseIn-${category.id}"><b>${category.name}</b></a>
-                            <div id="divEditId-${category.id}" class="col-sm-6">${category.description}</div>
-                            <button class="btn btn-primary"
+                            <div data-toggle="collapse" class="diver col-sm-4" id="aEditId-${category.id}"
+                                 data-target="#collapseIn-${category.id}"><b>${category.name}</b>
+                            </div>
+                            <div id="divEditId-${category.id}" class="col-sm-7">${category.description}</div>
+                            <button class="btn btn-primary btn-sm"
                                     data-toggle="modal"
                                     data-target="#editCategory"
                                     onclick="setCategory(${category.id})">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </button>
-                            <button class="btn btn-danger"
+                            <button class="btn btn-danger btn-sm"
                                     data-toggle="modal"
                                     data-target="#deleteCategory"
                                     onclick="setCategory(${category.id})">
@@ -48,28 +53,28 @@
                         </h4>
                     </div>
                     <div id="collapseIn-${category.id}" class="panel-collapse collapse">
-                         <div class="panel-body row">
-                             <div class="col-sm-2"><b>Add new Criteria</b></div>
-                            <button  class="btn btn-primary btn-xs"
-                                     data-toggle="modal"
-                                     data-target="#addCriteria"
-                                     onclick="setCategory(${category.id})">
+                        <div class="panel-body row">
+                            <div class="col-sm-2"><b>Add new Criteria</b></div>
+                            <button class="btn btn-primary btn-xs"
+                                    data-toggle="modal"
+                                    data-target="#addCriteria"
+                                    onclick="setCategory(${category.id})">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
-                       </div>
+                        </div>
                         <c:forEach items="${category.criteria}" var="criteria" varStatus="loop">
-                        <div class="panel-body row" id="criteriaId-${criteria.id}">
+                            <div class="panel-body row" id="criteriaId-${criteria.id}">
                                 <div class="col-sm-2">${criteria.title}</div>
-                                <button  class="btn btn-danger btn-xs"
-                                         data-toggle="modal"
-                                         data-target="#deleteCriteria"
+                                <button class="btn btn-danger btn-xs"
+                                        data-toggle="modal"
+                                        data-target="#deleteCriteria"
                                         onclick="setCriteria(${criteria.id})">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
-                        </div>
+                            </div>
                         </c:forEach>
                     </div>
-            </div>
+                </div>
             </c:forEach>
         </div>
 
@@ -190,12 +195,42 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" type="button" data-dismiss="modal" id="editCategoryModal">Save changes</button>
+                        <button class="btn btn-primary" type="button" data-dismiss="modal" id="editCategoryModal">Save
+                            changes
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
         <!-- finish edit category modal -->
+        <!-- start criteriaDeleteError modal -->
+        <div id="criteriaDeleteError" class="modal fade static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal"><span
+                                class="glyphicon glyphicon-remove"></span></button>
+                        <h4 class="modal-title">Criteria is used in some projects, and cannot be deleted</h4>
+                        <button data-dismiss="modal" class="btn btn-link">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- finish criteriaDeleteError modal -->
+        <!-- start categoryDeleteError modal -->
+        <div id="categoryDeleteError" class="modal fade static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal"><span
+                                class="glyphicon glyphicon-remove"></span></button>
+                        <h4 class="modal-title">Criteria from this category used in some projects, so this category cannot be deleted</h4>
+                        <button data-dismiss="modal" class="btn btn-link">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- finish categoryDeleteError modal -->
     </div>
 </div>
 

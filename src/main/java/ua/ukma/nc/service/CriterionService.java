@@ -10,11 +10,21 @@ import java.util.List;
 public interface CriterionService {
     Criterion getById(Long id);
 
+    Criterion getByName(String name);
+
     int deleteCriterion(Criterion criterion);
+
+    int deleteCriterion(Long id);
 
     int updateCriterion(Criterion criterion);
 
     List<Criterion> getAll();
+    
+    List<Criterion> getByProject(Long projectId);
 
     int createCriterion(Criterion criterion);
+
+    int createCriterion(String title, Long categoryId);
+
+    boolean isExistInProjects(Long id);
 }

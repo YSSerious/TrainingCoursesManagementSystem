@@ -18,6 +18,8 @@ public interface RoleDao {
     int updateRole(Role role);
 
     List<Role> getAll();
+    
+    List<Role> getByUserId(String email, Long userId);
 
     int createRole(Role role);
 }

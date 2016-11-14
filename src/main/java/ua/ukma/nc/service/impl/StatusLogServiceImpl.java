@@ -46,4 +46,9 @@ public class StatusLogServiceImpl implements StatusLogService{
 	public List<StatusLog> getByProjectStudent(Long projectId, Long studentId) {
 		return statusLogDao.getByProjectStudent(projectId, studentId);
 	}
+
+	@Override
+	public Long getNewestGroup(Long userId) {
+		return statusLogDao.getNewestGroup(userId);
+	}
 }

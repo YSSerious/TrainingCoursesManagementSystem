@@ -6,8 +6,10 @@ import java.util.Map;
 public class StudentProfile {
 	private Map<String, List<MarkInformation>> markInformation;
 	private List<StudentStatusLog> studentStatuses;
-	
 	private List<StudentMeetingReview> meetingReviews;
+	private MarkTableDto markTableDto;
+	private Map<String, List<StudyResultDto>> chartInfo;
+	private Map<String, List<StudyResultDto>> chartInfoFinal;
 
 	public Map<String, List<MarkInformation>> getMarkInformation() {
 		return markInformation;
@@ -31,5 +33,29 @@ public class StudentProfile {
 
 	public void setMeetingReviews(List<StudentMeetingReview> meetingReviews) {
 		this.meetingReviews = meetingReviews;
+	}
+
+	public MarkTableDto getMarkTableDto() {
+		return markTableDto;
+	}
+
+	public void setMarkTableDto(MarkTableDto markTableDto) {
+		this.markTableDto = markTableDto;
+	}
+
+	public Map<String, List<StudyResultDto>> getChartInfo() {
+		return chartInfo;
+	}
+
+	public void setChartInfo(Map<String, List<StudyResultDto>> chartInfo) {
+		this.chartInfo = chartInfo;
+	}
+
+	public Map<String, List<StudyResultDto>> getChartInfoFinal() {
+		return chartInfoFinal;
+	}
+
+	public void setChartInfoFinal(Map<String, List<StudyResultDto>> chartInfoFinal) {
+		this.chartInfoFinal = chartInfoFinal;
 	}
 }

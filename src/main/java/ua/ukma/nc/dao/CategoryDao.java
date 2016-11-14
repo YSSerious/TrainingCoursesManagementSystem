@@ -10,9 +10,13 @@ import java.util.List;
 public interface CategoryDao {
     Category getById(Long id);
 
+    Category getByName(String name);
+
     boolean isExist(Category category);
 
     int deleteCategory(Category category);
+
+    int deleteCategory(Long id);
 
     int updateCategory(Category category);
 

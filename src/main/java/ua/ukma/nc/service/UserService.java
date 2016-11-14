@@ -10,6 +10,10 @@ import java.util.List;
  * Created by Алексей on 15.10.2016.
  */
 public interface UserService {
+	
+	boolean canView(Long id);
+	
+	void changeStatus(Long id, Long statusId, String commentary);
 
     User getByEmail(String email);
 
@@ -31,5 +35,7 @@ public interface UserService {
 
 	List<User> getSome(int limit, int offset);
 
+	void deleteRoles(User user);
+	
 	int count();
 }

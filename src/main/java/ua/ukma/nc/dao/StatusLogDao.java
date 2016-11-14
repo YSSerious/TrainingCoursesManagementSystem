@@ -8,6 +8,9 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface StatusLogDao {
+	
+	Long getNewestGroup(Long userId);
+	
     StatusLog getById(Long id);
 
     int deleteStatusLog(StatusLog statusLog);

@@ -47,6 +47,8 @@ public class CategoryDaoImpl implements CategoryDao {
 
 	private static final String GET_BY_ID = "SELECT id, name, description FROM tcms.category WHERE id = ?";
 
+	private static final String GET_BY_NAME = "SELECT id, name, description FROM tcms.category WHERE name = ?";
+
 	private static final String DELETE_CATEGORY = "DELETE FROM tcms.category WHERE id = ?";
 
 	private static final String CREATE_CATEGORY = "INSERT INTO tcms.category (name, description) VALUES (?,?)";
@@ -60,9 +62,19 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	@Override
+	public Category getByName(String name) {
+		return jdbcTemplate.queryForObject(GET_BY_NAME, new CategoryMapper(), name);
+	}
+
+	@Override
 	public int deleteCategory(Category category) {
 		log.info("Deleting category with id = {}", category.getId());
 		return jdbcTemplate.update(DELETE_CATEGORY, category.getId());
+	}
+
+	@Override
+	public int deleteCategory(Long id) {
+		return jdbcTemplate.update(DELETE_CATEGORY, id);
 	}
 
 	@Override
@@ -96,6 +108,7 @@ public class CategoryDaoImpl implements CategoryDao {
 	public class CategoryCriterionMapper implements RowMapper<Criterion> {
 		public Criterion mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 			Criterion criterion = appContext.getBean(CriterionProxy.class, resultSet.getLong("id"));
+			criterion.setTitle(resultSet.getString("name"));
             return criterion;
 		}
 	}

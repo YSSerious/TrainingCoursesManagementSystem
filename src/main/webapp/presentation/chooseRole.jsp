@@ -14,7 +14,7 @@
         </div>
         <div class="row">
         </div>
-        <form class="form-horizontal col-sm-8 col-sm-offset-2" action="/set_role" method="post">
+        <form class="form-horizontal col-sm-8 col-sm-offset-2" action="set_role/" method="post">
             <div class="form-group">
             <label for="select"></label>
             <select class="form-control"  name="chosenRole" id="select">

@@ -52,7 +52,9 @@ public class UserDaoImpl implements UserDao {
 			return user;
 		}
 	}
-
+	
+	private static final String MENTOR_CHECK = "SELECT EXISTS (SELECT * FROM tcms.user WHERE id = ? AND id IN (SELECT id_user FROM tcms.user_group WHERE id_group IN (SELECT id_group FROM tcms.user_group WHERE id_user = (SELECT id FROM tcms.user WHERE email = ?)) AND id_group NOT IN (SELECT id_group FROM tcms.status_log WHERE id_student IN (SELECT id FROM tcms.user WHERE email = ?))))";
+	
 	private static final String GET_ALL = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student";
 
 	private static final String GET_BY_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id = ?";
@@ -60,6 +62,8 @@ public class UserDaoImpl implements UserDao {
 	private static final String GET_BY_EMAIL = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE email=?";
 
 	private static final String COUNT = "SELECT COUNT(*) FROM tcms.user";
+	
+	private static final String DELETE_ROLES = "DELETE FROM tcms.user_role WHERE id_user = ?";
 	
 	private static final String DELETE_USER = "DELETE FROM tcms.user WHERE id = ?";
 
@@ -71,7 +75,7 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String IS_EXIST = "SELECT EXISTS (SELECT email from tcms.user where email = ?)";
 
-	private static final String ADD_ROLES = "insert into user_role (id_user, id_role) values (?, ?)";
+	private static final String ADD_ROLES = "insert into tcms.user_role (id_user, id_role) values (?, ?)";
 
 	private static final String SET_STUDENT_STATUS = "insert into student_status (id_student, id_status) values (?, ?)";
 
@@ -150,6 +154,19 @@ public class UserDaoImpl implements UserDao {
 			Role role = appContext.getBean(RoleProxy.class, resultSet.getLong("id_role"));
 			return role;
 		}
+	}
+
+	@Override
+	public boolean canView(String mentorEmail, Long studentId) {
+		log.info("Is exist this user {} ?");
+		return jdbcTemplate.queryForObject(MENTOR_CHECK, Boolean.class, studentId, mentorEmail, mentorEmail);
+	
+	}
+
+	@Override
+	public void deleteRoles(User user) {
+		jdbcTemplate.update(DELETE_ROLES, user.getId());
+		
 	}
 
 }

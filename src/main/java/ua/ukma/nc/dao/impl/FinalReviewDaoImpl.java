@@ -44,6 +44,10 @@ public class FinalReviewDaoImpl implements FinalReviewDao{
             return finalReview;
         }
     }
+    
+    private static final String GET_BY_STUDENT = "SELECT * FROM tcms.final_review WHERE id_student = ? AND id_project = ? AND type = ?";
+    
+    private static final String EXISTS_STUDENT_GROUP = "SELECT (EXISTS (SELECT * FROM tcms.final_review WHERE id_student = ? AND id_project = (SELECT id_project FROM tcms.group WHERE id = ?) AND type=?))";
 
     private static final String GET_ALL = "SELECT id, date, id_student, id_employee, type, id_project, commentary FROM tcms.final_review";
 
@@ -86,4 +90,14 @@ public class FinalReviewDaoImpl implements FinalReviewDao{
         return jdbcTemplate.update(CREATE_FINAL_REVIEW, finalReview.getDate(), finalReview.getStudent().getId(), finalReview.getEmployee().getId(),
                 finalReview.getType(), finalReview.getProject().getId(), finalReview.getCommentary());
     }
+
+	@Override
+	public boolean exists(Long studentId, Long groupId, String type) {
+		return jdbcTemplate.queryForObject(EXISTS_STUDENT_GROUP, Boolean.class, studentId, groupId, type);
+	}
+
+	@Override
+	public FinalReview getByStudent(Long projectId, Long studentId, String type) {
+		return jdbcTemplate.queryForObject(GET_BY_STUDENT, new FinalReviewMapper(), studentId, projectId, type);
+	}
 }

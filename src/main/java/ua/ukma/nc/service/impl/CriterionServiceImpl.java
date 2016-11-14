@@ -23,8 +23,18 @@ public class CriterionServiceImpl implements CriterionService{
     }
 
     @Override
+    public Criterion getByName(String name) {
+        return criterionDao.getByName(name);
+    }
+
+    @Override
     public int deleteCriterion(Criterion criterion) {
         return criterionDao.deleteCriterion(criterion);
+    }
+
+    @Override
+    public int deleteCriterion(Long id) {
+        return criterionDao.deleteCriterion(id);
     }
 
     @Override
@@ -40,5 +50,20 @@ public class CriterionServiceImpl implements CriterionService{
     @Override
     public int createCriterion(Criterion criterion) {
         return criterionDao.createCriterion(criterion);
+    }
+
+	@Override
+	public List<Criterion> getByProject(Long projectId) {
+		return criterionDao.getByProject(projectId);
+	}
+	
+    @Override
+    public int createCriterion(String title, Long categoryId) {
+        return criterionDao.createCriterion(title, categoryId);
+    }
+
+    @Override
+    public boolean isExistInProjects(Long id) {
+        return criterionDao.isExistInProjects(id);
     }
 }

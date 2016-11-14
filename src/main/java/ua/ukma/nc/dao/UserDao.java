@@ -11,6 +11,8 @@ import java.util.List;
  * Created by Алексей on 15.10.2016.
  */
 public interface UserDao {
+	
+	boolean canView(String mentorEmail, Long studentId);
 
     User getByEmail(String email);
 
@@ -27,6 +29,8 @@ public interface UserDao {
     boolean isExist(User user);
 
     int addRole(User user, Role role);
+    
+    void deleteRoles(User user);
 
     int setStatus(User user, Status status);
 

@@ -46,6 +46,8 @@ public class StatusLogDaoImpl implements StatusLogDao{
         }
     }
     
+    private static final String GET_GROUP_BY_STUDENT_ID = "SELECT id_group FROM tcms.status_log WHERE id_student=? AND date = (SELECT MAX(date) FROM tcms.status_log WHERE id_student = ?)";
+    
     private static final String GET_BY_STUDENT_PROJECT = "SELECT id, id_old_status, id_new_status, commentary, id_student, id_employee, date, id_group FROM tcms.status_log WHERE id_student = ? AND id_group IN (SELECT id FROM tcms.group WHERE id_project = ?)";
 
     private static final String GET_ALL = "SELECT id, id_old_status, id_new_status, commentary, id_student, id_employee, date, id_group FROM tcms.status_log";
@@ -94,4 +96,9 @@ public class StatusLogDaoImpl implements StatusLogDao{
         return jdbcTemplate.update(CREATE_STATUS_LOG, statusLog.getOldStatus().getId(), statusLog.getNewStatus().getId(), statusLog.getCommentary(),
                 statusLog.getStudent().getId(), statusLog.getEmployee().getId(), statusLog.getDate(), statusLog.getGroup().getId());
     }
+
+	@Override
+	public Long getNewestGroup(Long userId) {
+		return jdbcTemplate.queryForObject(GET_GROUP_BY_STUDENT_ID, Long.class, userId, userId);
+	}
 }

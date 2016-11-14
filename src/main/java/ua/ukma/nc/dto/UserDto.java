@@ -15,6 +15,9 @@ public class UserDto {
 	private String lastName;
 	private boolean isActive;
 	private List<String> roles;
+	private String statusTitle;
+	private String statusDescription;
+	private Long statusId;
 
 	public UserDto() {
 
@@ -28,11 +31,29 @@ public class UserDto {
 		setLastName(user.getLastName());
 		setActive(user.isActive());
 
+		if (user.getStudentStatus().getStatus().getId() != 0) {
+			setStatusId(user.getStudentStatus().getStatus().getId());
+			setStatusTitle(user.getStudentStatus().getStatus().getTitle());
+			setStatusDescription(user.getStudentStatus().getStatus().getDescription());
+		}
+		
 		List<String> roles = new ArrayList<>();
 		for (Role role : user.getRoles())
-			roles.add(role.getTitle());
+			roles.add(convert(role.getTitle()));
 
 		setRoles(roles);
+	}
+
+	private String convert(String title) {
+		if (title.equals("ROLE_STUDENT"))
+			return "Student";
+		else if (title.equals("ROLE_MENTOR"))
+			return "Mentor";
+		else if (title.equals("ROLE_ADMIN"))
+			return "Admin";
+		else if (title.equals("ROLE_HR"))
+			return "HR";
+		return title;
 	}
 
 	public Long getId() {
@@ -96,5 +117,29 @@ public class UserDto {
 		return "UserImpl{" + "id=" + id + ", email='" + email + '\'' + ", firstName='" + firstName + '\''
 				+ ", secondName='" + secondName + '\'' + ", lastName='" + lastName + '\'' + '\'' + ", isActive="
 				+ isActive + ", roles=" + roles + '}';
+	}
+
+	public String getStatusTitle() {
+		return statusTitle;
+	}
+
+	public void setStatusTitle(String statusTitle) {
+		this.statusTitle = statusTitle;
+	}
+
+	public String getStatusDescription() {
+		return statusDescription;
+	}
+
+	public void setStatusDescription(String statusDescription) {
+		this.statusDescription = statusDescription;
+	}
+
+	public Long getStatusId() {
+		return statusId;
+	}
+
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
 	}
 }
