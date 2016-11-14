@@ -22,6 +22,8 @@ public interface CriterionService {
     
     List<Criterion> getByProject(Long projectId);
 
+    List<Criterion> getProjectUnusedCriteria (Long projectId);
+
     int createCriterion(Criterion criterion);
 
     int createCriterion(String title, Long categoryId);

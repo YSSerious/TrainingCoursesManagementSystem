@@ -12,6 +12,8 @@ public interface CriterionDao {
 
     Criterion getByName(String name);
 
+    List<Criterion> getProjectUnusedCriteria (Long projectId);
+
     int deleteCriterion(Criterion criterion);
 
     int deleteCriterion(Long id);
