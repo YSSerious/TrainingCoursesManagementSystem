@@ -27,6 +27,9 @@
                 $(this).attr('onclick','window.location.href="'+$(this).attr('href')+'"');
                 $(this).removeAttr('href');
             });
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip();   
+            });   
         </script>
 </body>
 </html>
