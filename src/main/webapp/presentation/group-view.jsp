@@ -79,7 +79,7 @@
                
             </div>
             <button type="submit" class="btn btn-default btn-success pull-center" 
-            id="submitButton"><span class="glyphicon glyphicon-off"
+            id="addSubmitButton"><span class="glyphicon glyphicon-off"
              
             ></span>Send</button>
           </form>
@@ -105,82 +105,18 @@
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
 		<!--Data from DB to be inserted here -->
 	<!--  test value-->	
-	 
+ 
+  <div id="attachment-title">Attachments</div>
+     <div id="attachment" style="display:none">
 <c:forEach items="${attachments}" var="attachment" >
- 
-    <li class="list-group-item">
   <a href="${attachment.attachmentScope}" >   ${attachment.name}</a>
- 
   <div class="btn-group">
     <button id="e${attachment.id}"class="btn btn-xs btn-warning edit ${attachment.id}">Edit </button>
     <button id="d${attachment.id}" class="btn btn-xs btn-danger delete ${attachment.id}">Delete </button>
     </div>
-    
     <br/>
-    
-  
     </c:forEach>
-    
-  
- 
-	<script type="text/javascript">	
- 
-	$(document).ready(function(){
-     $("#addGroupAttachmentButton").click(function(){
-         $("#addGroupAttachmentModal").modal();
-     });
- });
-	$(document).ready(function(){
-		 
-	     $("#editGroupAttachmentButton").click(function(){
-	         $("#editGroupAttachmentModal").modal();
-	     });
-	 });
- 
- $(document).ready(function() {
-     $("#submitButton").click(function(event) {
-         $.ajax({
-             url: "/groups/addAttachment",
-             type: "POST",
-             data: {"id_group" : "${groupId}", 
-            	 "name" : $("#groupAttachmentName").val(),
-            	 "attachment_scope": $("#groupAttachment").val()}
-            	   
-            		  
-            	  });
-      
-         });
-     });
- $(document).ready(function() {
-
-     $("#editGroupAttachmentButton").click(function(event) {
-         $.ajax({
-             url: "/groups/editAttachment",
-             type: "POST",
-             data: {"id_group" : $(group-id), 
-            	 "name" : $("#groupAttachmentName").val(),
-            	 "attachment_scope": $("#groupAttachment").val()
-             }
-            	 
-             
-             
-            	   
-            		  
-            	  });
-      
-         });
-     });
- $('.delete').click(function(event){
-	   var idOfAttachment = event.target.id;
-	   idOfAttachment = idOfAttachment.substring(1,idOfAttachment.length);
-	   $.ajax({
-		   url: "/groups/deleteAttachment",
-	   		data:{ "id":idOfAttachment}
-	   
-	   });
- 
- </script>
-	
+      </div>
 	</div>
 	<br />
 </div>
