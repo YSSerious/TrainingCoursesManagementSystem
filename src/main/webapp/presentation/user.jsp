@@ -1,9 +1,4 @@
 <%@include file="header.jsp"%>
-<script src="<c:url value="/presentation/resources/js/user.js"/>"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-
-<script src="http://cdn.oesmith.co.uk/morris-0.4.1.min.js"></script>
-
 <div class="col-sm-11 col-sm-offset-1">
 	<div class="col-sm-11">
 	

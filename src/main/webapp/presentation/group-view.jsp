@@ -106,10 +106,6 @@
 		</div>
 	</div>
 
-	
-
-
-	
 
 	<div class="panel panel-default"
 		style="background-color:<%=type%>;border: 1px solid <%=border %>; border-radius: 7px;">
@@ -135,6 +131,7 @@
 
 
 		<script type="text/javascript">	
+
  
 	$(document).ready(function(){
      $("#addGroupAttachmentButton").click(function(){

@@ -1,10 +1,4 @@
 <%@include file="header.jsp"%>
-	<br />
-	<jsp:useBean id="today" class="java.util.Date" />
-	<jsp:useBean id="type" class="java.lang.String" />
-	<jsp:useBean id="border" class="java.lang.String" />
-
-
 	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h3 class="panel-title">Users</h3>

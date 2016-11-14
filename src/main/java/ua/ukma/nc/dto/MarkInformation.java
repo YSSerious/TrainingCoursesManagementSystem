@@ -78,4 +78,11 @@ public class MarkInformation {
 		this.meetingId = meetingId;
 	}
 
+	@Override
+	public String toString() {
+		return "MarkInformation [criterionId=" + criterionId + ", criterionName=" + criterionName + ", category="
+				+ category + ", mark=" + mark + ", markDescription=" + markDescription + ", commentary=" + commentary
+				+ ", meetingId=" + meetingId + ", meetingName=" + meetingName + "]";
+	}
+
 }

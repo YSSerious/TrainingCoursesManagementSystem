@@ -20,4 +20,6 @@ public interface MeetingResultDao {
     int createMeetingResult(MeetingResult meetingResult);
     
     List<MarkInformation> generateMarkInformation(long studentId, long projectId);
+
+	List<MarkInformation> getByMeeting(long studentId, long meetingId);
 }
