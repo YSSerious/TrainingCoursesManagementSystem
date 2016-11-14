@@ -73,6 +73,8 @@ public class MeetingResultDaoImpl implements MeetingResultDao{
     private static final String UPDATE_MEETING_RESULT = "UPDATE tcms.meeting_result SET id_criterion = ?, id_meeting_review = ?, id_mark = ?, commentary = ? WHERE id = ?";
 
     private static final String GET_MARK_INFORMATION = "SELECT id_criterion, (SELECT id_meeting FROM tcms.meeting_review WHERE id = id_meeting_review) AS meeting_id, (SELECT description FROM tcms.mark WHERE value = id_mark), (SELECT name FROM tcms.criterion WHERE id = id_criterion) AS criterion, (SELECT name FROM tcms.category WHERE id IN (SELECT id_category FROM tcms.criterion WHERE id = id_criterion )) AS category, (SELECT name FROM tcms.meeting WHERE id IN (SELECT id_meeting FROM tcms.meeting_review WHERE id = id_meeting_review)) AS meeting, commentary, id_mark AS mark FROM tcms.meeting_result WHERE ? = (SELECT id_student FROM tcms.meeting_review WHERE id = id_meeting_review) AND ? = (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.meeting WHERE tcms.meeting.id IN (SELECT id_meeting FROM tcms.meeting_review WHERE tcms.meeting_review.id = tcms.meeting_result.id_meeting_review)))";
+    
+    private static final String GET_MARK_INFORMATION_BY_MEETING = "SELECT id_criterion, (SELECT id_meeting FROM tcms.meeting_review WHERE id = id_meeting_review) AS meeting_id, (SELECT description FROM tcms.mark WHERE value = id_mark), (SELECT name FROM tcms.criterion WHERE id = id_criterion) AS criterion, (SELECT name FROM tcms.category WHERE id IN (SELECT id_category FROM tcms.criterion WHERE id = id_criterion )) AS category, (SELECT name FROM tcms.meeting WHERE id IN (SELECT id_meeting FROM tcms.meeting_review WHERE id = id_meeting_review)) AS meeting, commentary, id_mark AS mark FROM tcms.meeting_result WHERE ? = (SELECT id_student FROM tcms.meeting_review WHERE id = id_meeting_review) AND ? = ((SELECT id_meeting FROM tcms.meeting_review WHERE tcms.meeting_review.id = tcms.meeting_result.id_meeting_review))";
     @Override
     public MeetingResult getById(Long id) {
         log.info("Getting meeting result with id = {}", id);
@@ -109,4 +111,10 @@ public class MeetingResultDaoImpl implements MeetingResultDao{
 	public List<MarkInformation> generateMarkInformation(long studentId, long projectId) {
 		return jdbcTemplate.query(GET_MARK_INFORMATION, new MarkInformationMapper(), studentId, projectId);
 	}
+	
+	@Override
+    public List<MarkInformation> getByMeeting(long studentId, long meetingId) {
+        log.info("Getting meeting result with meeting_id = {}", meetingId);
+        return jdbcTemplate.query(GET_MARK_INFORMATION_BY_MEETING, new MarkInformationMapper(), studentId, meetingId);
+    }
 }

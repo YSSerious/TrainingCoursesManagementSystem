@@ -79,7 +79,7 @@
         </div>
 
         <!-- start add category modal -->
-        <div id="addCategory" class="modal fade">
+        <div id="addCategory" class="modal fade" data-backdrop="static">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -113,7 +113,7 @@
         </div>
         <!-- end add category modal -->
         <!-- start add criteria modal -->
-        <div id="addCriteria" class="modal fade">
+        <div id="addCriteria" class="modal fade" data-backdrop="static">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -143,7 +143,7 @@
         </div>
         <!-- end add criteria modal -->
         <!-- start delete category modal -->
-        <div id="deleteCategory" class="modal fade">
+        <div id="deleteCategory" class="modal fade" data-backdrop="static">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -158,7 +158,7 @@
         </div>
         <!-- finish delete category modal -->
         <!-- start delete criteria modal -->
-        <div id="deleteCriteria" class="modal fade">
+        <div id="deleteCriteria" class="modal fade" data-backdrop="static">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -173,7 +173,7 @@
         </div>
         <!-- finish delete criteria modal -->
         <!-- start edit category modal -->
-        <div id="editCategory" class="modal fade">
+        <div id="editCategory" class="modal fade" data-backdrop="static">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -204,7 +204,7 @@
         </div>
         <!-- finish edit category modal -->
         <!-- start criteriaDeleteError modal -->
-        <div id="criteriaDeleteError" class="modal fade static">
+        <div id="criteriaDeleteError" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -218,7 +218,7 @@
         </div>
         <!-- finish criteriaDeleteError modal -->
         <!-- start categoryDeleteError modal -->
-        <div id="categoryDeleteError" class="modal fade static">
+        <div id="categoryDeleteError" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
