@@ -97,7 +97,7 @@ public class CategoryController {
         return null;
     }
 
-    boolean isCriteriaUsing(Category category){
+    private boolean isCriteriaUsing(Category category){
         for(Criterion criterion: category.getCriteria()){
         if(criterionService.isExistInProjects(criterion.getId()))
             return true;

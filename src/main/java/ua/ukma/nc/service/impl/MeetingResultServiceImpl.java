@@ -68,5 +68,10 @@ public class MeetingResultServiceImpl implements MeetingResultService{
 		return meetingResultDao.getByMeeting(studentId, meetingId);
 	}
 
-	
+    @Override
+    public List<MeetingResult> getByReview(long review) {
+        return meetingResultDao.getByReview(review);
+    }
+
+
 }

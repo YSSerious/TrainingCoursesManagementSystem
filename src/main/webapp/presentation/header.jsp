@@ -61,6 +61,7 @@
     <script src="<c:url value="/presentation/resources/js/forms.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/charts.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/user.js"/>" defer="defer"></script>
+    <script src="<c:url value="/presentation/resources/js/meeting.js"/>" defer="defer"></script>
     <!--<script src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>-->
 </head>
 <body>
