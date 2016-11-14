@@ -56,7 +56,7 @@
 			<button type="button" class="btn btn-default btn-xs pull-right">Add</button>
 			<button type="button" class="btn btn-default btn-xs pull-right">Remove</button>
 		</div>
-		<br />
+		
 
 
 		<c:forEach items="${mentors}" var="mentor">

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.ukma.nc.dao.GroupDao;
 import ua.ukma.nc.entity.Group;
+import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.GroupService;
 
 import java.util.List;
@@ -45,5 +46,15 @@ public class GroupServiceImpl implements GroupService{
 	@Override
 	public List<Group> getByProjectId(Long projectId) {
 		return groupDao.getByProjectId(projectId);
+	}
+
+	@Override
+	public List<User> getMentors(Long groupId) {
+		return groupDao.getMentors(groupId);
+	}
+
+	@Override
+	public List<User> getStudents(Long groupId) {
+		return groupDao.getStudents(groupId);
 	}
 }

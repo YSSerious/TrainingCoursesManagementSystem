@@ -20,6 +20,7 @@ public interface Group extends Serializable{
      void setName(String name);
 
      List<User> getUsers();
+     
 
      void setUsers(List<User> users);
 }
