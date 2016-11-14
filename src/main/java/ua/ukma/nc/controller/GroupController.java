@@ -112,6 +112,7 @@ public class GroupController {
 		model.addObject("projectName",projectName);
 		model.addObject("students",students);
 		model.addObject("mentors",mentors);
+		model.addObject("meetings",meetings);
 		model.addObject("attachments",groupAttachmentsFinal);
 		model.addObject("group-id",group.getId());
 		model.setViewName("group-view");

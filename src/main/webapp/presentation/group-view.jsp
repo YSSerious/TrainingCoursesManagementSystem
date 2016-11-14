@@ -6,8 +6,8 @@
                   type="#fff";
                   border="#7FFF00";
 				%>
-<h1>Project: </h1>${projectName}
-<h2>Group:</h2> ${group.name}
+<h1>Project: ${projectName}</h1>
+<h2>Group:${group.name}</h2> 
 <br />
 
 <div class="meetings_template">
