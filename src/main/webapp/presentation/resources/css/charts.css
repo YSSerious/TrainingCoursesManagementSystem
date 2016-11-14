@@ -21,7 +21,7 @@ and open the template in the editor.
 }
 
 .chart-bar:hover {
-    fill: #003284;
+    fill: #4a4c4f;
 }
 
 .chart-tip {
@@ -29,18 +29,26 @@ and open the template in the editor.
     pointer-events: none;
 }
 
-.axis-x path.domain,
+/*.axis-x path.domain,
 .axis-x line{
    fill: none;
    stroke: none;
-}
+}*/
 
-path.domain {
+/*path.domain {
     stroke: none;
-}
+}*/
 
 .axis-y .tick line {
-   stroke-width: 1;
-   stroke: rgba(0, 0, 0, 0.2);
+   stroke: none;
+}
+
+.axis-y path.domain {
+    stroke: #000;
+    stroke-width: 2px;
+}
+
+.axis-y text {
+    font-size: 13px;
 }
 

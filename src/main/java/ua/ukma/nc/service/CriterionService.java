@@ -29,4 +29,6 @@ public interface CriterionService {
     int createCriterion(String title, Long categoryId);
 
     boolean isExistInProjects(Long id);
+
+	List<Criterion> getByMeeting(Long meetingId);
 }

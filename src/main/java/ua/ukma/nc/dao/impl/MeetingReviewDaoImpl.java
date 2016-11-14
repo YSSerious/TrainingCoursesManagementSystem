@@ -65,6 +65,12 @@ public class MeetingReviewDaoImpl implements MeetingReviewDao {
     }
     
     @Override
+    public List <MeetingReview> getByMeeting(Long id) {
+        log.info("Getting meeting review with meeting_id = {}", id);
+        return jdbcTemplate.query(GET_ALL+" WHERE id_meeting = ?", new MeetingReviewMapper(), id);
+    }
+    
+    @Override
     public List<MeetingReview> getByProjectStudent(Long projectId, Long studentId) {
         return jdbcTemplate.query(GET_BY_STUDENT_PROJECT, new MeetingReviewMapper(), studentId, projectId);
     }

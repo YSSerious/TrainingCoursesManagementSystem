@@ -80,10 +80,8 @@ public class GroupController {
 		 
 	 
 
-		List<GroupAttachmentDto> groupAttachments= new ArrayList<GroupAttachmentDto>();
-			for(GroupAttachment ga : groupAttachmentService.getByGroup(id)){
-				groupAttachments.add(new GroupAttachmentDto(ga));
-			}
+		List<GroupAttachment> groupAttachments= groupAttachmentService.getByGroup(id);
+			
 		System.out.println(groupAttachments.size()+"Size of ");
 		//List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
 		for(UserDto us: users){
@@ -100,11 +98,11 @@ public class GroupController {
 			if(!isMentor) students.add(us);
 		}
 
-		List<MeetingDto> meetings = new ArrayList<MeetingDto>();
+	/*	List<MeetingDto> meetings = new ArrayList<MeetingDto>();
 		for(Meeting mt : meetingService.getByGroup(id) ){
 			meetings.add(new MeetingDto(mt));
-		}
- 
+		}*/
+		List<Meeting> meetings =meetingService.getByGroup(id) ;
 	 
 		String projectName = group.getProject().getName();
 		model.addObject("group",group);
