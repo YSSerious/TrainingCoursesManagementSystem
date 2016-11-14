@@ -49,7 +49,8 @@ public class GroupAttachmentDaoImpl implements GroupAttachmentDao{
     private static final String CREATE_GROUP_ATTACHMENT = "INSERT INTO tcms.group_attachment (name, id_group, attachment_scope) VALUES (?,?,?)";
 
     private static final String UPDATE_GROUP_ATTACHMENT = "UPDATE tcms.group_attachment SET name = ?, id_group = ?, attachment_scope = ? WHERE id = ?";
-
+    
+    private static final String GET_BY_GROUP_ID = "SELECT * FROM tcms.group_attachment WHERE id_group = ?"; 
     @Override
     public GroupAttachment getById(Long id) {
         log.info("Getting group attachment with id = {}", id);
@@ -79,4 +80,10 @@ public class GroupAttachmentDaoImpl implements GroupAttachmentDao{
         log.info("Create new group attachment with name = {}", groupAttachment.getName());
         return jdbcTemplate.update(CREATE_GROUP_ATTACHMENT,groupAttachment.getName(), groupAttachment.getGroup().getId(), groupAttachment.getAttachmentScope());
     }
+
+	@Override
+	public List<GroupAttachment> getByGroupId(Long groupId) {
+		log.info("Getting all group attachments with group id = {}", groupId);
+		return jdbcTemplate.query(GET_BY_GROUP_ID,new GroupAttachmentMapper(),groupId );
+	}
 }

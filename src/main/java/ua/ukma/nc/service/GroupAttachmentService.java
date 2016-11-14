@@ -15,6 +15,8 @@ public interface GroupAttachmentService {
     int updateGroupAttachment(GroupAttachment groupAttachment);
 
     List<GroupAttachment> getAll();
-
+    
+    List<GroupAttachment> getByGroup(Long groupId);
+    
     int createGroupAttachment(GroupAttachment groupAttachment);
 }

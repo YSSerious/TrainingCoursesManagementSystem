@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import ua.ukma.nc.dto.GroupAttachmentDto;
 import ua.ukma.nc.dto.GroupDto;
 import ua.ukma.nc.dto.MeetingDto;
 import ua.ukma.nc.dto.UserDto;
@@ -79,7 +80,10 @@ public class GroupController {
 		 
 	 
 
-		List<GroupAttachment> groupAttachments= groupAttachmentService.getAll();
+		List<GroupAttachmentDto> groupAttachments= new ArrayList<GroupAttachmentDto>();
+			for(GroupAttachment ga : groupAttachmentService.getByGroup(id)){
+				groupAttachments.add(new GroupAttachmentDto(ga));
+			}
 		System.out.println(groupAttachments.size()+"Size of ");
 		//List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
 		for(UserDto us: users){
@@ -102,29 +106,7 @@ public class GroupController {
 		}
  
 	 
-		/*
-		for(GroupAttachment attach:groupAttachments){
-			if(attach.getGroup().equals(group))
-				groupAttachmentsFinal.add(attach);			
-		}
- */
-	
-	//	groupAttachmentsFinal.add(attachment);
-	 
-		 
-		model.addObject("group-name",group.getName());
-		model.addObject("group-project",group.getProject().getName());
- 
 		String projectName = group.getProject().getName();
-		model.addObject("group",group);
-		model.addObject("projectName",projectName);
- 		
- 
-	 
-		model.addObject("group-name",group.getName());
-		model.addObject("group-project",group.getProject().getName());
-
-	//	String projectName = group.getProject().getName();
 		model.addObject("group",group);
 		model.addObject("projectName",projectName);
 

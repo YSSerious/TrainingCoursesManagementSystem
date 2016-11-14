@@ -40,4 +40,9 @@ public class GroupAttachmentServiceImpl implements GroupAttachmentService{
     public int createGroupAttachment(GroupAttachment groupAttachment) {
         return groupAttachmentDao.createGroupAttachment(groupAttachment);
     }
+
+	@Override
+	public List<GroupAttachment> getByGroup(Long groupId) {
+		return groupAttachmentDao.getByGroupId(groupId);
+	}
 }
