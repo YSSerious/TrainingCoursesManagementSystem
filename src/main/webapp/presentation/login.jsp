@@ -17,21 +17,21 @@
             <div class="col-sm-8 col-sm-offset-2">
                 <c:if test="${param.error != null}">
                     <div class="login-error">
-                        Invalid username, password or role.
+                        <spring:message code="login.fail.msg"/>
                     </div>
                     <br/>
                 </c:if>
                 <c:if test="${param.logout != null}">
                     <div class="login-success">
-                        You have been logged out!
+                        <spring:message code="logout.success.msg"/>
                     </div>
                     <br/>
                 </c:if>
                 <div class="form-group">
-                    <input type="email" name="username" class="form-control" placeholder="Enter your email">
+                    <input type="email" name="username" class="form-control" placeholder="<spring:message code="login.email.placeholder"/>">
                 </div>
                 <div class="form-group">
-                    <input type="password" name="password" class="form-control" placeholder="Enter your password">
+                    <input type="password" name="password" class="form-control" placeholder="<spring:message code="login.password.placeholder"/>">
                 </div>
                 <%--<div class="form-group">--%>
                     <%--<label for="select"></label>--%>

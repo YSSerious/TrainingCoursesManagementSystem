@@ -9,10 +9,10 @@
 
 <div class="container error-forbidden-box">
     <h1>403 Forbidden</h1>
-    <h3>Sorry, you have no permission to view this page!</h3>
-    <a href="/roles" class="btn btn-primary">Change role</a>
+    <h3><spring:message code="403.msg"/></h3>
+    <a href="/roles" class="btn btn-primary"><spring:message code="403.changerole.msg"/></a>
     <form:form method="POST" action="logout">
-        <button type="submit" class="btn btn-primary">Log in with different account</button>
+        <button type="submit" class="btn btn-primary"><spring:message code="403.relogin.msg"/></button>
     </form:form>
 </div>
 
