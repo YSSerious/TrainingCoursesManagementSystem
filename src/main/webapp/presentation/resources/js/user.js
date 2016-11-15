@@ -105,6 +105,24 @@ function createStudentProjectsInfo(userId, divInside){
 };
 
 function createCharts(data, projectId) {
+    var chart = $("#chart" + projectId);
+    var typesDropdown = "<div class='dropdown chart-dropdown' id='type-menu'>" +
+            "<button class='btn btn-link dropdown-toggle'" + 
+            "type='button' data-toggle='dropdown'>" +
+            "Show<span class='caret'></span></button>" +
+            "<ul class='dropdown-menu'>" +
+      "<li><a id='all-criteria'>All criteria</a></li>" +
+      "<li><a id='categories'>Categories</a></li>" + 
+      "<li><a id='grouped-criteria'>Grouped criteria</a></li></ul>";
+    chart.append(typesDropdown);
+    var sortDropdown = "<div class='dropdown chart-dropdown' id='sort-menu'>" +
+            "<button class='btn btn-link dropdown-toggle'" + 
+            "type='button' data-toggle='dropdown'>" +
+            "Sort by<span class='caret'></span></button>" +
+            "<ul class='dropdown-menu'>" +
+      "<li><a id='increase'>Increase</a></li>" +
+      "<li><a id='decrease'>Decrease</a></li></ul>";
+    chart.append(sortDropdown);
     var criteriaValues = [];
     $.each(data, function (index, value) {
         $.each(value, function (index, value) {
@@ -112,6 +130,9 @@ function createCharts(data, projectId) {
         });
     });
     var maxYAxisValue = Math.max.apply(null, criteriaValues);
+//    $('.chart-dropdown ul li').click(function(e) {
+//        console.log($(this).find('a').attr('id'));
+//    });
     drawCriteriaChart(data, '#chart' + projectId, 6, 'title');
 }
 
