@@ -5,31 +5,7 @@
   Date: 05.11.2016
   Time: 11:49
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <style>
-  .modal-header, h4, .close {
-      background-color: #5cb85c;
-      color:white !important;
-      text-align: center;
-      font-size: 30px;
-  }
-  .modal-footer {
-      background-color: #f9f9f9;
-  }
-  </style>
-<script src="<c:url value="/presentation/resources/js/create_group.js"/>"></script>
-</head>
-<body>
 
-<div class="container">
-
-  <button type="button" class="btn btn-default btn-lg" id="createGroupButton">Create group</button>
 
   <div class="modal fade" id="createGroupModal" role="dialog">
     <div class="modal-dialog">
@@ -52,6 +28,6 @@
       
     </div>
   </div>
-</div>
-</body>
-</html>
+
+
+

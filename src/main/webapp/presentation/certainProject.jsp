@@ -40,8 +40,9 @@
             <a href="/create-meeting?project=${project.id}" class="btn btn-default btn-xs pull-right-btn">Set meetings schedule</a>
 	        <a href="" class="btn btn-default btn-xs pull-right-btn">Remove</a>
 	        <a href="" class="btn btn-default btn-xs pull-right-btn">Edit</a>
-            <a href="" class="btn btn-default btn-xs pull-right-btn"> Add</a>
+            <a href="" class="btn btn-default btn-xs pull-right-btn" id="createGroupButton"> Add</a>
           </div>
+ <%@include file="createGroup.jsp"%>
           <ul class="list-group">
           <c:forEach items="${groups}" var="group">
             <li class="list-group-item">
