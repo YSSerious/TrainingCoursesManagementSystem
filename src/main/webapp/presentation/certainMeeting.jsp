@@ -25,7 +25,7 @@ At ${meeting.time}
 		<c:forEach items="${students}" var="user">
 			<tr>
 				<td><font size="3"><b> <a
-							href="/certainUser/${user.id}"> ${user.firstName}
+							href="/users/${user.id}"> ${user.firstName}
 								${user.secondName} ${user.lastName} </a></b></font></td>
 				<td><button type="button" class="btn btn-primary">
 						<span class="glyphicon glyphicon-edit"></span> Evaluate
@@ -58,7 +58,7 @@ At ${meeting.time}
 		<c:forEach items="${marks}" var="entry">
 			<tr>
 				<td><font size="3"><b> <a
-							href="/certainUser/${entry.key.id}">${entry.key.firstName}
+							href="/users/${entry.key.id}">${entry.key.firstName}
 								${entry.key.secondName} ${entry.key.lastName}</a></b></font></td>
 				<c:forEach items="${entry.value}" var="mark">
 					<td><font size="3"><a href="#" data-toggle="tooltip"

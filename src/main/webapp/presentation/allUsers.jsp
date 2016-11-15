@@ -14,7 +14,7 @@
 			<c:forEach items="${users}" var="user">
 				<tr>
 					<td><font size="3"><b>
-					<a href ="/certainUser/${user.id}">
+					<a href ="/users/${user.id}">
 					${user.firstName} ${user.secondName} ${user.lastName}
 					</a></b></font></td>
 					<td><font size="3">
