@@ -150,37 +150,12 @@ function createStudentProjectsInfo(userId, divInside){
 };
 
 function createCharts(data, projectId) {
-    var chartBlock = $('#chart' + projectId);
-    var chartTabs = "<ul class='nav nav-pills' id='chart-pills'>";
-    var categories = [];
-    for (var i in data) {
-        categories.push(data[i]);
-        chartTabs += "<li><a data-toggle='pill' href='#chart" + i + "'>" + i + "</a></li>";
-    }
-    chartTabs += "</ul>";
-    chartBlock.append(chartTabs);
-    var tabContent = $("<div class='tab-content'></div>");
-    chartBlock.append(tabContent);
-    $('#chart-pills li:first-child').attr("class", "active");
     var criteriaValues = [];
-    $.each(categories, function (index, value) {
+    $.each(data, function (index, value) {
         $.each(value, function (index, value) {
             criteriaValues.push(value.averageValue);
         });
     });
     var maxYAxisValue = Math.max.apply(null, criteriaValues);
-
-    $.each(data, function (key, value) {
-        var text = '<div class="tab-pane fade chart" id="chart' + key + '"></div>';
-        $(text).appendTo(tabContent);
-    });
-    $("div:first-child", tabContent).addClass("in active");
-    $.each(data, function (key, value) {
-
-        if (value.length === 1) {
-//    	 	    	    			value1.unshift({ criterionName: 'd', averageValue: 4});
-//            value.push({criterionName: 'd', averageValue: 4});
-        }
-        drawCriteriaChart(value, '#chart' + key, 6, key);
-    });
+    drawCriteriaChart(data, '#chart' + projectId, 6, 'title');
 }
