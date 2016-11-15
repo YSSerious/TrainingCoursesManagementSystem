@@ -16,3 +16,13 @@ var setAttendance = function (meetingId, studentId) {
          }
      });
 };
+
+var do_evaluate = function (reviewId) {
+    var reviewComment = $('#review-comment').val();
+    var results = [];
+    $('ul').find('li').each(function(index){
+       console.log($(this).find('.result-mark').val()+'   '+$(this).find('.result-comment').val()+'   '
+       +$(this).find('.result-criterion-id').val());
+
+    });
+};

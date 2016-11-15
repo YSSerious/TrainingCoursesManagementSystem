@@ -19,7 +19,6 @@
     <br/>
     <br/>
     <h3>Current results: </h3>
-    <form class="form-group" action="#" method="post">
         <ul class="list-group">
             <c:forEach items="${results}" var="result">
                 <li class="list-group-item container-fluid">
@@ -37,15 +36,15 @@
                             <option <c:if test="${result.mark.value eq 5}">selected</c:if>>5</option>
                         </select>
                     </div>
+                    <input hidden value="${result.criterion.id}" class="result-criterion-id">
                 </li>
             </c:forEach>
         </ul>
         <br/>
         <br/>
         <label>Review comment: </label>
-        <textarea class="form-control review-comment" rows="5">${review.commentary}</textarea>
+        <textarea class="form-control" id="review-comment" rows="5">${review.commentary}</textarea>
         <br/>
-        <button class="btn btn-primary pull-right" onclick="do_evaluate()"><spring:message code="submit.btn"/></button>
-    </form>
+        <button class="btn btn-primary pull-right" onclick="do_evaluate(${review.id})"><spring:message code="submit.btn"/></button>
 </div>
 <%@include file="footer.jsp" %>
