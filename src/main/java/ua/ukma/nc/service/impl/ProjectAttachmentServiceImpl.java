@@ -41,4 +41,10 @@ public class ProjectAttachmentServiceImpl implements ProjectAttachmentService{
     public int createProjectAttachment(ProjectAttachment projectAttachment) {
         return projectAttachmentDao.createProjectAttachment(projectAttachment);
     }
+
+	@Override
+	public List<ProjectAttachment> getAllById(Long id_project) {
+		// TODO Auto-generated method stub
+		return projectAttachmentDao.getAllById(id_project);
+	}
 }

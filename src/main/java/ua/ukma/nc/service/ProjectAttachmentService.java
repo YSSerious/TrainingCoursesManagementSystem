@@ -15,6 +15,8 @@ public interface ProjectAttachmentService {
     int updateProjectAttachment(ProjectAttachment projectAttachment);
 
     List<ProjectAttachment> getAll();
+    
+    List<ProjectAttachment> getAllById(Long id_project);
 
     int createProjectAttachment(ProjectAttachment projectAttachment);
 }
