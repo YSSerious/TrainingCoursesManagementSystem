@@ -87,6 +87,65 @@
 </div>
 
 <div class="attachments_template">
+<<<<<<< HEAD
+ 
+	<label>Attachments</label><br/>
+	
+	 <div class="modal fade" id="addGroupAttachmentModal" role="dialog">
+    <div class="modal-dialog">
+   
+      <div class="modal-content">
+        <div class="modal-body" style="padding:40px 50px;">
+          <form role="form"   > 
+            <div class="form-group">
+            <label for="groupAttachmentName"> Attachment name: </label><br/>
+	<input type=text class="form-control" id="groupAttachmentName"
+	 placeholder="Enter attachment name"  required="required">  
+	<label for="groupAttachment"> Attachment: </label><br/>
+	<input type=text class="form-control" id="groupAttachment" 
+	placeholder="Enter attachment"  required="required">  
+               
+            </div>
+            <button type="submit" class="btn btn-default btn-success pull-center" 
+            id="addSubmitButton"><span class="glyphicon glyphicon-off"
+             
+            ></span>Send</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-default btn-lg"
+           data-dismiss="modal" id="cancelButton"><span 
+           class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+   
+   <!--  -->
+	<button type="button" class="btn btn-default btn-xs" value="addAttachment" 
+           id="addGroupAttachmentButton">Upload</button>
+	 
+	<br />
+	
+	<div
+		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
+		<!--Data from DB to be inserted here -->
+	<!--  test value-->	
+ 
+  <div id="attachment-title">Attachments</div>
+     <div id="attachment" style="display:none">
+<c:forEach items="${attachments}" var="attachment" >
+  <a href="${attachment.attachmentScope}" >   ${attachment.name}</a>
+  <div class="btn-group">
+    <button id="e${attachment.id}"class="btn btn-xs btn-warning edit ${attachment.id}">Edit </button>
+    <button id="d${attachment.id}" class="btn btn-xs btn-danger delete ${attachment.id}">Delete </button>
+    </div>
+    <br/>
+    </c:forEach>
+      </div>
+=======
 
 	<h2>Attachments</h2>
 
@@ -153,6 +212,7 @@
  
  </script>
 
+>>>>>>> origin/master
 	</div>
 	<br />
 </div>

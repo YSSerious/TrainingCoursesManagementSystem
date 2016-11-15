@@ -81,10 +81,22 @@ public class GroupController {
 		List<User> mentors = groupService.getMentors(id);
 
 		List<GroupAttachment> groupAttachments= groupAttachmentService.getByGroup(id);
-			
 		System.out.println(groupAttachments.size()+"Size of ");
 		//List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
-		
+
+//		for(UserDto us: users){
+//
+//			boolean isMentor=false;
+//			List<String> roles = us.getRoles();
+//			for(String r : roles){
+//				if(r.equals("ROLE_MENTOR")){
+//					mentors.add(us);
+//					isMentor=true;
+//				}
+//
+//			}
+//			if(!isMentor) students.add(us);
+//		}
 
 	/*	List<MeetingDto> meetings = new ArrayList<MeetingDto>();
 		for(Meeting mt : meetingService.getByGroup(id) ){
@@ -100,6 +112,7 @@ public class GroupController {
 		model.addObject("students",students);
 		model.addObject("mentors",mentors);
 		model.addObject("meetings",meetings);
+		model.addObject("group-id",group.getId());
 		model.addObject("attachments",groupAttachments);
 		model.addObject("groupId",group.getId());
 
@@ -111,7 +124,7 @@ public class GroupController {
 		return model;
 	}
 	
-	@RequestMapping(value = "addAttachment", method = RequestMethod.POST)
+	@RequestMapping(value = "/addAttachment", method = RequestMethod.POST)
 	public void addGroupAttachment(@RequestParam("id_group") Long idGroup,@RequestParam("name") String name,
 		@RequestParam("attachment_scope") String attachmentScope){
 		GroupAttachment attachment =new GroupAttachment();
@@ -146,7 +159,7 @@ public class GroupController {
 		groupAttachmentService.updateGroupAttachment(attachment);
 		
 	}
-	@RequestMapping(value = "deleteAttachment", method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteAttachment", method = RequestMethod.POST)
 	public void deleteGroupAttachment(@RequestParam("id") Long idAttachment){
 		GroupAttachment attachment =groupAttachmentService.getById(idAttachment);
 		groupAttachmentService.deleteGroupAttachment(attachment);
