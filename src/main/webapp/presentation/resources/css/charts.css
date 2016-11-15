@@ -17,6 +17,8 @@ and open the template in the editor.
 }
 
 .chart-bar {
+    box-sizing: border-box;
+    stroke: #000;
     fill: #4267a3;
 }
 
@@ -25,6 +27,7 @@ and open the template in the editor.
 }
 
 .chart-tip {
+    font-size: 18px;
     fill: white;
     pointer-events: none;
 }

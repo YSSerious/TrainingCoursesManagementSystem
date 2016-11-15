@@ -1,22 +1,26 @@
 /* global d3 */
 
 function drawCriteriaChart(chartdata, wrappingDivId, maxYValue, categoryTitle) {
+    console.log(d3.values(chartdata));
 
-//    console.log(chartdata);
-    var margin = {top: 50, right: 100, bottom: 30, left: 50},
-    width = 500,
-            height = chartdata.length * 150 - margin.top - margin.bottom;
+    var margin = {top: 50, right: 160, bottom: 30, left: 80},
+    width = 450,
+            height = Object.keys(chartdata).length * 80 - margin.top - margin.bottom;
 
-    var grid = d3.range(maxYValue + 1).map(function (i) {
+    var innerTranslate = "translate(" + margin.left + ", 0)";
+
+    var grid = d3.range(maxYValue).map(function (i) {
         return {'x1': 0, 'y1': 0, 'x2': 0, 'y2': height};
     });
 
     var criteria_values = [];
-    $.each(chartdata, function (key, value) {
-        criteria_values.push(value.criterionName);
+    $.each(chartdata, function(i, d) {
+        $.each(d.studyResults, function(i, d) {
+               criteria_values.push(d.criterionName);
+        });
     });
 
-
+    console.log(criteria_values);
     var x = d3.scaleLinear()
             .domain([0, maxYValue])
             .range([0, width]);
@@ -24,13 +28,17 @@ function drawCriteriaChart(chartdata, wrappingDivId, maxYValue, categoryTitle) {
     var y = d3.scaleBand()
             .domain(criteria_values)
             .range([0, height])
-            .padding(0.3)
+            .padding(0)
             .paddingOuter(0.5);
+
+    var y0 = d3.scaleBand()
+            .range([0, height], .1);
 
     var svg = d3.select(wrappingDivId)
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
+            .attr("margin", "0 auto")
             .style("border", "1px solid #d2d7dd");
 
     var canvas = svg
@@ -38,11 +46,9 @@ function drawCriteriaChart(chartdata, wrappingDivId, maxYValue, categoryTitle) {
             .attr("transform",
                     "translate(" + margin.left + "," + margin.top + ")");
 
-    chartdata.forEach(function (d) {
-        d.averageValue = +d.averageValue;
+    $.each(chartdata, function (key, value) {
+        value.averageValue = +value.averageValue;
     });
-
-    var innerTranslate = "translate(" + margin.left + ", 0)";
 
     canvas.append("g")
             .attr("class", "axis-x")
@@ -78,45 +84,40 @@ function drawCriteriaChart(chartdata, wrappingDivId, maxYValue, categoryTitle) {
             .style("stroke", "#adadad")
             .style("stroke-width", "1px");
 
-    var title = svg
-            .append("text")
-            .text(categoryTitle);
-    title
-            .attr("class", "category-title")
-            .attr("x", margin.right + 20)
-            .attr("y", 25)
-            .style("font-size", "1.2em");
+    var rects = canvas.append("g").attr("class", "rects");
 
-    var rects =
-            canvas.append("g")
-            .attr("transform", innerTranslate)
-            .selectAll("rect")
+    rects.attr("transform", innerTranslate);
+
+    var categories = rects.selectAll(".category")
             .data(chartdata)
             .enter()
-            .append("rect");
+            .append("g")
+            .attr("class", "category")
+            .attr("id", function (d) {
+                return d.category;
+            });
+
+    var rects = categories.selectAll("rect")
+            .data(function (d) {
+                return d.studyResults;
+            })
+            .enter()
+            .append("rect")
+            .attr("class", "chart-bar")
+            .attr("id", function (d) {
+                return d.criterionName;
+            });
 
     rects
-            .data(chartdata)
-            .attr("width", 0)
-            .attr("height", y.bandwidth())
-            .attr("x", function (d) {
+            .attr("width", function () {
                 return 0;
-            })
+    })
+            .attr("height", y.bandwidth())
+            .attr("x", 0)
             .attr("y", function (d) {
                 return y(d.criterionName);
-            })
+    })
             .attr("class", "chart-bar");
-    
-    //  animation
-    rects
-            .data(chartdata)
-            .transition()
-            .duration(2000)
-            .attr("width", function (d) {
-                return x(d.averageValue);
-            });
-            
-    //  hover
     rects
             .on("mouseover", function (d) {
                 var txt = canvas.append("text")
@@ -128,4 +129,12 @@ function drawCriteriaChart(chartdata, wrappingDivId, maxYValue, categoryTitle) {
             .on("mouseout", function (d) {
                 d3.selectAll("svg").select(".chart-tip").remove();
             });
+            
+    rects
+                    .transition()
+                    .duration(2000)
+                    .attr("width", function (d) {
+                        return x(d.averageValue);
+                    });
+
 }

@@ -11,9 +11,9 @@
                     </div>
                 </c:if>
                 <div class="row">
-                    <h2 class="col-sm-3">Projects</h2>
+                    <h2 class="col-sm-3"><spring:message code="projects.projects"/></h2>
                     <sec:authorize access="hasRole('ADMIN')">
-                        <a href="/projects/create-project" class="btn btn-primary pull-right">Create project</a>
+                        <a href="/projects/create-project" class="btn btn-primary pull-right"><spring:message code="projects.create.project"/></a>
                     </sec:authorize>
                 </div>
             </div>
@@ -24,8 +24,7 @@
 				<jsp:useBean id="type" class="java.lang.String" />
 				<jsp:useBean id="border" class="java.lang.String" />
 				<c:if test="${empty projects}">
-					<h1>There are no projects to display. Try again using
-						different parameters!</h1>
+					<h1><spring:message code="projects.no.results"/></h1>
 				</c:if>
 				<c:forEach items="${projects}" var="value">
 					<c:if
@@ -58,8 +57,8 @@
 
 							<div class="col-xs-6 col-md-4">
 								<p style="margin-top: -5px;">
-									<br /> <font color="blue">Start:</font> ${value.startDate} <br />
-									<font color="blue">Finish:</font> ${value.finishDate} <br />
+									<br /> <font color="blue"><spring:message code="projects.start"/>:</font> ${value.startDate} <br />
+									<font color="blue"><spring:message code="projects.finish"/>:</font> ${value.finishDate} <br />
 								</p>
 							</div>
 						</div>
@@ -69,32 +68,33 @@
 				<br />
 			</div>
 			<div class="col-md-3">
+			<spring:message code='projects.search.for' var="searchFor"/>
 				<form:form modelAttribute="projectSearch" id="searchForm">
 					<form:hidden path="searchRequest" id="searchRequest" value="true" />
 					<div class="row">
-					<h4 style="margin-left:15px;">Key word & Order:</h4>
+					<h4 style="margin-left:15px;"><spring:message code="projects.key.words.order"/>:</h4>
 						<div class="col-md-12">
 								<form:input path="text" class="form-control" type="text"
-									placeholder="Search for..." />
+									placeholder="${searchFor}" />
 						</div>
 					</div>
 					<br />
 					<div class="row">
 						<div class="col-md-12">
 							<form:select path="order" class="form-control" name="order">
-								<form:option value="">Ordering</form:option>
-								<form:option value="nameasc">by Name (ASC)</form:option>
-								<form:option value="namedesc">by Name (DESC)</form:option>
-								<form:option value="startasc">by Start (ASC)</form:option>
-								<form:option value="startdesc">by Start (DESC)</form:option>
-								<form:option value="finishasc">by Finish (ASC)</form:option>
-								<form:option value="finishdesc">by Finish (DESC)</form:option>
+								<form:option value=""><spring:message code="projects.ordering"/></form:option>
+								<form:option value="nameasc"><spring:message code="projects.byname"/> <spring:message code="projects.asc"/></form:option>
+								<form:option value="namedesc"><spring:message code="projects.byname"/> <spring:message code="projects.desc"/></form:option>
+								<form:option value="startasc"><spring:message code="projects.bystart"/> <spring:message code="projects.asc"/></form:option>
+								<form:option value="startdesc"><spring:message code="projects.bystart"/> <spring:message code="projects.desc"/></form:option>
+								<form:option value="finishasc"><spring:message code="projects.byfinish"/> <spring:message code="projects.asc"/></form:option>
+								<form:option value="finishdesc"><spring:message code="projects.byfinish"/> <spring:message code="projects.desc"/></form:option>
 							</form:select>
 						</div>
 					</div>
 					<br />
 					<div class="row">
-					<h4 style="margin-left:15px;">Start and Finish date:</h4>
+					<h4 style="margin-left:15px;"><spring:message code="projects.start.finish.date"/>:</h4>
 						<div class="col-md-12">
 
 							<form:input type="date" class="form-control" path="start"
@@ -110,14 +110,14 @@
 					</div>
 					<br />
 					<div class="row">
-					<h4 style="margin-left:15px;">Date checking type:</h4>
+					<h4 style="margin-left:15px;"><spring:message code="projects.date.check"/>:</h4>
 						<div class="col-md-12">
 							<form:select path="dateType" class="form-control"
 								name="date-type">
-								<form:option value="" disabled="true">Default</form:option>
-								<form:option value="startType">Start</form:option>
-								<form:option value="endType">End</form:option>
-								<form:option value="startAndEndType">Start and end</form:option>
+								<form:option value="" disabled="true"><spring:message code="projects.default"/></form:option>
+								<form:option value="startType"><spring:message code="projects.start"/></form:option>
+								<form:option value="endType"><spring:message code="projects.finish"/></form:option>
+								<form:option value="startAndEndType"><spring:message code="projects.start.finish"/></form:option>
 							</form:select>
 						</div>
 					</div>
@@ -125,14 +125,18 @@
 					<br />
 
 					<div class="row">
-						<h4 style="margin-left:15px;">Status:</h4>
-						<div class="col-md-12 text-center">
-							Active
+						<h4 style="margin-left:15px;"><spring:message code="projects.status"/>:</h4>
+						<div class="col-md-12">
+							
 							<form:checkbox path="statuses" value="active" />
-							Finished
+							<spring:message code="projects.active"/><br/>
+							
 							<form:checkbox path="statuses" value="completed" />
-							Upcoming
+							<spring:message code="projects.completed"/><br/>
+							
 							<form:checkbox path="statuses" value="upcoming" />
+							<spring:message code="projects.upcoming"/>
+							
 							<form:hidden path="page" id="hidden-page" />
 						</div>
 					</div>
@@ -142,7 +146,7 @@
 
 							<div class="show-select">
 								<button type="button" style="min-width: 100%;"
-									class="btn btn-default">ENABLE CRITERION SEARCH</button>
+									class="btn btn-default"><spring:message code="projects.criterion.search"/></button>
 							</div>
 						</div>
 
@@ -155,7 +159,7 @@
 					<br/>
 					<div class="row">
 						<div class="col-md-12">
-							<input type=submit class="form-control btn btn-primary" value="Search!" />
+							<input type=submit class="form-control btn btn-primary" value=<spring:message code="projects.search"/> />
 						</div>
 					</div>
 				</form:form>
