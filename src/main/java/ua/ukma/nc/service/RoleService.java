@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface RoleService {
 	
-	List<Role> getByUserId(String email, Long userId);
+	List<Role> getCurrentUserRoles(String email, Long userId);
 
     Role getById(Long id);
 

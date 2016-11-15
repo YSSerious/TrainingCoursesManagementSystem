@@ -40,7 +40,7 @@ public class RoleDaoImpl implements RoleDao {
         }
     }
     
-    private static final String GET_USER_ID = "SELECT id, role FROM tcms.role WHERE id IN (SELECT id_role FROM tcms.user_role WHERE id_user IN (SELECT id FROM tcms.user WHERE email = ?))"
+    private static final String GET_CURRENT_USER_ROLE = "SELECT id, role FROM tcms.role WHERE id IN (SELECT id_role FROM tcms.user_role WHERE id_user IN (SELECT id FROM tcms.user WHERE email = ?))"
     		+ " AND ? IN (SELECT id FROM tcms.user WHERE email = ?)";
 
     private static final String GET_ALL = "SELECT id, role FROM tcms.role";
@@ -103,8 +103,8 @@ public class RoleDaoImpl implements RoleDao {
     }
 
 	@Override
-	public List<Role> getByUserId(String email, Long userId) {
+	public List<Role> getCurrentUserRoles(String email, Long userId) {
 		log.info("Getting all users");
-        return jdbcTemplate.query(GET_USER_ID, new RoleMapper(), email, userId, email);
+        return jdbcTemplate.query(GET_CURRENT_USER_ROLE, new RoleMapper(), email, userId, email);
 	}
 }

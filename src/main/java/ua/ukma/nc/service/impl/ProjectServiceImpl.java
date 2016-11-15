@@ -85,7 +85,7 @@ public class ProjectServiceImpl implements ProjectService {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String name = authentication.getName();
 		
-		List<Role> roles = roleService.getByUserId(name, userId);
+		List<Role> roles = roleService.getCurrentUserRoles(name, userId);
 		
 		for(Role role: roles)
 			if(role.getTitle().equals("ROLE_STUDENT"))
