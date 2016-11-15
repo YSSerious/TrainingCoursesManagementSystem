@@ -10,9 +10,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.entity.Category;
@@ -22,7 +27,9 @@ import ua.ukma.nc.entity.MeetingResult;
 import ua.ukma.nc.entity.MeetingReview;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
+import ua.ukma.nc.entity.impl.real.MeetingImpl;
 import ua.ukma.nc.entity.impl.real.MeetingReviewImpl;
+import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.service.GroupService;
@@ -57,7 +64,7 @@ public class MeetingController {
 
 	@Autowired
 	private CategoryService categoryService;
-	
+
 	@RequestMapping(value = "/meeting/{id}", method = RequestMethod.GET)
 	public String getMeetings(Model model, Principal principal, @PathVariable long id) {
 
@@ -86,12 +93,36 @@ public class MeetingController {
 			if (!category.contains(categoryService.getById(criterion.getCategory().getId())))
 				category.add(categoryService.getById(criterion.getCategory().getId()));
 
-		
 		model.addAttribute("criteria", criteria);
 		model.addAttribute("marks", markInformation);
 		model.addAttribute("students", unevaluated);
 		model.addAttribute("meeting", meetingService.getById(id));
 		model.addAttribute("categories", category);
 		return "certainMeeting";
+	}
+
+	@RequestMapping(value = "/create-meeting", method = RequestMethod.GET)
+	public String createMeeting(Model model, Principal principal, @RequestParam("project") long projectId) {
+		Meeting meeting = new MeetingImpl();
+		List<Criterion> criteria = criterionService.getByProject(projectId);
+		model.addAttribute("meetingForm", meeting);
+		model.addAttribute("criteria", criteria);
+		model.addAttribute("url", "/create-meeting?project="+projectId);
+		return "createMeeting";
+	}
+
+	@RequestMapping(value = "/create-meeting", method = RequestMethod.POST)
+	public String createMeeting(@ModelAttribute("meetingForm") @Validated MeetingImpl meeting, BindingResult result,
+			final RedirectAttributes redirectAttributes, @RequestParam("project") long projectId) {
+		System.out.println(meeting);
+		if (!result.hasErrors()) {
+			meeting.setGroup(groupService.getByProjectId(projectId).get(0));
+			meetingService.createMeeting(meeting);
+			redirectAttributes.addFlashAttribute("msg", "Meeting added successfully!");
+			return "redirect:/projects";
+		} else {
+			System.out.println(result.getAllErrors());
+			return "createMeeting";
+		}
 	}
 }

@@ -65,7 +65,7 @@ public class CriterionDaoImpl implements CriterionDao{
     private static final String IS_USED_IN_PROJECTS = "SELECT EXISTS (SELECT * from tcms.project_criterion where id_criterion = ?)";
 
     private static final String GET_PROJECT_UNUSED_CRITERIA = "select id, name, id_category FROM tcms.criterion " +
-                                                                "where id not in (select id_criterion from tcms.project_criterion where id_project =?)";
+                                                                "where id not in (select id_criterion from tcms.project_criterion where id_project =?) order by id_category Asc";
 
     @Override
     public Criterion getById(Long id) {
@@ -80,6 +80,7 @@ public class CriterionDaoImpl implements CriterionDao{
 
     @Override
     public List<Criterion> getProjectUnusedCriteria(Long projectId) {
+        log.info("Getting unused criterion in project = {}", projectId);
         return jdbcTemplate.query(GET_PROJECT_UNUSED_CRITERIA, new CriterionMapper(), projectId);
     }
 
