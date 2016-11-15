@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ua.ukma.nc.dao.ProjectDao;
+import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
 
@@ -59,6 +60,10 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	private static final String UPDATE_PROJECT = "UPDATE tcms.project SET name = ?, description = ?, start = ?, finish = ? WHERE id = ?";
 
+	private static final String ADD_CRITERION = "INSERT INTO tcms.project_criterion (id_project, id_criterion) VALUES (?,?)";
+
+	private static final String DELETE_PROJECT_CRITERION = "DELETE FROM tcms.project_criterion WHERE id_project = ? and id_criterion = ?";
+
 	@Override
 	public Project getById(Long id) {
 		log.info("Getting project with id = {}", id);
@@ -83,6 +88,11 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 	@Override
+	public int deleteProjectCriterion(Long projectId, Criterion criterion) {
+		return jdbcTemplate.update(DELETE_PROJECT_CRITERION, projectId, criterion.getId());
+	}
+
+	@Override
 	public int updateProject(Project project) {
 		log.info("Updating project with id = {}", project.getId());
 		return jdbcTemplate.update(UPDATE_PROJECT, project.getName(), project.getDescription(), project.getStartDate(),
@@ -100,6 +110,11 @@ public class ProjectDaoImpl implements ProjectDao {
 		log.info("Create new project with name = {}", project.getName());
 		return jdbcTemplate.update(CREATE_PROJECT, project.getName(), project.getDescription(), project.getStartDate(),
 				project.getFinishDate());
+	}
+
+	@Override
+	public int addCriteria(Long projectId, Criterion criterion) {
+		return jdbcTemplate.update(ADD_CRITERION, projectId, criterion.getId());
 	}
 
 	@Override

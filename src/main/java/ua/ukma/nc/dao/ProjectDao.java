@@ -1,5 +1,6 @@
 package ua.ukma.nc.dao;
 
+import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Project;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public interface ProjectDao {
 
 	int deleteProject(Project project);
 
+	int deleteProjectCriterion(Long projectId, Criterion criterion);
+
 	int updateProject(Project project);
 
 	List<Project> getAll();
@@ -27,4 +30,6 @@ public interface ProjectDao {
 	Integer count(String query);
 
 	int createProject(Project project);
+
+	int addCriteria(Long projectId, Criterion criterion);
 }

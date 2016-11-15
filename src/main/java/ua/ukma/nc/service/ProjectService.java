@@ -1,5 +1,6 @@
 package ua.ukma.nc.service;
 
+import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.query.ProjectSearch;
 
@@ -28,4 +29,8 @@ public interface ProjectService {
 	List<Project> getStudentProjects(Long userId);
 	
 	List<Project> getMentorProjects(Long userId);
+
+	int addCriteria(Long projectId, Criterion criterion);
+
+	int deleteProjectCriterion(Long projectId, Criterion criterion);
 }

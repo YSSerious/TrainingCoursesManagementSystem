@@ -19,8 +19,36 @@ $(document).ready(function () {
         });
     });
 
-    $('.addButton').click(function () {
-        console.log($(this < 'tr:first').text());
+    $(document).on('click', '.addButton', function () {
+        $.ajax({
+            url: "/addCriteria",
+            type: "POST",
+            data: {projectId: projectId, criteriaTitle: $(this).closest('tr').find('td:first').text()},
+            success: function (data) {
+                console.log(data);
+                buildResponseCriteria(data)
+                $('#criteriaPanelId').append(responseCriteria);
+                //$($(this).closest('tr')).remove();
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
+    });
+
+    $(document).on('click', '.delButton', function () {
+        $.ajax({
+            url: "/deleteProjectCriteria",
+            type: "POST",
+            data: {projectId: projectId, criteriaTitle: $(this).closest('div').text()},
+            success: function (data) {
+                console.log(data);
+                //$(this).closest('.del').remove();
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
     });
     
     function appendTableRows(data){
@@ -34,5 +62,13 @@ $(document).ready(function () {
     }
     
 });
-
-
+var responseCriteria;
+function buildResponseCriteria(data){
+    responseCriteria="<div class='panel panel-default'>" +
+    "<div class='panel-heading'>" +
+    "<h4 class='panel-title row'>" +
+    "<div class='panel-body col-sm-11'>"+data.title+"</div>" +
+    "<button class='delButton btn-danger btn-sm'>" +
+    "<span class='glyphicon glyphicon-remove'></span>" +
+    "</button></h4></div></div>";
+};

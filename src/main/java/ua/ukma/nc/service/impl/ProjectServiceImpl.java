@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ua.ukma.nc.dao.ProjectDao;
+import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.query.ProjectParamResolver;
@@ -97,5 +98,15 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Project> getMentorProjects(Long userId) {
 		return projectDao.getMentorProjects(userId);
+	}
+
+	@Override
+	public int addCriteria(Long projectId, Criterion criterion) {
+		return projectDao.addCriteria(projectId, criterion);
+	}
+
+	@Override
+	public int deleteProjectCriterion(Long projectId, Criterion criterion) {
+		return projectDao.deleteProjectCriterion(projectId, criterion);
 	}
 }
