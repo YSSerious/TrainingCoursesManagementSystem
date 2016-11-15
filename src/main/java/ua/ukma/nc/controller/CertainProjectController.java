@@ -65,7 +65,7 @@ public class CertainProjectController {
 		att.setAttachmentScope(attachmentLink);
 		att.setProject(projectService.getById(project_id));
 		attachmentService.createProjectAttachment(att);
-	
+		
 	}
 	
 	@RequestMapping(value = "/removeProjectAttachment", method = RequestMethod.POST)
