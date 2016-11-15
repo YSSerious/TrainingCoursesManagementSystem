@@ -37,7 +37,7 @@
             Groups
             </h2>
           <div class="panel panel-btn"> 
-            <a href="" class="btn btn-default btn-xs pull-right-btn">Set meetings schedule</a>
+            <a href="/create-meeting?project=${project.id}" class="btn btn-default btn-xs pull-right-btn">Set meetings schedule</a>
 	        <a href="" class="btn btn-default btn-xs pull-right-btn">Remove</a>
 	        <a href="" class="btn btn-default btn-xs pull-right-btn">Edit</a>
             <a href="" class="btn btn-default btn-xs pull-right-btn"> Add</a>
