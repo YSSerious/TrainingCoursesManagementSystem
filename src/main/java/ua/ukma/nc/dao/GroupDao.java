@@ -17,6 +17,10 @@ public interface GroupDao {
     int deleteGroup(Group group);
 
     int updateGroup(Group group);
+    
+    int removeMentor(Long groupId,Long userId);
+    
+    int removeStudent(Long groupId,Long userId);
 
     List<Group> getAll();
     

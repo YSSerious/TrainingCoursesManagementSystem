@@ -57,4 +57,14 @@ public class GroupServiceImpl implements GroupService{
 	public List<User> getStudents(Long groupId) {
 		return groupDao.getStudents(groupId);
 	}
+
+	@Override
+	public int removeMentor(Long groupId, Long userId) {
+		return groupDao.removeMentor(groupId, userId);
+	}
+
+	@Override
+	public int removeStudent(Long groupId, Long userId) {
+		return groupDao.removeStudent(groupId, userId);
+	}
 }

@@ -1,5 +1,7 @@
 <%@include file="header.jsp"%>
-
+<script src="<c:url value="/presentation/resources/js/group.js"/>"
+	type="text/javascript">
+</script>
 <jsp:useBean id="type" class="java.lang.String" />
 <jsp:useBean id="border" class="java.lang.String" />
 <%
@@ -18,16 +20,16 @@
 			<button type="button" class="btn btn-default btn-xs pull-right">Edit</button>
 			<button type="button" class="btn btn-default btn-xs pull-right">Add</button>
 		</div>
-		
 
-		
+
+
 
 		<c:forEach items="${meetings}" var="meeting">
-			<li class="list-group-item">${meeting.name} <span
+			<li class="list-group-item">${meeting.name}<span
 				style='padding-left: 10px;'> </span> ${meeting.time} <span
 				style='padding-left: 10px;'> </span> ${meeting.place} <br />
 		</c:forEach>
-	
+
 	</div>
 	<br />
 </div>
@@ -40,9 +42,17 @@
 			<button type="button" class="btn btn-default btn-xs pull-right">Add</button>
 			<button type="button" class="btn btn-default btn-xs pull-right">Remove</button>
 		</div>
-		
+
 		<c:forEach items="${students}" var="student">
-			<li class="list-group-item">${student.firstName} <span style='padding-left: 10px;'> </span> ${student.lastName} <br />
+
+			<li class="list-group-item">
+				<div class="group-${group.id}-${student.id} clearfix">
+					${student.firstName} <span style='padding-left: 10px;'> </span>
+					${student.lastName}
+					<button id="${group.id}-${student.id}"
+						class="btn btn-xs btn-danger delete-student pull-right">Delete
+					</button>
+					<br />
 		</c:forEach>
 	</div>
 	<br />
@@ -56,12 +66,20 @@
 			<button type="button" class="btn btn-default btn-xs pull-right">Add</button>
 			<button type="button" class="btn btn-default btn-xs pull-right">Remove</button>
 		</div>
-		
+
 
 
 		<c:forEach items="${mentors}" var="mentor">
-			<li class="list-group-item">${mentor.firstName} <span
-				style='padding-left: 10px;'> </span> ${mentor.lastName} <br />
+			<li class="list-group-item">
+				<div class="group-${group.id}-${mentor.id} clearfix">
+					${mentor.firstName} <span style='padding-left: 10px;'> </span>
+					${mentor.lastName}
+					<button id="${group.id}-${mentor.id}"
+						class="btn btn-xs btn-danger delete-mentor pull-right">Delete
+					</button>
+
+					<br />
+				</div>
 		</c:forEach>
 
 	</div>
@@ -71,7 +89,7 @@
 <div class="attachments_template">
 
 	<h2>Attachments</h2>
-	
+
 
 	<div class="modal fade" id="addGroupAttachmentModal" role="dialog">
 		<div class="modal-dialog">
@@ -132,60 +150,6 @@
 
 		<script type="text/javascript">	
 
- 
-	$(document).ready(function(){
-     $("#addGroupAttachmentButton").click(function(){
-         $("#addGroupAttachmentModal").modal();
-     });
- });
-	$(document).ready(function(){
-		 
-	     $("#editGroupAttachmentButton").click(function(){
-	         $("#editGroupAttachmentModal").modal();
-	     });
-	 });
- 
- $(document).ready(function() {
-     $("#submitButton").click(function(event) {
-         $.ajax({
-             url: "/groups/addAttachment",
-             type: "POST",
-             data: {"id_group" : "${groupId}", 
-            	 "name" : $("#groupAttachmentName").val(),
-            	 "attachment_scope": $("#groupAttachment").val()}
-            	   
-            		  
-            	  });
-      
-         });
-     });
- $(document).ready(function() {
-
-     $("#editGroupAttachmentButton").click(function(event) {
-         $.ajax({
-             url: "/groups/editAttachment",
-             type: "POST",
-             data: {"id_group" : $(group-id), 
-            	 "name" : $("#groupAttachmentName").val(),
-            	 "attachment_scope": $("#groupAttachment").val()
-             }
-            	 
-             
-             
-            	   
-            		  
-            	  });
-      
-         });
-     });
- $('.delete').click(function(event){
-	   var idOfAttachment = event.target.id;
-	   idOfAttachment = idOfAttachment.substring(1,idOfAttachment.length);
-	   $.ajax({
-		   url: "/groups/deleteAttachment",
-	   		data:{ "id":idOfAttachment}
-	   
-	   });
  
  </script>
 

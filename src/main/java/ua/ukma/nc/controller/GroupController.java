@@ -121,11 +121,18 @@ public class GroupController {
 		groupAttachmentService.createGroupAttachment(attachment);
 		
 	}
+	@RequestMapping(value = "/removeMentor", method = RequestMethod.POST)
+    @ResponseBody
+    public String removeMentor(@RequestParam Long groupId, @RequestParam Long userId)  {
+        groupService.removeMentor(groupId, userId);
+     return "Deleted successfully";
+    }
+	
 	@RequestMapping(value = "/removeStudent", method = RequestMethod.POST)
     @ResponseBody
-    public String removeStudent(@RequestParam Long studentId)  {
-        
-     return "";
+    public String removeStudent(@RequestParam Long groupId, @RequestParam Long userId)  {
+        groupService.removeStudent(groupId, userId);
+     return "Deleted successfully";
     }
 	
 	@RequestMapping(value = "editAttachment", method = RequestMethod.POST)
