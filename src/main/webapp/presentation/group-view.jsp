@@ -87,7 +87,7 @@
 </div>
 
 <div class="attachments_template">
-<<<<<<< HEAD
+
  
 	<label>Attachments</label><br/>
 	
@@ -131,8 +131,7 @@
 	
 	<div
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
-		<!--Data from DB to be inserted here -->
-	<!--  test value-->	
+		
  
   <div id="attachment-title">Attachments</div>
      <div id="attachment" style="display:none">
@@ -145,7 +144,7 @@
     <br/>
     </c:forEach>
       </div>
-=======
+
 
 	<h2>Attachments</h2>
 
@@ -206,13 +205,6 @@
 		</c:forEach>
 
 
-
-		<script type="text/javascript">	
-
- 
- </script>
-
->>>>>>> origin/master
 	</div>
 	<br />
 </div>
