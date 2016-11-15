@@ -55,7 +55,7 @@
             <div class="top-info">
                 <div class="row">
                     <h2 class="col-sm-11">Criteria List</h2>
-                    <button class="btn btn-primary btn-sm" id="showAvailableCriteria"
+                    <button class="btn btn-primary btn-xs" id="showAvailableCriteria"
                             data-toggle="modal"
                             data-target="#showAvailableCriteriaModal">
                         <span class="glyphicon glyphicon-plus"></span>
@@ -68,7 +68,7 @@
                         <div class="panel-heading">
                             <h4 class="panel-title row">
                                 <div class="panel-body col-sm-11">${criterion.title}</div>
-                                <button class="delButton btn-danger btn-sm">
+                                <button class="delButton btn-danger btn-xs">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
                             </h4>
