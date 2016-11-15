@@ -26,74 +26,88 @@ import ua.ukma.nc.service.impl.ProjectAttachmentServiceImpl;
 
 @Controller
 public class CertainProjectController {
-	
-	@Autowired
-	private ProjectService projectService;
-	
-	@Autowired
-	private GroupService groupService;
-	@Autowired
-	private CriterionService criterionService;
 
-	@Autowired
-	private ProjectAttachmentService attachmentService;
-	
-	private Long project_id;
-	
-	@RequestMapping(value = "/certainProject/{id}", method = RequestMethod.GET)
-	public ModelAndView viewProject(@PathVariable("id") Long id) {
-		ModelAndView model = new ModelAndView();
-		project_id = id;
-		
-		ProjectDto prDto = new ProjectDto(projectService.getById(id));
-		model.addObject("project",prDto);
-		
-		//Group set
-		List<Group> groupList = groupService.getByProjectId(id);
-		model.addObject("groups", groupList);
+    @Autowired
+    private ProjectService projectService;
 
-		//Criteria set
-		model.addObject("criterions", criterionService.getByProject(id));
-		//Attachment set
-		List<ProjectAttachment> attachmentList = attachmentService.getAllById(id);
-		model.addObject("attachments", attachmentList);
-		List<Group> groups = groupService.getByProjectId(id);
-		model.addObject("groups", groups);
+    @Autowired
+    private GroupService groupService;
+    @Autowired
+    private CriterionService criterionService;
 
-		model.setViewName("certainProject");
-		return model;
-	}
-	
-	@RequestMapping(value = "/addProjectAttachment", method = RequestMethod.POST)
-	public void addGroupAttachment
-	(   @RequestParam("attachmentName") String attachmentName,
-		@RequestParam("attachmentLink") String attachmentLink){
-		
-		ProjectAttachment att = new ProjectAttachment();
-		att.setName(attachmentName);
-		att.setAttachmentScope(attachmentLink);
-		att.setProject(projectService.getById(project_id));
-		attachmentService.createProjectAttachment(att);
-		
-	}
-	
-	@RequestMapping(value = "/removeProjectAttachment", method = RequestMethod.POST)
-	public void removeGroupAttachment (@RequestParam("id_attachment") Long id){
-		attachmentService.deleteProjectAttachment(attachmentService.getById(id));
-	}
-	
-	
+    @Autowired
+    private ProjectAttachmentService attachmentService;
+
+    private Long project_id;
+
+    @RequestMapping(value = "/certainProject/{id}", method = RequestMethod.GET)
+    public ModelAndView viewProject(@PathVariable("id") Long id) {
+        ModelAndView model = new ModelAndView();
+        project_id = id;
+
+        ProjectDto prDto = new ProjectDto(projectService.getById(id));
+        model.addObject("project", prDto);
+
+        //Group set
+        List<Group> groupList = groupService.getByProjectId(id);
+        model.addObject("groups", groupList);
+
+        //Criteria set
+        model.addObject("criterions", criterionService.getByProject(id));
+        //Attachment set
+        List<ProjectAttachment> attachmentList = attachmentService.getAllById(id);
+        model.addObject("attachments", attachmentList);
+        List<Group> groups = groupService.getByProjectId(id);
+        model.addObject("groups", groups);
+
+        model.setViewName("certainProject");
+        return model;
+    }
+
+    @RequestMapping(value = "/addProjectAttachment", method = RequestMethod.POST)
+    public void addGroupAttachment
+            (@RequestParam("attachmentName") String attachmentName,
+             @RequestParam("attachmentLink") String attachmentLink) {
+
+        ProjectAttachment att = new ProjectAttachment();
+        att.setName(attachmentName);
+        att.setAttachmentScope(attachmentLink);
+        att.setProject(projectService.getById(project_id));
+        attachmentService.createProjectAttachment(att);
+
+    }
+
+    @RequestMapping(value = "/removeProjectAttachment", method = RequestMethod.POST)
+    public void removeGroupAttachment(@RequestParam("id_attachment") Long id) {
+        attachmentService.deleteProjectAttachment(attachmentService.getById(id));
+    }
 
 
-	@RequestMapping(value = "/getAvailableCriteria", method = RequestMethod.GET)
-	@ResponseBody
-	public List<CriterionDto> getAvailableCriteria(@RequestParam Long projectId){
-		List<CriterionDto> criterionDtos= new ArrayList<>();
-		for(Criterion criterion : criterionService.getProjectUnusedCriteria(projectId)){
-			criterionDtos.add(new CriterionDto(criterion));
-		}
-		return criterionDtos;
-	}
+    @RequestMapping(value = "/getAvailableCriteria", method = RequestMethod.GET)
+    @ResponseBody
+    public List<CriterionDto> getAvailableCriteria(@RequestParam Long projectId) {
+        List<CriterionDto> criterionDtos = new ArrayList<>();
+        for (Criterion criterion : criterionService.getProjectUnusedCriteria(projectId)) {
+            criterionDtos.add(new CriterionDto(criterion));
+        }
+        return criterionDtos;
+    }
 
+    @RequestMapping(value = "/addCriteria", method = RequestMethod.POST)
+    @ResponseBody
+    public Criterion addCriteria(@RequestParam Long projectId, @RequestParam String criteriaTitle) {
+        System.out.println(projectId+" "+criteriaTitle);
+        Criterion criterion = criterionService.getByName(criteriaTitle);
+        projectService.addCriteria(projectId, criterion);
+        return criterion;
+    }
+
+    @RequestMapping(value = "/deleteProjectCriteria", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteProjectCriteria(@RequestParam Long projectId, @RequestParam String criteriaTitle) {
+        System.out.println(projectId+" "+criteriaTitle);
+        projectService.deleteProjectCriterion(projectId, criterionService.getByName(criteriaTitle));
+        return "success";
+    }
 
 }

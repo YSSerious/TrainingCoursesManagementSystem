@@ -57,12 +57,13 @@ public class MeetingEvaluationController {
         ModelAndView mv = new ModelAndView("evaluateStudent");
         MeetingReview review = meetingReviewService.getByMeetingStudent(meetingId, studentId);
         User student = userService.getById(studentId);
+        Meeting meeting = meetingService.getById(meetingId);
         List<MeetingResult> results;
         if(review==null){
             User mentor = userService.getByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
             review = new MeetingReviewImpl();
             review.setMentor(mentor);
-            review.setMeeting(meetingService.getById(meetingId));
+            review.setMeeting(meeting);
             review.setStudent(student);
             review.setType("L");
             meetingReviewService.createMeetingReview(review);
@@ -76,8 +77,13 @@ public class MeetingEvaluationController {
         }
         else {
             results = meetingResultService.getByReview(review.getId());
+            //TO-DO must be resolved!!!
+            for(MeetingResult res : results) {
+                res.setCriterion(criterionService.getById(res.getCriterion().getId()));
+            }
         }
         mv.addObject("results", results);
+        mv.addObject("meeting", meeting);
         mv.addObject("student", student);
         mv.addObject("review", review);
         return mv;

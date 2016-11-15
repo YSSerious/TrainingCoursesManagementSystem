@@ -13,7 +13,7 @@ $(document).ready(function() {
         $.ajax({
             url: "/groups/add",
             type: "POST",
-            data: {"group_name" : $("#groupname").val(), "project_id" : 1}
+            data: {"group_name" : $("#groupname").val(), "project_id" : projectId}
         });
     });
 });

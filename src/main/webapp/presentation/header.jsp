@@ -26,6 +26,7 @@
 	src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"/> ">
 	
 </script>
+<script src="<c:url value="/presentation/resources/js/create_group.js"/>"></script>
 <link rel="stylesheet"
 	href=" <c:url value="/presentation/resources/third-party/jqpagination/css/jqpagination.css" />"
 	type="text/css">
@@ -95,7 +96,7 @@
                                 <li><a href="/projects">Projects</a></li>
                                 <sec:authorize access="hasRole('ADMIN')">
                                     <li><a href="/allUsers">Users</a></li>
-                                    <li><a href="/criteria">Criteria</a></li>
+                                    <li><a href="/category">Categories</a></li>
                                 </sec:authorize>
                                 <sec:authorize access="hasAnyRole('MENTOR', 'HR')">
                                     <li><a href="/students">Students</a></li>
@@ -103,6 +104,8 @@
                                 <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
                                     <li><a href="/reports">Reports</a></li>
                                 </sec:authorize>
+                                <li class="divider"></li>
+                                <li><a href="/roles">Change my role</a></li>
                             </ul>
                         </div>
                     </li>

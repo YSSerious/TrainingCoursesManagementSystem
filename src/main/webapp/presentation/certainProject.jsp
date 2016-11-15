@@ -40,8 +40,9 @@
             <a href="/create-meeting?project=${project.id}" class="btn btn-default btn-xs pull-right-btn">Set meetings schedule</a>
 	        <a href="" class="btn btn-default btn-xs pull-right-btn">Remove</a>
 	        <a href="" class="btn btn-default btn-xs pull-right-btn">Edit</a>
-            <a href="" class="btn btn-default btn-xs pull-right-btn"> Add</a>
+            <a href="" class="btn btn-default btn-xs pull-right-btn" id="createGroupButton"> Add</a>
           </div>
+ <%@include file="createGroup.jsp"%>
           <ul class="list-group">
           <c:forEach items="${groups}" var="group">
             <li class="list-group-item">
@@ -54,20 +55,20 @@
             <div class="top-info">
                 <div class="row">
                     <h2 class="col-sm-11">Criteria List</h2>
-                    <button class="btn btn-primary btn-sm" id="showAvailableCriteria"
+                    <button class="btn btn-primary btn-xs" id="showAvailableCriteria"
                             data-toggle="modal"
                             data-target="#showAvailableCriteriaModal">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>
             </div>
-            <div class="panel-group">
+            <div class="panel-group" id="criteriaPanelId">
                 <c:forEach items="${criterions}" var="criterion">
-                    <div class="panel panel-default">
+                    <div class="panel del panel-default">
                         <div class="panel-heading">
                             <h4 class="panel-title row">
                                 <div class="panel-body col-sm-11">${criterion.title}</div>
-                                <button class="btn btn-danger btn-sm">
+                                <button class="delButton btn-danger btn-xs">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
                             </h4>
@@ -199,6 +200,6 @@
 		});
 	</script>
 <script>
-    var projectId = "${project.id}";
+    var projectId = "${project.id}"
 </script>
 <%@include file="footer.jsp"%>

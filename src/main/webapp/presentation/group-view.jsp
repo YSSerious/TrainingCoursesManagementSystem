@@ -85,14 +85,14 @@
 	</div>
 	<br />
 </div>
+ 
 <div id="attachment-title"><h2>Attachments</h2></div>
+ 
  
 	<br />
 	
 	<div
 		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
-		<!--Data from DB to 	be inserted here -->
-	<!--  test value-->	
  
 
 	<div class="modal fade" id="addGroupAttachmentModal" role="dialog">
@@ -151,8 +151,9 @@
 				</div> <br />
 		</c:forEach>
 
-
+ 
 </div>
+ 
 	</div>
 	<br />
 </div>

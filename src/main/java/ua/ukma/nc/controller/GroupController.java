@@ -82,11 +82,21 @@ public class GroupController {
 
 		List<GroupAttachment> groupAttachments= groupAttachmentService.getByGroup(id);
  
-			
-		System.out.println(groupAttachments.size()+"Size of ");
 		//List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
- 
-	 
+
+//		for(UserDto us: users){
+//
+//			boolean isMentor=false;
+//			List<String> roles = us.getRoles();
+//			for(String r : roles){
+//				if(r.equals("ROLE_MENTOR")){
+//					mentors.add(us);
+//					isMentor=true;
+//				}
+//
+//			}
+//			if(!isMentor) students.add(us);
+//		}
  
 
 	/*	List<MeetingDto> meetings = new ArrayList<MeetingDto>();
@@ -103,9 +113,9 @@ public class GroupController {
 		model.addObject("students",students);
 		model.addObject("mentors",mentors);
 		model.addObject("meetings",meetings);
- 
 		model.addObject("group-id",group.getId());
- 
+		model.addObject("group-id",group.getId());
+
 		model.addObject("attachments",groupAttachments);
 		model.addObject("groupId",group.getId());
 
