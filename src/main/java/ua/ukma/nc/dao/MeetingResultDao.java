@@ -21,5 +21,7 @@ public interface MeetingResultDao {
     
     List<MarkInformation> generateMarkInformation(long studentId, long projectId);
 
+    List<MeetingResult> getByReview(long review);
+
 	List<MarkInformation> getByMeeting(long studentId, long meetingId);
 }

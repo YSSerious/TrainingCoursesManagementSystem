@@ -11,6 +11,7 @@ public class GroupDto {
 	ProjectDto project;
 	String name;
 	List<UserDto> users;
+
 	public GroupDto() {
 
 	}
@@ -18,12 +19,9 @@ public class GroupDto {
 		setId(gr.getId());
 		setName(gr.getName());
 		setProject(new ProjectDto(gr.getProject()));
-		List<UserDto> us = new ArrayList<UserDto>();
-		for(User x : gr.getUsers()){
-			us.add(new UserDto(x));
-		}
-		setUsers(us);
+	
 	}
+	
 	public long getId() {
 		return id;
 	}

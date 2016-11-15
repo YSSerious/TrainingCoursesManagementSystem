@@ -53,6 +53,8 @@
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/css/table.css"/>">
 <link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/charts.css"/>">
+<link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/css/footer.css"/>">
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/presentation/resources/css/certainProject.css"/>">
@@ -61,6 +63,7 @@
     <script src="<c:url value="/presentation/resources/js/forms.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/charts.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/user.js"/>" defer="defer"></script>
+    <script src="<c:url value="/presentation/resources/js/meeting.js"/>" defer="defer"></script>
     <!--<script src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>-->
 </head>
 <body>

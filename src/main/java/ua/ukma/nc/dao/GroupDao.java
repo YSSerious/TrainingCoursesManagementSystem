@@ -1,6 +1,7 @@
 package ua.ukma.nc.dao;
 
 import ua.ukma.nc.entity.Group;
+import ua.ukma.nc.entity.User;
 
 import java.util.List;
 
@@ -16,9 +17,17 @@ public interface GroupDao {
     int deleteGroup(Group group);
 
     int updateGroup(Group group);
+    
+    int removeMentor(Long groupId,Long userId);
+    
+    int removeStudent(Long groupId,Long userId);
 
     List<Group> getAll();
-
+    
+    List<User> getStudents(Long groupId);
+    
+    List<User> getMentors(Long groupId);
+    
     int createGroup(Group group);
     
 }

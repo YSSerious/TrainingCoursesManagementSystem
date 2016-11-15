@@ -84,4 +84,6 @@ public class GroupProxy implements Group {
     public String toString() {
         return "Proxy " + id;
     }
+
+	
 }

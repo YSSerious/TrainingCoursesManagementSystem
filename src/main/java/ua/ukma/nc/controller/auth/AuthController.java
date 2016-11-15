@@ -58,7 +58,6 @@ public class AuthController {
             cookie.setMaxAge(86400);
             response.addCookie(cookie);
         }
-        System.out.println("After cookie");
         return "redirect:/";
     }
 
@@ -77,7 +76,6 @@ public class AuthController {
 
     @RequestMapping(value = "/roles_def", method = {RequestMethod.GET, RequestMethod.POST})
     public String rolesHandler(HttpServletRequest request){
-        System.out.println("Default success");
         //check if it's remember-me-token auth or not
         for(Cookie cookie : request.getCookies())
             if(cookie.getName().equals("tcms-chosen-role"))

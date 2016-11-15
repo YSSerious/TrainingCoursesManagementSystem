@@ -16,6 +16,7 @@ public class GroupImpl implements Group{
     private Project project;
     private String name;
     List<User> users;
+   
 
     public Long getId() {
         return id;
@@ -44,6 +45,7 @@ public class GroupImpl implements Group{
     public List<User> getUsers() {
         return users;
     }
+   
 
     public void setUsers(List<User> users) {
         this.users = users;
@@ -81,4 +83,6 @@ public class GroupImpl implements Group{
                 ", users=" + users +
                 '}';
     }
+
+	
 }

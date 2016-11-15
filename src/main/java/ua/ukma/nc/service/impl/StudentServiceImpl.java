@@ -8,10 +8,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ua.ukma.nc.dto.CategoryChartDto;
 import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.dto.StudentMeetingReview;
 import ua.ukma.nc.dto.StudentProfile;
 import ua.ukma.nc.dto.StudentStatusLog;
+import ua.ukma.nc.dto.StudyResultDto;
 import ua.ukma.nc.entity.MeetingReview;
 import ua.ukma.nc.entity.StatusLog;
 import ua.ukma.nc.service.ChartService;
@@ -23,7 +25,7 @@ import ua.ukma.nc.service.StudentService;
 
 @Service
 public class StudentServiceImpl implements StudentService {
-	
+
 	@Autowired
 	private ChartService chartService;
 
@@ -79,10 +81,23 @@ public class StudentServiceImpl implements StudentService {
 
 		studentProfile.setMeetingReviews(studentMeetingReviews);
 		studentProfile.setMarkTableDto(markTableService.getMarkTableDto(studentId, projectId, allMarkInfo));
-		
-		studentProfile.setChartInfo(chartService.getChartData(projectId, studentId));
-		studentProfile.setChartInfoFinal(chartService.getChartDataFinalReview(projectId, studentId));
+
+		studentProfile.setChartInfo(convert(chartService.getChartData(projectId, studentId)));
+		studentProfile.setChartInfoFinal(convert(chartService.getChartDataFinalReview(projectId, studentId)));
 		return studentProfile;
+	}
+
+	private List<CategoryChartDto> convert(Map<String, List<StudyResultDto>> data) {
+		List<CategoryChartDto> result = new ArrayList<CategoryChartDto>();
+
+		for (String category : data.keySet()) {
+			CategoryChartDto categoryChartDto = new CategoryChartDto();
+			categoryChartDto.setCategory(category);
+			categoryChartDto.setStudyResults(data.get(category));
+
+			result.add(categoryChartDto);
+		}
+		return result;
 	}
 
 }

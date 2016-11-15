@@ -8,8 +8,8 @@ public class StudentProfile {
 	private List<StudentStatusLog> studentStatuses;
 	private List<StudentMeetingReview> meetingReviews;
 	private MarkTableDto markTableDto;
-	private Map<String, List<StudyResultDto>> chartInfo;
-	private Map<String, List<StudyResultDto>> chartInfoFinal;
+	private List<CategoryChartDto> chartInfo;
+	private List<CategoryChartDto> chartInfoFinal;
 
 	public Map<String, List<MarkInformation>> getMarkInformation() {
 		return markInformation;
@@ -43,19 +43,19 @@ public class StudentProfile {
 		this.markTableDto = markTableDto;
 	}
 
-	public Map<String, List<StudyResultDto>> getChartInfo() {
+	public List<CategoryChartDto> getChartInfo() {
 		return chartInfo;
 	}
 
-	public void setChartInfo(Map<String, List<StudyResultDto>> chartInfo) {
+	public void setChartInfo(List<CategoryChartDto> chartInfo) {
 		this.chartInfo = chartInfo;
 	}
 
-	public Map<String, List<StudyResultDto>> getChartInfoFinal() {
+	public List<CategoryChartDto> getChartInfoFinal() {
 		return chartInfoFinal;
 	}
 
-	public void setChartInfoFinal(Map<String, List<StudyResultDto>> chartInfoFinal) {
+	public void setChartInfoFinal(List<CategoryChartDto> chartInfoFinal) {
 		this.chartInfoFinal = chartInfoFinal;
 	}
 }
