@@ -6,17 +6,23 @@ $(document).ready(function () {
 
 
 	$("#editGroupAttachmentButton").click(function(){
+		alert("Error");
 		$("#editGroupAttachmentModal").modal();
 	});
 
 
-	$("#submitButton").click(function(event) {
+	$("#addSubmitButton").click(function(event) {
 		$.ajax({
 			url: "/groups/addAttachment",
 			type: "POST",
 			data: {"id_group" : "${groupId}", 
 				"name" : $("#groupAttachmentName").val(),
-				"attachment_scope": $("#groupAttachment").val()}
+				"attachment_scope": $("#groupAttachment").val()},
+				error:function (xhr, ajaxOptions, thrownError){
+			   	    if(xhr.status==404) {
+			   	        alert("Error");
+			   	    }
+			   	}
 		});
 	});
 
@@ -41,11 +47,20 @@ $(document).ready(function () {
 		$.ajax({
 			url: "/groups/deleteAttachment",
 			type: "POST",
-			data:{ "id":idOfAttachment}
+			data:{ "id":idOfAttachment},
+			error:function (xhr, ajaxOptions, thrownError){
+		   	    if(xhr.status==404) {
+		   	        alert("Error");
+		   	    }
+		   	}
 
 		});
 	});
-
+	 $(function(){
+		    $("#attachment-title").click(function(){
+		        $("#attachment").slideToggle();
+		    });
+		});
 
 
 	$('.delete-mentor').click(function(event){
