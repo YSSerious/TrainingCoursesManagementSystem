@@ -15,16 +15,12 @@ import org.springframework.ui.Model;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.UserService;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import ua.ukma.nc.dto.CategoryDto;
 import ua.ukma.nc.dto.StudentProfile;
-import ua.ukma.nc.dto.StudyResultDto;
 import ua.ukma.nc.dto.UserDto;
 import ua.ukma.nc.dto.RoleDto;
 import ua.ukma.nc.entity.Project;
-import ua.ukma.nc.service.ChartService;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.service.RoleService;
 import ua.ukma.nc.service.StudentService;
@@ -68,6 +64,7 @@ public class CertainUserController {
 			@RequestParam("status") Long statusId) {
 
 		ModelAndView model = new ModelAndView();
+		
 		try {
 			userService.changeStatus(id, statusId, commentary);
 			model.addObject("success", "Successfully changed!");

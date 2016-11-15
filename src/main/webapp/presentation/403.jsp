@@ -7,7 +7,7 @@
 --%>
 <%@include file="header.jsp"%>
 
-<div class="container error-forbidden-box">
+<div class="container-fluid error-forbidden-box">
     <h1>403 Forbidden</h1>
     <h3><spring:message code="403.msg"/></h3>
     <a href="/roles" class="btn btn-primary"><spring:message code="403.changerole.msg"/></a>

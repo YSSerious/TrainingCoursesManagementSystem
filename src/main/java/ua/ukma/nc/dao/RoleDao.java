@@ -19,7 +19,7 @@ public interface RoleDao {
 
     List<Role> getAll();
     
-    List<Role> getByUserId(String email, Long userId);
+    List<Role> getCurrentUserRoles(String email, Long userId);
 
     int createRole(Role role);
 }

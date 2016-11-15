@@ -57,7 +57,14 @@ public class GroupDaoImpl implements GroupDao{
     private static final String UPDATE_GROUP = "UPDATE tcms.group SET id_project = ?, name = ? WHERE id = ?";
 
     private static final String GET_USERS_BY_ID = "SELECT id_user FROM tcms.user_group WHERE id_group = ?";
+    
+    private static final String GET_MENTORS = "select tcms.user_group.id_user from tcms.user_group inner join tcms.user_role on tcms.user_group.id_user = tcms.user_role.id_user where tcms.user_group.id_group = ? and tcms.user_role.id_role = 2";
 
+    private static final String GET_STUDENTS = "select tcms.user_group.id_user from tcms.user_group inner join tcms.user_role on tcms.user_group.id_user = tcms.user_role.id_user where tcms.user_group.id_group = ? and tcms.user_role.id_role = 4";
+    
+    private static final String REMOVE_MENTOR = "delete from tcms.user_group where id_group = ? and id_user = ?";
+    
+    private static final String REMOVE_STUDENT = "delete from tcms.user_group where id_group = ? and id_user = ?";
     @Override
     public Group getById(Long id) {
         log.info("Getting group with id = {}", id);
@@ -105,4 +112,24 @@ public class GroupDaoImpl implements GroupDao{
             return user;
         }
     }
+
+	@Override
+	public List<User> getStudents(Long groupId) {
+		return jdbcTemplate.query(GET_STUDENTS,new UserGroupMapper(),groupId);
+	}
+
+	@Override
+	public List<User> getMentors(Long groupId) {
+		return jdbcTemplate.query(GET_MENTORS,new UserGroupMapper(),groupId);
+	}
+
+	@Override
+	public int removeMentor(Long groupId,Long userId) {
+		return jdbcTemplate.update(REMOVE_MENTOR,groupId,userId);
+	}
+
+	@Override
+	public int removeStudent(Long groupId, Long userId) {
+		return jdbcTemplate.update(REMOVE_STUDENT,groupId,userId);
+	}
 }

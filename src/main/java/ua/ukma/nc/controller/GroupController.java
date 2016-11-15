@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import ua.ukma.nc.dto.GroupAttachmentDto;
@@ -32,6 +33,7 @@ import ua.ukma.nc.service.GroupAttachmentService;
 import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.MeetingService;
 import ua.ukma.nc.service.RoleService;
+import ua.ukma.nc.util.exception.CriteriaDeleteException;
 
 /**
  * Created by Nastasia on 05.11.2016.
@@ -74,11 +76,9 @@ public class GroupController {
 		
 		ModelAndView model = new ModelAndView();
 		GroupDto group = new GroupDto(groupService.getById(id));
-		List<UserDto> users = group.getUsers();
-		List<UserDto> students = new ArrayList<UserDto>();
-		List<UserDto> mentors = new ArrayList<UserDto>();
-		 
-	 
+		List<User> students = groupService.getStudents(id);
+		
+		List<User> mentors = groupService.getMentors(id);
 
 		List<GroupAttachment> groupAttachments= groupAttachmentService.getByGroup(id);
 <<<<<<< HEAD
@@ -88,6 +88,7 @@ public class GroupController {
 			
 		System.out.println(groupAttachments.size()+"Size of ");
 		//List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
+<<<<<<< HEAD
 >>>>>>> origin/master
 		for(UserDto us: users){
 
@@ -102,6 +103,9 @@ public class GroupController {
 			}
 			if(!isMentor) students.add(us);
 		}
+=======
+		
+>>>>>>> origin/master
 
 	/*	List<MeetingDto> meetings = new ArrayList<MeetingDto>();
 		for(Meeting mt : meetingService.getByGroup(id) ){
@@ -117,17 +121,17 @@ public class GroupController {
 		model.addObject("students",students);
 		model.addObject("mentors",mentors);
 		model.addObject("meetings",meetings);
+<<<<<<< HEAD
  
 		model.addObject("group-id",group.getId());
 
+=======
+>>>>>>> origin/master
 		model.addObject("attachments",groupAttachments);
 		model.addObject("groupId",group.getId());
 
 		model.setViewName("group-view");
 	
-		//for(User user : group.getUsers()){
-		//	log.info("users name : "+ user.getFirstName() + " users' role"+ user.getRoles());
-	//	}
 		
 		log.info("Getting group with name : "+group.getName()+" and project: "+group.getProject().getName());
 		log.info("Group information sent");
@@ -144,6 +148,19 @@ public class GroupController {
 		groupAttachmentService.createGroupAttachment(attachment);
 		
 	}
+	@RequestMapping(value = "/removeMentor", method = RequestMethod.POST)
+    @ResponseBody
+    public String removeMentor(@RequestParam Long groupId, @RequestParam Long userId)  {
+        groupService.removeMentor(groupId, userId);
+     return "Deleted successfully";
+    }
+	
+	@RequestMapping(value = "/removeStudent", method = RequestMethod.POST)
+    @ResponseBody
+    public String removeStudent(@RequestParam Long groupId, @RequestParam Long userId)  {
+        groupService.removeStudent(groupId, userId);
+     return "Deleted successfully";
+    }
 	
 	@RequestMapping(value = "editAttachment", method = RequestMethod.POST)
 	public void editGroupAttachment(@RequestParam("id_group") Long idGroup,@RequestParam("name") String name,

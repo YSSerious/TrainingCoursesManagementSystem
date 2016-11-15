@@ -1,6 +1,9 @@
 
 /* Move down content because we have a fixed navbar that is 50px tall */
 
+.container.certain-project{
+	width: initial;
+}
 .certain-project .panel.panel-horizontal {
     display:table;
     width: 350px;
@@ -22,7 +25,7 @@
     border-top-right-radius: 0;
     border-bottom-left-radius: 4px;
     width: min-intrinsic;
-    padding-right: !important;
+    padding-right: 0 !important;
     width: 150px;
 }
 
@@ -40,11 +43,13 @@
 
 .certain-project .panel-btn{
 	padding-bottom: 10px;
-    background-color: #ddd;
+    /*background-color: #ddd;*/
+    background-color: #337ab7;
     margin-bottom: 0px;
     height: 35px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
+    
 }
 
 .certain-project .pull-right-btn {
@@ -52,6 +57,10 @@
     margin-right: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
+    background-color: white;
+    color: black;
+    font-weight: 500;
+    border-color: white;
 }
 
 .certain-project .list-group-item:first-child {
@@ -62,5 +71,31 @@
 .certain-project .glyphicon{
 	font-size: 20px;
 }
+
+.panel.add-panel{
+	border: 1px solid #ddd;
+    margin-bottom: 0px;
+    border-radius: 0px;
+    border-bottom-width: initial;
+}
+
+.panel.add-panel .form-group{
+	margin: 10px;
+}
+
+.panel.panel-btn .btn-save{
+	color: #d9534f;
+}
+
+.rmv-btn{
+	float: right!important;
+/*     margin: 2px; */
+/*     border: 1px solid #ddd; */
+    border-radius: 5px;
+    padding: 0px;
+    display: none;
+    color: #d9534f;
+}
+
 
 

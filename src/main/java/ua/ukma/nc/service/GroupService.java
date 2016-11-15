@@ -1,6 +1,7 @@
 package ua.ukma.nc.service;
 
 import ua.ukma.nc.entity.Group;
+import ua.ukma.nc.entity.User;
 
 import java.util.List;
 
@@ -14,10 +15,18 @@ public interface GroupService {
     Group getById(Long id);
 
     int deleteGroup(Group group);
+    
+    int removeMentor(Long groupId,Long userid);
 
     int updateGroup(Group group);
 
     List<Group> getAll();
+    
+    List<User> getMentors(Long groupId);
+    
+    List<User> getStudents(Long groupId);
 
     int createGroup(Group group);
+
+	int removeStudent(Long groupId, Long userId);
 }

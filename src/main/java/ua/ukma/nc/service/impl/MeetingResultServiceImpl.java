@@ -4,20 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.ukma.nc.dao.MeetingResultDao;
 import ua.ukma.nc.dto.MarkInformation;
-import ua.ukma.nc.dto.StudentMeetingReview;
-import ua.ukma.nc.dto.StudentProfile;
-import ua.ukma.nc.dto.StudentStatusLog;
 import ua.ukma.nc.entity.MeetingResult;
-import ua.ukma.nc.entity.MeetingReview;
-import ua.ukma.nc.entity.StatusLog;
 import ua.ukma.nc.service.MeetingResultService;
-import ua.ukma.nc.service.MeetingReviewService;
-import ua.ukma.nc.service.StatusLogService;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Алексей on 30.10.2016.
@@ -26,12 +15,6 @@ import java.util.Map;
 public class MeetingResultServiceImpl implements MeetingResultService{
     @Autowired
     private MeetingResultDao meetingResultDao;
-    
-    @Autowired
-    private StatusLogService statusLogService;
-    
-    @Autowired
-    private MeetingReviewService meetingReviewService;
     
     @Override
     public MeetingResult getById(Long id) {
@@ -68,5 +51,10 @@ public class MeetingResultServiceImpl implements MeetingResultService{
 		return meetingResultDao.getByMeeting(studentId, meetingId);
 	}
 
-	
+    @Override
+    public List<MeetingResult> getByReview(long review) {
+        return meetingResultDao.getByReview(review);
+    }
+
+
 }

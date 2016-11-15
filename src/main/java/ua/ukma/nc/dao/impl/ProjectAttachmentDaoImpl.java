@@ -43,6 +43,8 @@ public class ProjectAttachmentDaoImpl implements ProjectAttachmentDao{
     private static final String GET_ALL = "SELECT id, name, id_project, attachment_scope FROM tcms.project_attachment";
 
     private static final String GET_BY_ID = "SELECT id, name, id_project, attachment_scope FROM tcms.project_attachment WHERE id = ?";
+    
+    private static final String GET_ALL_BY_ID = "SELECT id, name, id_project, attachment_scope FROM tcms.project_attachment WHERE id_project = ?";
 
     private static final String DELETE_PROJECT_ATTACHMENT = "DELETE FROM tcms.project_attachment WHERE id = ?";
 
@@ -79,4 +81,12 @@ public class ProjectAttachmentDaoImpl implements ProjectAttachmentDao{
         log.info("Create new project attachment with name = {}", projectAttachment.getName());
         return jdbcTemplate.update(CREATE_PROJECT_ATTACHMENT, projectAttachment.getName(), projectAttachment.getProject().getId(), projectAttachment.getAttachmentScope());
     }
+    
+    @Override
+    public List<ProjectAttachment> getAllById(Long id_project) {
+        log.info("Getting certain project attachments");
+        return jdbcTemplate.query(GET_ALL_BY_ID, new ProjectAttachmentMapper(), id_project);
+    }
+    
+    
 }

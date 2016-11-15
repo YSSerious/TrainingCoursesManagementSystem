@@ -18,13 +18,17 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('.addButton').click(function () {
+        console.log($(this < 'tr:first').text());
+    });
     
     function appendTableRows(data){
         $("#criterionTable > tbody:last").children().remove();
         $.each(data, function(key, value){
             $('#criterionTable > tbody:last-child').append("<tr>" +
                 "<td>"+value.title+"</td>" +
-                "<td><button class='btn btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
+                "<td><button class='addButton btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
                 "</tr>");
         });
     }

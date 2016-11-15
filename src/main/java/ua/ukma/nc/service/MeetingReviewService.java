@@ -20,5 +20,7 @@ public interface MeetingReviewService {
     
 	List<MeetingReview> getByProjectStudent(Long projectId, Long studentId);
 
+    MeetingReview getByMeetingStudent(Long meetingId, Long studentId);
+
 	List<MeetingReview> getByMeeting(Long id);
 }

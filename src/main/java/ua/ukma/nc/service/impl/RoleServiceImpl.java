@@ -49,7 +49,7 @@ public class RoleServiceImpl implements RoleService{
     }
 
 	@Override
-	public List<Role> getByUserId(String email, Long userId) {
-		return roleDao.getByUserId(email, userId);
+	public List<Role> getCurrentUserRoles(String email, Long userId) {
+		return roleDao.getCurrentUserRoles(email, userId);
 	}
 }

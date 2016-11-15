@@ -82,64 +82,19 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	$('#chart'+value.id).html('');
                             createCharts(data.chartInfo, value.id);
     	 	    	    	
-    	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><h2>Grades:</h2><table class="table table-bordered"><tr><th>#</th>';
-    	 	    	    	$.each(data.markTableDto.meetings, function( key, value ) {
-    	 	    	    		if(key<data.markTableDto.meetings.length-1)
-    	 	    	    			table+= '<th>M' + (key+1) + '</th>';
-    	 	    	    		else
-    	 	    	    			table+= '<th>F</th>';
-    	 	    	    	});
-    	 	    	    	table+= '</tr>';
+    	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
     	 	    	    	
-    	 	    	    	$.each(data.markTableDto.tableData, function( key, value ) {
-    	 	    	    		table+= '<tr><td align="center" colspan="'+ data.markTableDto.meetings.length + 1 +'"><b>' + key + '</b></td></tr>';
-    	 	    	    		
-    	 	    	    		$.each(value, function( key1, value1 ) {
-    	 	    	    			
-    	 	    	    			table+= '<tr class="active"><td>' + value1[0].value + '</td>';
-    	 	    	    			$.each(value1, function(index, mark) {
-    	 	    	    				if(index>0){
-    	 	    	    					if(mark.commentary == '')
-    	 	    	    						table+= '<td><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
-    	 	    	    					else
-    	 	    	    						table+= '<td><span title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
-    	 	    	    				}
-	    	 	    	    		});
-    	 	    	    			table+= '</tr></div></div></div>';
-    	 	    	    		});
-    	 	    	    		
-    	 	    	    		
-    	 	    	    	});
+    	 	    	    	table+= '<h2>Grades:</h2>';
+                            table+= getMarksTable(data.markTableDto);
+                            
+                            table+= '<br/><h2>Statuses: </h2>';
+                            table+= getStatusesTable(data.studentStatuses);
+                            
+                            
+                            table+= '<br/><h2>Meeting reviews: </h2>';
+                            table+= getMeetingReviewsTable(data.meetingReviews);
     	 	    	    	
-    	 	    	    	table+= '</table>';
-    	 	    	    	
-    	 	    	    	table+= '<br/><h2>Statuses: </h2>';
-    	 	    	    	table+= '<table class="table table-bordered"><tr><th>Status:</th>';
-    	 	    	    	table+= '<th>Commentary</th>';
-    	 	    	    	table+= '<th>Employee</th>';
-    	 	    	    	table+= '<th>Time</th></tr>';
-    	 	    	    	$.each(data.studentStatuses, function( key, value ) {
-    	 	    	    		table+= '<tr><td>'+value.statusDescription+'</td>';
-        	 	    	    	table+= '<td>'+value.commentary+'</td>';
-        	 	    	    	table+= '<td>'+value.firstName+' '+value.secondName+' '+value.lastName+'</td>';
-        	 	    	    	table+= '<td>'+value.date+'</td></tr>';
-    	 	    	    	});
-    	 	    	    	table+= '</table>';
-    	 	    	    	
-    	 	    	    	table+= '<br/><h2>Meeting reviews: </h2>';
-    	 	    	    	table+= '<table class="table table-bordered"><tr><th>ID</th><th>Name</th>';
-    	 	    	    	table+= '<th>Type</th>';
-    	 	    	    	table+= '<th>Employee</th>';
-    	 	    	    	table+= '<th>Commentary</th></tr>';
-    	 	    	    	$.each(data.meetingReviews, function( key, value ) {
-    	 	    	    		table+= '<tr'+getRow(value.type)+'><td>M'+(key+1)+'</td><td>'+value.meetingName+'</td>';
-    	 	    	    		table+= '<td>'+value.type+'</td>';
-    	 	    	    		table+= '<td>'+value.firstName+' '+value.secondName+' '+value.lastName+'</td>';
-        	 	    	    	table+= '<td>'+value.commentary+'</td></tr>';
-        	 	    	    	
-    	 	    	    	});
-    	 	    	    	table+= '</table>';
-    	 	    	    	
+                            table+= '</div></div></div>';
     	 	    	    	$('#sub'+value.id).append(table);
     	 	    	    }
     	 	    	  });
@@ -150,37 +105,85 @@ function createStudentProjectsInfo(userId, divInside){
 };
 
 function createCharts(data, projectId) {
-    var chartBlock = $('#chart' + projectId);
-    var chartTabs = "<ul class='nav nav-pills' id='chart-pills'>";
-    var categories = [];
-    for (var i in data) {
-        categories.push(data[i]);
-        chartTabs += "<li><a data-toggle='pill' href='#chart" + i + "'>" + i + "</a></li>";
-    }
-    chartTabs += "</ul>";
-    chartBlock.append(chartTabs);
-    var tabContent = $("<div class='tab-content'></div>");
-    chartBlock.append(tabContent);
-    $('#chart-pills li:first-child').attr("class", "active");
     var criteriaValues = [];
-    $.each(categories, function (index, value) {
+    $.each(data, function (index, value) {
         $.each(value, function (index, value) {
             criteriaValues.push(value.averageValue);
         });
     });
     var maxYAxisValue = Math.max.apply(null, criteriaValues);
-
-    $.each(data, function (key, value) {
-        var text = '<div class="tab-pane fade chart" id="chart' + key + '"></div>';
-        $(text).appendTo(tabContent);
-    });
-    $("div:first-child", tabContent).addClass("in active");
-    $.each(data, function (key, value) {
-
-        if (value.length === 1) {
-//    	 	    	    			value1.unshift({ criterionName: 'd', averageValue: 4});
-//            value.push({criterionName: 'd', averageValue: 4});
-        }
-        drawCriteriaChart(value, '#chart' + key, 6, key);
-    });
+    drawCriteriaChart(data, '#chart' + projectId, 6, 'title');
 }
+
+function getMeetingReviewsTable(meetingReviews){
+	var table = '';
+ 	table+= '<table class="table table-bordered"><tr><th>ID</th><th>Name</th>';
+ 	table+= '<th>Type</th>';
+ 	table+= '<th>Employee</th>';
+ 	table+= '<th>Commentary</th></tr>';
+ 	$.each(meetingReviews, function( key, value ) {
+ 		table+= '<tr'+getRow(value.type)+'><td>M'+(key+1)+'</td><td>'+value.meetingName+'</td>';
+ 		table+= '<td>'+value.type+'</td>';
+ 		table+= '<td>'+value.firstName+' '+value.secondName+' '+value.lastName+'</td>';
+	    	table+= '<td>'+value.commentary+'</td></tr>';
+	    	
+ 	});
+ 	table+= '</table>';
+ 	
+ 	return table;
+}
+
+function getMarksTable(markTableDto){
+	var table = '';
+ 	table+= '<table class="table table-bordered"><tr><th>#</th>';
+ 	$.each(markTableDto.meetings, function( key, value ) {
+ 		if(key<markTableDto.meetings.length-1)
+ 			table+= '<th>M' + (key+1) + '</th>';
+ 		else
+ 			table+= '<th>F</th>';
+ 	});
+ 	table+= '</tr>';
+ 	
+ 	$.each(markTableDto.tableData, function( key, value ) {
+ 		table+= '<tr><td align="center" colspan="'+ markTableDto.meetings.length + 1 +'"><b>' + key + '</b></td></tr>';
+ 		
+ 		$.each(value, function( key1, value1 ) {
+ 			
+ 			table+= '<tr class="active"><td>' + value1[0].value + '</td>';
+ 			$.each(value1, function(index, mark) {
+ 				if(index>0){
+ 					if(mark.commentary == '')
+ 						table+= '<td><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
+ 					else
+ 						table+= '<td><span title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
+ 				}
+	    		});
+ 			table+= '</tr></div></div></div>';
+ 		});
+ 		
+ 		
+ 	});
+ 	
+ 	table+= '</table>';
+ 	
+ 	return table;
+}
+
+function getStatusesTable(studentStatuses){
+	var table = '';
+ 	
+	table+= '<table class="table table-bordered"><tr><th>Status:</th>';
+ 	table+= '<th>Commentary</th>';
+ 	table+= '<th>Employee</th>';
+ 	table+= '<th>Time</th></tr>';
+ 	$.each(studentStatuses, function( key, value ) {
+ 		table+= '<tr><td>'+value.statusDescription+'</td>';
+	    	table+= '<td>'+value.commentary+'</td>';
+	    	table+= '<td>'+value.firstName+' '+value.secondName+' '+value.lastName+'</td>';
+	    	table+= '<td>'+value.date+'</td></tr>';
+ 	});
+ 	table+= '</table>';
+ 	
+ 	return table;
+}
+
