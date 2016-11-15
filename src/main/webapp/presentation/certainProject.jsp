@@ -1,5 +1,8 @@
 <%@include file="header.jsp" %>
-
+<script
+        src="<c:url value="/presentation/resources/js/certainProject.js"/>"
+        type="text/javascript">
+</script>
 <div class="container certain-project">
       <!-- Example row of columns -->
       <div class="row">
@@ -48,7 +51,6 @@
           </ul>
         </div>
       </div>
-      <div class="row">
             <div class="top-info">
                 <div class="row">
                     <h2 class="col-sm-11">Criteria List</h2>
@@ -73,7 +75,7 @@
                     </div>
                 </c:forEach>
             </div>
-        </div>
+
       <div class="row">
         <div class="col-md-12">
           <h2>
@@ -110,6 +112,28 @@
         </div>
       </div>
       <hr>
+<!-- start showAvailableCriteria modal -->
+<div id="showAvailableCriteriaModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove"></span></button>
+                <table id="criterionTable" class="table table-condensed table-hover table-responsive">
+                    <thead class="table-head">
+                    <tr>
+                        <th>name</th>
+                        <th>add</th>
+                    </tr>
+                    </thead>
+                    <tbody id="criteriaTableId">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- finish showAvailableCriteria modal -->
 </div>
 
 <script>
@@ -174,5 +198,7 @@
 			});
 		});
 	</script>
-
+<script>
+    var projectId = "${project.id}";
+</script>
 <%@include file="footer.jsp"%>

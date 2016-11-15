@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import ua.ukma.nc.dto.CriterionDto;
 import ua.ukma.nc.dto.ProjectDto;
 import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Group;
@@ -86,8 +87,12 @@ public class CertainProjectController {
 
 	@RequestMapping(value = "/getAvailableCriteria", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Criterion> getAvailableCriteria(@RequestParam Long projectId){
-		return criterionService.getProjectUnusedCriteria(projectId);
+	public List<CriterionDto> getAvailableCriteria(@RequestParam Long projectId){
+		List<CriterionDto> criterionDtos= new ArrayList<>();
+		for(Criterion criterion : criterionService.getProjectUnusedCriteria(projectId)){
+			criterionDtos.add(new CriterionDto(criterion));
+		}
+		return criterionDtos;
 	}
 
 
