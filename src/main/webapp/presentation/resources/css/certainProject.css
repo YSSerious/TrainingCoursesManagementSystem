@@ -54,7 +54,6 @@
 
 .certain-project .panel-heading{
     padding-bottom: 10px;
-    /*background-color: #ddd;*/
     background-color: #337ab7;
     margin-bottom: 0px;
     height: 50px;
@@ -66,6 +65,16 @@
 .certain-project .pull-right-btn {
     float: right!important;
     margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: white;
+    color: black;
+    font-weight: 500;
+    border-color: white;
+}
+.certain-project .add-criteria-btn {
+    float: right!important;
+    margin-right: 10px;
     margin-top: 2px;
     margin-bottom: 5px;
     background-color: white;
@@ -73,6 +82,7 @@
     font-weight: 500;
     border-color: white;
 }
+
 
 .certain-project .list-group-item:first-child {
     border-top-left-radius: 0px;
@@ -118,3 +128,13 @@
  .arrow {
      cursor: pointer;
  }
+ .modal .modal-header {
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+ .panel-collapse {
+    max-height: 350px;
+     max-width: inherit;
+    overflow-y: auto;
+}

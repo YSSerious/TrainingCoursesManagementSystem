@@ -3,12 +3,6 @@
         src="<c:url value="/presentation/resources/js/certainProject.js"/>"
         type="text/javascript">
 </script>
-<style>
-
-    .arrow {
-        position: absolute;
-    }
-</style>
 <div class="container certain-project">
     <!-- Example row of columns -->
     <div class="row">
@@ -65,19 +59,19 @@
             <h2>
                 Criteria List
             </h2>
-            <!--<div class="panel panel-btn">
-                <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1"><span
-                        class="glyphicon glyphicon-arrow-down"></span></div>
-                <div role="button" class="btn btn-default pull-right-btn">add criteria</div>
-            </div>-->
             <div class="panel-group" id="panelGroupId">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title row">
                             <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1">
-                                <span class="glyphicon glyphicon-arrow-down"></span>
+                                <span class="glyphicon glyphicon-chevron-down"></span>
                             </div>
-                            <div role="button" class="btn pull-right-btn btn-sm"><b>Add criteria</b></div>
+                            <div role="button" class="btn add-criteria-btn btn-sm"
+                                 id="showAvailableCriteria"
+                                 data-toggle="modal"
+                                 data-target="#showAvailableCriteriaModal">
+                                <b>Add criteria</b>
+                            </div>
                         </h4>
                     </div>
                     <div id="collapseIn" class="panel-collapse collapse">
@@ -181,16 +175,21 @@
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal"><span
                         class="glyphicon glyphicon-remove"></span></button>
-                <table id="criterionTable" class="table table-condensed table-hover table-responsive">
-                    <thead class="table-head">
-                    <tr>
-                        <th>name</th>
-                        <th>add</th>
-                    </tr>
-                    </thead>
-                    <tbody id="criteriaTableId">
-                    </tbody>
-                </table>
+                <h4 class="modal-title">Add some criteria</h4>
+                <hr>
+                <div class="row">
+                <input type="text" id="search" placeholder="type search" class="col-md-offset-4">
+                    </div>
+                    <table id="criterionTable" class="table table-condensed table-hover table-responsive">
+                        <thead class="table-head">
+                        <tr>
+                            <th><b>Name</b></th>
+                            <th><b>Add</b></th>
+                        </tr>
+                        </thead>
+                        <tbody id="criteriaTableId">
+                        </tbody>
+                    </table>
             </div>
         </div>
     </div>

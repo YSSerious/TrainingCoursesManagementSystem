@@ -57,8 +57,8 @@ public class CertainProjectController {
         //Attachment set
         List<ProjectAttachment> attachmentList = attachmentService.getAllById(id);
         model.addObject("attachments", attachmentList);
-        List<Group> groups = groupService.getByProjectId(id);
-        model.addObject("groups", groups);
+//        List<Group> groups = groupService.getByProjectId(id);
+//        model.addObject("groups", groups);
 
         model.setViewName("certainProject");
         return model;
