@@ -17,3 +17,7 @@ body {
 .footer .text-center> * {
     display: inline;
 }
+
+a, a:hover, a:visited, a:link, a:active{
+    cursor: pointer !important;
+}
