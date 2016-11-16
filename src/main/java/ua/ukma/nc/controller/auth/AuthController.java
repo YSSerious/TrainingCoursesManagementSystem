@@ -101,4 +101,11 @@ public class AuthController {
         mv.addObject("availableRoles", available);
         return mv;
     }
+
+    @RequestMapping ("/403")
+    public String error(HttpServletRequest request){
+        if(request.isUserInRole("TEMP"))
+            return "redirect:/roles";
+        return "403";
+    }
 }
