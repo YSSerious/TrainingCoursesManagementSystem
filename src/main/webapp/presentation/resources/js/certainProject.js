@@ -68,7 +68,7 @@ function buildResponseCriteria(data){
     "<div class='panel-heading'>" +
     "<h4 class='panel-title row'>" +
     "<div class='panel-body col-sm-11'>"+data.title+"</div>" +
-    "<button class='delButton btn-danger btn-sm'>" +
+    "<button class='delButton btn-danger btn-xs'>" +
     "<span class='glyphicon glyphicon-remove'></span>" +
     "</button></h4></div></div>";
 };
