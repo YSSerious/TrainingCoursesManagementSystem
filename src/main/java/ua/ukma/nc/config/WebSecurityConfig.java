@@ -38,13 +38,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
                 .authorizeRequests()
-                    .antMatchers("/", "/home").hasAnyRole("ADMIN", "MENTOR", "HR", "STUDENT")
+                    .antMatchers("/", "/home").hasAnyRole("ADMIN", "MENTOR", "HR"/*, "STUDENT"*/)
                     .antMatchers("/role_def").hasRole("TEMP")
                     .antMatchers("/manageRoles").hasRole("ADMIN")
-                    .antMatchers("/roles", "/set_role").hasAnyRole("ADMIN", "MENTOR", "HR", "STUDENT", "TEMP")
-                    .antMatchers("/cookie").hasAnyRole("ADMIN", "MENTOR", "HR", "STUDENT")
+                    .antMatchers("/roles", "/set_role").hasAnyRole("ADMIN", "MENTOR", "HR", /*"STUDENT",*/ "TEMP")
                     .antMatchers("/projects").hasAnyRole("ADMIN", "MENTOR", "HR")
-                    .antMatchers("/users/*").hasAnyRole("ADMIN", "MENTOR", "HR")
+                    .antMatchers("/users/*", "/cookie").hasAnyRole("ADMIN", "MENTOR", "HR")
                     .antMatchers("/getuser").hasRole("ADMIN")     //for testing
                     .and()
                 .formLogin()

@@ -14,6 +14,8 @@ public class MeetingResult implements Serializable{
     private Mark mark;
     private String commentary;
 
+    public MeetingResult(){}
+
     public Long getId() {
         return id;
     }
