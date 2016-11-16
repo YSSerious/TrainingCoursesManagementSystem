@@ -88,4 +88,13 @@ public class MeetingEvaluationController {
         mv.addObject("review", review);
         return mv;
     }
+
+    @RequestMapping (value = "/do_evaluate", method = RequestMethod.POST)
+    public @ResponseBody String doEvaluate(@ModelAttribute MeetingResult[] results, @RequestParam Long reviewId, @RequestParam String reviewComment){
+        for(MeetingResult result : results)
+            System.out.println(result);
+        System.out.println(reviewId);
+        System.out.println(reviewComment);
+        return "true";
+    }
 }

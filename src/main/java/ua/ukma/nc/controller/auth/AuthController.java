@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -30,19 +31,19 @@ public class AuthController {
     @Autowired
     UserService userService;
 
-    @RequestMapping (value = "/set_role", method = RequestMethod.POST)
-    public String setRole(HttpServletRequest request, Principal principal){
+    @RequestMapping(value = "/set_role", method = {RequestMethod.GET, RequestMethod.POST})
+    public String setRole(HttpServletRequest request, Principal principal) {
         User user = userService.getByEmail(principal.getName());
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
         String chosenRole = request.getParameter("chosenRole");
-        if(chosenRole!=null){
-            for(Role role : user.getRoles())
-                if(role.getTitle().equals(chosenRole))
+        if (chosenRole != null) {
+            for (Role role : user.getRoles())              //one more validation
+                if (role.getTitle().equals(chosenRole))
                     grantedAuthorityList.add(new SimpleGrantedAuthority(role.getTitle()));
         }
         //if role not chosen or chosen incorrectly
         else {
-            if(user.getRoles().get(0)!=null)
+            if (user.getRoles().get(0) != null)
                 grantedAuthorityList.add(new SimpleGrantedAuthority(user.getRoles().get(0).getTitle()));
         }
         //set the authentication of the current Session context
@@ -51,7 +52,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/cookie")
-    public String setRoleCookie(HttpServletResponse response){
+    public String setRoleCookie(HttpServletResponse response) {
         String chosen = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
         if (chosen != null) {
             Cookie cookie = new Cookie("tcms-chosen-role", chosen);
@@ -63,28 +64,41 @@ public class AuthController {
 
     //redirect already authenticated users from /login to /
     @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView loginHandler(){
+    public ModelAndView loginHandler() {
         ModelAndView mv = new ModelAndView("login");
-        if(SecurityContextHolder.getContext().getAuthentication() != null &&
-                SecurityContextHolder.getContext().getAuthentication().isAuthenticated()&&
+        if (SecurityContextHolder.getContext().getAuthentication() != null &&
+                SecurityContextHolder.getContext().getAuthentication().isAuthenticated() &&
                 !(SecurityContextHolder.getContext().getAuthentication()
-                        instanceof AnonymousAuthenticationToken) ){
+                        instanceof AnonymousAuthenticationToken)) {
             mv.setViewName("redirect:/");
         }
         return mv;
     }
 
     @RequestMapping(value = "/roles_def", method = {RequestMethod.GET, RequestMethod.POST})
-    public String rolesHandler(HttpServletRequest request){
+    public String rolesHandler(HttpServletRequest request) {
         //check if it's remember-me-token auth or not
-        for(Cookie cookie : request.getCookies())
-            if(cookie.getName().equals("tcms-chosen-role"))
+        for (Cookie cookie : request.getCookies())
+            if (cookie.getName().equals("tcms-chosen-role"))
                 return "redirect:/";
         return "redirect:/roles";
     }
-    
-    @RequestMapping (value = "/roles", method = RequestMethod.GET)
-    public String roles() {
-        return "chooseRole";
+
+    @RequestMapping(value = "/roles", method = RequestMethod.GET)
+    public ModelAndView roles(Principal principal) {
+        ModelAndView mv = new ModelAndView("chooseRole");
+        User user = userService.getByEmail(principal.getName());
+        List<String> available = new LinkedList<>();
+        for (Role role : user.getRoles())
+            if (!role.getTitle().equals("ROLE_STUDENT"))
+                available.add(role.getTitle());
+        //no chance to choose for users with one role
+        if (available.size() == 1) {
+            mv = new ModelAndView("redirect:/set_role");
+            mv.addObject("chosenRole", available.get(0));
+            return mv;
+        }
+        mv.addObject("availableRoles", available);
+        return mv;
     }
 }
