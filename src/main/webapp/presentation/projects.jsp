@@ -30,40 +30,31 @@
 					<c:if
 						test="${today.time gt value.startDate.time && value.finishDate.time gt today.time}">
 						<%
-							type = "#fff";
-									border = "#7FFF00";
+									border = "current";
 						%>
 					</c:if>
 					<c:if test="${value.startDate.time gt today.time}">
 						<%
-							type = "#fff";
-									border = "#40E0D0";
+									border = "primary";
 						%>
 					</c:if>
 					<c:if test="${today.time gt value.finishDate.time}">
 						<%
-							type = "#fff";
-									border = "#DC143C";
+									border = "finished";
 						%>
 					</c:if>
-					<div
-						style="background-color:<%=type%>;border: 2px solid <%=border%>; border-radius: 7px;">
-						<div class="row">
-							<div class="col-xs-12 col-sm-6 col-md-8">
-								<p style="margin-top: -5px; margin-left: 15px;">
-									<br /> <font size="5"><b><a href ="certainProject/${value.id}">${value.name}</a></b></font>
-								</p>
+					<div class="panel panel-<%=border%>">
+						<div class="panel-body">
+							<div class="col-md-8">	
+								<font size="5"><b><a href ="certainProject/${value.id}">${value.name}</a></b></font>
 							</div>
 
-							<div class="col-xs-6 col-md-4">
-								<p style="margin-top: -5px;">
-									<br /> <font color="blue"><spring:message code="projects.start"/>:</font> ${value.startDate} <br />
-									<font color="blue"><spring:message code="projects.finish"/>:</font> ${value.finishDate} <br />
-								</p>
+							<div class="col-md-4">
+								<font color="blue"><spring:message code="projects.start"/>:</font> ${value.startDate} <br />
+								<font color="blue"><spring:message code="projects.finish"/>:</font> ${value.finishDate}
 							</div>
 						</div>
 					</div>
-					<br />
 				</c:forEach>
 				<br />
 			</div>

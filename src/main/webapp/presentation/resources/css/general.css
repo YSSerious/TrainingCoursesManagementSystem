@@ -33,6 +33,14 @@ body > .container > .panel > .panel-body div:first-child {
     padding: 0;
 }
 
+.panel-current{
+	border-color:#008000;
+}
+
+.panel-finished{
+	border-color:#ff0080;
+}
+
 @media (min-width: 1200px) {
     body > .container {
         width: 100%;
