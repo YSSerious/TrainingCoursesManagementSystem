@@ -1,3 +1,21 @@
 #pagination thead{
 	background-color: #c9d1d8;
 }
+
+#table-listing{
+  width: 100%;
+}
+.meeting {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+     width: auto;
+     
+}
+
+.meeting th, td { width: 300px; }
+
+th:first-child {
+    position: fixed;
+}
+
