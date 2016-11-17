@@ -24,8 +24,17 @@
                 })
             });
             $('a').each(function(){
-                $(this).attr('onclick','window.location.href="'+$(this).attr('href')+'"');
+                $(this).attr('link',$(this).attr('href'));
                 $(this).removeAttr('href');
+            });
+            $('a').click(function (e) {
+                if((e.button === 0 && e.ctrlKey)||e.button === 1){ // Click without ctrl
+                    e.preventDefault();
+                    // open local page
+                    window.open($(this).attr('link'));
+                }else{
+                    window.location = $(this).attr('link');
+                }
             });
             $(document).ready(function(){
                 $('[data-toggle="tooltip"]').tooltip();   
