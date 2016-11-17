@@ -77,14 +77,14 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	      'student' : userId,
     	 	    	      'project' : value.id
     	 	    	    },
-    	 	    	    
+    	 	    	   
     	 	    	    'success' : function(data) {
     	 	    	    	$('#chart'+value.id).html('');
                             createCharts(data.chartInfo, value.id);
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
     	 	    	    	
-    	 	    	    	table+= '<h2>Grades:</h2>';
+    	 	    	    	table+= '<div class="row"><div class = "col-sm-10"><h2>Grades:</h2></div><div class = "col-sm-2"><h2><a href="/studentMarks/'+value.id+'/'+userId+'.xls" class="btn btn-primary pull-right">Report</a></h2></div></div>';
                             table+= getMarksTable(data.markTableDto);
                             
                             table+= '<br/><h2>Statuses: </h2>';
@@ -165,19 +165,16 @@ function getMarksTable(markTableDto){
  	});
  	table+= '</tr>';
  	
- 	$.each(markTableDto.tableData, function( key, value ) {
+ 	$.each(markTableDto.tableData, function( key, criteriaList ) {
  		table+= '<tr><td align="center" colspan="'+ markTableDto.meetings.length + 1 +'"><b>' + key + '</b></td></tr>';
  		
- 		$.each(value, function( key1, value1 ) {
- 			
- 			table+= '<tr class="active"><td>' + value1[0].value + '</td>';
- 			$.each(value1, function(index, mark) {
- 				if(index>0){
+ 		$.each(criteriaList, function( i, criterionResult ) {
+ 			table+= '<tr class="active"><td>' + criterionResult.criterionName + '</td>';
+ 			$.each(criterionResult.marks, function(index, mark) {
  					if(mark.commentary == '')
  						table+= '<td><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
  					else
  						table+= '<td><span title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
- 				}
 	    		});
  			table+= '</tr></div></div></div>';
  		});

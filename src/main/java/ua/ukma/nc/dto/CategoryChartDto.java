@@ -5,6 +5,7 @@ import java.util.List;
 public class CategoryChartDto {
 	private String category;
 	private List<StudyResultDto> studyResults;
+	
 	public List<StudyResultDto> getStudyResults() {
 		return studyResults;
 	}

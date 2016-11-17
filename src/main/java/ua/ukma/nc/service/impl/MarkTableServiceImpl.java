@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ua.ukma.nc.dto.CertainMarkDto;
+import ua.ukma.nc.dto.CriterionResult;
 import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.dto.MarkTableDto;
 import ua.ukma.nc.entity.Criterion;
@@ -42,6 +43,7 @@ public class MarkTableServiceImpl implements MarkTableService {
 		List<Meeting> meetings = meetingService.getByStudentProject(studentId, projectId);
 		List<Meeting> absentMeetings = meetingService.getByStudentProjectType(studentId, projectId, 'A');
 		List<Meeting> leaveMeetings = meetingService.getByStudentProjectType(studentId, projectId, 'L');
+
 		List<Criterion> criteria = criterionService.getByProject(projectId);
 
 		MarkTableDto markTableDto = new MarkTableDto();
@@ -58,65 +60,64 @@ public class MarkTableServiceImpl implements MarkTableService {
 
 		markTableDto.setMeetings(meetingNames);
 
-		Map<String, List<Long>> criterionId = new TreeMap<String, List<Long>>();
-		Map<String, List<String>> criterionNames = new TreeMap<String, List<String>>();
+		Map<String, List<String>> categories = new TreeMap<String, List<String>>();
 
 		for (Criterion criterion : criteria) {
 			String categoryId = criterion.getCategory().getName();
-			List<String> currentList = criterionNames.get(categoryId);
+			List<String> currentList = categories.get(categoryId);
 
 			if (currentList == null) {
 				List<String> newList = new ArrayList<String>();
 				newList.add(criterion.getTitle());
-				criterionNames.put(categoryId, newList);
+				categories.put(categoryId, newList);
 			} else
 				currentList.add(criterion.getTitle());
 
-			List<Long> ids = criterionId.get(categoryId);
-
-			if (ids == null) {
-				List<Long> newList = new ArrayList<Long>();
-				newList.add(criterion.getId());
-
-				criterionId.put(categoryId, newList);
-			} else
-				ids.add(criterion.getId());
-
 		}
 
-		Map<String, CertainMarkDto[][]> dataTable = new TreeMap<String, CertainMarkDto[][]>();
+		Map<String, List<CriterionResult>> dataTable = new TreeMap<String, List<CriterionResult>>();
 		boolean leave = true;
 
 		FinalReview finalReview = null;
+
 		try {
 			finalReview = finalReviewService.getByStudent(projectId, studentId, "L");
 		} catch (Exception e) {
 			leave = false;
 		}
-		for (String key : criterionNames.keySet()) {
-			CertainMarkDto[][] tempData = new CertainMarkDto[criterionNames.get(key).size()][meetingNames.size() + 1];
-			for (int i = 0; i < criterionNames.get(key).size(); i++) {
-				tempData[i][0] = new CertainMarkDto();
-				tempData[i][0].setValue(criterionNames.get(key).get(i));
-				for (int j = 1; j < meetingNames.size() + 1; j++) {
-					if (j != meetingNames.size()) {
-						tempData[i][j] = new CertainMarkDto();
-						tempData[i][j].setValue("-");
-						tempData[i][j].setCommentary("");
-						tempData[i][j].setDescription("Okay. Maybe next time.");
-					} else {
-						if (!leave) {
-							tempData[i][j] = new CertainMarkDto();
-							tempData[i][j].setValue("U");
-							tempData[i][j].setCommentary("");
-							tempData[i][j].setDescription("No final review :c");
-						} else {
-							tempData[i][j] = new CertainMarkDto();
-							tempData[i][j].setValue("L");
-							tempData[i][j].setCommentary("");
-							tempData[i][j].setDescription("Brrr...");
-						}
-					}
+
+		for (String key : categories.keySet()) {
+			List<CriterionResult> tempData = new ArrayList<CriterionResult>();
+
+			for (int i = 0; i < categories.get(key).size(); i++) {
+				CriterionResult criterionResult = new CriterionResult();
+				criterionResult.setCriterionName(categories.get(key).get(i));
+				criterionResult.setMarks(new ArrayList<CertainMarkDto>());
+				tempData.add(criterionResult);
+
+				for (int j = 0; j < meetingId.size(); j++) {
+					CertainMarkDto certainMarkDto = new CertainMarkDto();
+					certainMarkDto.setValue("-");
+					certainMarkDto.setCommentary("");
+					certainMarkDto.setDescription("Okay. Maybe next time.");
+
+					criterionResult.getMarks().add(certainMarkDto);
+				}
+
+				if (!leave) {
+					CertainMarkDto certainMarkDto = new CertainMarkDto();
+					certainMarkDto.setValue("U");
+					certainMarkDto.setCommentary("");
+					certainMarkDto.setDescription("No final review :c");
+
+					criterionResult.getMarks().add(certainMarkDto);
+				} else {
+					CertainMarkDto certainMarkDto = new CertainMarkDto();
+					certainMarkDto.setValue("L");
+					certainMarkDto.setCommentary("");
+					certainMarkDto.setDescription("Brrr...");
+
+					criterionResult.getMarks().add(certainMarkDto);
 				}
 			}
 
@@ -125,72 +126,23 @@ public class MarkTableServiceImpl implements MarkTableService {
 
 		markTableDto.setTableData(dataTable);
 
-		for (Meeting meeting : meetings) {
-			List<Criterion> currentCriteria = meeting.getCriterions();
-			for (Criterion currentCriterion : currentCriteria) {
-				Long checkCriterionId = currentCriterion.getId();
-				Long checMeetingId = meeting.getId();
-				String categoryName = currentCriterion.getCategory().getName();
-
-				int xIndex = criterionId.get(categoryName).indexOf(checkCriterionId);
-				int yIndex = meetingId.indexOf(checMeetingId);
-
-				dataTable.get(categoryName)[xIndex][yIndex + 1] = new CertainMarkDto();
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setValue("U");
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setCommentary("");
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setDescription("Maybe next time...");
-			}
-		}
-
-		for (Meeting meeting : absentMeetings) {
-			List<Criterion> currentCriteria = meeting.getCriterions();
-			for (Criterion currentCriterion : currentCriteria) {
-				Long checkCriterionId = currentCriterion.getId();
-				Long checMeetingId = meeting.getId();
-
-				String categoryName = currentCriterion.getCategory().getName();
-
-				int xIndex = criterionId.get(categoryName).indexOf(checkCriterionId);
-				int yIndex = meetingId.indexOf(checMeetingId);
-
-				dataTable.get(categoryName)[xIndex][yIndex + 1] = new CertainMarkDto();
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setValue("A");
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setCommentary("");
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setDescription("Very-very bad...");
-
-			}
-		}
-
-		for (Meeting meeting : leaveMeetings) {
-			List<Criterion> currentCriteria = meeting.getCriterions();
-			for (Criterion currentCriterion : currentCriteria) {
-				Long checkCriterionId = currentCriterion.getId();
-				Long checMeetingId = meeting.getId();
-
-				String categoryName = currentCriterion.getCategory().getName();
-
-				int xIndex = criterionId.get(categoryName).indexOf(checkCriterionId);
-				int yIndex = meetingId.indexOf(checMeetingId);
-
-				dataTable.get(categoryName)[xIndex][yIndex + 1] = new CertainMarkDto();
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setValue("L");
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setCommentary("");
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setDescription("That's all...");
-
-			}
-		}
+		putMarks(meetings, categories, meetingId, dataTable, "U", "Maybe next time");
+		putMarks(absentMeetings, categories, meetingId, dataTable, "A", "Very bad...");
+		putMarks(leaveMeetings, categories, meetingId, dataTable, "L", "Very-very bad...");
 
 		for (MarkInformation markInformation : marksInformation) {
 
 			String categoryName = markInformation.getCategory();
 
-			int xIndex = criterionNames.get(categoryName).indexOf(markInformation.getCriterionName());
-			int yIndex = meetingNames.indexOf(markInformation.getMeetingName());
+			int criterionIndex = categories.get(categoryName).indexOf(markInformation.getCriterionName());
+			int meetingIndex = meetingNames.indexOf(markInformation.getMeetingName());
 
-			dataTable.get(categoryName)[xIndex][yIndex + 1] = new CertainMarkDto();
-			dataTable.get(categoryName)[xIndex][yIndex + 1].setCommentary(markInformation.getCommentary());
-			dataTable.get(categoryName)[xIndex][yIndex + 1].setDescription(markInformation.getMarkDescription());
-			dataTable.get(categoryName)[xIndex][yIndex + 1].setValue(String.valueOf(markInformation.getMark()));
+			CertainMarkDto certainMarkDto = new CertainMarkDto();
+			certainMarkDto.setCommentary(markInformation.getCommentary());
+			certainMarkDto.setDescription(markInformation.getMarkDescription());
+			certainMarkDto.setValue(String.valueOf(markInformation.getMark()));
+
+			dataTable.get(categoryName).get(criterionIndex).getMarks().set(meetingIndex, certainMarkDto);
 		}
 
 		try {
@@ -198,22 +150,46 @@ public class MarkTableServiceImpl implements MarkTableService {
 			List<FinalReviewCriterion> reviews = finalReviewCriterionService.getByFinalReview(finalReview.getId());
 
 			for (FinalReviewCriterion review : reviews) {
-				Long checkCriterionId = review.getCriterion().getId();
-
+				String criterionName = review.getCriterion().getTitle();
 				String categoryName = review.getCriterion().getCategory().getName();
 
-				int xIndex = criterionId.get(categoryName).indexOf(checkCriterionId);
-				int yIndex = meetingId.size() - 1;
+				int criterionIndex = categories.get(categoryName).indexOf(criterionName);
+				int meetingIndex = meetingId.size() - 1;
 
-				dataTable.get(categoryName)[xIndex][yIndex + 1] = new CertainMarkDto();
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setValue(String.valueOf(review.getMark().getValue()));
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setCommentary(review.getCommentary());
-				dataTable.get(categoryName)[xIndex][yIndex + 1].setDescription(review.getMark().getDescription());
+				CertainMarkDto certainMarkDto = new CertainMarkDto();
+				certainMarkDto.setValue(String.valueOf(review.getMark().getValue()));
+				certainMarkDto.setCommentary(review.getCommentary());
+				certainMarkDto.setDescription(review.getMark().getDescription());
+
+				dataTable.get(categoryName).get(criterionIndex).getMarks().set(meetingIndex, certainMarkDto);
 			}
 		} catch (Exception e) {
 
 		}
 		return markTableDto;
+	}
+
+	private void putMarks(List<Meeting> meetings, Map<String, List<String>> categories, List<Long> meetingId,
+			Map<String, List<CriterionResult>> dataTable, String value, String description) {
+		for (Meeting meeting : meetings) {
+			List<Criterion> currentCriteria = meeting.getCriterions();
+			for (Criterion currentCriterion : currentCriteria) {
+
+				String criterionName = currentCriterion.getTitle();
+				Long currentMeetingId = meeting.getId();
+				String categoryName = currentCriterion.getCategory().getName();
+
+				int criterionIndex = categories.get(categoryName).indexOf(criterionName);
+				int meetingIndex = meetingId.indexOf(currentMeetingId);
+
+				CertainMarkDto certainMarkDto = new CertainMarkDto();
+				certainMarkDto.setValue(value);
+				certainMarkDto.setCommentary("");
+				certainMarkDto.setDescription(description);
+
+				dataTable.get(categoryName).get(criterionIndex).getMarks().set(meetingIndex, certainMarkDto);
+			}
+		}
 	}
 
 }

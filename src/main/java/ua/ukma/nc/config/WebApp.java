@@ -13,14 +13,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import ua.ukma.nc.controller.auth.SecurityUserDetailService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -36,14 +41,35 @@ public class WebApp extends WebMvcConfigurerAdapter {
 
     @Autowired
     Environment env;
-
+    
     @Bean
-    public ViewResolver getViewResolver(){
+    public ViewResolver jspViewResolver(){
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/presentation/");
         resolver.setSuffix(".jsp");
         resolver.setContentType("text/html; charset=UTF-8");
+        
         return resolver;
+    }
+    
+    @Bean
+    public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
+        ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+        resolver.setContentNegotiationManager(manager);
+ 
+        // Define all possible view resolvers
+        List<ViewResolver> resolvers = new ArrayList<ViewResolver>();
+ 
+        resolvers.add(excelViewResolver());
+        resolvers.add(jspViewResolver());
+         
+        resolver.setViewResolvers(resolvers);
+        return resolver;
+    }	
+    
+    @Bean
+    public ViewResolver excelViewResolver() {
+        return new ExcelViewResolver();
     }
 
     @Override
