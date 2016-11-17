@@ -3,7 +3,6 @@
         src="<c:url value="/presentation/resources/js/certainProject.js"/>"
         type="text/javascript">
 </script>
-${criterions}
 <div class="container certain-project">
     <!-- Example row of columns -->
     <div class="row">
@@ -77,11 +76,11 @@ ${criterions}
                     </div>
                     <div id="collapseIn" class="panel-collapse collapse">
                         <c:forEach items="${criterions}" var="criterion">
-                            <div class="panel-body row" id="criteriaId1">
+                            <div class="panel-body row" id="criteriaId-${criterion.id}">
                                 <div class="col-md-11">${criterion.title}</div>
                                 <c:if test="${!criterion.rated}">
                                     <div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
-                                         data-button='{"title": "${criterion.title}"}'>
+                                         data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
                                         <span class="glyphicon glyphicon-remove"></span>
                                     </div>
                                 </c:if>
@@ -199,8 +198,8 @@ ${criterions}
     </div>
 </div>
 <!-- finish showAvailableCriteria modal -->
-<!-- start categoryDeleteError modal -->
-<div id="criteriaDeleteModal" class="modal fade">
+<!-- start criteriaDeleteError modal -->
+<div id="criteriaDeleteErrorModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -212,7 +211,7 @@ ${criterions}
         </div>
     </div>
 </div>
-<!-- finish categoryDeleteError modal -->
+<!-- finish criteriaDeleteError modal -->
 </div>
 
 <script>

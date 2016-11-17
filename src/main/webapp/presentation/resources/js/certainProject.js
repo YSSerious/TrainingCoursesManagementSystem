@@ -37,19 +37,21 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.rmv-cr-btn', function () {
-        var a = $(this);
-        var title = $.parseJSON($(this).attr('data-button'));
+        //var a = $(this);
+        var criteria = $.parseJSON($(this).attr('data-button'));
+        console.log(criteria.id);
         $.ajax({
             url: "/deleteProjectCriteria",
             type: "POST",
-            data: {projectId: projectId, criteriaTitle: title.title},
+            data: {projectId: projectId, criteriaTitle: criteria.title},
             success: function (data) {
                 console.log(data);
-                a.parent().parent().remove();
+                //a.parent().parent().remove();
+                $('#criteriaId-'+criteria.id).remove();
             },
             error: function (textStatus) {
                 console.log(textStatus);
-                $('#criteriaDeleteModal').modal('show');
+                $('#criteriaDeleteErrorModal').modal('show');
 
             }
         });
@@ -78,11 +80,11 @@ $(document).ready(function () {
 });
 
 function buildResponseCriteria(data){
-    return "<div class='panel-body row' id='criteriaId1'>" +
+    return "<div class='panel-body row' id='criteriaId-"+data.id+"'>" +
         "<div class='col-md-11'>"+data.title+"</div>" +
         "<c:if test='"+data.rated+"'>" +
         "<div class='btn rmv-cr-btn col-md-1 pull-right' type='button'" +
-        " data-button='{\"title\": \""+data.title+"\"}'>" +
+        " data-button='{\"id\":\""+data.id+"\", \"title\": \""+data.title+"\"}'>" +
         "<span class='glyphicon glyphicon-remove'></span>" +
         "</div>" +
         "</c:if>" +
