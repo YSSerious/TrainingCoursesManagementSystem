@@ -6,6 +6,7 @@ public class CriterionDto {
 	private Long id;
 	private String title;
 	private Long categoryId;
+	private boolean rated;
 
 	public CriterionDto() {
 
@@ -14,6 +15,12 @@ public class CriterionDto {
 	public CriterionDto(Criterion criterion) {
 		setTitle(criterion.getTitle());
 		setId(criterion.getId());
+	}
+
+	public CriterionDto(Long id, String title, boolean rated) {
+		this.id = id;
+		this.title = title;
+		this.rated = rated;
 	}
 
 	public String getTitle() {
@@ -38,5 +45,13 @@ public class CriterionDto {
 
 	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public boolean isRated() {
+		return rated;
+	}
+
+	public void setRated(boolean rated) {
+		this.rated = rated;
 	}
 }

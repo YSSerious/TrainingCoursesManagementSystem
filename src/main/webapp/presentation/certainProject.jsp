@@ -3,6 +3,7 @@
         src="<c:url value="/presentation/resources/js/certainProject.js"/>"
         type="text/javascript">
 </script>
+${criterions}
 <div class="container certain-project">
     <!-- Example row of columns -->
     <div class="row">
@@ -78,9 +79,12 @@
                         <c:forEach items="${criterions}" var="criterion">
                             <div class="panel-body row" id="criteriaId1">
                                 <div class="col-md-11">${criterion.title}</div>
-                                <div class="btn rmv-cr-btn col-md-1 pull-right" type='button'>
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                </div>
+                                <c:if test="${!criterion.rated}">
+                                    <div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
+                                         data-button='{"title": "${criterion.title}"}'>
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </div>
+                                </c:if>
                             </div>
                         </c:forEach>
                     </div>
@@ -178,23 +182,37 @@
                 <h4 class="modal-title">Add some criteria</h4>
                 <hr>
                 <div class="row">
-                <input type="text" id="search" placeholder="type search" class="col-md-offset-4">
-                    </div>
-                    <table id="criterionTable" class="table table-condensed table-hover table-responsive">
-                        <thead class="table-head">
-                        <tr>
-                            <th><b>Name</b></th>
-                            <th><b>Add</b></th>
-                        </tr>
-                        </thead>
-                        <tbody id="criteriaTableId">
-                        </tbody>
-                    </table>
+                    <input type="text" id="search" placeholder="type search" class="col-md-offset-4">
+                </div>
+                <table id="criterionTable" class="table table-condensed table-hover table-responsive">
+                    <thead class="table-head">
+                    <tr>
+                        <th><b>Name</b></th>
+                        <th><b>Add</b></th>
+                    </tr>
+                    </thead>
+                    <tbody id="criteriaTableId">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 <!-- finish showAvailableCriteria modal -->
+<!-- start categoryDeleteError modal -->
+<div id="criteriaDeleteModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title">This criteria was rated, and cannot be deleted.</h4>
+                <button data-dismiss="modal" class="btn btn-link">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- finish categoryDeleteError modal -->
 </div>
 
 <script>

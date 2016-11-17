@@ -27,8 +27,7 @@ $(document).ready(function () {
             data: {projectId: projectId, criteriaTitle: a.closest('tr').find('td:first').text()},
             success: function (data) {
                 console.log(data);
-                buildResponseCriteria(data)
-                $('#collapseIn').append(responseCriteria);
+                $('#collapseIn').append(buildResponseCriteria(data));
                 a.parent().parent().remove();
             },
             error: function (textStatus) {
@@ -37,17 +36,21 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.delButton', function () {
+    $(document).on('click', '.rmv-cr-btn', function () {
+        var a = $(this);
+        var title = $.parseJSON($(this).attr('data-button'));
         $.ajax({
             url: "/deleteProjectCriteria",
             type: "POST",
-            data: {projectId: projectId, criteriaTitle: $(this).closest('div').text()},
+            data: {projectId: projectId, criteriaTitle: title.title},
             success: function (data) {
                 console.log(data);
-                //$(this).closest('.del').remove();
+                a.parent().parent().remove();
             },
             error: function (textStatus) {
                 console.log(textStatus);
+                $('#criteriaDeleteModal').modal('show');
+
             }
         });
     });
@@ -73,20 +76,15 @@ $(document).ready(function () {
     });
     
 });
-var responseCriteria;
+
 function buildResponseCriteria(data){
-    responseCriteria="<div class='panel-body row' id='criteriaId1'>" +
+    return "<div class='panel-body row' id='criteriaId1'>" +
         "<div class='col-md-11'>"+data.title+"</div>" +
-        "<div class='btn rmv-cr-btn col-md-1 pull-right' type='button'>" +
+        "<c:if test='"+data.rated+"'>" +
+        "<div class='btn rmv-cr-btn col-md-1 pull-right' type='button'" +
+        " data-button='{\"title\": \""+data.title+"\"}'>" +
         "<span class='glyphicon glyphicon-remove'></span>" +
         "</div>" +
+        "</c:if>" +
         "</div>";
 };
-
-
-// <div class='panel-body row' id='criteriaId1'>
-//     <div class='col-md-11'>${criterion.title}</div>
-//     <div class='btn rmv-cr-btn col-md-1 pull-right' type='button'>
-//     <span class='glyphicon glyphicon-remove'></span>
-//     </div>
-//     </div>
