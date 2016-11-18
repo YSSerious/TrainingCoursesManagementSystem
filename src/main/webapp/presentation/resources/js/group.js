@@ -5,12 +5,12 @@ $(document).ready(function () {
 //	});
 
 
-	$(".edit").click(function(){
+	/*$(".edit").click(function(){
 		 
 		$("#editGroupAttachmentModal").modal();
 	});
 
-
+*/
 	$("#addAttachmentSubmitButton").click(function(event) {
 		$.ajax({
 			url: "/groups/addAttachment",
@@ -46,6 +46,7 @@ $(document).ready(function () {
 
 	$('.delete').click(function(event){
 		var idOfAttachment = event.target.id;
+		console.log(idOfAttachment);
 		idOfAttachment = idOfAttachment.substring(1,idOfAttachment.length);
 		$.ajax({
 			url: "/groups/deleteAttachment",
