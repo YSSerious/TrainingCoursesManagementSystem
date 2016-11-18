@@ -38,4 +38,6 @@ public interface UserService {
 	void deleteRoles(User user);
 	
 	int count();
+	
+	boolean hasReview(Long studentId, Long groupId);
 }
