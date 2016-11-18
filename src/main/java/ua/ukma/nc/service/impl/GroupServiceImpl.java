@@ -58,6 +58,11 @@ public class GroupServiceImpl implements GroupService{
 		return groupDao.getStudents(groupId);
 	}
 
+        @Override
+        public Long getStudentsAmount(Long groupId) {
+            return groupDao.getStudentsAmount(groupId);
+        }
+        
 	@Override
 	public int removeMentor(Long groupId, Long userId) {
 		return groupDao.removeMentor(groupId, userId);

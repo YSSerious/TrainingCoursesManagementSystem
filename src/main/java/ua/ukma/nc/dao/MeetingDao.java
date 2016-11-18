@@ -23,6 +23,8 @@ public interface MeetingDao {
     List<Meeting> getByStudentProjectType(Long studentId, Long projectId, Character type);
     
     List<Meeting> getByGroup(Long groupId);
+    
+    Meeting getUpcomingByGroup(Long groupId);
 
     int createMeeting(Meeting meeting);
 }

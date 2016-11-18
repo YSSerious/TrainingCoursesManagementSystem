@@ -66,6 +66,8 @@ public class MeetingDaoImpl implements MeetingDao{
     
     private static final String GET_BY_GROUP = "SELECT  id, id_group, name, time, place FROM  tcms.meeting WHERE id_group = ?";
     
+    private static final String GET_UPCOMING_BY_GROUP = "SELECT id, id_group, name, time, place FROM tcms.meeting WHERE id_group = ? AND time > CURRENT_TIMESTAMP ORDER BY time ASC LIMIT 1";
+    
     @Override
     public Meeting getById(Long id) {
         log.info("Getting meeting with id = {}", id);
@@ -96,6 +98,17 @@ public class MeetingDaoImpl implements MeetingDao{
 		
 		return jdbcTemplate.query(GET_BY_GROUP,new MeetingMapper(),groupId);
 	}
+        
+    @Override
+    public Meeting getUpcomingByGroup(Long groupId) {
+        log.info("Getting all meeting with group id={}", groupId);
+
+        List<Meeting> meetings = jdbcTemplate.query(GET_UPCOMING_BY_GROUP, new MeetingMapper(), groupId);
+        if (meetings.isEmpty() == true) {
+            return null;
+        }
+        return meetings.get(0);
+    }
     
     @Override
     public int createMeeting(Meeting meeting) {

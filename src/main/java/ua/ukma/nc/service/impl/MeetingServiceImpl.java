@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 @Service
-public class MeetingServiceImpl implements MeetingService{
+public class MeetingServiceImpl implements MeetingService {
 
     @Autowired
     private MeetingDao meetingDao;
@@ -42,23 +42,28 @@ public class MeetingServiceImpl implements MeetingService{
         return meetingDao.createMeeting(meeting);
     }
 
-	@Override
-	public List<Meeting> getByGroup(Long groupId) {
-		return meetingDao.getByGroup(groupId);
-	}
+    @Override
+    public List<Meeting> getByGroup(Long groupId) {
+        return meetingDao.getByGroup(groupId);
+    }
 
-	@Override
-	public List<Meeting> getByStudentProject(Long studentId, Long projectId) {
-		return meetingDao.getByStudentProject(studentId, projectId);
-	}
+    @Override
+    public Meeting getUpcomingByGroup(Long groupId) {
+        return meetingDao.getUpcomingByGroup(groupId);
+    }
 
-	@Override
-	public List<Meeting> getByStudentProjectType(Long studentId, Long projectId, Character type) {
-		return meetingDao.getByStudentProjectType(studentId, projectId, type);
-	}
+    @Override
+    public List<Meeting> getByStudentProject(Long studentId, Long projectId) {
+        return meetingDao.getByStudentProject(studentId, projectId);
+    }
 
-	@Override
-	public List<Meeting> getWithoutReview(Long groupId, Long studentId) {
-		return meetingDao.getWithoutReview(groupId, studentId);
-	}
+    @Override
+    public List<Meeting> getByStudentProjectType(Long studentId, Long projectId, Character type) {
+        return meetingDao.getByStudentProjectType(studentId, projectId, type);
+    }
+
+    @Override
+    public List<Meeting> getWithoutReview(Long groupId, Long studentId) {
+        return meetingDao.getWithoutReview(groupId, studentId);
+    }
 }
