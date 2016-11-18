@@ -16,8 +16,8 @@
 /*это тоже пофиксить*/
 /*.meeting th, td { width: 300px; }*/
 
-/*эта штука заголовок таблицы по всему скролу тащит*/
-/*th:first-child {*/
-    /*position: fixed;*/
-/*}*/
+
+.meeting th:first-child {
+    position: fixed;
+}
 
