@@ -86,13 +86,10 @@
 	<br />
 </div>
  
-<div id="attachment-title"><h2>Attachments</h2></div>
+<!--   <div id="attachment-title"><h2>Attachments</h2></div>-->
  
  
-	<br />
-	
-	<div
-		style="background-color:<%=type%>;border: 2px solid <%=border %>; border-radius: 7px;">
+	 
  
 
 	<div class="modal fade" id="addGroupAttachmentModal" role="dialog">
@@ -111,7 +108,7 @@
 
 						</div>
 						<button type="submit"
-							class="btn btn-default btn-success pull-center" id="submitButton">
+							class="btn btn-default btn-success pull-center" id="addAttachmentSubmitButton">
 							<span class="glyphicon glyphicon-off"></span>Send
 						</button>
 					</form>
@@ -127,34 +124,48 @@
 
 		</div>
 	</div>
-
-
-	<div class="panel panel-default"
-		style="background-color:<%=type%>;border: 1px solid <%=border %>; border-radius: 7px;">
-		<div class="panel-heading clearfix">
-			<button type="button" class="btn btn-default btn-xs pull-right"
-				value="addAttachment" id="addGroupAttachmentButton">Upload</button>
+<div class="container attachment-group">
+<div class="row">
+  <div class="col-md-12">
+ <h2>Attachments</h2>
+<div class="panel-group" id="panelGroupAttachment">
+                <div class="panel panel-default">
+                    <div class="panel-heading attachment-group">
+<h4 class="panel-title row">
+                            <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1">
+                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            </div>
+                            <div role="button" class="btn add-attachment-btn btn-sm"
+                                 id="addGroupAttachmentButton"
+                                 data-toggle="modal"
+                                 data-target="#addGroupAttachmentModal">
+                                <b>Add Attachment</b>
+                            </div>
+                        </h4>
+	  </div>
+	  <div id="collapseIn" class="panel-collapse collapse">
+                        <c:forEach items="${attachments}" var="attachment">
+                            <div class="panel-body row" id="attachmentId-${attachment.id}">
+                                <div class="col-md-10">${attachment.name}</div>
+                                
+                                    <div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
+                                         data-button='{"id":"d${attachment.id}","title": "${attachment.name}"}'>
+                                        <span class="glyphicon glyphicon-remove delete"></span>
+                                    </div>
+                                     <div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
+                                         data-button='{"id":"e${attachment.id}","title": "${attachment.name}"}'>
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </div>
+                                 
+                            </div>
+                        </c:forEach>
+                    </div>
+                      </div>
+            </div>
+        </div>
+    </div>
+             
 		</div>
-		<div class="attachments_template " id="attachment" style="display:none">
-		<c:forEach items="${attachments}" var="attachment">
-
-			<li class="list-group-item"><a
-				href="${attachment.attachmentScope}"> ${attachment.name}</a>
-
-				<div class="btn-group">
-					<button id="e${attachment.id}"
-						class="btn btn-xs btn-warning  edit ${attachment.id}">Edit
-					</button>
-					<button id="d${attachment.id}"
-						class="btn btn-xs btn-danger  delete ${attachment.id}">Delete
-					</button>
-				</div> <br />
-		</c:forEach>
-
  
-</div>
- 
-	</div>
-	<br />
-</div>
+  
 <%@include file="footer.jsp"%>

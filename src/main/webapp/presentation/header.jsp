@@ -59,7 +59,8 @@
 	href="<c:url value="/presentation/resources/css/footer.css"/>">
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/presentation/resources/css/certainProject.css"/>">
-    
+    <link rel="stylesheet" type="text/css"
+          href="<c:url value="/presentation/resources/css/group.css"/>">
     <!--Own js-->
     <script src="<c:url value="/presentation/resources/js/forms.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/charts.js"/>" defer="defer"></script>

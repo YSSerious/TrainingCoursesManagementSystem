@@ -1,28 +1,31 @@
 $(document).ready(function () {
 
-	$("#addGroupAttachmentButton").click(function(){
-		$("#addGroupAttachmentModal").modal();
-	});
+//	$("#addGroupAttachmentButton").click(function(){
+//		$("#addGroupAttachmentModal").modal();
+//	});
 
 
-	$("#editGroupAttachmentButton").click(function(){
+/*	$("#editGroupAttachmentButton").click(function(){
 		alert("Error");
 		$("#editGroupAttachmentModal").modal();
 	});
+*/
 
-
-	$("#addSubmitButton").click(function(event) {
+	$("#addAttachmentSubmitButton").click(function(event) {
 		$.ajax({
 			url: "/groups/addAttachment",
 			type: "POST",
-			data: {"id_group" : "${groupId}", 
+			data: {"id_group" : $(groupId), 
 				"name" : $("#groupAttachmentName").val(),
 				"attachment_scope": $("#groupAttachment").val()},
-				error:function (xhr, ajaxOptions, thrownError){
-			   	    if(xhr.status==404) {
-			   	        alert("Error");
-			   	    }
-			   	}
+				success: function (data) {
+	                console.log(data);
+	             //   buildAttachment(data.id, data.name, data.description);
+	               // $('#panelGroupId').append(newCategory);
+	            },
+	            error: function (textStatus) {
+	                console.log(textStatus);
+	            }
 		});
 	});
 
@@ -48,11 +51,13 @@ $(document).ready(function () {
 			url: "/groups/deleteAttachment",
 			type: "POST",
 			data:{ "id":idOfAttachment},
-			error:function (xhr, ajaxOptions, thrownError){
-		   	    if(xhr.status==404) {
-		   	        alert("Error");
-		   	    }
-		   	}
+			 success: function (data) {
+	                console.log(data);
+	                $('#attachmentId-'+idOfAttachment).remove();
+	            },
+	            error: function (textStatus) {
+	                console.log(textStatus);
+	            }
 
 		});
 	});
