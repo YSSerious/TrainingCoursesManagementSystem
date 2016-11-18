@@ -82,26 +82,7 @@ public class GroupController {
 
 		List<GroupAttachment> groupAttachments= groupAttachmentService.getByGroup(id);
 		System.out.println(groupAttachments.size()+"Size of ");
-		//List<GroupAttachment> groupAttachmentsFinal= new ArrayList<GroupAttachment>();
-
-//		for(UserDto us: users){
-//
-//			boolean isMentor=false;
-//			List<String> roles = us.getRoles();
-//			for(String r : roles){
-//				if(r.equals("ROLE_MENTOR")){
-//					mentors.add(us);
-//					isMentor=true;
-//				}
-//
-//			}
-//			if(!isMentor) students.add(us);
-//		}
-
-	/*	List<MeetingDto> meetings = new ArrayList<MeetingDto>();
-		for(Meeting mt : meetingService.getByGroup(id) ){
-			meetings.add(new MeetingDto(mt));
-		}*/
+	
 		List<Meeting> meetings =meetingService.getByGroup(id) ;
 	 
 		String projectName = group.getProject().getName();
