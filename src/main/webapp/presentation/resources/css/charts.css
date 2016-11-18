@@ -30,19 +30,29 @@ and open the template in the editor.
 
 .chart-dropdown button#sort-reset {
     padding-left: 0;
+    padding-top: 8px;
 }
+
+.chart-dropdown button#sort-reset span{
+    color: #CDCDCD;
+}
+
+.chart-dropdown button#sort-reset span:hover{
+    color: #4267a3;
+}
+
 .chart {
     margin: 10px;
 }
 
 .chart-bar {
-    box-sizing: border-box;
-    stroke: #000;
-    fill: #4267a3;
+/*    box-sizing: border-box;
+    stroke: #000;*/
+    fill: #337AB7;
 }
 
 .chart-bar:hover {
-    fill: #4a4c4f;
+    fill: #2c3544;
 }
 
 .chart-tip {

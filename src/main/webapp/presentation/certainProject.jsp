@@ -1,7 +1,7 @@
 <%@include file="header.jsp" %>
 <script
-        src="<c:url value="/presentation/resources/js/certainProject.js"/>"
-        type="text/javascript">
+    src="<c:url value="/presentation/resources/js/certainProject.js"/>"
+    type="text/javascript">
 </script>
 <div class="container certain-project">
     <!-- Example row of columns -->
@@ -32,25 +32,55 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-sm-12">
             <h2>
                 Groups
             </h2>
-            <div class="panel panel-btn">
-                <!--  a href="/create-meeting?project=${project.id}" class="btn btn-default btn-xs pull-right-btn">Set
-                    meetings schedule</a>
-                <a href="" class="btn btn-default btn-xs pull-right-btn">Remove</a>
-                <a href="" class="btn btn-default btn-xs pull-right-btn">Edit</a-->
-                <a href="" class="btn btn-default btn-xs pull-right-btn" id="createGroupButton"> Add</a>
+            <div class="panel panel-btn" id="project-groups">
+                <div class="panel-heading collapsed" data-toggle="collapse" data-target="#collapse-group">
+<!--                    <a href="/create-meeting?project=${project.id}" class="btn btn-default btn-xs pull-right-btn">Set
+                        meetings schedule</a>-->
+                    <!--<button class="btn btn-default btn-xs pull-right-btn" data-toggle="modal" data-target="#addMeetingModal">Add meeting</button>-->
+                    <!--                    <a href="" class="btn btn-default btn-xs pull-right-btn">Remove</a>
+                                        <a href="" class="btn btn-default btn-xs pull-right-btn">Edit</a>-->
+                    <button type="button" class="btn btn-default btn-sm pull-right" id="createGroupButton">
+                        <b>Add</b>
+                    </button>
+                    <div class="clearfix"></div>
+                </div>
+                <%--<%@include file="createGroup.jsp"%>--%>
+                <div id="collapse-group" class="panel-collapse collapse col-sm-12">
+                    <div class="panel-body">
+                        <table class="table table-hover">
+                            <tr>
+                                <th>Name</th>
+                                <th>Students amount</th>
+                                <th>Upcoming meeting</th>
+                            </tr>
+                            <c:forEach items="${groups}" var="group">
+                                <tr>
+                                    <td><a href="/groups/group?id=${group.id}">${group.name}</a></td>
+                                    <td>${group.studentsAmount}</a></td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${not empty group.upcomingMeeting}">
+                                                <a href="/meeting/${group.upcomingMeeting.id}">${group.upcomingMeeting.name}</a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                No upcoming meetings
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <%@include file="createGroup.jsp" %>
-            <ul class="list-group">
-                <c:forEach items="${groups}" var="group">
-                    <li class="list-group-item">
-                        <a href="groups/group?id=${group.id}">${group.name}</a>
-                    </li>
-                </c:forEach>
-            </ul>
         </div>
     </div>
 
@@ -74,7 +104,7 @@
                             </div>
                         </h4>
                     </div>
-                    
+
                     <div id="collapseIn" class="panel-collapse collapse">
                         <c:forEach items="${criterions}" var="criterion">
                             <div class="panel-body row" id="criteriaId-${criterion.id}">
@@ -120,6 +150,16 @@
                 </div>
             </div>
         </div>
+        <ul class="list-group" id="attachment-group">
+            <c:forEach items="${attachments}" var="attachment">
+                <li class="list-group-item">
+                    <a href="${attachment.attachmentScope}">${attachment.name}</a>
+                    <div class="btn rmv-btn" type='button' data-button='{"id_attachment": "${attachment.id}"}'>
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </div>
+                </li>
+            </c:forEach>
+        </ul>
     </div>
     <ul class="list-group" id="attachment-group">
         <c:forEach items="${attachments}" var="attachment">
@@ -132,10 +172,17 @@
         </c:forEach>
     </ul>
 </div>
-</div>
-</div>
-</div>
 <hr>
+
+<div id="addMeetingModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Create meeting</h4>
+        </div>
+    </div>    
+</div>
+
 <!-- start showAvailableCriteria modal -->
 <div id="showAvailableCriteriaModal" class="modal fade">
     <div class="modal-dialog">
@@ -150,10 +197,10 @@
                 </div>
                 <table id="criterionTable" class="table table-condensed table-hover table-responsive">
                     <thead class="table-head">
-                    <tr>
-                        <th><b>Name</b></th>
-                        <th><b>Add</b></th>
-                    </tr>
+                        <tr>
+                            <th><b>Name</b></th>
+                            <th><b>Add</b></th>
+                        </tr>
                     </thead>
                     <tbody id="criteriaTableId">
                     </tbody>
@@ -210,13 +257,13 @@
             }
         });
 
-       
 
-            
-                $('.rmv-btn').each(function () {
-                    $(this).css("display", "inline-block");
-                });
-        
+
+
+        $('.rmv-btn').each(function () {
+            $(this).css("display", "inline-block");
+        });
+
 
         $('.rmv-btn').click(function () {
             //console.log("Hello");

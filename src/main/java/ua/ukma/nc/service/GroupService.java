@@ -26,6 +26,8 @@ public interface GroupService {
     
     List<User> getStudents(Long groupId);
 
+    Long getStudentsAmount(Long groupId);
+    
     int createGroup(Group group);
 
 	int removeStudent(Long groupId, Long userId);

@@ -139,3 +139,25 @@
      max-width: inherit;
     overflow-y: auto;
 }
+
+#project-groups .panel-heading {
+    padding-top: 0;
+    padding-bottom: 0;
+    cursor: pointer;
+}
+
+#project-groups .panel-collapse{
+    padding: 0;
+}
+
+#project-groups .panel-collapse .panel-body{
+    padding: 0;
+}
+
+#project-groups .panel-heading button{
+    margin-top: 10px;
+}
+
+#project-groups .panel-heading button:last-child {
+    margin-right: 0;
+}

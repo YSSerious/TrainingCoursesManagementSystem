@@ -62,6 +62,8 @@ public class GroupDaoImpl implements GroupDao{
 
     private static final String GET_STUDENTS = "select tcms.user_group.id_user from tcms.user_group inner join tcms.user_role on tcms.user_group.id_user = tcms.user_role.id_user where tcms.user_group.id_group = ? and tcms.user_role.id_role = 4";
     
+    private static final String GET_STUDENTS_AMOUNT = "select COUNT(tcms.user_group.id_user) from tcms.user_group inner join tcms.user_role on tcms.user_group.id_user = tcms.user_role.id_user where tcms.user_group.id_group = ? and tcms.user_role.id_role = 4";
+    
     private static final String REMOVE_MENTOR = "delete from tcms.user_group where id_group = ? and id_user = ?";
     
     private static final String REMOVE_STUDENT = "delete from tcms.user_group where id_group = ? and id_user = ?";
@@ -118,6 +120,11 @@ public class GroupDaoImpl implements GroupDao{
 		return jdbcTemplate.query(GET_STUDENTS,new UserGroupMapper(),groupId);
 	}
 
+        @Override
+	public Long getStudentsAmount(Long groupId) {
+		return jdbcTemplate.queryForObject(GET_STUDENTS_AMOUNT, Long.class, groupId);
+	}
+        
 	@Override
 	public List<User> getMentors(Long groupId) {
 		return jdbcTemplate.query(GET_MENTORS,new UserGroupMapper(),groupId);
