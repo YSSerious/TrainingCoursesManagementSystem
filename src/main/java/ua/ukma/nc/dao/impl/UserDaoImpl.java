@@ -79,6 +79,8 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String SET_STUDENT_STATUS = "insert into student_status (id_student, id_status) values (?, ?)";
 
+	private static final String HAS_REVIEWS = "SELECT EXISTS (SELECT * FROM (tcms.meeting_review INNER JOIN tcms.user_group ON tcms.meeting_review.id_student = tcms.user_group.id_user ) WHERE (tcms.meeting_review.id_student = ? AND tcms.user_group.id_group = ? ))";
+	
 	@Override
 	public User getByEmail(String email) {
 		log.info("Getting user with email = {}", email);
@@ -167,6 +169,11 @@ public class UserDaoImpl implements UserDao {
 	public void deleteRoles(User user) {
 		jdbcTemplate.update(DELETE_ROLES, user.getId());
 		
+	}
+
+	@Override
+	public boolean hasReviews(Long studentId, Long groupId) {
+		return jdbcTemplate.queryForObject(HAS_REVIEWS, Boolean.class , studentId, groupId);
 	}
 
 }

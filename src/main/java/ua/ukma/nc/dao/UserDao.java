@@ -35,6 +35,8 @@ public interface UserDao {
     int setStatus(User user, Status status);
 
 	List<User> getSome(int limit, int offset);
+	
+	boolean hasReviews(Long studentId , Long groupId);
 
 	int count();
 

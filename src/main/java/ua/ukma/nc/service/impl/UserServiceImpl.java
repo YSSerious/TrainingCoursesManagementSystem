@@ -261,4 +261,9 @@ public class UserServiceImpl implements UserService {
 	public void deleteRoles(User user) {
 		userDao.deleteRoles(user);
 	}
+
+	@Override
+	public boolean hasReview(Long studentId, Long groupId) {
+		return userDao.hasReviews(studentId, groupId);
+	}
 }

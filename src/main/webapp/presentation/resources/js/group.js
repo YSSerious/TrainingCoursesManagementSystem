@@ -92,8 +92,14 @@ $(document).ready(function () {
 			success: function (data) {
 				console.log(data);
 				$(".group-"+Id).remove();
+			},
+			error: function(errorText){
+				console.log(errorText);
+				$('#studentDeleteError').modal('show');
 			}
 		});
 	});
+	
+	
 });
 
