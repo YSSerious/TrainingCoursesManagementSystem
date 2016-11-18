@@ -27,6 +27,7 @@
     width: min-intrinsic;
     padding-right: 0 !important;
     width: 150px;
+    background-color: white;
 }
 
 .certain-project .panel.panel-horizontal.top-panel {
@@ -46,7 +47,7 @@
     /*background-color: #ddd;*/
     background-color: #337ab7;
     margin-bottom: 0px;
-    height: 45px;
+    height: 35px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     
@@ -114,7 +115,7 @@
 /*     border: 1px solid #ddd; */
     border-radius: 5px;
     padding: 0px;
-    display: none;
+    display: inline-block;
     color: rgb(166, 166, 166);
 }
 

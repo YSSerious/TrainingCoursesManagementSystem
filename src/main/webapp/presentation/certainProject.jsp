@@ -37,10 +37,10 @@
                 Groups
             </h2>
             <div class="panel panel-btn">
-                <a href="/create-meeting?project=${project.id}" class="btn btn-default btn-xs pull-right-btn">Set
+                <!--  a href="/create-meeting?project=${project.id}" class="btn btn-default btn-xs pull-right-btn">Set
                     meetings schedule</a>
                 <a href="" class="btn btn-default btn-xs pull-right-btn">Remove</a>
-                <a href="" class="btn btn-default btn-xs pull-right-btn">Edit</a>
+                <a href="" class="btn btn-default btn-xs pull-right-btn">Edit</a-->
                 <a href="" class="btn btn-default btn-xs pull-right-btn" id="createGroupButton"> Add</a>
             </div>
             <%@include file="createGroup.jsp" %>
@@ -74,6 +74,7 @@
                             </div>
                         </h4>
                     </div>
+                    
                     <div id="collapseIn" class="panel-collapse collapse">
                         <c:forEach items="${criterions}" var="criterion">
                             <div class="panel-body row" id="criteriaId-${criterion.id}">
@@ -99,8 +100,8 @@
                 Attachments
             </h2>
             <div class="panel panel-btn">
-                <div role="button" class="btn btn-default btn-xs pull-right-btn" id="rmv-att-main-btn">Remove</div>
-                <div role="button" class="btn btn-default btn-xs pull-right-btn">Edit</div>
+                <!--   div role="button" class="btn btn-default btn-xs pull-right-btn" id="rmv-att-main-btn">Remove</div-->
+                <!--  div role="button" class="btn btn-default btn-xs pull-right-btn">Edit</div-->
                 <div role="button" class="btn btn-default btn-xs pull-right-btn" data-toggle="collapse"
                      data-target="#add-attachment-panel,#save-att-btn" id="add-att-btn">Add
                 </div>
@@ -124,7 +125,7 @@
         <c:forEach items="${attachments}" var="attachment">
             <li class="list-group-item">
                 <a href="${attachment.attachmentScope}">${attachment.name}</a>
-                <div class="btn rmv-btn" type='button' data-button='{"id_attachment": "${attachment.id}"}'>
+                <div class="btn rmv-btn" role='button' data-button='{"id_attachment": "${attachment.id}"}'>
                     <span class="glyphicon glyphicon-remove"></span>
                 </div>
             </li>
@@ -132,42 +133,6 @@
     </ul>
 </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <h2>
-            Attachments
-        </h2>
-        <div class="panel panel-btn">
-            <div role="button" class="btn btn-default btn-xs pull-right-btn" id="rmv-att-main-btn">Remove</div>
-            <div role="button" class="btn btn-default btn-xs pull-right-btn">Edit</div>
-            <div role="button" class="btn btn-default btn-xs pull-right-btn" data-toggle="collapse"
-                 data-target="#add-attachment-panel,#save-att-btn" id="add-att-btn">Add
-            </div>
-            <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">Save
-            </div>
-        </div>
-        <div class="panel add-panel collapse" id="add-attachment-panel">
-            <div class="form-group">
-                <label for="usr">Name:</label>
-                <input type="text" class="form-control" id="att-name">
-            </div>
-            <div class="form-group">
-                <label for="usr">Link:</label>
-                <input type="text" class="form-control" id="att-link">
-            </div>
-        </div>
-    </div>
-</div>
-<ul class="list-group" id="attachment-group">
-    <c:forEach items="${attachments}" var="attachment">
-        <li class="list-group-item">
-            <a href="${attachment.attachmentScope}">${attachment.name}</a>
-            <div class="btn rmv-btn" type='button' data-button='{"id_attachment": "${attachment.id}"}'>
-                <span class="glyphicon glyphicon-remove"></span>
-            </div>
-        </li>
-    </c:forEach>
-</ul>
 </div>
 </div>
 <hr>
@@ -245,19 +210,13 @@
             }
         });
 
-        $("#rmv-att-main-btn").click(function (event) {
+       
 
-            if ($('.rmv-btn').css('display') == 'none') {
-                console.log("Hello");
+            
                 $('.rmv-btn').each(function () {
                     $(this).css("display", "inline-block");
                 });
-            } else {
-                $('.rmv-btn').each(function () {
-                    $(this).css("display", "none");
-                });
-            }
-        });
+        
 
         $('.rmv-btn').click(function () {
             //console.log("Hello");
