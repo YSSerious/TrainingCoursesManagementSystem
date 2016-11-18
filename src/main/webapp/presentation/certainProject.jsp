@@ -40,14 +40,6 @@
             <h2>
                 Groups
             </h2>
-<<<<<<< Updated upstream
-            <div class="panel panel-btn">
-                <!--  a href="/create-meeting?project=${project.id}" class="btn btn-default btn-xs pull-right-btn">Set
-                    meetings schedule</a>
-                <a href="" class="btn btn-default btn-xs pull-right-btn">Remove</a>
-                <a href="" class="btn btn-default btn-xs pull-right-btn">Edit</a-->
-                <a href="" class="btn btn-default btn-xs pull-right-btn" id="createGroupButton"> Add</a>
-=======
             <div class="panel panel-btn" id="project-groups">
                 <div class="panel-heading collapsed" data-toggle="collapse" data-target="#collapse-group">
 <!--                    <a href="/create-meeting?project=${project.id}" class="btn btn-default btn-xs pull-right-btn">Set
@@ -88,7 +80,6 @@
                         </table>
                     </div>
                 </div>
->>>>>>> Stashed changes
             </div>
         </div>
     </div>
@@ -113,7 +104,7 @@
                             </div>
                         </h4>
                     </div>
-                    
+
                     <div id="collapseIn" class="panel-collapse collapse">
                         <c:forEach items="${criterions}" var="criterion">
                             <div class="panel-body row" id="criteriaId-${criterion.id}">
@@ -170,7 +161,6 @@
             </c:forEach>
         </ul>
     </div>
-<<<<<<< Updated upstream
     <ul class="list-group" id="attachment-group">
         <c:forEach items="${attachments}" var="attachment">
             <li class="list-group-item">
@@ -182,49 +172,6 @@
         </c:forEach>
     </ul>
 </div>
-</div>
-=======
-</div>
-</div>
-<!--<div class="row">
-    <div class="col-md-12">
-        <h2>
-            Attachments
-        </h2>
-        <div class="panel panel-btn">
-            <div role="button" class="btn btn-default btn-xs pull-right-btn" id="rmv-att-main-btn">Remove</div>
-            <div role="button" class="btn btn-default btn-xs pull-right-btn">Edit</div>
-            <div role="button" class="btn btn-default btn-xs pull-right-btn" data-toggle="collapse"
-                 data-target="#add-attachment-panel,#save-att-btn" id="add-att-btn">Add
-            </div>
-            <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">Save
-            </div>
-        </div>
-        <div class="panel add-panel collapse" id="add-attachment-panel">
-            <div class="form-group">
-                <label for="usr">Name:</label>
-                <input type="text" class="form-control" id="att-name">
-            </div>
-            <div class="form-group">
-                <label for="usr">Link:</label>
-                <input type="text" class="form-control" id="att-link">
-            </div>
-        </div>
-    </div>
-</div>-->
-<ul class="list-group" id="attachment-group">
-    <c:forEach items="${attachments}" var="attachment">
-        <li class="list-group-item">
-            <a href="${attachment.attachmentScope}">${attachment.name}</a>
-            <div class="btn rmv-btn" type='button' data-button='{"id_attachment": "${attachment.id}"}'>
-                <span class="glyphicon glyphicon-remove"></span>
-            </div>
-        </li>
-    </c:forEach>
-</ul>
->>>>>>> Stashed changes
-</div>
-</div>
 <hr>
 
 <div id="addMeetingModal" class="modal fade">
@@ -233,7 +180,7 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Create meeting</h4>
         </div>
-    </div>    
+    </div>
 </div>
 
 <!-- start showAvailableCriteria modal -->
@@ -310,13 +257,13 @@
             }
         });
 
-       
 
-            
-                $('.rmv-btn').each(function () {
-                    $(this).css("display", "inline-block");
-                });
-        
+
+
+        $('.rmv-btn').each(function () {
+            $(this).css("display", "inline-block");
+        });
+
 
         $('.rmv-btn').click(function () {
             //console.log("Hello");
