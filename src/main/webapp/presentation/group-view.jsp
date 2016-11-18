@@ -171,8 +171,42 @@
 
 	</div>
 </div>
+<!--  -->
+<div class="modal fade" id="editGroupAttachmentModal" role="dialog">
+	<div class="modal-dialog">
 
+		<div class="modal-content">
+			<div class="modal-body" style="padding: 40px 50px;">
+				<form role="form">
+					<div class="form-group">
+						<label for="groupAttachmentName"> Attachment name: </label><br />
+						<input type=text class="form-control" id="editGroupAttachmentName"
+							placeholder="Enter attachment name" required="required">
+						<label for="editGroupAttachment"> Attachment: </label><br /> <input
+							type=text class="form-control" id="groupAttachment"
+							placeholder="Enter attachment" required="required">
 
+					</div>
+					<button type="submit"
+						class="btn btn-default btn-success pull-center"
+						id="editAttachmentSubmitButton">
+						<span class="glyphicon glyphicon-off"></span>Send
+					</button>
+				</form>
+			</div>
+			<div class="modal-footer">
+
+				<button type="button" class="btn btn-default btn-lg"
+					data-dismiss="modal" id="editCancelButton">
+					<span class="glyphicon glyphicon-remove"></span> Cancel
+				</button>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<!--  -->
 <div class="container attachment-group">
 	<div class="row">
 		<div class="col-md-12">
@@ -185,7 +219,7 @@
 								class="arrow col-md-1">
 								<span class="glyphicon glyphicon-chevron-down"></span>
 							</div>
-							<div role="button" class="btn add-attachment-btn btn-sm"
+							<div role="button" class="btn btn-default add-attachment-btn btn-sm pull-right"
 								id="addGroupAttachmentButton" data-toggle="modal"
 								data-target="#addGroupAttachmentModal">
 								<b>Add Attachment</b>
@@ -201,11 +235,16 @@
 									data-button='{"id":"d${attachment.id}","title": "${attachment.name}"}'>
 									<span class="glyphicon glyphicon-remove delete"></span>
 								</div>
-								<div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
+							<!-- <div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
 									data-button='{"id":"e${attachment.id}","title": "${attachment.name}"}'>
-									<span class="glyphicon glyphicon-edit"></span>
+									<span class="glyphicon glyphicon-edit edit"></span>
 								</div>
-
+   								-->
+   								<div role="button" class="btn rmv-cr-btn col-md-1 pull-right"
+								id="addGroupAttachmentButton" data-toggle="modal"
+								data-target="#addGroupAttachmentModal">
+								 <span class="glyphicon glyphicon-edit edit"></span>
+							</div>
 							</div>
 						</c:forEach>
 					</div>

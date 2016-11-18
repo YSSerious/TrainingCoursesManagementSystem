@@ -74,7 +74,7 @@
     <nav class="nav navbar-default net-navbar">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="#" class="navbar-brand"> <img
+                <a href="/" class="navbar-brand"> <img
                         src="<c:url value="/presentation/resources/imgs/logo.png"/>"
                         class="net-logo">
                 </a>

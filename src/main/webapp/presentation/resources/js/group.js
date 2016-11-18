@@ -5,12 +5,12 @@ $(document).ready(function () {
 //	});
 
 
-/*	$("#editGroupAttachmentButton").click(function(){
-		alert("Error");
+	/*$(".edit").click(function(){
+		 
 		$("#editGroupAttachmentModal").modal();
 	});
-*/
 
+*/
 	$("#addAttachmentSubmitButton").click(function(event) {
 		$.ajax({
 			url: "/groups/addAttachment",
@@ -35,9 +35,9 @@ $(document).ready(function () {
 		$.ajax({
 			url: "/groups/editAttachment",
 			type: "POST",
-			data: {"id_group" : $(group-id), 
+			data: {"id_group" : "${group-id}", 
 				"name" : $("#groupAttachmentName").val(),
-				"attachment_scope": $("#groupAttachment").val()
+				"attachment_scope": $("#groupAttachment").val(),"id": "3"
 			}
 
 		});
@@ -46,6 +46,7 @@ $(document).ready(function () {
 
 	$('.delete').click(function(event){
 		var idOfAttachment = event.target.id;
+		console.log(idOfAttachment);
 		idOfAttachment = idOfAttachment.substring(1,idOfAttachment.length);
 		$.ajax({
 			url: "/groups/deleteAttachment",
