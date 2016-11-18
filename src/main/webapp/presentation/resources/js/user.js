@@ -77,14 +77,14 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	      'student' : userId,
     	 	    	      'project' : value.id
     	 	    	    },
-    	 	    	    
+    	 	    	   
     	 	    	    'success' : function(data) {
     	 	    	    	$('#chart'+value.id).html('');
                             createCharts(data.chartInfo, value.id);
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
     	 	    	    	
-    	 	    	    	table+= '<h2>Grades:</h2>';
+    	 	    	    	table+= '<div class="row"><div class = "col-sm-10"><h2>Grades:</h2></div><div class = "col-sm-2"><h2><a href="/studentMarks/'+value.id+'/'+userId+'.xls" class="btn btn-primary pull-right">Report</a></h2></div></div>';
                             table+= getMarksTable(data.markTableDto);
                             
                             table+= '<br/><h2>Statuses: </h2>';
@@ -105,6 +105,24 @@ function createStudentProjectsInfo(userId, divInside){
 };
 
 function createCharts(data, projectId) {
+    var chart = $("#chart" + projectId);
+    var typesDropdown = "<div class='dropdown chart-dropdown' id='type-menu'>" +
+            "<button class='btn btn-link dropdown-toggle'" + 
+            "type='button' data-toggle='dropdown'>" +
+            "Show<span class='caret'></span></button>" +
+            "<ul class='dropdown-menu'>" +
+      "<li><a id='all-criteria'>All criteria</a></li>" +
+      "<li><a id='categories'>Categories</a></li>" + 
+      "<li><a id='grouped-criteria'>Grouped criteria</a></li></ul>";
+    chart.append(typesDropdown);
+    var sortDropdown = "<div class='dropdown chart-dropdown' id='sort-menu'>" +
+            "<button class='btn btn-link dropdown-toggle'" + 
+            "type='button' data-toggle='dropdown'>" +
+            "Sort by<span class='caret'></span></button>" +
+            "<ul class='dropdown-menu'>" +
+      "<li><a id='increase'>Increase</a></li>" +
+      "<li><a id='decrease'>Decrease</a></li></ul>";
+    chart.append(sortDropdown);
     var criteriaValues = [];
     $.each(data, function (index, value) {
         $.each(value, function (index, value) {
@@ -112,6 +130,9 @@ function createCharts(data, projectId) {
         });
     });
     var maxYAxisValue = Math.max.apply(null, criteriaValues);
+//    $('.chart-dropdown ul li').click(function(e) {
+//        console.log($(this).find('a').attr('id'));
+//    });
     drawCriteriaChart(data, '#chart' + projectId, 6, 'title');
 }
 
@@ -144,19 +165,16 @@ function getMarksTable(markTableDto){
  	});
  	table+= '</tr>';
  	
- 	$.each(markTableDto.tableData, function( key, value ) {
+ 	$.each(markTableDto.tableData, function( key, criteriaList ) {
  		table+= '<tr><td align="center" colspan="'+ markTableDto.meetings.length + 1 +'"><b>' + key + '</b></td></tr>';
  		
- 		$.each(value, function( key1, value1 ) {
- 			
- 			table+= '<tr class="active"><td>' + value1[0].value + '</td>';
- 			$.each(value1, function(index, mark) {
- 				if(index>0){
+ 		$.each(criteriaList, function( i, criterionResult ) {
+ 			table+= '<tr class="active"><td>' + criterionResult.criterionName + '</td>';
+ 			$.each(criterionResult.marks, function(index, mark) {
  					if(mark.commentary == '')
  						table+= '<td><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
  					else
  						table+= '<td><span title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
- 				}
 	    		});
  			table+= '</tr></div></div></div>';
  		});

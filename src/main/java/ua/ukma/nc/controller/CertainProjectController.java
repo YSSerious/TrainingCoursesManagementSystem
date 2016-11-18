@@ -23,6 +23,7 @@ import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.ProjectAttachmentService;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.service.impl.ProjectAttachmentServiceImpl;
+import ua.ukma.nc.util.exception.CriteriaDeleteException;
 
 @Controller
 public class CertainProjectController {
@@ -53,12 +54,14 @@ public class CertainProjectController {
         model.addObject("groups", groupList);
 
         //Criteria set
-        model.addObject("criterions", criterionService.getByProject(id));
+        List<CriterionDto> criterionDtos = new ArrayList<>();
+        for(Criterion criterion: criterionService.getByProject(id)){
+            criterionDtos.add(new CriterionDto(criterion.getId(), criterion.getTitle(), criterionService.isRatedInProject(id, criterion)));
+        }
+        model.addObject("criterions", criterionDtos);
         //Attachment set
         List<ProjectAttachment> attachmentList = attachmentService.getAllById(id);
         model.addObject("attachments", attachmentList);
-        List<Group> groups = groupService.getByProjectId(id);
-        model.addObject("groups", groups);
 
         model.setViewName("certainProject");
         return model;
@@ -95,17 +98,17 @@ public class CertainProjectController {
 
     @RequestMapping(value = "/addCriteria", method = RequestMethod.POST)
     @ResponseBody
-    public Criterion addCriteria(@RequestParam Long projectId, @RequestParam String criteriaTitle) {
-        System.out.println(projectId+" "+criteriaTitle);
+    public CriterionDto addCriteria(@RequestParam Long projectId, @RequestParam String criteriaTitle) {
         Criterion criterion = criterionService.getByName(criteriaTitle);
         projectService.addCriteria(projectId, criterion);
-        return criterion;
+        return new CriterionDto(criterion.getId(), criterion.getTitle(), criterionService.isRatedInProject(projectId, criterion));
     }
 
     @RequestMapping(value = "/deleteProjectCriteria", method = RequestMethod.POST)
     @ResponseBody
-    public String deleteProjectCriteria(@RequestParam Long projectId, @RequestParam String criteriaTitle) {
-        System.out.println(projectId+" "+criteriaTitle);
+    public String deleteProjectCriteria(@RequestParam Long projectId, @RequestParam String criteriaTitle) throws CriteriaDeleteException {
+        if(criterionService.isRatedInProject(projectId, criterionService.getByName(criteriaTitle)))
+            throw new CriteriaDeleteException("This criteria was rated and cannot be deleted");
         projectService.deleteProjectCriterion(projectId, criterionService.getByName(criteriaTitle));
         return "success";
     }

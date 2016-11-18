@@ -1,22 +1,31 @@
 $(document).ready(function () {
 
-	$("#addGroupAttachmentButton").click(function(){
-		$("#addGroupAttachmentModal").modal();
-	});
+//	$("#addGroupAttachmentButton").click(function(){
+//		$("#addGroupAttachmentModal").modal();
+//	});
 
 
-	$("#editGroupAttachmentButton").click(function(){
+/*	$("#editGroupAttachmentButton").click(function(){
+		alert("Error");
 		$("#editGroupAttachmentModal").modal();
 	});
+*/
 
-
-	$("#submitButton").click(function(event) {
+	$("#addAttachmentSubmitButton").click(function(event) {
 		$.ajax({
 			url: "/groups/addAttachment",
 			type: "POST",
-			data: {"id_group" : "${groupId}", 
+			data: {"id_group" : $(groupId), 
 				"name" : $("#groupAttachmentName").val(),
-				"attachment_scope": $("#groupAttachment").val()}
+				"attachment_scope": $("#groupAttachment").val()},
+				success: function (data) {
+	                console.log(data);
+	             //   buildAttachment(data.id, data.name, data.description);
+	               // $('#panelGroupId').append(newCategory);
+	            },
+	            error: function (textStatus) {
+	                console.log(textStatus);
+	            }
 		});
 	});
 
@@ -41,11 +50,22 @@ $(document).ready(function () {
 		$.ajax({
 			url: "/groups/deleteAttachment",
 			type: "POST",
-			data:{ "id":idOfAttachment}
+			data:{ "id":idOfAttachment},
+			 success: function (data) {
+	                console.log(data);
+	                $('#attachmentId-'+idOfAttachment).remove();
+	            },
+	            error: function (textStatus) {
+	                console.log(textStatus);
+	            }
 
 		});
 	});
-
+	 $(function(){
+		    $("#attachment-title").click(function(){
+		        $("#attachment").slideToggle();
+		    });
+		});
 
 
 	$('.delete-mentor').click(function(event){

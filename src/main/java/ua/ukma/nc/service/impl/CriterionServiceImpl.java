@@ -73,6 +73,11 @@ public class CriterionServiceImpl implements CriterionService {
 	}
 
 	@Override
+	public boolean isRatedInProject(Long projectId, Criterion criterion) {
+		return criterionDao.isRatedInProject(projectId, criterion);
+	}
+
+	@Override
 	public List<Criterion> getByMeeting(Long meetingId) {
 		return criterionDao.getByMeeting(meetingId);
 	}

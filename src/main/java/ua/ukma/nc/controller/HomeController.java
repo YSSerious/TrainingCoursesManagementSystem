@@ -22,19 +22,10 @@ public class HomeController {
 
 	private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
-	@Autowired
-	private UserService userService;
-
-
 	@RequestMapping("/")
-    public ModelAndView getUser(Principal principal) {
-        ModelAndView model = new ModelAndView();
+    public String getUser() {
         log.info("Sending........");
-        if(principal!=null) {
-            model.addObject("username", principal.getName());
-        }
-        model.setViewName("home");
-        return model;
+        return "redirect:/projects";
     }
 
 

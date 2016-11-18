@@ -1,7 +1,6 @@
 package ua.ukma.nc.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +15,15 @@ import ua.ukma.nc.dto.StudentStatusLog;
 import ua.ukma.nc.dto.StudyResultDto;
 import ua.ukma.nc.entity.MeetingReview;
 import ua.ukma.nc.entity.StatusLog;
+import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.ChartService;
 import ua.ukma.nc.service.MarkTableService;
 import ua.ukma.nc.service.MeetingResultService;
 import ua.ukma.nc.service.MeetingReviewService;
+import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.service.StatusLogService;
 import ua.ukma.nc.service.StudentService;
+import ua.ukma.nc.service.UserService;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -40,27 +42,18 @@ public class StudentServiceImpl implements StudentService {
 
 	@Autowired
 	private MarkTableService markTableService;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private ProjectService projectService;
 
 	@Override
 	public StudentProfile generateStudentProfile(long studentId, long projectId) {
 		List<MarkInformation> allMarkInfo = meetingResultService.generateMarkInformation(studentId, projectId);
-		Map<String, List<MarkInformation>> separateInformation = new HashMap<String, List<MarkInformation>>();
-
-		for (MarkInformation markInformation : allMarkInfo) {
-			List<MarkInformation> currentInformation = separateInformation.get(markInformation.getCriterionName());
-			if (currentInformation != null)
-				currentInformation.add(markInformation);
-			else {
-				List<MarkInformation> newList = new ArrayList<MarkInformation>();
-				newList.add(markInformation);
-				separateInformation.put(markInformation.getCriterionName(), newList);
-			}
-		}
 
 		StudentProfile studentProfile = new StudentProfile();
-
-		studentProfile.setMarkInformation(separateInformation);
-
 		List<StatusLog> statusLoges = statusLogService.getByProjectStudent(projectId, studentId);
 		List<StudentStatusLog> studentStatusLoges = new ArrayList<StudentStatusLog>();
 
@@ -84,6 +77,13 @@ public class StudentServiceImpl implements StudentService {
 
 		studentProfile.setChartInfo(convert(chartService.getChartData(projectId, studentId)));
 		studentProfile.setChartInfoFinal(convert(chartService.getChartDataFinalReview(projectId, studentId)));
+		
+		User user = userService.getById(studentId);
+		studentProfile.setLastName(user.getLastName());
+		studentProfile.setFirstName(user.getFirstName());
+		studentProfile.setSecondName(user.getSecondName());
+		
+		studentProfile.setProjectName(projectService.getById(projectId).getName());
 		return studentProfile;
 	}
 

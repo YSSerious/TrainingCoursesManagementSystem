@@ -36,7 +36,7 @@ public class ProjectParamResolver {
 		queryBuilder.setCurrentPage(page);
 		queryBuilder.setItemsPerPage(ITEMS_PER_PAGE);
 
-		if (order != null)
+		if (order != null){
 			if (order.contains("asc")) {
 				queryBuilder.setOrderBy(order.replace("asc", ""));
 				queryBuilder.setOrderType("asc");
@@ -44,6 +44,10 @@ public class ProjectParamResolver {
 				queryBuilder.setOrderBy(order.replace("desc", ""));
 				queryBuilder.setOrderType("desc");
 			}
+		}else{
+			queryBuilder.setOrderBy("start");
+			queryBuilder.setOrderType("desc");
+		}
 
 		if (text != null) {
 

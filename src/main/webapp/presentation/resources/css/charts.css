@@ -12,6 +12,25 @@ and open the template in the editor.
     vertical-align: top;
 }
 
+.chart-dropdown {
+    display: inline;
+}
+
+.chart-dropdown button,
+.chart-dropdown button:hover,
+.chart-dropdown button:focus,
+.chart-dropdown button:active {
+    border: none;
+    outline: none !important;
+}
+
+.chart-dropdown:nth-child(2) button:first-child {
+    padding-right: 2px;
+}
+
+.chart-dropdown button#sort-reset {
+    padding-left: 0;
+}
 .chart {
     margin: 10px;
 }
@@ -27,7 +46,7 @@ and open the template in the editor.
 }
 
 .chart-tip {
-    font-size: 18px;
+    font-size: 16px;
     fill: white;
     pointer-events: none;
 }

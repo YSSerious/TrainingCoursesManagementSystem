@@ -67,6 +67,12 @@ public class CriterionDaoImpl implements CriterionDao{
     private static final String GET_PROJECT_UNUSED_CRITERIA = "select id, name, id_category FROM tcms.criterion " +
                                                                 "where id not in (select id_criterion from tcms.project_criterion where id_project =?) order by id_category Asc";
 
+    private static final String IS_RATED_IN_PROJECT = "select exists " +
+                                                        "(select * from tcms.meeting_result where id_criterion = ? and id_meeting_review in \n" +
+                                                        "(select id from tcms.meeting_review where id_meeting in \n" +
+                                                        "(select id from tcms.meeting where id_group in \n" +
+                                                        "(select id from tcms.group where id_project = ?))))";
+
     @Override
     public Criterion getById(Long id) {
         log.info("Getting criterion with id = {}", id);
@@ -75,6 +81,7 @@ public class CriterionDaoImpl implements CriterionDao{
 
     @Override
     public Criterion getByName(String name) {
+        log.info("Getting criterion with name = {}", name);
         return jdbcTemplate.queryForObject(GET_BY_NAME, new CriterionMapper(), name);
     }
 
@@ -82,6 +89,12 @@ public class CriterionDaoImpl implements CriterionDao{
     public List<Criterion> getProjectUnusedCriteria(Long projectId) {
         log.info("Getting unused criterion in project = {}", projectId);
         return jdbcTemplate.query(GET_PROJECT_UNUSED_CRITERIA, new CriterionMapper(), projectId);
+    }
+
+    @Override
+    public boolean isRatedInProject(Long projectId, Criterion criterion) {
+        log.info("Is criterion with id = {} rated throughout the project {}", criterion.getId(), projectId);
+        return jdbcTemplate.queryForObject(IS_RATED_IN_PROJECT, boolean.class, criterion.getId(), projectId);
     }
 
     @Override
@@ -129,6 +142,7 @@ public class CriterionDaoImpl implements CriterionDao{
         log.info("Getting all criterion");
         return jdbcTemplate.query(GET_BY_MEETING, new CriterionMapper(), meetingId);
 	}
+
 
     @Override
     public int createCriterion(String title, Long categoryId) {

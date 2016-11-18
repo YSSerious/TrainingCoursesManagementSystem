@@ -33,4 +33,6 @@ public interface CriterionDao {
     boolean isExistInProjects(Long id);
     
 	List<Criterion> getByMeeting(Long meetingId);
+
+    boolean isRatedInProject(Long projectId, Criterion criterion);
 }

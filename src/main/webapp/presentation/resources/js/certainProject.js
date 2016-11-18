@@ -20,15 +20,15 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.addButton', function () {
+        var a = $(this);
         $.ajax({
             url: "/addCriteria",
             type: "POST",
-            data: {projectId: projectId, criteriaTitle: $(this).closest('tr').find('td:first').text()},
+            data: {projectId: projectId, criteriaTitle: a.closest('tr').find('td:first').text()},
             success: function (data) {
                 console.log(data);
-                buildResponseCriteria(data)
-                $('#criteriaPanelId').append(responseCriteria);
-                //$($(this).closest('tr')).remove();
+                $('#collapseIn').append(buildResponseCriteria(data));
+                a.parent().parent().remove();
             },
             error: function (textStatus) {
                 console.log(textStatus);
@@ -36,17 +36,23 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.delButton', function () {
+    $(document).on('click', '.rmv-cr-btn', function () {
+        //var a = $(this);
+        var criteria = $.parseJSON($(this).attr('data-button'));
+        console.log(criteria.id);
         $.ajax({
             url: "/deleteProjectCriteria",
             type: "POST",
-            data: {projectId: projectId, criteriaTitle: $(this).closest('div').text()},
+            data: {projectId: projectId, criteriaTitle: criteria.title},
             success: function (data) {
                 console.log(data);
-                //$(this).closest('.del').remove();
+                //a.parent().parent().remove();
+                $('#criteriaId-'+criteria.id).remove();
             },
             error: function (textStatus) {
                 console.log(textStatus);
+                $('#criteriaDeleteErrorModal').modal('show');
+
             }
         });
     });
@@ -60,15 +66,27 @@ $(document).ready(function () {
                 "</tr>");
         });
     }
+
+    $("#search").keyup(function() {
+        var value = this.value.toLowerCase();
+
+        $("table").find("tr").each(function(index) {
+            if (!index) return;
+            var id = $(this).find("td").first().text().toLowerCase();
+            $(this).toggle(id.indexOf(value) !== -1);
+        });
+    });
     
 });
-var responseCriteria;
+
 function buildResponseCriteria(data){
-    responseCriteria="<div class='panel panel-default'>" +
-    "<div class='panel-heading'>" +
-    "<h4 class='panel-title row'>" +
-    "<div class='panel-body col-sm-11'>"+data.title+"</div>" +
-    "<button class='delButton btn-danger btn-sm'>" +
-    "<span class='glyphicon glyphicon-remove'></span>" +
-    "</button></h4></div></div>";
+    return "<div class='panel-body row' id='criteriaId-"+data.id+"'>" +
+        "<div class='col-md-11'>"+data.title+"</div>" +
+        "<c:if test='"+data.rated+"'>" +
+        "<div class='btn rmv-cr-btn col-md-1 pull-right' type='button'" +
+        " data-button='{\"id\":\""+data.id+"\", \"title\": \""+data.title+"\"}'>" +
+        "<span class='glyphicon glyphicon-remove'></span>" +
+        "</div>" +
+        "</c:if>" +
+        "</div>";
 };

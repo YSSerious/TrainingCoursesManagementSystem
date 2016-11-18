@@ -1,26 +1,24 @@
-
-/* Move down content because we have a fixed navbar that is 50px tall */
-
-.container.certain-project{
+.container.attachment-group{
 	width: initial;
 }
-.certain-project .panel.panel-horizontal {
+.attachment-group .panel.panel-horizontal {
     display:table;
     width: 350px;
    
 }
-.certain-project .panel.panel-horizontal > .panel-title .h3{
+
+.attachment-group .panel.panel-horizontal > .panel-title .h3{
 	padding-left: inherit;
 }
-.certain-project .panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-body, .panel.panel-horizontal > .panel-footer {
+.attachment-group .panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-body, .panel.panel-horizontal > .panel-footer {
     display:table-cell;
 }
-.certain-project .panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-footer {
+.attachment-group .panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-footer {
     
     border:0;
     vertical-align: middle;
 }
-.certain-project .panel.panel-horizontal > .panel-heading {
+.attachment-group .panel.panel-horizontal > .panel-heading {
     border-right: 1px solid #ddd;
     border-top-right-radius: 0;
     border-bottom-left-radius: 4px;
@@ -29,19 +27,19 @@
     width: 150px;
 }
 
-.certain-project .panel.panel-horizontal.top-panel {
+.attachment-group .panel.panel-horizontal.top-panel {
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     margin-bottom: 0px;
 }
 
-.certain-project .panel.panel-default.panel-horizontal.bottom-panel {
+.attachment-group .panel.panel-default.panel-horizontal.bottom-panel {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     border-top: none;
 }
 
-.certain-project .panel-btn{
+.attachment-group .panel-btn{
 	padding-bottom: 10px;
     /*background-color: #ddd;*/
     background-color: #337ab7;
@@ -52,7 +50,7 @@
     
 }
 
-.certain-project .panel-heading{
+.attachment-group .panel-heading{
     padding-bottom: 10px;
     background-color: #337ab7;
     margin-bottom: 0px;
@@ -62,7 +60,7 @@
 
 }
 
-.certain-project .pull-right-btn {
+.attachment-group .pull-right-btn {
     float: right!important;
     margin-right: 10px;
     margin-top: 5px;
@@ -72,7 +70,7 @@
     font-weight: 500;
     border-color: white;
 }
-.certain-project .add-criteria-btn {
+.attachment-group .add-criteria-btn {
     float: right!important;
     margin-right: 10px;
     margin-top: 2px;
@@ -84,12 +82,12 @@
 }
 
 
-.certain-project .list-group-item:first-child {
+.attachment-group .list-group-item:first-child {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
 }
 
-.certain-project .glyphicon{
+.attachment-group .glyphicon{
 	font-size: 20px;
 }
 

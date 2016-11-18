@@ -45,8 +45,10 @@ public class CriterionProxy implements Criterion{
 
     @Override
     public String getTitle() {
-//        downloadCriterion();
-//        return criterion.getTitle();
+    	if(title == null){
+    		downloadCriterion();
+    		return criterion.getTitle();
+    	}
         return title;
     }
 
