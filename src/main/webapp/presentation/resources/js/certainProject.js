@@ -37,7 +37,6 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.rmv-cr-btn', function () {
-        //var a = $(this);
         var criteria = $.parseJSON($(this).attr('data-button'));
         console.log(criteria.id);
         $.ajax({
@@ -46,7 +45,6 @@ $(document).ready(function () {
             data: {projectId: projectId, criteriaTitle: criteria.title},
             success: function (data) {
                 console.log(data);
-                //a.parent().parent().remove();
                 $('#criteriaId-'+criteria.id).remove();
             },
             error: function (textStatus) {
@@ -78,6 +76,16 @@ $(document).ready(function () {
     });
     
 });
+
+function changeSpan(){
+    if ($("#spanId").hasClass("glyphicon-chevron-down") ){
+        $("#spanId").removeClass('glyphicon-chevron-down');
+        $("#spanId").addClass('glyphicon-chevron-up');
+    }else{
+        $("#spanId").removeClass('glyphicon-chevron-up');
+        $("#spanId").addClass('glyphicon-chevron-down');
+    }
+};
 
 function buildResponseCriteria(data){
     return "<div class='panel-body row' id='criteriaId-"+data.id+"'>" +

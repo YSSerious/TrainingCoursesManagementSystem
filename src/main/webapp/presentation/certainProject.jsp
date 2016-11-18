@@ -63,8 +63,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title row">
-                            <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1">
-                                <span class="glyphicon glyphicon-chevron-down"></span>
+                            <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1" onclick="changeSpan()">
+                                <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
                             </div>
                             <div role="button" class="btn add-criteria-btn btn-sm"
                                  id="showAvailableCriteria"

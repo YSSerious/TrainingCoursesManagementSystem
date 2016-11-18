@@ -10,12 +10,13 @@
     overflow-x: auto;
     white-space: nowrap;
      width: auto;
-     
+
 }
 
 .meeting th, td { width: 300px; }
 
-th:first-child {
-    position: fixed;
-}
+/*эта штука заголовок таблицы по всему скролу тащит*/
+/*th:first-child {*/
+    /*position: fixed;*/
+/*}*/
 
