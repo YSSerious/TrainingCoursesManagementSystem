@@ -88,10 +88,10 @@ function changeSpan(){
 };
 
 function buildResponseCriteria(data){
-    return "<div class='panel-body row' id='criteriaId-"+data.id+"'>" +
+    return "<div class='panel-body' id='criteriaId-"+data.id+"'>" +
         "<div class='col-md-11'>"+data.title+"</div>" +
         "<c:if test='"+data.rated+"'>" +
-        "<div class='btn rmv-cr-btn col-md-1 pull-right' type='button'" +
+        "<div class='btn rmv-cr-btn col-md-1' type='button'" +
         " data-button='{\"id\":\""+data.id+"\", \"title\": \""+data.title+"\"}'>" +
         "<span class='glyphicon glyphicon-remove'></span>" +
         "</div>" +

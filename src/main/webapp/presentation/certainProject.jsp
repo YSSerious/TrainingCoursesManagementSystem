@@ -86,31 +86,26 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h2>
-                Criteria List
-            </h2>
+            <h2>Criteria List </h2>
             <div class="panel-group" id="panelGroupId">
                 <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title row">
+                    <div class="panel-heading clearfix">
                             <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1" onclick="changeSpan()">
                                 <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
                             </div>
-                            <div role="button" class="btn add-criteria-btn btn-sm"
+                            <button type="button" class="btn add-criteria-btn btn-sm"
                                  id="showAvailableCriteria"
                                  data-toggle="modal"
                                  data-target="#showAvailableCriteriaModal">
                                 <b>Add criteria</b>
-                            </div>
-                        </h4>
+                            </button>
                     </div>
-
                     <div id="collapseIn" class="panel-collapse collapse">
                         <c:forEach items="${criterions}" var="criterion">
-                            <div class="panel-body row" id="criteriaId-${criterion.id}">
+                            <div class="panel-body" id="criteriaId-${criterion.id}">
                                 <div class="col-md-11">${criterion.title}</div>
                                 <c:if test="${!criterion.rated}">
-                                    <div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
+                                    <div class="btn rmv-cr-btn col-md-1" type='button'
                                          data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
                                         <span class="glyphicon glyphicon-remove"></span>
                                     </div>
