@@ -1,23 +1,24 @@
-#pagination thead{
+#pagination thead {
 	background-color: #c9d1d8;
 }
 
-#table-listing{
-  width: 100%;
+#table-listing {
+	width: 100%;
 }
+
 .meeting {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-     width: auto;
-
+	display: block;
+	overflow-x: auto;
+	white-space: nowrap;
+	width: auto;
 }
-
-/*это тоже пофиксить*/
-/*.meeting th, td { width: 300px; }*/
-
 
 .meeting th:first-child {
-    position: fixed;
+	position: fixed;
+	width: 300px;
+}
+
+.meeting th, td {
+	min-width: 200px;
 }
 

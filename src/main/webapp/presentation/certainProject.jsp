@@ -235,7 +235,7 @@
                 $("#att-link").val('');
 
                 $.ajax({
-                    url: "/trainingCoursesManagementSystem/addProjectAttachment",
+                    url: "/addProjectAttachment",
                     type: "POST",
                     data: {
                         "attachmentName": name,
@@ -265,7 +265,7 @@
             $(this).parent().remove();
             var id = $(this).data('button').id_attachment;
             $.ajax({
-                url: "/trainingCoursesManagementSystem/removeProjectAttachment",
+                url: "/removeProjectAttachment",
                 type: "POST",
                 data: {"id_attachment": id},
                 success: function (savingStatus) {
