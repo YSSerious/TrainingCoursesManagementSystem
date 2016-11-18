@@ -231,9 +231,9 @@
 							<div class="panel-body row" id="attachmentId-${attachment.id}">
 								<div class="col-md-10">${attachment.name}</div>
 
-								<div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
-									data-button='{"id":"d${attachment.id}","title": "${attachment.name}"}'>
-									<span class="glyphicon glyphicon-remove delete"></span>
+								<div id="d${attachment.id}" class="btn rmv-cr-btn col-md-1 pull-right delete" type='button'
+									data-button='{"title": "${attachment.name}"}'>
+									<span class="glyphicon glyphicon-remove "></span>
 								</div>
 							<!-- <div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
 									data-button='{"id":"e${attachment.id}","title": "${attachment.name}"}'>

@@ -45,7 +45,8 @@ $(document).ready(function () {
 	});
 
 	$('.delete').click(function(event){
-		var idOfAttachment = event.target.id;
+		//var idOfAttachment = event.target.id;
+		var idOfAttachment = this.id;
 		console.log(idOfAttachment);
 		idOfAttachment = idOfAttachment.substring(1,idOfAttachment.length);
 		$.ajax({
