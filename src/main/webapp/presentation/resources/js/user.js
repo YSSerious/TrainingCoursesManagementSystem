@@ -90,10 +90,12 @@ function createStudentProjectsInfo(userId, divInside){
                             table+= '<br/><h2>Statuses: </h2>';
                             table+= getStatusesTable(data.studentStatuses);
                             
-                            
                             table+= '<br/><h2>Meeting reviews: </h2>';
                             table+= getMeetingReviewsTable(data.meetingReviews);
     	 	    	    	
+                            table+= '<br/><h2>Final reviews: </h2>';
+                            table+= getFinalReviews(data);
+                            
                             table+= '</div></div></div>';
     	 	    	    	$('#sub'+value.id).append(table);
     	 	    	    }
@@ -205,3 +207,42 @@ function getStatusesTable(studentStatuses){
  	return table;
 }
 
+function getFinalReviews(studentProfile){
+	var reviews = '';
+	
+	reviews += '<table class="table table-bordered"><tr><th style="width:33%">Final</th>';
+	reviews += '<th style="width:33%">General</th>';
+	reviews += '<th style="width:33%">Technical</th>';
+	reviews += '</tr>';
+
+	if (studentProfile.finalReview !== null) {
+		reviews += '<tr><td><b>On ' + studentProfile.finalReview.date + ' by '
+				+ studentProfile.finalReview.lastName + ' '
+				+ studentProfile.finalReview.firstName + '</b><br/>'
+				+ studentProfile.finalReview.commentary + '</td>';
+	} else {
+		reviews += '<tr><td>There is no final review!</td>';
+	}
+
+	if (studentProfile.technicalReview !== null) {
+		reviews += '<td><b>On ' + studentProfile.technicalReview.date + ' by '
+				+ studentProfile.technicalReview.lastName + ' '
+				+ studentProfile.technicalReview.firstName + '</b><br/>'
+				+ studentProfile.technicalReview.commentary + '</td>';
+	} else {
+		reviews += '<td>There is no technical review!</td>';
+	}
+
+	if (studentProfile.generalReview !== null) {
+		reviews += '<td><b>On ' + studentProfile.generalReview.date + ' by '
+				+ studentProfile.generalReview.lastName + ' '
+				+ studentProfile.generalReview.firstName + '</b><br/>'
+				+ studentProfile.generalReview.commentary + '</td>';
+
+		reviews += '</tr>';
+	} else {
+		reviews += '<td>There is no general review!</td>';
+	}
+	
+	return reviews;
+}

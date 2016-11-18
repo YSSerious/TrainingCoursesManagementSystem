@@ -47,6 +47,8 @@ public class FinalReviewDaoImpl implements FinalReviewDao{
     
     private static final String GET_BY_STUDENT = "SELECT * FROM tcms.final_review WHERE id_student = ? AND id_project = ? AND type = ?";
     
+    private static final String EXISTS_BY_STUDENT_PROJECT_TYPE = "SELECT (EXISTS (SELECT * FROM tcms.final_review WHERE id_student = ? AND id_project = ? AND type = ?))";
+    
     private static final String EXISTS_STUDENT_GROUP = "SELECT (EXISTS (SELECT * FROM tcms.final_review WHERE id_student = ? AND id_project = (SELECT id_project FROM tcms.group WHERE id = ?) AND type=?))";
 
     private static final String GET_ALL = "SELECT id, date, id_student, id_employee, type, id_project, commentary FROM tcms.final_review";
@@ -99,5 +101,10 @@ public class FinalReviewDaoImpl implements FinalReviewDao{
 	@Override
 	public FinalReview getByStudent(Long projectId, Long studentId, String type) {
 		return jdbcTemplate.queryForObject(GET_BY_STUDENT, new FinalReviewMapper(), studentId, projectId, type);
+	}
+
+	@Override
+	public boolean existsForProject(Long studentId, Long projectId, String type) {
+		return jdbcTemplate.queryForObject(EXISTS_BY_STUDENT_PROJECT_TYPE, Boolean.class, studentId, projectId, type);
 	}
 }

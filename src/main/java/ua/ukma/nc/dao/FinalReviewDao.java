@@ -10,6 +10,8 @@ import java.util.List;
 public interface FinalReviewDao {
 	boolean exists(Long studentId, Long groupId, String type);
 	
+	boolean existsForProject(Long studentId, Long projectId, String type);
+	
     FinalReview getById(Long id);
     
     FinalReview getByStudent(Long projectId, Long studentId, String type);

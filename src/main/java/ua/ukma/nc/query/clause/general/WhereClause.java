@@ -50,7 +50,7 @@ public class WhereClause implements Clause {
 		if (param instanceof String || param instanceof Date) {
 
 			if (param instanceof String && operation.equals(STRING_CONTAINS))
-				return column + " " + operation + " " + "'%" + param + "%'";
+				return "UPPER("+column + ") " + operation + " " + "UPPER('%" + param + "%')";
 			else if (operation.equals(STRING_CONTAINS))
 				throw new IllegalArgumentException("Wrong operation!");
 

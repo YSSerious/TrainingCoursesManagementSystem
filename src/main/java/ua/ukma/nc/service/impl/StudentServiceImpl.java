@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ua.ukma.nc.dto.CategoryChartDto;
+import ua.ukma.nc.dto.FinalReviewDto;
 import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.dto.StudentMeetingReview;
 import ua.ukma.nc.dto.StudentProfile;
@@ -17,6 +18,7 @@ import ua.ukma.nc.entity.MeetingReview;
 import ua.ukma.nc.entity.StatusLog;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.ChartService;
+import ua.ukma.nc.service.FinalReviewService;
 import ua.ukma.nc.service.MarkTableService;
 import ua.ukma.nc.service.MeetingResultService;
 import ua.ukma.nc.service.MeetingReviewService;
@@ -48,6 +50,9 @@ public class StudentServiceImpl implements StudentService {
 	
 	@Autowired
 	private ProjectService projectService;
+	
+	@Autowired
+	private FinalReviewService finalReviewService;
 
 	@Override
 	public StudentProfile generateStudentProfile(long studentId, long projectId) {
@@ -84,6 +89,16 @@ public class StudentServiceImpl implements StudentService {
 		studentProfile.setSecondName(user.getSecondName());
 		
 		studentProfile.setProjectName(projectService.getById(projectId).getName());
+		
+		if(finalReviewService.existsForProject(studentId, projectId, "F"))
+			studentProfile.setFinalReview(new FinalReviewDto(finalReviewService.getByStudent(projectId, studentId, "F")));
+		
+		if(finalReviewService.existsForProject(studentId, projectId, "G"))
+			studentProfile.setGeneralReview(new FinalReviewDto(finalReviewService.getByStudent(projectId, studentId, "G")));
+		
+		if(finalReviewService.existsForProject(studentId, projectId, "T"))
+			studentProfile.setTechnicalReview(new FinalReviewDto(finalReviewService.getByStudent(projectId, studentId, "T")));
+		
 		return studentProfile;
 	}
 

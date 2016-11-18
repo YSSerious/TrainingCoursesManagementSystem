@@ -135,7 +135,7 @@ public class MarkTableServiceImpl implements MarkTableService {
 			String categoryName = markInformation.getCategory();
 
 			int criterionIndex = categories.get(categoryName).indexOf(markInformation.getCriterionName());
-			int meetingIndex = meetingNames.indexOf(markInformation.getMeetingName());
+			int meetingIndex = meetingId.indexOf(markInformation.getMeetingId());
 
 			CertainMarkDto certainMarkDto = new CertainMarkDto();
 			certainMarkDto.setCommentary(markInformation.getCommentary());
@@ -145,8 +145,8 @@ public class MarkTableServiceImpl implements MarkTableService {
 			dataTable.get(categoryName).get(criterionIndex).getMarks().set(meetingIndex, certainMarkDto);
 		}
 
-		try {
-			finalReview = finalReviewService.getByStudent(projectId, studentId, "M");
+		if(finalReviewService.existsForProject(studentId, projectId, "F")) {
+			finalReview = finalReviewService.getByStudent(projectId, studentId, "F");
 			List<FinalReviewCriterion> reviews = finalReviewCriterionService.getByFinalReview(finalReview.getId());
 
 			for (FinalReviewCriterion review : reviews) {
@@ -163,9 +163,9 @@ public class MarkTableServiceImpl implements MarkTableService {
 
 				dataTable.get(categoryName).get(criterionIndex).getMarks().set(meetingIndex, certainMarkDto);
 			}
-		} catch (Exception e) {
-
 		}
+		
+		
 		return markTableDto;
 	}
 
