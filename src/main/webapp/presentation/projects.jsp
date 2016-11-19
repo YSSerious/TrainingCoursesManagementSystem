@@ -172,7 +172,8 @@
 </div>
 <script>
 	$('.pagination').jqPagination({
-		link_string : '?page={page_number}',
+		link_string : '/projects',
+		current_page: '${currPage}',
 		max_page : '${maxPage}',
 		paged : function(page) {
 			$("#hidden-page").val(page);
