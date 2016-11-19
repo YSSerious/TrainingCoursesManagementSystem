@@ -1,7 +1,7 @@
 <%@include file="header.jsp" %>
 <script
     src="<c:url value="/presentation/resources/js/certainProject.js"/>"
-    type="text/javascript" defer="defer">
+    type="text/javascript">
 </script>
 <div class="container certain-project">
     <!-- Example row of columns -->
@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <div class="page-header">
                 <h3>
-                    ${project.name}
+                    Project ${project.name}
                 </h3>
                 <div class="row">
                     <div class="col-md-6">
@@ -42,6 +42,11 @@
             </h2>
             <div class="panel panel-default" id="project-groups">
                 <div class="panel-heading collapsed">
+                    <button type="button" class="btn btn-default btn-sm pull-right" id="createMeeting"
+                            data-toggle="modal"
+                            data-target="#meetingCreateModal">
+                        <b>Add Meeting</b>
+                    </button>
                     <button type="button" class="btn btn-default btn-sm pull-right" id="createGroupButton">
                         <b>Add</b>
                     </button>
@@ -88,7 +93,7 @@
                             <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1" onclick="changeSpan()">
                                 <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
                             </div>
-                            <button type="button" class="btn add-criteria-btn btn-sm"
+                            <button type="button" class="btn btn-default btn-sm pull-right"
                                  id="showAvailableCriteria"
                                  data-toggle="modal"
                                  data-target="#showAvailableCriteriaModal">
@@ -214,6 +219,44 @@
     </div>
 </div>
 <!-- finish criteriaDeleteError modal -->
+<!-- start create Meeting modal -->
+<div id="meetingCreateModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title">New Meeting</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="inputName">Meeting Name</label>
+                        <input type="text" class="form-control" id="inputName">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPlace">Place</label>
+                        <input type="text" class="form-control" id="inputPlace">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputDate">Date/Time</label>
+                        <input type="datetime-local" class="form-control" id="inputDate">
+                    </div>
+                    <label>Criteria</label>
+                    <div class="form-group" id="CriteriaCheckBoxId">
+                    </div>
+                    <label>Groups</label>
+                    <div class="form-group" id="GroupsCheckBoxId">
+                        <%--<label class="checkbox-inline"><input type="checkbox">Option 1</label>--%>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- finish create Meeting modal -->
 </div>
 
 <script>

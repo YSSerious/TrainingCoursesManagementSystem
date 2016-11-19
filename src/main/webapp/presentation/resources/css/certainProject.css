@@ -63,16 +63,16 @@
 
 }
 
-.certain-project .pull-right-btn {
-    float: right!important;
-    margin-right: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    background-color: white;
-    color: black;
-    font-weight: 500;
-    border-color: white;
-}
+/*.certain-project .pull-right-btn {*/
+    /*float: right!important;*/
+    /*margin-right: 10px;*/
+    /*margin-top: 5px;*/
+    /*margin-bottom: 5px;*/
+    /*background-color: white;*/
+    /*color: black;*/
+    /*font-weight: 500;*/
+    /*border-color: white;*/
+/*}*/
 .certain-project .add-criteria-btn {
     float: right!important;
     margin-right: 10px;

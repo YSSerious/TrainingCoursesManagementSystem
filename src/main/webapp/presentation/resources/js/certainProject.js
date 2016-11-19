@@ -4,6 +4,29 @@
 
 $(document).ready(function () {
 
+    $("#createMeeting").click(function () {
+        $.ajax({
+            url: "/getCriteriaAndGroups",
+            type: "GET",
+            data: {projectId: projectId},
+            success: function (data) {
+                console.log(data);
+                $("#CriteriaCheckBoxId").children().remove();
+                $.each(data.criterions, function(key, value){
+                    $('#CriteriaCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox'>"+value.title+"</label>");
+                });
+
+                $("#GroupsCheckBoxId").children().remove();
+                $.each(data.groupList, function(key, value){
+                    $('#GroupsCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox'>"+value.name+"</label>");
+                });
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
+    });
+
     $("#showAvailableCriteria").click(function () {
         $.ajax({
             url: "/getAvailableCriteria",

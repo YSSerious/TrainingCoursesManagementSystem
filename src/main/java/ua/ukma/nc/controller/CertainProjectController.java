@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import ua.ukma.nc.dto.CriterionDto;
-import ua.ukma.nc.dto.GroupDto;
-import ua.ukma.nc.dto.GroupProjectDto;
-import ua.ukma.nc.dto.ProjectDto;
+import ua.ukma.nc.dto.*;
 import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.GroupAttachment;
@@ -126,6 +123,15 @@ public class CertainProjectController {
             throw new CriteriaDeleteException("This criteria was rated and cannot be deleted");
         projectService.deleteProjectCriterion(projectId, criterionService.getByName(criteriaTitle));
         return "success";
+    }
+
+    @RequestMapping(value = "/getCriteriaAndGroups", method = RequestMethod.GET)
+    @ResponseBody
+    public ProjectsCriteriaGroupsDto getCriteriaAndGroups(@RequestParam Long projectId) {
+       ProjectsCriteriaGroupsDto pCG=new ProjectsCriteriaGroupsDto();
+        pCG.setCriterions(criterionService.getByProject(projectId));
+        pCG.setGroupList(groupService.getByProjectId(projectId));
+        return pCG;
     }
 
 }
