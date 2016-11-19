@@ -1,7 +1,7 @@
 <%@include file="header.jsp" %>
 <script
     src="<c:url value="/presentation/resources/js/certainProject.js"/>"
-    type="text/javascript">
+    type="text/javascript" defer="defer">
 </script>
 <div class="container certain-project">
     <!-- Example row of columns -->
@@ -40,7 +40,7 @@
             <h2>
                 Groups
             </h2>
-            <div class="panel panel-btn" id="project-groups">
+            <div class="panel panel-default" id="project-groups">
                 <div class="panel-heading collapsed" data-toggle="collapse" data-target="#collapse-group">
 <!--                    <a href="/create-meeting?project=${project.id}" class="btn btn-default btn-xs pull-right-btn">Set
                         meetings schedule</a>-->

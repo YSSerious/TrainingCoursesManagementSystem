@@ -77,6 +77,15 @@ $(document).ready(function () {
     
 });
 
+//Disable groups collapse if any of header button clicked
+$('#project-groups .panel-heading > button').each(function () {
+    $(this).on('click', function (e) {
+        console.log('click');
+        e.stopPropagation();
+    });
+});
+
+
 function changeSpan(){
     if ($("#spanId").hasClass("glyphicon-chevron-down") ){
         $("#spanId").removeClass('glyphicon-chevron-down');
