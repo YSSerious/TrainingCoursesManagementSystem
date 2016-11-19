@@ -1,7 +1,7 @@
 <%@include file="header.jsp" %>
 <script
     src="<c:url value="/presentation/resources/js/certainProject.js"/>"
-    type="text/javascript">
+    type="text/javascript" defer="defer">
 </script>
 <div class="container certain-project">
     <!-- Example row of columns -->
@@ -41,7 +41,7 @@
                 Groups
             </h2>
             <div class="panel panel-default" id="project-groups">
-                <div class="panel-heading collapsed" data-toggle="collapse" data-target="#collapse-group">
+                <div class="panel-heading collapsed">
                     <button type="button" class="btn btn-default btn-sm pull-right" id="createMeeting"
                             data-toggle="modal"
                             data-target="#meetingCreateModal">
