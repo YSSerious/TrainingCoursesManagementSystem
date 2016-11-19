@@ -4,6 +4,29 @@
 
 $(document).ready(function () {
 
+    $("#createMeeting").click(function () {
+        $.ajax({
+            url: "/getCriteriaAndGroups",
+            type: "GET",
+            data: {projectId: projectId},
+            success: function (data) {
+                console.log(data);
+                $("#CriteriaCheckBoxId").children().remove();
+                $.each(data.criterions, function(key, value){
+                    $('#CriteriaCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox'>"+value.title+"</label>");
+                });
+
+                $("#GroupsCheckBoxId").children().remove();
+                $.each(data.groupList, function(key, value){
+                    $('#GroupsCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox'>"+value.name+"</label>");
+                });
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
+    });
+
     $("#showAvailableCriteria").click(function () {
         $.ajax({
             url: "/getAvailableCriteria",
@@ -77,14 +100,12 @@ $(document).ready(function () {
     
 });
 
-//Disable groups collapse if any of header button clicked
-$('#project-groups .panel-heading > button').each(function () {
-    $(this).on('click', function (e) {
-        console.log('click');
-        e.stopPropagation();
-    });
+$('#project-groups .panel-heading').first().on('click', function(e) {
+    console.log(e.target.tagName);
+    if ((e.target.tagName !== "BUTTON")&&(e.target.tagName !== "B")) {
+        $('#collapse-group').collapse('toggle');
+    }
 });
-
 
 function changeSpan(){
     if ($("#spanId").hasClass("glyphicon-chevron-down") ){

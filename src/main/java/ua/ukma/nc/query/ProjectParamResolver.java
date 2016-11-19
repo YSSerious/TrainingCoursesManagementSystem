@@ -88,8 +88,11 @@ public class ProjectParamResolver {
 				CriterionLogicClause criterionLogicClause = new CriterionLogicClause(criterion);
 				queryBuilder.putClause(criterionLogicClause);
 			}
+		
+		if(dateType == null)
+			dateType = ProjectSearch.START;
 
-		if (dateType != null && (start != null || end != null)) {
+		if (start != null || end != null) {
 			DateLogicClause dateLogicClause = new DateLogicClause(start, end, dateType);
 
 			queryBuilder.putClause(dateLogicClause);
