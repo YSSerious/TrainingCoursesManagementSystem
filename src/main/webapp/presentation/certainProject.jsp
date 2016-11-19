@@ -41,7 +41,7 @@
                 Groups
             </h2>
             <div class="panel panel-default" id="project-groups">
-                <div class="panel-heading collapsed">
+                <div class="panel-heading collapsed" data-toggle="collapse" data-target="#collapse-group">
                     <button type="button" class="btn btn-default btn-sm pull-right" id="createMeeting"
                             data-toggle="modal"
                             data-target="#meetingCreateModal">
