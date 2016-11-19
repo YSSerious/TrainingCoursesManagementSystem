@@ -77,6 +77,12 @@ $(document).ready(function () {
     
 });
 
+$('#project-groups .panel-heading').first().on('click', function(e) {
+    if (e.target.tagName !== "B") {
+        $('#collapse-group').collapse('toggle');
+    }
+});
+
 function changeSpan(){
     if ($("#spanId").hasClass("glyphicon-chevron-down") ){
         $("#spanId").removeClass('glyphicon-chevron-down');
