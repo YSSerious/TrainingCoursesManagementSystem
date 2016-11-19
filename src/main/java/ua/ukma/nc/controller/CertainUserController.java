@@ -12,18 +12,13 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
 import org.springframework.ui.Model;
 
-import ua.ukma.nc.entity.User;
-import ua.ukma.nc.service.UserService;
+import ua.ukma.nc.dto.*;
+import ua.ukma.nc.entity.*;
+import ua.ukma.nc.service.*;
+
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import ua.ukma.nc.dto.StudentProfile;
-import ua.ukma.nc.dto.UserDto;
-import ua.ukma.nc.dto.RoleDto;
-import ua.ukma.nc.entity.Project;
-import ua.ukma.nc.service.ProjectService;
-import ua.ukma.nc.service.RoleService;
-import ua.ukma.nc.service.StudentService;
 
 @Controller
 public class CertainUserController {
@@ -39,6 +34,15 @@ public class CertainUserController {
 
 	@Autowired
 	private ProjectService projectService;
+
+	@Autowired
+	private FinalReviewService finalReviewService;
+
+	@Autowired
+	private FinalReviewCriterionService finalReviewCriterionService;
+
+	@Autowired
+	private CriterionService criterionService;
 
 	@RequestMapping(value = "/certainUser/{id}", method = RequestMethod.GET)
 	public String getCertainUser(Model model, Principal principal, @PathVariable("id") Long id) {
@@ -118,5 +122,31 @@ public class CertainUserController {
 	@ResponseBody
 	public List<Project> mentorProjects(@RequestParam("user") Long userId) {
 		return projectService.getMentorProjects(userId);
+	}
+
+	@RequestMapping (value = "/ajax/get/final_review_form")
+	@ResponseBody
+	public List<FinalReviewCriterion> getFinReviewFormData(@RequestParam("user") Long userId){
+		List<FinalReviewCriterion> result = null;
+		List<Project> all = projectService.getStudentProjects(userId);
+		//only for testing gonna be fixed ASAP
+		all.stream().forEach(p->System.out.println(p));
+		Project current = all.get(0);
+		System.out.println(current);
+		if(current!=null){
+			FinalReview review = finalReviewService.getByStudent(current.getId(), userId, "F");
+			if(review!=null)
+				result = finalReviewCriterionService.getByFinalReview(review.getId());
+			else{
+				result = new LinkedList<FinalReviewCriterion>();
+				for (Criterion criterion : criterionService.getByProject(current.getId())){
+					FinalReviewCriterion frc = new FinalReviewCriterion();
+					frc.setCriterion(criterion);
+					result.add(frc);
+				}
+			}
+		}
+		result.stream().forEach(p->System.out.println(p));
+		return result;
 	}
 }
