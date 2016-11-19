@@ -60,7 +60,7 @@
 			</div>
 			<div class="col-md-3">
 			<spring:message code='projects.search.for' var="searchFor"/>
-				<form:form modelAttribute="projectSearch" id="searchForm">
+				<form:form method="get" modelAttribute="projectSearch" id="searchForm">
 					<form:hidden path="searchRequest" id="searchRequest" value="true" />
 					<div class="row">
 					<h4 style="margin-left:15px;"><spring:message code="projects.key.words.order"/>:</h4>
@@ -105,7 +105,7 @@
 						<div class="col-md-12">
 							<form:select path="dateType" class="form-control"
 								name="date-type">
-								<form:option value="" disabled="true"><spring:message code="projects.default"/></form:option>
+								<form:option value=""><spring:message code="projects.default"/></form:option>
 								<form:option value="startType"><spring:message code="projects.start"/></form:option>
 								<form:option value="endType"><spring:message code="projects.finish"/></form:option>
 								<form:option value="startAndEndType"><spring:message code="projects.start.finish"/></form:option>
@@ -150,7 +150,7 @@
 					<br/>
 					<div class="row">
 						<div class="col-md-12">
-							<input type=submit class="form-control btn btn-primary" value=<spring:message code="projects.search"/> />
+							<button onclick="cleanAndSubmit()" class="form-control btn btn-primary"><spring:message code="projects.search"/></button>	
 						</div>
 					</div>
 				</form:form>
@@ -172,16 +172,25 @@
 </div>
 <script>
 	$('.pagination').jqPagination({
-		link_string : '/projects',
 		current_page: '${currPage}',
 		max_page : '${maxPage}',
 		paged : function(page) {
 			$("#hidden-page").val(page);
-			$("#searchRequest").val('false');
-			$("#searchForm").submit();
-
+			$("#searchRequest").val('');
+			
+			cleanAndSubmit();
 		}
 	});
+	
+	function cleanAndSubmit(){
+		$('#searchForm').find('input, textarea, select, checkbox').each(function(_, inp) {
+			  if ($(inp).val() === '' || $(inp).attr("name") === '_criteria' || $(inp).val() === 'on' ||$(inp).val() === null){
+			    inp.disabled = true;
+			  }
+		});
+
+		$("#searchForm").submit();
+	}
 </script>
 
 <script type="text/javascript">

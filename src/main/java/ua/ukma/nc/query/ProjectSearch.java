@@ -124,7 +124,7 @@ public class ProjectSearch {
 	}
 
 	public Integer getPage() {
-		if (page == null || searchRequest)
+		if (page == null || searchRequest != null)
 			return 1;
 		return page;
 	}
