@@ -1,7 +1,7 @@
 <%@include file="header.jsp" %>
 <script
     src="<c:url value="/presentation/resources/js/certainProject.js"/>"
-    type="text/javascript">
+    type="text/javascript" defer="defer">
 </script>
 <div class="container certain-project">
     <!-- Example row of columns -->
