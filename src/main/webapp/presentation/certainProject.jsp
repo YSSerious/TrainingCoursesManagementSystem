@@ -41,12 +41,7 @@
                 Groups
             </h2>
             <div class="panel panel-default" id="project-groups">
-                <div class="panel-heading collapsed" data-toggle="collapse" data-target="#collapse-group">
-<!--                    <a href="/create-meeting?project=${project.id}" class="btn btn-default btn-xs pull-right-btn">Set
-                        meetings schedule</a>-->
-                    <!--<button class="btn btn-default btn-xs pull-right-btn" data-toggle="modal" data-target="#addMeetingModal">Add meeting</button>-->
-                    <!--                    <a href="" class="btn btn-default btn-xs pull-right-btn">Remove</a>
-                                        <a href="" class="btn btn-default btn-xs pull-right-btn">Edit</a>-->
+                <div class="panel-heading collapsed">
                     <button type="button" class="btn btn-default btn-sm pull-right" id="createGroupButton">
                         <b>Add</b>
                     </button>

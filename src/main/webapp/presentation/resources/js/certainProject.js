@@ -77,14 +77,11 @@ $(document).ready(function () {
     
 });
 
-//Disable groups collapse if any of header button clicked
-$('#project-groups .panel-heading > button').each(function () {
-    $(this).on('click', function (e) {
-        console.log('click');
-        e.stopPropagation();
-    });
+$('#project-groups .panel-heading').first().on('click', function(e) {
+    if (e.target.tagName !== "B") {
+        $('#collapse-group').collapse('toggle');
+    }
 });
-
 
 function changeSpan(){
     if ($("#spanId").hasClass("glyphicon-chevron-down") ){
