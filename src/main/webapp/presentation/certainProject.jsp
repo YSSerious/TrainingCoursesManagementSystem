@@ -42,7 +42,7 @@
             </h2>
             <div class="panel panel-default" id="project-groups">
                 <div class="panel-heading collapsed">
-                    <button type="button" class="btn btn-default btn-sm pull-right" id="createMeeting"
+                    <button type="button" class="btn btn-default btn-sm pull-right" id="showGroupsAndCriteria"
                             data-toggle="modal"
                             data-target="#meetingCreateModal">
                         <b>Add Meeting</b>
@@ -247,10 +247,9 @@
                     </div>
                     <label>Groups</label>
                     <div class="form-group" id="GroupsCheckBoxId">
-                        <%--<label class="checkbox-inline"><input type="checkbox">Option 1</label>--%>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    <button id="saveMeeting" type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
                 </form>
             </div>
         </div>

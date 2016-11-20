@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.ukma.nc.dto.*;
 import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Group;
-import ua.ukma.nc.entity.GroupAttachment;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.ProjectAttachment;
 import ua.ukma.nc.service.CriterionService;
@@ -23,7 +22,6 @@ import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.MeetingService;
 import ua.ukma.nc.service.ProjectAttachmentService;
 import ua.ukma.nc.service.ProjectService;
-import ua.ukma.nc.service.impl.ProjectAttachmentServiceImpl;
 import ua.ukma.nc.util.exception.CriteriaDeleteException;
 
 @Controller
@@ -134,4 +132,10 @@ public class CertainProjectController {
         return pCG;
     }
 
+    @RequestMapping(value = "/saveMeeting", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveMeeting(@RequestBody AddCriteriaDto dto) {
+        System.out.println(dto);
+        return "success";
+    }
 }
