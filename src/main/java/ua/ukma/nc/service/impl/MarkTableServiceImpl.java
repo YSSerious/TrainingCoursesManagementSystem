@@ -44,9 +44,6 @@ public class MarkTableServiceImpl implements MarkTableService {
 	public MarkTableDto getMarkTableDto(Long studentId, Long projectId, List<MarkInformation> marksInformation) {
 
 		List<Meeting> meetings = meetingService.getByStudentProject(studentId, projectId);
-		List<Meeting> absentMeetings = meetingService.getByStudentProjectType(studentId, projectId, 'A');
-		List<Meeting> leaveMeetings = meetingService.getByStudentProjectType(studentId, projectId, 'L');
-
 		List<Criterion> criteria = criterionService.getByProject(projectId);
 
 		MarkTableDto markTableDto = new MarkTableDto();
@@ -84,16 +81,15 @@ public class MarkTableServiceImpl implements MarkTableService {
 		}
 
 		Map<CategoryDto, List<CriterionResult>> dataTable = new TreeMap<CategoryDto, List<CriterionResult>>();
-		boolean leave = true;
+		boolean hasFinal = true;
 
 		FinalReview finalReview = null;
 
-		try {
-			finalReview = finalReviewService.getByStudent(projectId, studentId, "L");
-		} catch (Exception e) {
-			leave = false;
-		}
-
+		hasFinal = finalReviewService.existsForProject(studentId, projectId, "F");
+		
+		if(hasFinal)
+			finalReview = finalReviewService.getByStudent(projectId, studentId, "F");
+		
 		for (CategoryDto key : categories.keySet()) {
 			List<CriterionResult> tempData = new ArrayList<CriterionResult>();
 
@@ -106,28 +102,18 @@ public class MarkTableServiceImpl implements MarkTableService {
 
 				for (int j = 0; j < meetingId.size(); j++) {
 					CertainMarkDto certainMarkDto = new CertainMarkDto();
-					certainMarkDto.setValue("-");
+					certainMarkDto.setValue(" ");
 					certainMarkDto.setCommentary("");
-					certainMarkDto.setDescription("Okay. Maybe next time.");
-
+					certainMarkDto.setDescription("No evaluation.");
 					criterionResult.getMarks().add(certainMarkDto);
 				}
 
-				if (!leave) {
-					CertainMarkDto certainMarkDto = new CertainMarkDto();
-					certainMarkDto.setValue("U");
-					certainMarkDto.setCommentary("");
-					certainMarkDto.setDescription("No final review :c");
+				CertainMarkDto certainMarkDto = new CertainMarkDto();
+				certainMarkDto.setValue("-");
+				certainMarkDto.setCommentary("");
+				certainMarkDto.setDescription("No final review.");
 
-					criterionResult.getMarks().add(certainMarkDto);
-				} else {
-					CertainMarkDto certainMarkDto = new CertainMarkDto();
-					certainMarkDto.setValue("L");
-					certainMarkDto.setCommentary("");
-					certainMarkDto.setDescription("Brrr...");
-
-					criterionResult.getMarks().add(certainMarkDto);
-				}
+				criterionResult.getMarks().add(certainMarkDto);
 			}
 
 			dataTable.put(key, tempData);
@@ -144,9 +130,7 @@ public class MarkTableServiceImpl implements MarkTableService {
 
 		markTableDto.setTableData(dataTableDto);
 
-		putMarks(meetings, categories, meetingId, dataTable, "U", "Maybe next time");
-		putMarks(absentMeetings, categories, meetingId, dataTable, "A", "Very bad...");
-		putMarks(leaveMeetings, categories, meetingId, dataTable, "L", "Very-very bad...");
+		putMarks(meetings, categories, meetingId, dataTable, "-", "No review.");
 
 		for (MarkInformation markInformation : marksInformation) {
 
@@ -164,8 +148,7 @@ public class MarkTableServiceImpl implements MarkTableService {
 			dataTable.get(category).get(criterionIndex).getMarks().set(meetingIndex, certainMarkDto);
 		}
 
-		if(finalReviewService.existsForProject(studentId, projectId, "F")) {
-			finalReview = finalReviewService.getByStudent(projectId, studentId, "F");
+		if(hasFinal) {
 			List<FinalReviewCriterion> reviews = finalReviewCriterionService.getByFinalReview(finalReview.getId());
 
 			for (FinalReviewCriterion review : reviews) {
@@ -177,7 +160,7 @@ public class MarkTableServiceImpl implements MarkTableService {
 				category.setDescription(categoryEntity.getDescription());
 				
 				int criterionIndex = find(categories.get(category),criterionName);
-				int meetingIndex = meetingId.size() - 1;
+				int meetingIndex = meetingId.size();
 
 				CertainMarkDto certainMarkDto = new CertainMarkDto();
 				certainMarkDto.setValue(String.valueOf(review.getMark().getValue()));

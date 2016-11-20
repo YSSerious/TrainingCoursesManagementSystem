@@ -1,19 +1,13 @@
 function getMark(mark){
-	if(mark == 'A')
+	if(mark == ' ')
+		return ' ';
+	else if(mark == '-')
 		return '<p style="padding:0px; margin:0px;"><b>-</b></p>';
-	else if(mark == 'L')
-		return '<p style="padding:0px; margin:0px;"><b>-</b></p>';
-	else if(mark == 'U')
-		return '<p style="padding:0px; margin:0px;"><b>-</b></p>';
-	else if(mark != '-')
-		return '<p style="padding:0px; margin:0px;"><b>'+mark+'</b></p>';
-	return '<p style="padding:0px; margin:0px;" class="text-muted"> </p>';
+	return '<p style="padding:0px; margin:0px;"><b>'+mark+'</b></p>';
 }
 
 function getRow(type){
 	if(type == 'A')
-		return ' class="danger"';
-	else if (type == 'L')
 		return ' class="danger"';
 	return '';
 }
