@@ -1,5 +1,6 @@
 package ua.ukma.nc.entity.impl.proxy;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ua.ukma.nc.entity.Mark;
@@ -16,6 +17,8 @@ public class MarkProxy implements Mark {
     private static final long serialVersionUID = 8917289155140308183L;
     private int value;
     private MarkImpl mark;
+    
+    @Autowired
     private MarkService markService;
 
     public MarkProxy() {

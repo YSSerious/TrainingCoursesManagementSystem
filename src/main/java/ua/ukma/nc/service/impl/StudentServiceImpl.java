@@ -1,6 +1,8 @@
 package ua.ukma.nc.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -13,10 +15,13 @@ import ua.ukma.nc.dto.CategoryDto;
 import ua.ukma.nc.dto.CriterionDto;
 import ua.ukma.nc.dto.FinalReviewDto;
 import ua.ukma.nc.dto.MarkInformation;
+import ua.ukma.nc.dto.MeetingResultDto;
+import ua.ukma.nc.dto.MeetingReviewDto;
 import ua.ukma.nc.dto.StudentMeetingReview;
 import ua.ukma.nc.dto.StudentProfile;
 import ua.ukma.nc.dto.StudentStatusLog;
 import ua.ukma.nc.dto.StudyResultDto;
+import ua.ukma.nc.entity.MeetingResult;
 import ua.ukma.nc.entity.MeetingReview;
 import ua.ukma.nc.entity.StatusLog;
 import ua.ukma.nc.entity.User;
@@ -116,6 +121,24 @@ public class StudentServiceImpl implements StudentService {
 		studentProfile.setProjectCategories(categories);
 		studentProfile.setProjectCriteria(criteria);
 		
+		List<MeetingReviewDto> fullMeetingReviews = new ArrayList<MeetingReviewDto>();
+		
+		for(MeetingReview meetingReview: meetingReviews){
+			MeetingReviewDto meetingReviewDto = new MeetingReviewDto(meetingReview);
+			
+			List<MeetingResultDto> meetingResultsDto = new ArrayList<MeetingResultDto>();
+			
+			for(MeetingResult meetingResult: meetingResultService.getByReview(meetingReview.getId())){
+				MeetingResultDto meetingResultDto = new MeetingResultDto(meetingResult);
+				meetingResultsDto.add(meetingResultDto);
+			}
+			
+			meetingReviewDto.setMarks(meetingResultsDto);
+			
+			fullMeetingReviews.add(meetingReviewDto);
+		}
+		Collections.sort(fullMeetingReviews);
+		studentProfile.setFullMeetingReviews(fullMeetingReviews);
 		return studentProfile;
 	}
 
