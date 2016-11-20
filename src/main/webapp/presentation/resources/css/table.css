@@ -13,13 +13,22 @@
 	width: auto;
 }
 
+.meeting table{
+	width: 100%;
+}
+
 .meeting th:first-child {
 	position: fixed;
 	width: 300px;
 }
 
 .meeting th, .meeting td {
-	min-width: 200px;
+	min-width: 150px;
+	width:auto;
+}
+
+.meeting th:last-child{
+	width: 100%;
 }
 
 .user-table td:first-child {

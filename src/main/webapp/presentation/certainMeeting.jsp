@@ -15,7 +15,7 @@ At ${meeting.time}
 			<h3 class="panel-title">Student list</h3>
 		</div>
 		<table class="table table-striped table-bordered meeting"
-			id="pagination" data-count-fixed-columns="1" cellpadding="0" cellspacing="0">
+			id="pagination" data-count-fixed-columns="1">
 			<thead class="header">
 
 				<tr>
@@ -28,7 +28,7 @@ At ${meeting.time}
 			<tbody class="results">
 			<c:forEach items="${students}" var="user">
 				<tr>
-					<td><font size="3"><b> <a href="/users/${user.id}">
+					<td><font size="3"><b> <a href="/createMeeting/${user.id}">
 									${user.firstName} ${user.secondName} ${user.lastName} </a></b></font></td>
 					<c:forEach items="${criteria}" var="criterion">
 						<td><font size="3"><center>
