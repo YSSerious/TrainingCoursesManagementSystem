@@ -4,6 +4,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.web.servlet.view.document.AbstractXlsView;
 
+import ua.ukma.nc.dto.CategoryDto;
+import ua.ukma.nc.dto.CategoryResult;
 import ua.ukma.nc.dto.CertainMarkDto;
 import ua.ukma.nc.dto.CriterionResult;
 import ua.ukma.nc.dto.StudentProfile;
@@ -38,14 +40,14 @@ public class StudentMarksExcel extends AbstractXlsView {
 			header.createCell(i).setCellValue(meetings.get(i - 1));
 
 		int rowCount = 1;
-		Map<String, List<CriterionResult>> marks = studentProfile.getMarkTableDto().getTableData();
-		for (String key : marks.keySet()) {
+		List<CategoryResult> marks = studentProfile.getMarkTableDto().getTableData();
+		for (CategoryResult key : marks) {
 
 			sheet.addMergedRegion(new CellRangeAddress(rowCount, rowCount, 0, meetings.size()));
 			Row keyRow = sheet.createRow(rowCount++);
-			keyRow.createCell(0).setCellValue(key);
+			keyRow.createCell(0).setCellValue(key.getCategoryDto().getName());
 
-			List<CriterionResult> criterionResults = marks.get(key);
+			List<CriterionResult> criterionResults = key.getCriteriaResults();
 
 			for (CriterionResult criterionResult : criterionResults) {
 				Row markRow = sheet.createRow(rowCount++);

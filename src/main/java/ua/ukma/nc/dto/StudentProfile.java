@@ -21,6 +21,9 @@ public class StudentProfile {
 	private FinalReviewDto generalReview;
 	private FinalReviewDto technicalReview;
 	private FinalReviewDto finalReview;
+	
+	private List<CategoryDto> projectCategories;
+	private List<CriterionDto> projectCriteria;
 
 	public List<StudentStatusLog> getStudentStatuses() {
 		return studentStatuses;
@@ -117,4 +120,21 @@ public class StudentProfile {
 	public void setFinalReview(FinalReviewDto finalReview) {
 		this.finalReview = finalReview;
 	}
+
+	public List<CategoryDto> getProjectCategories() {
+		return projectCategories;
+	}
+
+	public void setProjectCategories(List<CategoryDto> projectCategories) {
+		this.projectCategories = projectCategories;
+	}
+
+	public List<CriterionDto> getProjectCriteria() {
+		return projectCriteria;
+	}
+
+	public void setProjectCriteria(List<CriterionDto> projectCriteria) {
+		this.projectCriteria = projectCriteria;
+	}
+
 }

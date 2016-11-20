@@ -3,11 +3,14 @@ package ua.ukma.nc.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ua.ukma.nc.dto.CategoryChartDto;
+import ua.ukma.nc.dto.CategoryDto;
+import ua.ukma.nc.dto.CriterionDto;
 import ua.ukma.nc.dto.FinalReviewDto;
 import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.dto.StudentMeetingReview;
@@ -17,7 +20,9 @@ import ua.ukma.nc.dto.StudyResultDto;
 import ua.ukma.nc.entity.MeetingReview;
 import ua.ukma.nc.entity.StatusLog;
 import ua.ukma.nc.entity.User;
+import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.ChartService;
+import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.service.FinalReviewService;
 import ua.ukma.nc.service.MarkTableService;
 import ua.ukma.nc.service.MeetingResultService;
@@ -29,6 +34,12 @@ import ua.ukma.nc.service.UserService;
 
 @Service
 public class StudentServiceImpl implements StudentService {
+	
+	@Autowired
+	private CriterionService criterionService;
+	
+	@Autowired
+	private CategoryService categoryService;
 
 	@Autowired
 	private ChartService chartService;
@@ -98,6 +109,12 @@ public class StudentServiceImpl implements StudentService {
 		
 		if(finalReviewService.existsForProject(studentId, projectId, "T"))
 			studentProfile.setTechnicalReview(new FinalReviewDto(finalReviewService.getByStudent(projectId, studentId, "T")));
+		
+		List<CategoryDto> categories = categoryService.getByProjectId(projectId).stream().map(CategoryDto::new).collect(Collectors.toList());
+		List<CriterionDto> criteria = criterionService.getByProject(projectId).stream().map(CriterionDto::new).collect(Collectors.toList());
+		
+		studentProfile.setProjectCategories(categories);
+		studentProfile.setProjectCriteria(criteria);
 		
 		return studentProfile;
 	}
