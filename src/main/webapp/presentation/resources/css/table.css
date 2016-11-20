@@ -22,3 +22,29 @@
 	min-width: 200px;
 }
 
+.user-table td:first-child {
+	white-space: nowrap; 
+}
+
+.user-table th:first-child {
+	white-space: nowrap; 
+}
+
+.user-table th:not(:first-child) {
+	text-align: center;   
+}
+
+.user-table td:not(:first-child) {
+	font-size:13pt;
+	text-align: center;   
+}
+
+.table-responsive>.fixed-column {
+    position: absolute;
+    width: auto;
+}
+
+.fixed-column{
+	white-space: nowrap;
+	background-color:#fff;
+}

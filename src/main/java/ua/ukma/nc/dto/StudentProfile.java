@@ -24,6 +24,8 @@ public class StudentProfile {
 	
 	private List<CategoryDto> projectCategories;
 	private List<CriterionDto> projectCriteria;
+	
+	private List<MeetingReviewDto> fullMeetingReviews;
 
 	public List<StudentStatusLog> getStudentStatuses() {
 		return studentStatuses;
@@ -135,6 +137,14 @@ public class StudentProfile {
 
 	public void setProjectCriteria(List<CriterionDto> projectCriteria) {
 		this.projectCriteria = projectCriteria;
+	}
+
+	public List<MeetingReviewDto> getFullMeetingReviews() {
+		return fullMeetingReviews;
+	}
+
+	public void setFullMeetingReviews(List<MeetingReviewDto> fullMeetingReviews) {
+		this.fullMeetingReviews = fullMeetingReviews;
 	}
 
 }

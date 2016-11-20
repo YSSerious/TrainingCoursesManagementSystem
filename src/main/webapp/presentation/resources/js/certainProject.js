@@ -4,7 +4,7 @@
 
 $(document).ready(function () {
 
-    $("#createMeeting").click(function () {
+    $("#showGroupsAndCriteria").click(function () {
         $.ajax({
             url: "/getCriteriaAndGroups",
             type: "GET",
@@ -13,12 +13,11 @@ $(document).ready(function () {
                 console.log(data);
                 $("#CriteriaCheckBoxId").children().remove();
                 $.each(data.criterions, function(key, value){
-                    $('#CriteriaCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox'>"+value.title+"</label>");
+                    $('#CriteriaCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox' class='isCriteriaChecked'>"+value.title+"</label>");
                 });
-
                 $("#GroupsCheckBoxId").children().remove();
                 $.each(data.groupList, function(key, value){
-                    $('#GroupsCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox'>"+value.name+"</label>");
+                    $('#GroupsCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox' class='isGroupChecked'>"+value.name+"</label>");
                 });
             },
             error: function (textStatus) {
@@ -26,6 +25,47 @@ $(document).ready(function () {
             }
         });
     });
+
+    $("#saveMeeting").click(function () {
+
+        var dto={name:'',
+            place:'',
+            date:'',
+            criterions:[],
+            groups:[]};
+
+        dto.name=$("#inputName").val();
+        dto.place=$("#inputPlace").val();
+        dto.date=$("#inputDate").val();
+
+        $.each($('.isCriteriaChecked'), function(key, value){
+            if(value.checked){
+                dto.criterions.push(value.closest('label').textContent);
+            }
+        });
+
+        $.each($('.isGroupChecked'), function(key, value){
+            if(value.checked){
+                dto.groups.push(value.closest('label').textContent);
+            }
+        });
+        console.log(dto);
+
+        $.ajax({
+            url: "/saveMeeting",
+            type: "POST",
+            contentType: "application/json",
+            dataType: 'json',
+            data: JSON.stringify({name:dto.name, place:dto.place, date:dto.date, crit:dto.criterions, gr:dto.groups}),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
+    });
+
 
     $("#showAvailableCriteria").click(function () {
         $.ajax({

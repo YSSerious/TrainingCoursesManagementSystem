@@ -1,13 +1,13 @@
 function getMark(mark){
 	if(mark == 'A')
-		return '<div class="btn btn-danger">A</button>';
+		return '<p style="padding:0px; margin:0px;"><b>-</b></p>';
 	else if(mark == 'L')
-		return '<div class="btn btn-danger">L</button>';
+		return '<p style="padding:0px; margin:0px;"><b>-</b></p>';
 	else if(mark == 'U')
-		return '<div class="btn btn-primary">U</button>';
+		return '<p style="padding:0px; margin:0px;"><b>-</b></p>';
 	else if(mark != '-')
-		return '<div class="btn btn-success">'+mark+'</button>';
-	return '<div class="btn btn-default">N</button>';
+		return '<p style="padding:0px; margin:0px;"><b>'+mark+'</b></p>';
+	return '<p style="padding:0px; margin:0px;" class="text-muted"> </p>';
 }
 
 function getRow(type){
@@ -84,6 +84,10 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
     	 	    	    	
+    	 	    	    	table+= '<br/><h2>Meeting reviews: </h2>';
+    	 	    	    	table+= getFullMeetingReviews(data.fullMeetingReviews);
+    	 	    	    	table+= '<br/>';
+    	 	    	    	
     	 	    	    	table+= '<div class="row"><div class = "col-sm-10"><h2>Grades:</h2></div><div class = "col-sm-2"><h2>';
     	 	    	    	//table+=	'<a href="/studentMarks/'+value.id+'/'+userId+'.xls" class="btn btn-primary pull-right">Report</a>';
     	 	    	    	table+=	'</h2></div></div>';
@@ -121,6 +125,26 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	$('.categories-select-'+value.id).select2({
     	 	    	    		  placeholder: "Select categories"
     	 	    	    	});
+
+    	 	    	       var $table = $('#marks-'+value.id);
+    	 	    	       var $fixedColumn = $table.clone().insertBefore($table).addClass('fixed-column');
+
+    	 	    	       $fixedColumn.find('th:not(:first-child),td:not(:first-child)').remove();
+
+    	 	    	       $fixedColumn.find('tr').each(function (i, elem) {
+    	 	    	           $(this).height($table.find('tr:eq(' + i + ')').height());
+    	 	    	           $(this).width($table.find('tr:eq(' + i + ')').width());
+    	 	    	       });
+    	 	    	       
+    	 	    	      $.each(data.fullMeetingReviews, function(key, meetingReview) {
+    	 	    			$('#m'+meetingReview.id).click(function() {
+    	 	    				$('#sm'+meetingReview.id).slideToggle();
+    	 	    			});
+    	 	    			
+    	 	    			if(key != 0){
+    	 	    				$('#sm'+meetingReview.id).hide();
+    	 	    			}
+    	 	    	      });
     	 	    	    }
     	 	    	  });
     			});
@@ -181,33 +205,38 @@ function getMeetingReviewsTable(meetingReviews){
 
 function getMarksTable(markTableDto, projectId){
 	var table = '';
- 	table+= '<table class="table table-bordered" id="marks-'+projectId+'"><tr><th>#</th>';
+ 	table+= '<div class="table-responsive"><table class="table table-bordered user-table" id="marks-'+projectId+'"><tr><th>#</th>';
+ 	
+ 	for(var i =0; i<15; i++){
  	$.each(markTableDto.meetings, function( key, value ) {
  		if(key<markTableDto.meetings.length-1)
  			table+= '<th>M' + (key+1) + '</th>';
  		else
- 			table+= '<th>F</th>';
+ 			table+= '<th>FR</th>';
  	});
+ 	}
  	table+= '</tr>';
 
  	$.each(markTableDto.tableData, function(key, categoryResult ) {
- 		table+= '<tr id="row-'+projectId+'-'+categoryResult.categoryDto.id+'"><td align="center" colspan="'+ markTableDto.meetings.length + 1 +'"><b>' + categoryResult.categoryDto.name + '</b></td></tr>';
+ 		table+= '<tr id="row-'+projectId+'-'+categoryResult.categoryDto.id+'"><td><b>' + categoryResult.categoryDto.name + '</b></td><td colspan="'+ markTableDto.meetings.length*15+'"></td></tr>';
  		
  		$.each(categoryResult.criteriaResults, function( i, criterionResult ) {
- 			table+= '<tr class="active" id="row-'+projectId+'-'+categoryResult.categoryDto.id+'-'+criterionResult.criterionId+'"><td>' + criterionResult.criterionName + '</td>';
+ 			table+= '<tr class="active" id="row-'+projectId+'-'+categoryResult.categoryDto.id+'-'+criterionResult.criterionId+'"><td style="padding-left:30px;">' + criterionResult.criterionName + '</td>';
+ 			for(var i =0; i<15; i++){
  			$.each(criterionResult.marks, function(index, mark) {
  					if(mark.commentary == '')
  						table+= '<td><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
  					else
  						table+= '<td><span title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
 	    		});
- 			table+= '</tr></div></div></div>';
+ 			}
+ 			table+= '</tr>';
  		});
  		
  		
  	});
  	
- 	table+= '</table>';
+ 	table+= '</table></div>';
  	
  	return table;
 }
@@ -294,14 +323,13 @@ function search(projectId){
         selectedCategories.push($(this).val()); 
     });
     
-	if(selectedCriteria.length == 0 && selectedCategories.length == 0){
+	
 		$('#marks-'+projectId+' > tbody  > tr').each(function(index, value) {
 			if($(value).css('display') == 'none'){
 				$(value).show();
 			}
 		});
-	}else{
-    
+	if(selectedCriteria.length != 0 || selectedCategories.length != 0){
 		var currentCategory;
 		var open = 0;
     
@@ -424,3 +452,42 @@ function doFinalReview(userId) {
 		$('#fin-rev-err').removeClass('hidden');
 	}
 };
+
+function getFullMeetingReviews(fullMeetingReviews){
+	var div = '';
+	
+	$.each(fullMeetingReviews, function(key, meetingReview) {
+		
+		var type = '';
+		
+		if(meetingReview.marks.length == 0){
+			type = 'default';
+		}else{
+			type = 'primary';
+		}
+		
+		div  += '<div class="panel panel-'+type+'"><div id=m'+meetingReview.id+' class="panel-heading">';
+		div += meetingReview.name + ' <div class="pull-right">' + meetingReview.date + '</div></div><div id=sm'+meetingReview.id+' class="panel-body">';
+			  
+		
+		div += '<h4>' + meetingReview.commentary + '</h4>';
+		
+		if(meetingReview.marks.length != 0){
+			div += '<hr/>';
+		}
+		
+		div += '<table class="table table-bordered">'
+		
+		$.each(meetingReview.marks, function(key, mark) {
+			div += '<tr>';
+			div += '<th>' + mark.criterionName + '</th>';
+			div += '<td>' + mark.value + '</td>';
+			div += '</tr>';
+		});
+		
+		div += '</table></div></div>';
+		
+	});
+	
+	return div;
+}

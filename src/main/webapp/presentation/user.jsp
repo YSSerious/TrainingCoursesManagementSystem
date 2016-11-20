@@ -190,7 +190,6 @@
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
                 <h4 class="modal-title">Final Review</h4>
-                <br/>
                 <div>
                     <form>
                         <table class="table" id="final-review-form-list">
