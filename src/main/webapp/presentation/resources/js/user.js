@@ -351,3 +351,26 @@ function getSelectCriteria(projectCriteria, projectId){
 	
 	return select;
 }
+
+function getReviewForm(userId) {
+	$.ajax({
+		'url' : '/ajax/get/final_review_form',
+		'type' : 'GET',
+		'data' : {'user' : userId},
+		'success' : function(data) {
+			var s = '';
+			$.each( data, function( elem ) {
+				s+='<tr><td>'+elem.criterion.title+'</td><td><input type="text" id="'
+				+elem.criterion.id+'"></td></tr>';
+			});
+
+			if(jQuery.isEmptyObject(data))
+				s= '<br/><h4>No criteria for this project!</h4>';
+
+			$('#final-review-form-list').html(s);
+		},
+		'error': function (data) {
+			console.warn(data);
+		}
+	});
+};
