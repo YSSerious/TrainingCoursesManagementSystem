@@ -36,111 +36,184 @@
                 <c:forEach var="item" items="${user.roles}">
                     <c:if test="${item eq 'Student'}">
 
-                        <b>Status:</b> ${user.statusTitle} <br/><br/>
+                        <b>Status:</b> ${user.statusTitle} <br/>
 
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 1}">
-                                <div class="showactions">
-                                    <button type="submit" class="btn btn-primary">Switch status</button>
-                                </div>
-                                <div class="actions">
-                                    <form method="post">
-                                        <br/>
-                                        <input type="radio" name="status" value="3" checked>Interview offer
-                                        <button type="submit" style="margin-top:-5px;"
-                                                class="btn btn-primary pull-right">Submit
-                                        </button>
-                                        <br/><br/>
-                                        <textarea name="commentary" class="form-control" rows="2" id="comment"
-                                                  required></textarea>
-                                    </form>
-                                </div>
-                            </c:if>
+								<font color="blue" data-toggle="modal"
+									data-target="#switchStatus"><b>Switch status</b></font>
+
+								<div id="switchStatus" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Switch status</h4>
+											</div>
+											<div class="modal-body">
+												<div class="showactions"></div>
+												<div class="actions">
+													<form method="post">
+														<br /> <input type="radio" name="status" value="3" checked>Interview
+														offer
+														<button type="submit" style="margin-top: -5px;"
+															class="btn btn-primary pull-right">Submit</button>
+														<br />
+														<br />
+														<textarea name="commentary" class="form-control" rows="2"
+															id="comment" required></textarea>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</c:if>
                         </sec:authorize>
 
                         <c:if test="${user.statusId eq 2}">
                             <sec:authorize access="hasRole('MENTOR')">
-                                <div class="showactions">
-                                    <button type="submit" class="btn btn-primary">Switch status</button>
-                                </div>
-                                <div class="actions">
-                                    <form method="post">
-                                        <br/>
-                                        <input type="radio" name="status" value="1" checked>Inactive
-                                        <button type="submit" style="margin-top:-5px;"
-                                                class="btn btn-primary pull-right">Submit
-                                        </button>
-                                        <br/><br/>
-                                        <textarea name="commentary" class="form-control" rows="2" id="comment"
-                                                  required></textarea>
-                                    </form>
-                                </div>
-                            </sec:authorize>
+
+								<font color="blue" data-toggle="modal"
+									data-target="#switchStatus"><b>Switch status</b></font>
+
+								<div id="switchStatus" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Switch status</h4>
+											</div>
+											<div class="modal-body">
+												<div class="showactions"></div>
+												<div class="actions">
+													<form method="post">
+														<br /> <input type="radio" name="status" value="1" checked>Inactive
+														<button type="submit" style="margin-top: -5px;"
+															class="btn btn-primary pull-right">Submit</button>
+														<br />
+														<br />
+														<textarea name="commentary" class="form-control" rows="2"
+															id="comment" required></textarea>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+							</sec:authorize>
                             <sec:authorize access="hasRole('HR')">
-                                <div class="actions">
-                                    <div class="showactions">
-                                        <button type="submit" class="btn btn-primary">Switch status</button>
-                                    </div>
-                                    <form method="post">
-                                        <br/>
-                                        <input type="radio" name="status" value="1" checked>Inactive
-                                        <input type="radio" name="status" value="3">Interview offer
-                                        <button type="submit" class="btn btn-primary pull-right">Submit</button>
-                                        <br/><br/>
-                                        <textarea name="commentary" class="form-control" rows="2" id="comment"
-                                                  required></textarea>
-                                    </form>
-                                </div>
-                            </sec:authorize>
+								<font color="blue" data-toggle="modal"
+									data-target="#switchStatus"><b>Switch status</b></font>
+
+								<div id="switchStatus" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Switch status</h4>
+											</div>
+											<div class="modal-body">
+												<div class="actions">
+													<div class="showactions"></div>
+													<form method="post">
+														<br /> <input type="radio" name="status" value="1" checked>Inactive
+														<input type="radio" name="status" value="3">Interview
+														offer
+														<button type="submit" class="btn btn-primary pull-right">Submit</button>
+														<br />
+														<br />
+														<textarea name="commentary" class="form-control" rows="2"
+															id="comment" required></textarea>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</sec:authorize>
                         </c:if>
 
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 3}">
                                 <sec:authorize access="hasRole('HR')">
-                                    <div class="showactions">
-                                        <button type="submit" class="btn btn-primary">Switch status</button>
-                                    </div>
-                                    <div class="actions">
-                                        <form method="post">
-                                            <br/>
-                                            <input type="radio" name="status" value="1" checked>Inactive
-                                            <input type="radio" name="status" value="4">Job offer
-                                            <button type="submit" class="btn btn-primary pull-right">Submit</button>
-                                            <br/><br/>
-                                            <textarea name="commentary" class="form-control" rows="2" id="comment"
-                                                      required></textarea>
-                                        </form>
-                                    </div>
-                                </sec:authorize>
+									<font color="blue" data-toggle="modal"
+										data-target="#switchStatus"><b>Switch status</b></font>
+
+									<div id="switchStatus" class="modal fade" role="dialog">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal">&times;</button>
+													<h4 class="modal-title">Switch status</h4>
+												</div>
+												<div class="modal-body">
+													<div class="showactions"></div>
+													<div class="actions">
+														<form method="post">
+															<br /> <input type="radio" name="status" value="1"
+																checked>Inactive <input type="radio"
+																name="status" value="4">Job offer
+															<button type="submit" class="btn btn-primary pull-right">Submit</button>
+															<br />
+															<br />
+															<textarea name="commentary" class="form-control" rows="2"
+																id="comment" required></textarea>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</sec:authorize>
                             </c:if>
                         </sec:authorize>
                     </c:if>
                 </c:forEach>
 
                 <sec:authorize access="hasRole('ADMIN')">
-                    <b>Choose role:</b>
-                    <div class="row">
-                        <form action="/manageRoles" method="post">
-                            <div class="col-sm-6">
-                                <c:forEach var="role" items="${roles}">
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" name="roles"
-                                        <c:forEach var="userRole" items="${user.roles}">
-                                                      <c:if test="${role.title eq userRole}">checked</c:if>
-                                        </c:forEach>
-                                                      value="${role.id}">${role.title}</label>
-                                    </div>
-                                </c:forEach>
-                            </div>
-                            <div class="col-sm-6">
-                                <br/>
-                                <br/>
-                                <input type="hidden" name="student" value="${user.id}">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </sec:authorize>
+
+					<font data-toggle="modal" data-target="#chooseRoles" color="blue"><b>Choose
+							roles</b></font>
+
+					<div id="chooseRoles" class="modal fade" role="dialog">
+						<div class="modal-dialog modal-sm">
+
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Choose roles</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<form action="/manageRoles" method="post">
+											<div class="col-sm-12">
+												<c:forEach var="role" items="${roles}">
+													<div class="checkbox">
+														<label><input type="checkbox" name="roles"
+															<c:forEach var="userRole" items="${user.roles}">
+                                                      			<c:if test="${role.title eq userRole}">checked</c:if>
+                                        					</c:forEach>
+															value="${role.id}">${role.title}</label>
+													</div>
+												</c:forEach>
+											</div>
+											<br />
+											<input type="hidden" name="student" value="${user.id}">
+											<center>
+												<button type="submit" class="btn btn-primary">Submit</button>
+											</center>
+										</form>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</sec:authorize>
                 <sec:authorize access="hasRole('MENTOR')">
                     <%--<c:if test="${user.statusId eq 2}">--%>
                         <br/><br/>
@@ -211,13 +284,4 @@
 </div>
 <!-- end add fin review modal -->
 
-<script>
-    $(document).ready(function () {
-        $(".actions").hide();
-        $(".showactions").click(function () {
-            $(".actions").show();
-            $(".showactions").hide();
-        });
-    });
-</script>
 <%@include file="footer.jsp" %>
