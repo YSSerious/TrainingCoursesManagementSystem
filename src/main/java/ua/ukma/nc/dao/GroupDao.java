@@ -31,5 +31,6 @@ public interface GroupDao {
     List<User> getMentors(Long groupId);
     
     int createGroup(Group group);
-    
+
+    Group getByUserProject(Long userId, Long projectId);
 }

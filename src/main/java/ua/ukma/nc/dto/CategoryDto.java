@@ -6,7 +6,7 @@ import java.util.List;
 import ua.ukma.nc.entity.Category;
 import ua.ukma.nc.entity.Criterion;
 
-public class CategoryDto {
+public class CategoryDto implements Comparable<CategoryDto>{
 	private Long id;
 	private String name;
 	private String description;
@@ -63,5 +63,22 @@ public class CategoryDto {
 
 	public void setCriteria(List<CriterionDto> criteria) {
 		this.criteria = criteria;
+	}
+	
+	@Override
+	public boolean equals(Object o){
+		if(o instanceof CategoryDto)
+			return ((CategoryDto) o).getName().equals(getName());
+		return false;
+	}
+
+	@Override
+	public int compareTo(CategoryDto categoryDto) {
+		return getName().compareTo(categoryDto.getName());
+	}
+	
+	@Override
+	public String toString(){
+		return id+" "+getName();
 	}
 }

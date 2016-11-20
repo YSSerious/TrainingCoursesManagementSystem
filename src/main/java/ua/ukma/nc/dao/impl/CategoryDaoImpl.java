@@ -40,6 +40,8 @@ public class CategoryDaoImpl implements CategoryDao {
 			return category;
 		}
 	}
+	
+	private static final String GET_BY_PROJECT_ID = "SELECT * FROM tcms.category WHERE id IN (SELECT DISTINCT(id_category) FROM tcms.criterion WHERE id IN (SELECT id_criterion FROM tcms.project_criterion WHERE id_project = ?))";
 
 	private static final String GET_CRITERIA_BY_ID = "SELECT id, name FROM tcms.criterion WHERE id_category = ?";
 
@@ -111,5 +113,11 @@ public class CategoryDaoImpl implements CategoryDao {
 			criterion.setTitle(resultSet.getString("name"));
             return criterion;
 		}
+	}
+
+	@Override
+	public List<Category> getByProjectId(Long projectId) {
+		log.info("Getting all categories by project id");
+		return jdbcTemplate.query(GET_BY_PROJECT_ID, new CategoryMapper(), projectId);
 	}
 }

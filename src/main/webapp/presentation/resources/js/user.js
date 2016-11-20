@@ -84,9 +84,25 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
     	 	    	    	
-    	 	    	    	table+= '<div class="row"><div class = "col-sm-10"><h2>Grades:</h2></div><div class = "col-sm-2"><h2><a href="/studentMarks/'+value.id+'/'+userId+'.xls" class="btn btn-primary pull-right">Report</a></h2></div></div>';
-                            table+= getMarksTable(data.markTableDto);
+    	 	    	    	table+= '<div class="row"><div class = "col-sm-10"><h2>Grades:</h2></div><div class = "col-sm-2"><h2>';
+    	 	    	    	//table+=	'<a href="/studentMarks/'+value.id+'/'+userId+'.xls" class="btn btn-primary pull-right">Report</a>';
+    	 	    	    	table+=	'</h2></div></div>';
                             
+    	 	    	    	table+= '<div class="panel panel-default"><div class="panel-heading"><div class="row">';
+    	 	    	    	table+= '<div class = "col-sm-5">';
+    	 	    	    	table+= getSelectCategories(data.projectCategories, value.id);
+    	 	    	    	table+= '</div>';
+    	 	    	    	table+= '<div class = "col-sm-5">';
+    	 	    	    	table+= getSelectCriteria(data.projectCriteria, value.id);
+    	 	    	    	table+= '</div>';
+    	 	    	    	table+= '<div class = "col-sm-2">';
+    	 	    	    	table+= '<button onclick="search('+value.id+')" class="form-control btn btn-default">Search</button>';
+    	 	    	    	table+= '</div>';
+    	 	    	    	table+= '</div></div>';
+    	 	    	    	
+    	 	    	    	table+= getMarksTable(data.markTableDto, value.id);
+                            
+    	 	    	    	table+= '</div>';
                             table+= '<br/><h2>Statuses: </h2>';
                             table+= getStatusesTable(data.studentStatuses);
                             
@@ -98,6 +114,13 @@ function createStudentProjectsInfo(userId, divInside){
                             
                             table+= '</div></div></div>';
     	 	    	    	$('#sub'+value.id).append(table);
+    	 	    	    	
+    	 	    	    	$('.criteria-select-'+value.id).select2({
+    	 	    	    		  placeholder: "Select criteria"
+    	 	    	    	});
+    	 	    	    	$('.categories-select-'+value.id).select2({
+    	 	    	    		  placeholder: "Select categories"
+    	 	    	    	});
     	 	    	    }
     	 	    	  });
     			});
@@ -156,9 +179,9 @@ function getMeetingReviewsTable(meetingReviews){
  	return table;
 }
 
-function getMarksTable(markTableDto){
+function getMarksTable(markTableDto, projectId){
 	var table = '';
- 	table+= '<table class="table table-bordered"><tr><th>#</th>';
+ 	table+= '<table class="table table-bordered" id="marks-'+projectId+'"><tr><th>#</th>';
  	$.each(markTableDto.meetings, function( key, value ) {
  		if(key<markTableDto.meetings.length-1)
  			table+= '<th>M' + (key+1) + '</th>';
@@ -166,12 +189,12 @@ function getMarksTable(markTableDto){
  			table+= '<th>F</th>';
  	});
  	table+= '</tr>';
- 	
- 	$.each(markTableDto.tableData, function( key, criteriaList ) {
- 		table+= '<tr><td align="center" colspan="'+ markTableDto.meetings.length + 1 +'"><b>' + key + '</b></td></tr>';
+
+ 	$.each(markTableDto.tableData, function(key, categoryResult ) {
+ 		table+= '<tr id="row-'+projectId+'-'+categoryResult.categoryDto.id+'"><td align="center" colspan="'+ markTableDto.meetings.length + 1 +'"><b>' + categoryResult.categoryDto.name + '</b></td></tr>';
  		
- 		$.each(criteriaList, function( i, criterionResult ) {
- 			table+= '<tr class="active"><td>' + criterionResult.criterionName + '</td>';
+ 		$.each(categoryResult.criteriaResults, function( i, criterionResult ) {
+ 			table+= '<tr class="active" id="row-'+projectId+'-'+categoryResult.categoryDto.id+'-'+criterionResult.criterionId+'"><td>' + criterionResult.criterionName + '</td>';
  			$.each(criterionResult.marks, function(index, mark) {
  					if(mark.commentary == '')
  						table+= '<td><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
@@ -246,3 +269,117 @@ function getFinalReviews(studentProfile){
 	
 	return reviews;
 }
+
+function getSelectCategories(projectCategories, projectId){
+	var select = '<select style="width:90%;" multiple="true" class="categories-select-'+projectId+'">';
+	
+	$.each(projectCategories, function(key, value ) {
+		select += '<option value="' + value.id + '">' + value.name + '</option>\n';
+	});
+	
+	select += '</select>';
+	
+	return select;
+}
+
+function search(projectId){
+	var emptyCategoties = [];
+	var selectedCriteria = []; 
+	$('.criteria-select-'+projectId+' :selected').each(function(){
+		selectedCriteria.push($(this).val()); 
+    });
+	
+	var selectedCategories = []; 
+	$('.categories-select-'+projectId+' :selected').each(function(){
+        selectedCategories.push($(this).val()); 
+    });
+    
+	if(selectedCriteria.length == 0 && selectedCategories.length == 0){
+		$('#marks-'+projectId+' > tbody  > tr').each(function(index, value) {
+			if($(value).css('display') == 'none'){
+				$(value).show();
+			}
+		});
+	}else{
+    
+		var currentCategory;
+		var open = 0;
+    
+		$('#marks-'+projectId+' > tbody  > tr').each(function(index, value) {
+			var id = value.id;
+			var keys = id.split("-");
+ 		
+			if(keys.length === 3){
+				if(currentCategory != null && open === 0){
+					$(currentCategory).hide();
+				}
+ 			
+				open = 0;
+				currentCategory = value;	
+			}
+ 		
+			if(keys.length === 4){
+				if(($.inArray(keys[2], selectedCategories)) == -1 && ($.inArray(keys[3], selectedCriteria)) == -1){
+					$(value).hide();
+				}else{
+					if($(value).css('display') == 'none'){
+						$(value).show();
+						var parent = '#'+keys[0]+'-'+keys[1]+'-'+keys[2];
+						if($(parent).css('display') == 'none'){
+							$(parent).show();
+						}
+					}
+					open = open + 1;
+				}
+			}
+		});
+ 	
+		if(currentCategory != null && open === 0){
+			$(currentCategory).hide();
+		}
+	}
+}
+
+function getSelectCriteria(projectCriteria, projectId){
+	var select = '<select style="width:90%;" multiple="true" class="criteria-select-'+projectId+'">';
+	
+	$.each(projectCriteria, function(key, value ) {
+		select += '<option value="' + value.id + '">' + value.title + '</option>\n';
+	});
+	
+	select += '</select>';
+	
+	return select;
+}
+
+function getReviewForm(userId) {
+	$.ajax({
+		'url' : '/ajax/get/final_review_form',
+		'type' : 'GET',
+		'data' : {'user' : userId},
+		'success' : function(data) {
+			var s = '';
+			console.warn(data);
+			$.each( data, function( key, value ) {
+				s+='<tr class="fin-rev-res-item"><td>'+value.criterion.title+'</td><td><select id="sel'
+				+value.criterion.id+'">';
+				for(var i=0; i<6; ++i){
+					s+='<option val='+i;
+					if(value.mark&&i==value.mark.value)
+						s+=' selected';
+					s+='>'+i+'</option>';
+				}
+				s+='</select></td><td><input required type="text" id="'
+					+value.criterion.id+'"></td></tr>';
+			});
+
+			if(jQuery.isEmptyObject(data))
+				s= '<br/><h4>No criteria for this project!</h4>';
+
+			$('#final-review-form-list').html(s);
+		},
+		'error': function (data) {
+			console.warn(data);
+		}
+	});
+};

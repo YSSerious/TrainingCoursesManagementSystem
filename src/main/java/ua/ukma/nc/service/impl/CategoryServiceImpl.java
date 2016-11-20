@@ -64,4 +64,9 @@ public class CategoryServiceImpl implements CategoryService{
     public int createCategory(Category category) {
         return categoryDao.createCategory(category);
     }
+
+	@Override
+	public List<Category> getByProjectId(Long projectId) {
+		return categoryDao.getByProjectId(projectId);
+	}
 }

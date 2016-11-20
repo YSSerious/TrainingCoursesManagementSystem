@@ -4,6 +4,7 @@ import java.util.List;
 
 public class CriterionResult {
 	private String criterionName;
+	private Long criterionId;
 	private List<CertainMarkDto> marks;
 	
 	public String getCriterionName() {
@@ -17,5 +18,11 @@ public class CriterionResult {
 	}
 	public void setMarks(List<CertainMarkDto> marks) {
 		this.marks = marks;
+	}
+	public Long getCriterionId() {
+		return criterionId;
+	}
+	public void setCriterionId(Long criterionId) {
+		this.criterionId = criterionId;
 	}
 }
