@@ -14,6 +14,8 @@ public interface GroupService {
 	
     Group getById(Long id);
 
+    Group getByUserProject(Long userId, Long projectId);
+
     int deleteGroup(Group group);
     
     int removeMentor(Long groupId,Long userid);

@@ -67,6 +67,8 @@ public class GroupDaoImpl implements GroupDao{
     private static final String REMOVE_MENTOR = "delete from tcms.user_group where id_group = ? and id_user = ?";
     
     private static final String REMOVE_STUDENT = "delete from tcms.user_group where id_group = ? and id_user = ?";
+
+    private static final String GET_BY_USER_PROJECT = "select * from tcms.group where id_project = ? and id in (select id_group from tcms.user_group where id_user = ?)";
     @Override
     public Group getById(Long id) {
         log.info("Getting group with id = {}", id);
@@ -101,6 +103,12 @@ public class GroupDaoImpl implements GroupDao{
     public int createGroup(Group group) {
         log.info("Create new group with name = {}", group.getName());
         return jdbcTemplate.update(CREATE_GROUP, group.getProject().getId(),group.getName());
+    }
+
+    @Override
+    public Group getByUserProject(Long userId, Long projectId) {
+        log.info("Getting group by user = {} & project id = {}", userId, projectId);
+        return jdbcTemplate.queryForObject(GET_BY_USER_PROJECT, new GroupMapper(), projectId, userId);
     }
 
     private List<User> getUsers(Long groupID) {

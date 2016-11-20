@@ -39,6 +39,9 @@ public class CertainUserController {
 	private FinalReviewService finalReviewService;
 
 	@Autowired
+	private GroupService groupService;
+
+	@Autowired
 	private FinalReviewCriterionService finalReviewCriterionService;
 
 	@Autowired
@@ -134,9 +137,8 @@ public class CertainUserController {
 		Project current = all.get(0);
 		System.out.println(current);
 		if(current!=null){
-			FinalReview review = finalReviewService.getByStudent(current.getId(), userId, "F");
-			if(review!=null)
-				result = finalReviewCriterionService.getByFinalReview(review.getId());
+			if(finalReviewService.exists(userId, groupService.getByUserProject(userId, current.getId()).getId(), "F"))
+				result = finalReviewCriterionService.getByFinalReview(finalReviewService.getByStudent(current.getId(), userId, "F").getId());
 			else{
 				result = new LinkedList<FinalReviewCriterion>();
 				for (Criterion criterion : criterionService.getByProject(current.getId())){

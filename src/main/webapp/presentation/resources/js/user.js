@@ -359,9 +359,18 @@ function getReviewForm(userId) {
 		'data' : {'user' : userId},
 		'success' : function(data) {
 			var s = '';
-			$.each( data, function( elem ) {
-				s+='<tr><td>'+elem.criterion.title+'</td><td><input type="text" id="'
-				+elem.criterion.id+'"></td></tr>';
+			console.warn(data);
+			$.each( data, function( key, value ) {
+				s+='<tr class="fin-rev-res-item"><td>'+value.criterion.title+'</td><td><select id="sel'
+				+value.criterion.id+'">';
+				for(var i=0; i<6; ++i){
+					s+='<option val='+i;
+					if(value.mark&&i==value.mark.value)
+						s+=' selected';
+					s+='>'+i+'</option>';
+				}
+				s+='</select></td><td><input required type="text" id="'
+					+value.criterion.id+'"></td></tr>';
 			});
 
 			if(jQuery.isEmptyObject(data))

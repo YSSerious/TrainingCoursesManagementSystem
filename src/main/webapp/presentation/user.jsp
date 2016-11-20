@@ -190,13 +190,12 @@
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
                 <h4 class="modal-title">Final Review</h4>
+                <br/>
                 <div>
                     <form name="addReviewForm">
                         <table class="table" id="final-review-form-list">
                             <tr>
-                                <td>Name</td>
-                                <td><input type="text" id="criteriaName"></td>
-
+                                <td><spring:message code="loading.label"></spring:message> </td>
                             </tr>
                         </table>
                     </form>

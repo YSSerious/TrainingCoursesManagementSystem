@@ -24,6 +24,11 @@ public class GroupServiceImpl implements GroupService{
     }
 
     @Override
+    public Group getByUserProject(Long userId, Long projectId) {
+        return groupDao.getByUserProject(userId, projectId);
+    }
+
+    @Override
     public int deleteGroup(Group group) {
         return groupDao.deleteGroup(group);
     }
