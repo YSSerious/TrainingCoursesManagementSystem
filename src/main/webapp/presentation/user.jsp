@@ -192,18 +192,19 @@
                 <h4 class="modal-title">Final Review</h4>
                 <br/>
                 <div>
-                    <form name="addReviewForm">
+                    <form>
                         <table class="table" id="final-review-form-list">
                             <tr>
-                                <td><spring:message code="loading.label"></spring:message> </td>
+                                <td><spring:message code="loading.label"/> </td>
                             </tr>
                         </table>
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" id="saveReview" type="button" data-dismiss="modal">
-                    Add
+                <span id="fin-rev-err" class="text-danger hidden">Unknown error</span>
+                <button class="btn btn-default" onclick="doFinalReview(${user.id})" type="button">
+                <spring:message code="btn.submit"/>
                 </button>
             </div>
         </div>

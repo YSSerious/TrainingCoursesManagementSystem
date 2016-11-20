@@ -1,5 +1,7 @@
 package ua.ukma.nc.entity.impl.proxy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ua.ukma.nc.entity.Mark;
@@ -11,6 +13,7 @@ import ua.ukma.nc.service.MarkService;
  */
 @Component
 @Scope("prototype")
+@JsonIgnoreProperties("description")
 public class MarkProxy implements Mark {
 
     private static final long serialVersionUID = 8917289155140308183L;

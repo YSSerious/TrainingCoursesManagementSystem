@@ -1,18 +1,32 @@
 package ua.ukma.nc.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import ua.ukma.nc.dto.CriterionDto;
+import ua.ukma.nc.entity.impl.real.CriterionImpl;
+import ua.ukma.nc.entity.impl.real.MarkImpl;
+
 import java.io.Serializable;
 
 /**
  * Created by Алексей on 30.10.2016.
  */
+
 public class FinalReviewCriterion implements Serializable{
 
-    private static final long serialVersionUID = 2994392671709727059L;
+    private static final long serialVersionUID = 2994392671709727058L;
     private Long id;
+    @JsonIgnore
     private FinalReview finalReview;
+    @JsonDeserialize(as=CriterionImpl.class)
     private Criterion criterion;
+    @JsonDeserialize(as=MarkImpl.class)
     private Mark mark;
     private String commentary;
+
+    public FinalReviewCriterion(){}
 
     public Long getId() {
         return id;

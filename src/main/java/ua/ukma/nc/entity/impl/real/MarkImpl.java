@@ -1,5 +1,6 @@
 package ua.ukma.nc.entity.impl.real;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ua.ukma.nc.entity.Mark;
 
 /**

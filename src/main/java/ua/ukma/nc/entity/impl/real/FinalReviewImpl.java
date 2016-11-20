@@ -1,5 +1,6 @@
 package ua.ukma.nc.entity.impl.real;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ua.ukma.nc.entity.FinalReview;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.User;
@@ -19,6 +20,18 @@ public class FinalReviewImpl implements FinalReview {
     private String type;
     private Project project;
     private String commentary;
+
+    public FinalReviewImpl(Long id, Timestamp date, User student, User employee, String type, Project project, String commentary) {
+        this.id = id;
+        this.date = date;
+        this.student = student;
+        this.employee = employee;
+        this.type = type;
+        this.project = project;
+        this.commentary = commentary;
+    }
+
+    public FinalReviewImpl(){}
 
     public Long getId() {
         return id;

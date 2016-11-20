@@ -363,16 +363,19 @@ function getReviewForm(userId) {
 			$.each( data, function( key, value ) {
 				s+='<tr class="fin-rev-res-item"><td>'+value.criterion.title+'</td><td><select id="sel'
 				+value.criterion.id+'">';
-				for(var i=0; i<6; ++i){
+				for(var i=1; i<6; ++i){
 					s+='<option val='+i;
 					if(value.mark&&i==value.mark.value)
 						s+=' selected';
 					s+='>'+i+'</option>';
 				}
 				s+='</select></td><td><input required type="text" id="'
-					+value.criterion.id+'"></td></tr>';
+					+value.criterion.id+'"';
+				if(value.commentary)
+					s+=' value="'+value.commentary+'"';
+				s+='></td></tr>';
 			});
-
+			s+='<tr><td colspan="3"><label>General: </label><textarea class="form-control" id="fin-rev-com" rows="5"></textarea></td></tr>';
 			if(jQuery.isEmptyObject(data))
 				s= '<br/><h4>No criteria for this project!</h4>';
 
@@ -382,4 +385,42 @@ function getReviewForm(userId) {
 			console.warn(data);
 		}
 	});
+};
+
+function doFinalReview(userId) {
+	function sendAjax(data, comment) {
+		$.ajax({
+			url: '/ajax/post/final_review_form/'+userId,
+			type: 'POST',
+			contentType: "application/json",
+			dataType: 'json',
+			data: JSON.stringify({data:data,reviewComment:comment}),
+			success: function (data) {
+				console.log('success');
+			},
+			error: function (error) {
+				console.log(error.responseText);
+			}
+		});
+	};
+	var error = null;
+	var data = [];
+	var comment = $('#fin-rev-com').val();
+	$('#final-review-form-list').find($('.fin-rev-res-item')).each(function () {
+		var finReview = {"mark": {"value": $(this).find('select').val()}, "criterion": {"id": $(this).find('input').attr('id')}, "commentary": $(this).find('input').val()};
+		if(!$(this).find('input').val()) {
+			error = 'All comments are required!';
+			return false;
+		}
+		data.push(finReview);
+	});
+	if(!error){
+		$('#fin-rev-err').addClass('hidden');
+		$('#addFinReview').modal('toggle');
+		sendAjax(data, comment);
+	}
+	else{
+		$('#fin-rev-err').text(error);
+		$('#fin-rev-err').removeClass('hidden');
+	}
 };
