@@ -149,9 +149,7 @@
 						<label for="groupAttachmentName"> Attachment name: </label><br />
 						<input type=text class="form-control" id="groupAttachmentName"
 							placeholder="Enter attachment name" required="required">
-						<label for="groupAttachment"> Attachment: </label><br /> <input
-							type=text class="form-control" id="groupAttachment"
-							placeholder="Enter attachment" required="required">
+						 <input type="file" id="groupAttachmentFile" >
 
 					</div>
 					<button type="submit"
@@ -173,88 +171,43 @@
 	</div>
 </div>
 <!--  -->
-<div class="modal fade" id="editGroupAttachmentModal" role="dialog">
-	<div class="modal-dialog">
-
-		<div class="modal-content">
-			<div class="modal-body" style="padding: 40px 50px;">
-				<form role="form">
-					<div class="form-group">
-						<label for="groupAttachmentName"> Attachment name: </label><br />
-						<input type=text class="form-control" id="editGroupAttachmentName"
-							placeholder="Enter attachment name" required="required">
-						<label for="editGroupAttachment"> Attachment: </label><br /> <input
-							type=text class="form-control" id="groupAttachment"
-							placeholder="Enter attachment" required="required">
-
-					</div>
-					<button type="submit"
-						class="btn btn-default btn-success pull-center"
-						id="editAttachmentSubmitButton">
-						<span class="glyphicon glyphicon-off"></span>Send
-					</button>
-				</form>
-			</div>
-			<div class="modal-footer">
-
-				<button type="button" class="btn btn-default btn-lg"
-					data-dismiss="modal" id="editCancelButton">
-					<span class="glyphicon glyphicon-remove"></span> Cancel
-				</button>
+ 
+ 
+	<!--  	<div class="col-md-12"> -->
+			<h2>Attachments</h2>
+	<div class="panel panel-primary"
+		style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
+		<div class="panel-heading clearfix">
+			<button type="button" class="btn btn-default btn-xs pull-right"
+			data-target="#addGroupAttachmentModal" data-toggle="modal">
+			Add</button>
+			<div data-toggle="collapse" data-target="#collapseAttachment"
+				class="arrow col-md-1" style="color:black">
+				<span class="glyphicon glyphicon-chevron-down"></span>
 			</div>
 		</div>
 
-	</div>
-</div>
-
-<!--  -->
-<div class="container attachment-group">
-	<div class="row">
-		<div class="col-md-12">
-			<h2>Attachments</h2>
-			<div class="panel-group" id="panelGroupAttachment">
-				<div class="panel panel-default">
-					<div class="panel-heading attachment-group">
-						<h4 class="panel-title row">
-							<div data-toggle="collapse" data-target="#collapseIn"
-								class="arrow col-md-1">
-								<span class="glyphicon glyphicon-chevron-down"></span>
-							</div>
-							<div role="button" class="btn btn-default add-attachment-btn btn-sm pull-right"
-								id="addGroupAttachmentButton" data-toggle="modal"
-								data-target="#addGroupAttachmentModal">
-								<b>Add Attachment</b>
-							</div>
-						</h4>
-					</div>
-					<div id="collapseIn" class="panel-collapse collapse">
+		<div id="collapseAttachment" class="panel-collapse collapse">
+			<ul class="list-group">
 						<c:forEach items="${attachments}" var="attachment">
-							<div class="panel-body row" id="attachmentId-${attachment.id}">
-								<div class="col-md-10">${attachment.name}</div>
-
-								<div id="d${attachment.id}" class="btn rmv-cr-btn col-md-1 pull-right delete" type='button'
-									data-button='{"title": "${attachment.name}"}'>
-									<span class="glyphicon glyphicon-remove "></span>
-								</div>
-							<!-- <div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
-									data-button='{"id":"e${attachment.id}","title": "${attachment.name}"}'>
-									<span class="glyphicon glyphicon-edit edit"></span>
-								</div>
-   								-->
-   								<div role="button" class="btn rmv-cr-btn col-md-1 pull-right"
-								id="addGroupAttachmentButton" data-toggle="modal"
-								data-target="#addGroupAttachmentModal">
-								 <span class="glyphicon glyphicon-edit edit"></span>
-							</div>
-							</div>
+						<li class="list-group-item attachment-${attachment.id} clearfix">
+						 	${attachment.name} <span style='padding-left: 10px;'> </span>
+						 
+					 
+						<div id="${attachment.id}" class="btn rmv-cr-btn col-md-1 pull-right "
+							type='button'>
+							<span class="glyphicon glyphicon-remove delete"></span>
+						</div> 
+						<br />
+					</li>
+							 
+							
 						</c:forEach>
-					</div>
+						</ul>
+					 
 				</div>
 			</div>
-		</div>
-	</div>
-
-</div>
-
+		 
+ 
 
 <%@include file="footer.jsp"%>
