@@ -1,4 +1,11 @@
 <%@include file="header.jsp"%>
+<script data-require="jquery@*" data-semver="2.0.3"
+	src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script data-require="bootstrap@*" data-semver="3.1.1"
+	src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<link data-require="bootstrap-css@*" data-semver="3.1.1"
+	rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
 This is meeting ${meeting.name}
 <br>
 In ${meeting.place}
@@ -10,7 +17,7 @@ At ${meeting.time}
 <br>
 <br>
 <div id="table-listing">
-	<div class="panel panel-primary  table-responsive table-scrollable" >
+	<div class="panel panel-primary  table-responsive table-scrollable">
 		<div class="panel-heading">
 			<h3 class="panel-title">Student list</h3>
 		</div>
@@ -26,62 +33,203 @@ At ${meeting.time}
 				</tr>
 			</thead>
 			<tbody class="results">
-			<c:forEach items="${students}" var="user">
-				<tr>
-					<td><font size="3"><b> <a href="/createMeeting/${user.id}">
-									${user.firstName} ${user.secondName} ${user.lastName} </a></b></font></td>
-					<c:forEach items="${criteria}" var="criterion">
-						<td><font size="3"><center>
-									<a href="#" data-toggle="tooltip" data-placement="top"
-										title="No mark, yet">-</a>
-								</center></font></td>
-					</c:forEach>
-				</tr>
-			</c:forEach>
-			<c:forEach items="${marks}" var="entry">
-				<tr>
-					<td><font size="3"><b> <a
-								href="/users/${entry.key.id}">${entry.key.firstName}
-									${entry.key.secondName} ${entry.key.lastName}</a></b></font></td>
-
-					<c:forEach items="${entry.value}" var="mark">
-						<td><font size="3"><center>
-									<a href="#" data-toggle="tooltip" data-placement="top"
-										title="${mark.commentary}">${mark.mark}</a>
-								</center></font></td>
-					</c:forEach>
-					<c:if test="${entry.value.size() < criteria.size()}">
-						<c:forEach items="${criteria}"
-							begin="${entry.value.size()}">
+				<c:forEach items="${students}" var="user">
+					<tr>
+						<td><font size="3"><b> <a href="#"
+									data-toggle="modal" class="open-Evaluate"
+									data-target="#evaluateModal" data-user="${user.firstName}">
+										${user.firstName} ${user.secondName} ${user.lastName} </a></b> </font></td>
+						<c:forEach items="${criteria}" var="criterion">
 							<td><font size="3"><center>
 										<a href="#" data-toggle="tooltip" data-placement="top"
 											title="No mark, yet">-</a>
 									</center></font></td>
 						</c:forEach>
-					</c:if>
-				</tr>
-			</c:forEach>
+					</tr>
+					<!-- start evaluate Student modal -->
+					<div id="evaluateModal" class="modal fade" tabindex="-1"
+						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+									<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+								</div>
+								<div class="modal-body edit-content">
+									<ul class="list-group">
+										<c:forEach items="${criteria}" var="criterion">
+											<li class="list-group-item container-fluid">
+												<div class="row">
+													<label class="col-xs-offset-1">${criterion.title}</label>
+												</div>
+												<div class="row">
+													<input class="col-xs-offset-2 col-sm-6 result-comment"
+														type="text" id="commentary${criterion.id}"> <select
+														class="col-xs-offset-1" id="mark${criterion.id}">
+														<option selected>-</option>
+														<option>0</option>
+														<option>1</option>
+														<option>2</option>
+														<option>3</option>
+														<option>4</option>
+														<option>5</option>
+													</select>
+												</div> <input hidden value="${criterion.id}"
+												class="result-criterion-id">
+											</li>
+										</c:forEach>
+									</ul>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary">Save
+										changes</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- finish evaluate Student modal -->
+				</c:forEach>
+				<c:forEach items="${marks}" var="entry">
+					<tr>
+						<td><font size="3"><b> <a href="#"
+									data-toggle="modal" class="open-Evaluate"
+									data-target="#evaluateModalEvaluated"
+									data-user="${entry.key.firstName}">${entry.key.firstName}
+										${entry.key.secondName} ${entry.key.lastName}</a></b></font></td>
+
+						<c:forEach items="${entry.value}" var="mark">
+							<td><font size="3"><center>
+										<a href="#" data-toggle="tooltip" data-placement="top"
+											title="${mark.commentary}">${mark.mark}</a>
+									</center></font></td>
+						</c:forEach>
+						<c:if test="${entry.value.size() < criteria.size()}">
+							<c:forEach items="${criteria}" begin="${entry.value.size()}">
+								<td><font size="3"><center>
+											<a href="#" data-toggle="tooltip" data-placement="top"
+												title="No mark, yet">-</a>
+										</center></font></td>
+							</c:forEach>
+						</c:if>
+					</tr>
+					<!-- start evaluate Student modal -->
+					<div id="evaluateModalEvaluated" class="modal fade" tabindex="-1"
+						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+									<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+								</div>
+								<div class="modal-body edit-content">
+									<ul class="list-group">
+										<c:forEach items="${entry.value}" var="mark">
+											<li class="list-group-item container-fluid">
+												<div class="row">
+													<label class="col-xs-offset-1">${mark.criterionName}</label>
+												</div>
+												<div class="row">
+													<input class="col-xs-offset-2 col-sm-6 result-comment"
+														type="text" required value="${mark.commentary}"> <select
+														class="col-xs-offset-1">
+														<option <c:if test="${mark.mark eq 0}">selected</c:if>>0</option>
+														<option <c:if test="${mark.mark eq 1}">selected</c:if>>1</option>
+														<option <c:if test="${mark.mark eq 2}">selected</c:if>>2</option>
+														<option <c:if test="${mark.mark eq 3}">selected</c:if>>3</option>
+														<option <c:if test="${mark.mark eq 4}">selected</c:if>>4</option>
+														<option <c:if test="${mark.mark eq 5}">selected</c:if>>5</option>
+													</select>
+												</div> <input hidden value="${mark.criterionId}"
+												class="result-criterion-id">
+											</li>
+										</c:forEach>
+										<c:if test="${entry.value.size() < criteria.size()}">
+											<c:forEach items="${unevaluatedCriteria.get(entry.key)}"
+												var="criterion">
+												<li class="list-group-item container-fluid">
+													<div class="row">
+														<label class="col-xs-offset-1">${criterion.title}</label>
+													</div>
+													<div class="row">
+														<input class="col-xs-offset-2 col-sm-6 result-comment"
+															type="text" id="commentary${criterion.id}"> <select
+															class="col-xs-offset-1" id="mark${criterion.id}">
+															<option selected>-</option>
+															<option>0</option>
+															<option>1</option>
+															<option>2</option>
+															<option>3</option>
+															<option>4</option>
+															<option>5</option>
+														</select>
+													</div> <input hidden value="${criterion.id}"
+													class="result-criterion-id">
+												</li>
+											</c:forEach>
+										</c:if>
+									</ul>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary">Save
+										changes</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- finish evaluate Student modal -->
+				</c:forEach>
 			</tbody>
 		</table>
 	</div>
+</div>
+<br>
+<br>
+<br>
+<br>
+
+<div class="row">
+	<div class="col-md-12">
+		<h2>Criteria List</h2>
+		<div class="panel-group" id="panelGroupId">
+			<div class="panel panel-primary">
+				<div class="panel-heading clearfix">
+					<div data-toggle="collapse" data-target="#collapseIn"
+						class="arrow col-md-1" onclick="changeSpan()">
+						<span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
+					</div>
+					<button type="button" class="btn btn-default btn-sm pull-right"
+						id="showAvailableCriteria" data-toggle="modal"
+						data-target="#showAvailableCriteriaModal">
+						<b>Add criteria</b>
+					</button>
+				</div>
+				<div id="collapseIn" class="panel-collapse collapse">
+					<c:forEach items="${criteria}" var="criterion">
+						<div class="panel-body" id="criteriaId-${criterion.id}">
+							<div class="col-md-11">${criterion.title}</div>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+		</div>
 	</div>
-<br>
-<br>
-<br>
-<br>
-<h2>Criteria List</h2>
+</div>
 
-<dl>
-	<c:forEach items="${categories}" var="category">
-		<dt>${category.name}</dt>
-		<c:forEach items="${criteria}" var="criterion">
-			<c:if test="${category.id == criterion.category.id}">
-				<dd>&nbsp;&nbsp; -${criterion.title}</dd>
-			</c:if>
-		</c:forEach>
-	</c:forEach>
-</dl>
 
+<script>
+	$(document).on("click", ".open-Evaluate", function() {
+		var user = $(this).data('user');
+		$(".modal-body #user").val(user);
+	});
+</script>
 <script>
 	function app_handle_listing_horisontal_scroll(listing_obj) {
 		//get table object   

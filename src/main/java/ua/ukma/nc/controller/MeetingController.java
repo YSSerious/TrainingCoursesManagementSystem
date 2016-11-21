@@ -93,6 +93,20 @@ public class MeetingController {
 			if (!category.contains(categoryService.getById(criterion.getCategory().getId())))
 				category.add(categoryService.getById(criterion.getCategory().getId()));
 
+		Map<User, List<Criterion>> unevaluatedCriteria = new HashMap<>();
+		for (User user : markInformation.keySet()) {
+			List<MarkInformation> marks = markInformation.get(user);
+			List<Long> cr = new ArrayList<>();
+			for (MarkInformation mi : marks)
+				cr.add(mi.getCriterionId());
+			List<Criterion> cri = new ArrayList<>();
+			for (Criterion c : criteria)
+				if (!cr.contains(c.getId()))
+					cri.add(c);
+			unevaluatedCriteria.put(user, cri);
+		}
+
+		model.addAttribute("unevaluatedCriteria", unevaluatedCriteria);
 		model.addAttribute("criteria", criteria);
 		model.addAttribute("marks", markInformation);
 		model.addAttribute("students", unevaluated);
@@ -107,7 +121,7 @@ public class MeetingController {
 		List<Criterion> criteria = criterionService.getByProject(projectId);
 		model.addAttribute("meetingForm", meeting);
 		model.addAttribute("criteria", criteria);
-		model.addAttribute("url", "/create-meeting?project="+projectId);
+		model.addAttribute("url", "/create-meeting?project=" + projectId);
 		return "createMeeting";
 	}
 
