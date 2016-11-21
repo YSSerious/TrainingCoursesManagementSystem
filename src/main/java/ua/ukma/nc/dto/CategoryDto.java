@@ -74,7 +74,7 @@ public class CategoryDto implements Comparable<CategoryDto>{
 
 	@Override
 	public int compareTo(CategoryDto categoryDto) {
-		return getName().compareTo(categoryDto.getName());
+		return getName().compareToIgnoreCase(categoryDto.getName());
 	}
 	
 	@Override

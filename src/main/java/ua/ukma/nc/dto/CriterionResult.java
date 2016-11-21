@@ -2,7 +2,7 @@ package ua.ukma.nc.dto;
 
 import java.util.List;
 
-public class CriterionResult {
+public class CriterionResult implements Comparable<CriterionResult>{
 	private String criterionName;
 	private Long criterionId;
 	private List<CertainMarkDto> marks;
@@ -24,5 +24,9 @@ public class CriterionResult {
 	}
 	public void setCriterionId(Long criterionId) {
 		this.criterionId = criterionId;
+	}
+	@Override
+	public int compareTo(CriterionResult o) {
+		return getCriterionName().compareTo(o.getCriterionName());
 	}
 }

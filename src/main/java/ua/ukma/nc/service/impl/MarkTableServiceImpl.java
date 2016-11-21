@@ -1,6 +1,7 @@
 package ua.ukma.nc.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -61,7 +62,7 @@ public class MarkTableServiceImpl implements MarkTableService {
 		markTableDto.setMeetings(meetingNames);
 
 		Map<CategoryDto, List<Criterion>> categories = new TreeMap<CategoryDto, List<Criterion>>();
-
+		
 		for (Criterion criterion : criteria) {
 			CategoryDto category = new CategoryDto();
 			Category categoryEntity = criterion.getCategory();
@@ -171,7 +172,9 @@ public class MarkTableServiceImpl implements MarkTableService {
 			}
 		}
 		
-		
+		for(CategoryResult result: markTableDto.getTableData())
+			Collections.sort(result.getCriteriaResults());
+
 		return markTableDto;
 	}
 	
