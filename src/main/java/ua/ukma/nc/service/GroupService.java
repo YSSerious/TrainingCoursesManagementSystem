@@ -14,6 +14,8 @@ public interface GroupService {
 	
     Group getById(Long id);
 
+    Group getByUserProject(Long userId, Long projectId);
+
     int deleteGroup(Group group);
     
     int removeMentor(Long groupId,Long userid);
@@ -26,6 +28,8 @@ public interface GroupService {
     
     List<User> getStudents(Long groupId);
 
+    Long getStudentsAmount(Long groupId);
+    
     int createGroup(Group group);
 
 	int removeStudent(Long groupId, Long userId);

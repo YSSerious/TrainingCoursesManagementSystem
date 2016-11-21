@@ -1,11 +1,5 @@
 /* global d3 */
 
-var sort = {
-    NONE: 0,
-    INCREASE: 1,
-    DECREASE: 2
-};
-
 function drawCriteriaChart(chartdata, wrappingDivId, maxYValue, categoryTitle) {
     console.log('chartdata: ', chartdata);
 
@@ -36,7 +30,7 @@ function drawCriteriaChart(chartdata, wrappingDivId, maxYValue, categoryTitle) {
                 return d.criterionName;
             }))
             .range([0, height])
-            .padding(0.5)
+            .padding(0.3)
             .paddingOuter(0.5);
 
     var svg = d3.select(wrappingDivId)
@@ -148,52 +142,66 @@ function drawCriteriaChart(chartdata, wrappingDivId, maxYValue, categoryTitle) {
             });
 
     var selected = d3.select('#sort-menu').select('ul').selectAll('li').on('click', function () {
-        d3.select('#sort-menu').
-                insert("button", 'ul')
-                .attr("id", "sort-reset")
-                .attr("class", "btn btn-link")
-                .attr("type", "button")
-                .append("span")
-                .attr("class", "glyphicon glyphicon-remove");
+        if (d3.select('#sort-menu').select('#sort-reset').empty())
+        {
+            d3.select('#sort-menu').
+                    insert("button", 'ul')
+                    .attr("id", "sort-reset")
+                    .attr("class", "btn btn-link")
+                    .attr("type", "button")
+                    .append("span")
+                    .attr("class", "glyphicon glyphicon-remove")
+                    .on("click", function () {
+                        sortBars('none');
+                        d3.select('#sort-reset').remove();
+                    });
+        }
         var sortType = d3.select(this).select('a').attr('id');
         sortBars(sortType);
     });
-    
-    d3.select("#sort-reset").on("click", function() {
-        sortBars('none');
-        d3.select(this).remove();
-    });
+
+//    d3.select("#sort-reset").on("click", function() {
+//        sortBars('none');
+//        d3.select(this).remove();
+//    });
 
 
     function sortBars(sortType) {
-        var y0 = y.domain(criteria).copy();
+        var y0 = y.copy();
+        var sortedCriteria = criteria.slice(0);
         if (sortType !== 'none') {
-            y0 = y.domain(criteria.sort(function (a, b) {
+            y.domain(sortedCriteria.sort(function (a, b) {
                 return sortType === 'increase'
                         ? a.averageValue - b.averageValue
                         : b.averageValue - a.averageValue;
             }).map(function (d) {
                 return d.criterionName;
-            })).copy();
+            }));
+            console.log("sorted criteria: ", criteria);
+        } else {
+            y.domain(sortedCriteria.map(function (d) {
+                return d.criterionName;
+            }));
         }
+        
         canvas.selectAll('.chart-bar')
                 .sort(function (a, b) {
-                    return y0(b.criteronName) - y0(a.criterionName);
+                    return y(b.criterionName) - y(a.criterionName);
                 });
 
-        var transition = canvas.transition().duration(750),
+        var transition = svg.transition().duration(750),
                 delay = function (d, i) {
-                    return i * 50;
+                    return i*10;
                 };
 
         transition.selectAll('.chart-bar')
                 .delay(delay)
                 .attr("y", function (d) {
-                    return y0(d.criterionName);
+                    return y(d.criterionName);
                 });
 
-        transition.select(".axis-x")
-                .call(xAxis)
+        transition.select(".axis-y")
+                .call(yAxis)
                 .selectAll("g")
                 .delay(delay);
     }

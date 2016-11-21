@@ -14,13 +14,33 @@
     .diver {
         cursor: pointer;
     }
+    .pull-right-btn {
+        float: right!important;
+        margin-right: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        background-color: #f5f5f5;
+        color: rgb(166, 166, 166);
+        font-weight: 500;
+        border-color: #f5f5f5;
+    }
+    .btn-collapse{
+        /*float: right!important;*/
+        /*margin-right: 10px;*/
+        margin-top: 5px;
+        margin-bottom: 5px;
+        background-color: white;
+        color: rgb(166, 166, 166);
+        /*font-weight: 500;*/
+        border-color: white;
+    }
 </style>
 
-<div class="col-sm-11 col-sm-offset-1">
-    <div class="col-sm-11">
+<div class="col-md-12">
+    <div class="col-md-12">
         <div class="top-info">
             <div class="row">
-                <h2 class="col-sm-3">Categories</h2>
+                <h2 class="col-md-3">Categories</h2>
                 <button class="btn btn-primary pull-right"
                         id="newCategoryId"
                         data-toggle="modal"
@@ -34,28 +54,30 @@
                 <div class="panel panel-default" id="categoryPanelId-${category.id}">
                     <div class="panel-heading">
                         <h4 class="panel-title row">
-                            <div data-toggle="collapse" class="diver col-sm-4" id="aEditId-${category.id}"
+                            <div data-toggle="collapse" class="diver col-md-3 text-primary" id="aEditId-${category.id}"
                                  data-target="#collapseIn-${category.id}"><b>${category.name}</b>
                             </div>
-                            <div id="divEditId-${category.id}" class="col-sm-7">${category.description}</div>
-                            <button class="btn btn-primary btn-sm"
-                                    data-toggle="modal"
-                                    data-target="#editCategory"
-                                    onclick="setCategory(${category.id})">
-                                <span class="glyphicon glyphicon-edit"></span>
-                            </button>
-                            <button class="btn btn-danger btn-sm"
+                            <div id="divEditId-${category.id}" class="col-md-3">${category.description}</div>
+                            <button class="btn btn-lg pull-right-btn"
+                                    type="button"
                                     data-toggle="modal"
                                     data-target="#deleteCategory"
                                     onclick="setCategory(${category.id})">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
+                            <button class="btn btn-lg pull-right-btn"
+                                    type="button"
+                                    data-toggle="modal"
+                                    data-target="#editCategory"
+                                    onclick="setCategory(${category.id})">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </button>
                         </h4>
                     </div>
                     <div id="collapseIn-${category.id}" class="panel-collapse collapse">
-                        <div class="panel-body row">
-                            <div class="col-sm-2"><b>Add new Criteria</b></div>
-                            <button class="btn btn-primary btn-xs"
+                        <div class="panel-body">
+                            <div class="col-md-2 text-primary"><b>Add new Criteria</b></div>
+                            <button class="btn btn-collapse"
                                     data-toggle="modal"
                                     data-target="#addCriteria"
                                     onclick="setCategory(${category.id})">
@@ -63,9 +85,9 @@
                             </button>
                         </div>
                         <c:forEach items="${category.criteria}" var="criteria" varStatus="loop">
-                            <div class="panel-body row" id="criteriaId-${criteria.id}">
-                                <div class="col-sm-2">${criteria.title}</div>
-                                <button class="btn btn-danger btn-xs"
+                            <div class="panel-body" id="criteriaId-${criteria.id}">
+                                <div class="col-md-2">${criteria.title}</div>
+                                <button class="btn btn-collapse"
                                         data-toggle="modal"
                                         data-target="#deleteCriteria"
                                         onclick="setCriteria(${criteria.id})">

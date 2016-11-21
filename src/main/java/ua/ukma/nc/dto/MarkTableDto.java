@@ -6,7 +6,7 @@ import java.util.Map;
 public class MarkTableDto {
 	private List<String> meetings;
 	
-	private Map<String, List<CriterionResult>> tableData;
+	private List<CategoryResult> tableData;
 
 	public List<String> getMeetings() {
 		return meetings;
@@ -16,11 +16,11 @@ public class MarkTableDto {
 		this.meetings = meetings;
 	}
 
-	public Map<String, List<CriterionResult>> getTableData() {
+	public List<CategoryResult> getTableData() {
 		return tableData;
 	}
 
-	public void setTableData(Map<String, List<CriterionResult>> dataTable) {
+	public void setTableData(List<CategoryResult> dataTable) {
 		this.tableData = dataTable;
 	}
 }

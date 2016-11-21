@@ -36,7 +36,7 @@ public class ProjectParamResolver {
 		queryBuilder.setCurrentPage(page);
 		queryBuilder.setItemsPerPage(ITEMS_PER_PAGE);
 
-		if (order != null){
+		if (order != null) {
 			if (order.contains("asc")) {
 				queryBuilder.setOrderBy(order.replace("asc", ""));
 				queryBuilder.setOrderType("asc");
@@ -44,29 +44,32 @@ public class ProjectParamResolver {
 				queryBuilder.setOrderBy(order.replace("desc", ""));
 				queryBuilder.setOrderType("desc");
 			}
-		}else{
+		} else {
 			queryBuilder.setOrderBy("start");
 			queryBuilder.setOrderType("desc");
 		}
 
 		if (text != null) {
+			String[] words = text.split(" ");
 
-			OrClause orClause = new OrClause();
+			for (String word : words) {
+				OrClause orClause = new OrClause();
 
-			WhereClause whereParam1 = new WhereClause();
-			whereParam1.setOperation(WhereClause.STRING_CONTAINS);
-			whereParam1.setParam(text);
-			whereParam1.setColumn("name");
+				WhereClause whereParam1 = new WhereClause();
+				whereParam1.setOperation(WhereClause.STRING_CONTAINS);
+				whereParam1.setParam(word);
+				whereParam1.setColumn("name");
 
-			WhereClause whereParam2 = new WhereClause();
-			whereParam2.setOperation(WhereClause.STRING_CONTAINS);
-			whereParam2.setParam(text);
-			whereParam2.setColumn("description");
+				WhereClause whereParam2 = new WhereClause();
+				whereParam2.setOperation(WhereClause.STRING_CONTAINS);
+				whereParam2.setParam(word);
+				whereParam2.setColumn("description");
 
-			orClause.addValue(whereParam1);
-			orClause.addValue(whereParam2);
+				orClause.addValue(whereParam1);
+				orClause.addValue(whereParam2);
 
-			queryBuilder.putClause(orClause);
+				queryBuilder.putClause(orClause);
+			}
 		}
 
 		if (statuses != null) {
@@ -85,8 +88,11 @@ public class ProjectParamResolver {
 				CriterionLogicClause criterionLogicClause = new CriterionLogicClause(criterion);
 				queryBuilder.putClause(criterionLogicClause);
 			}
+		
+		if(dateType == null)
+			dateType = ProjectSearch.START;
 
-		if (dateType != null && (start != null || end != null)) {
+		if (start != null || end != null) {
 			DateLogicClause dateLogicClause = new DateLogicClause(start, end, dateType);
 
 			queryBuilder.putClause(dateLogicClause);
@@ -94,13 +100,13 @@ public class ProjectParamResolver {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		boolean showAllProjects = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN")) || authorities.contains(new SimpleGrantedAuthority("ROLE_HR"));
-		
-		if(!showAllProjects){
+		boolean showAllProjects = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
+				|| authorities.contains(new SimpleGrantedAuthority("ROLE_HR"));
+
+		if (!showAllProjects) {
 			String name = authentication.getName();
 			queryBuilder.putClause(new MentorLogicClause(name));
 		}
-
 		return queryBuilder;
 	}
 

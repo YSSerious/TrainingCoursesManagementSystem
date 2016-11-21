@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface FinalReviewService {
 	
+	boolean existsForProject(Long studentId, Long projectId, String type);
+	
 	FinalReview getByStudent(Long projectId, Long studentId, String type);
 	
 	boolean exists(Long studentId, Long groupId, String type);

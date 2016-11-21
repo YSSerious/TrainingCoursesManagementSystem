@@ -24,6 +24,8 @@ public interface MeetingService {
     List<Meeting> getAll();
     
     List<Meeting> getByGroup(Long groupId);
+    
+    Meeting getUpcomingByGroup(Long groupId);
 
     int createMeeting(Meeting meeting);
 }

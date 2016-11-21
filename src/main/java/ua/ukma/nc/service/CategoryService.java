@@ -22,6 +22,8 @@ public interface CategoryService {
     int updateCategory(Category category);
 
     List<Category> getAll();
+    
+    List<Category> getByProjectId(Long projectId);
 
     int createCategory(Category category);
 }

@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
 		else if (oldStatus == 1 && statusId == 3 && isHR) {
 			Long groupId = statusLogService.getNewestGroup(id);
 
-			if (!finalReviewService.exists(id, groupId, "M"))
+			if (!finalReviewService.exists(id, groupId, "F"))
 				throw new IllegalArgumentException("Student hasn't final review!");
 			else
 				changeStatus(id, statusId, oldStatus, name, commentary);
@@ -168,36 +168,10 @@ public class UserServiceImpl implements UserService {
 		} else if (oldStatus == 2 && statusId == 1 && (isHR || isMentor)) {
 			changeStatus(id, statusId, oldStatus, name, commentary);
 
-			Long groupId = statusLogService.getNewestGroup(id);
-			List<Meeting> unmarked = meetingService.getWithoutReview(groupId, id);
-			User employee = userDao.getByEmail(name);
-			User student = userDao.getById(id);
-
-			for (Meeting meeting : unmarked) {
-				MeetingReview meetingReview = new MeetingReviewImpl();
-				meetingReview.setCommentary("Gone...");
-				meetingReview.setMeeting(meeting);
-				meetingReview.setMentor(employee);
-				meetingReview.setStudent(student);
-				meetingReview.setType("L");
-
-				meetingReviewService.createMeetingReview(meetingReview);
-			}
-
-			if (!finalReviewService.exists(id, groupId, "M")) {
-				FinalReview finalReview = new FinalReviewImpl();
-				finalReview.setCommentary("Gone...");
-				finalReview.setDate(new Timestamp(System.currentTimeMillis()));
-				finalReview.setEmployee(employee);
-				finalReview.setStudent(student);
-				finalReview.setType("L");
-				finalReview.setProject(groupService.getById(groupId).getProject());
-			}
-
 		} else if (oldStatus == 2 && statusId == 3 && isHR) {
 			Long groupId = statusLogService.getNewestGroup(id);
 
-			if (!finalReviewService.exists(id, groupId, "M"))
+			if (!finalReviewService.exists(id, groupId, "F"))
 				throw new IllegalArgumentException("Student hasn't final review!");
 			else
 				changeStatus(id, statusId, oldStatus, name, commentary);

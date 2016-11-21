@@ -4,6 +4,69 @@
 
 $(document).ready(function () {
 
+    $("#showGroupsAndCriteria").click(function () {
+        $.ajax({
+            url: "/getCriteriaAndGroups",
+            type: "GET",
+            data: {projectId: projectId},
+            success: function (data) {
+                console.log(data);
+                $("#CriteriaCheckBoxId").children().remove();
+                $.each(data.criterions, function(key, value){
+                    $('#CriteriaCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox' class='isCriteriaChecked'>"+value.title+"</label>");
+                });
+                $("#GroupsCheckBoxId").children().remove();
+                $.each(data.groupList, function(key, value){
+                    $('#GroupsCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox' class='isGroupChecked'>"+value.name+"</label>");
+                });
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
+    });
+
+    $("#saveMeeting").click(function () {
+
+        var dto={name:'',
+            place:'',
+            date:'',
+            criterions:[],
+            groups:[]};
+
+        dto.name=$("#inputName").val();
+        dto.place=$("#inputPlace").val();
+        dto.date=$("#inputDate").val();
+
+        $.each($('.isCriteriaChecked'), function(key, value){
+            if(value.checked){
+                dto.criterions.push(value.closest('label').textContent);
+            }
+        });
+
+        $.each($('.isGroupChecked'), function(key, value){
+            if(value.checked){
+                dto.groups.push(value.closest('label').textContent);
+            }
+        });
+        console.log(dto);
+
+        $.ajax({
+            url: "/saveMeeting",
+            type: "POST",
+            contentType: "application/json",
+            dataType: 'json',
+            data: JSON.stringify({name:dto.name, place:dto.place, date:dto.date, crit:dto.criterions, gr:dto.groups}),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+            }
+        });
+    });
+
+
     $("#showAvailableCriteria").click(function () {
         $.ajax({
             url: "/getAvailableCriteria",
@@ -37,7 +100,6 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '.rmv-cr-btn', function () {
-        //var a = $(this);
         var criteria = $.parseJSON($(this).attr('data-button'));
         console.log(criteria.id);
         $.ajax({
@@ -46,7 +108,6 @@ $(document).ready(function () {
             data: {projectId: projectId, criteriaTitle: criteria.title},
             success: function (data) {
                 console.log(data);
-                //a.parent().parent().remove();
                 $('#criteriaId-'+criteria.id).remove();
             },
             error: function (textStatus) {
@@ -79,11 +140,28 @@ $(document).ready(function () {
     
 });
 
+$('#project-groups .panel-heading').first().on('click', function(e) {
+    console.log(e.target.tagName);
+    if ((e.target.tagName !== "BUTTON")&&(e.target.tagName !== "B")) {
+        $('#collapse-group').collapse('toggle');
+    }
+});
+
+function changeSpan(){
+    if ($("#spanId").hasClass("glyphicon-chevron-down") ){
+        $("#spanId").removeClass('glyphicon-chevron-down');
+        $("#spanId").addClass('glyphicon-chevron-up');
+    }else{
+        $("#spanId").removeClass('glyphicon-chevron-up');
+        $("#spanId").addClass('glyphicon-chevron-down');
+    }
+};
+
 function buildResponseCriteria(data){
-    return "<div class='panel-body row' id='criteriaId-"+data.id+"'>" +
+    return "<div class='panel-body' id='criteriaId-"+data.id+"'>" +
         "<div class='col-md-11'>"+data.title+"</div>" +
         "<c:if test='"+data.rated+"'>" +
-        "<div class='btn rmv-cr-btn col-md-1 pull-right' type='button'" +
+        "<div class='btn rmv-cr-btn col-md-1' type='button'" +
         " data-button='{\"id\":\""+data.id+"\", \"title\": \""+data.title+"\"}'>" +
         "<span class='glyphicon glyphicon-remove'></span>" +
         "</div>" +

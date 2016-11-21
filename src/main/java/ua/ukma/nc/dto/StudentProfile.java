@@ -17,6 +17,15 @@ public class StudentProfile {
 
 	private List<CategoryChartDto> chartInfo;
 	private List<CategoryChartDto> chartInfoFinal;
+	
+	private FinalReviewDto generalReview;
+	private FinalReviewDto technicalReview;
+	private FinalReviewDto finalReview;
+	
+	private List<CategoryDto> projectCategories;
+	private List<CriterionDto> projectCriteria;
+	
+	private List<MeetingReviewDto> fullMeetingReviews;
 
 	public List<StudentStatusLog> getStudentStatuses() {
 		return studentStatuses;
@@ -89,4 +98,53 @@ public class StudentProfile {
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
+
+	public FinalReviewDto getGeneralReview() {
+		return generalReview;
+	}
+
+	public void setGeneralReview(FinalReviewDto generalReview) {
+		this.generalReview = generalReview;
+	}
+
+	public FinalReviewDto getTechnicalReview() {
+		return technicalReview;
+	}
+
+	public void setTechnicalReview(FinalReviewDto technicalReview) {
+		this.technicalReview = technicalReview;
+	}
+
+	public FinalReviewDto getFinalReview() {
+		return finalReview;
+	}
+
+	public void setFinalReview(FinalReviewDto finalReview) {
+		this.finalReview = finalReview;
+	}
+
+	public List<CategoryDto> getProjectCategories() {
+		return projectCategories;
+	}
+
+	public void setProjectCategories(List<CategoryDto> projectCategories) {
+		this.projectCategories = projectCategories;
+	}
+
+	public List<CriterionDto> getProjectCriteria() {
+		return projectCriteria;
+	}
+
+	public void setProjectCriteria(List<CriterionDto> projectCriteria) {
+		this.projectCriteria = projectCriteria;
+	}
+
+	public List<MeetingReviewDto> getFullMeetingReviews() {
+		return fullMeetingReviews;
+	}
+
+	public void setFullMeetingReviews(List<MeetingReviewDto> fullMeetingReviews) {
+		this.fullMeetingReviews = fullMeetingReviews;
+	}
+
 }

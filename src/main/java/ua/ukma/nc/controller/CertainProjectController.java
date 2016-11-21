@@ -12,17 +12,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import ua.ukma.nc.dto.CriterionDto;
-import ua.ukma.nc.dto.ProjectDto;
+import ua.ukma.nc.dto.*;
 import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Group;
-import ua.ukma.nc.entity.GroupAttachment;
+import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.ProjectAttachment;
 import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.service.GroupService;
+import ua.ukma.nc.service.MeetingService;
 import ua.ukma.nc.service.ProjectAttachmentService;
 import ua.ukma.nc.service.ProjectService;
-import ua.ukma.nc.service.impl.ProjectAttachmentServiceImpl;
 import ua.ukma.nc.util.exception.CriteriaDeleteException;
 
 @Controller
@@ -35,6 +34,9 @@ public class CertainProjectController {
     private GroupService groupService;
     @Autowired
     private CriterionService criterionService;
+    
+    @Autowired
+    private MeetingService meetingService;
 
     @Autowired
     private ProjectAttachmentService attachmentService;
@@ -51,7 +53,14 @@ public class CertainProjectController {
 
         //Group set
         List<Group> groupList = groupService.getByProjectId(id);
-        model.addObject("groups", groupList);
+        List<GroupProjectDto> groupDtos = new ArrayList();
+        for (Group group: groupList) {
+            Meeting upcomingMeeting = meetingService.getUpcomingByGroup(group.getId());
+            Long studentsAmount = groupService.getStudentsAmount(group.getId());
+            GroupProjectDto groupDto = new GroupProjectDto(group, upcomingMeeting, studentsAmount);
+            groupDtos.add(groupDto);
+        }
+        model.addObject("groups", groupDtos);
 
         //Criteria set
         List<CriterionDto> criterionDtos = new ArrayList<>();
@@ -85,7 +94,8 @@ public class CertainProjectController {
         attachmentService.deleteProjectAttachment(attachmentService.getById(id));
     }
 
-
+    
+    
     @RequestMapping(value = "/getAvailableCriteria", method = RequestMethod.GET)
     @ResponseBody
     public List<CriterionDto> getAvailableCriteria(@RequestParam Long projectId) {
@@ -113,4 +123,19 @@ public class CertainProjectController {
         return "success";
     }
 
+    @RequestMapping(value = "/getCriteriaAndGroups", method = RequestMethod.GET)
+    @ResponseBody
+    public ProjectsCriteriaGroupsDto getCriteriaAndGroups(@RequestParam Long projectId) {
+       ProjectsCriteriaGroupsDto pCG=new ProjectsCriteriaGroupsDto();
+        pCG.setCriterions(criterionService.getByProject(projectId));
+        pCG.setGroupList(groupService.getByProjectId(projectId));
+        return pCG;
+    }
+
+    @RequestMapping(value = "/saveMeeting", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveMeeting(@RequestBody AddCriteriaDto dto) {
+        System.out.println(dto);
+        return "success";
+    }
 }

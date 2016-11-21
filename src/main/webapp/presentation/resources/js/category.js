@@ -97,9 +97,9 @@ function setCategory(id) {
 }
 
 function buildCriteria(criteriaId, criteriaTitle){
-    newCriteria="<div class='panel-body row' id='criteriaId-"+criteriaId+"'>" +
-                "<div class='col-sm-2'>"+criteriaTitle+"</div>" +
-                "<button  class='btn btn-danger btn-xs'" +
+    newCriteria="<div class='panel-body' id='criteriaId-"+criteriaId+"'>" +
+                "<div class='col-md-2'>"+criteriaTitle+"</div>" +
+                "<button  class='btn btn-collapse'" +
                 " data-toggle='modal'" +
                 " data-target='#deleteCriteria'" +
                 " onclick='setCriteria("+criteriaId+")'>" +
@@ -108,36 +108,38 @@ function buildCriteria(criteriaId, criteriaTitle){
                 "</div>";
 }
 
-
 function buildCategory(categoryId, categoryTitle, categoryDescription){
     newCategory="<div class='panel panel-default' id='categoryPanelId-"+categoryId+"'>" +
                 "<div class='panel-heading'>" +
                 "<h4 class='panel-title row'>" +
-                "<div data-toggle='collapse' class='diver col-sm-4' id='aEditId-"+categoryId+"' " +
+                "<div data-toggle='collapse' class='diver col-md-3 text-primary' id='aEditId-"+categoryId+"' " +
                 "data-target='#collapseIn-"+categoryId+"'><b>"+categoryTitle+"</b>" +
                 "</div>" +
-                "<div id='divEditId-"+categoryId+"' class='col-sm-7'>"+categoryDescription+"</div>" +
-                "<button class='btn btn-primary btn-sm'" +
-                " data-toggle='modal'" +
-                " data-target='#editCategory'" +
-                " onclick='setCategory("+categoryId+")'>" +
-                "<span class='glyphicon glyphicon-edit'></span>" +
-                "</button>" +
-                "<button class='btn btn-danger btn-sm'" +
+                "<div id='divEditId-"+categoryId+"' class='col-md-3'>"+categoryDescription+"</div>" +
+                "<button class='btn btn-lg pull-right-btn'" +
+                " type='button'" +
                 " data-toggle='modal'" +
                 " data-target='#deleteCategory'" +
                 " onclick='setCategory("+categoryId+")'>" +
                 "<span class='glyphicon glyphicon-remove'></span>" +
                 "</button>" +
+                "<button class='btn btn-lg pull-right-btn'" +
+                " type='button'" +
+                " data-toggle='modal'" +
+                " data-target='#editCategory'" +
+                " onclick='setCategory("+categoryId+")'>" +
+                "<span class='glyphicon glyphicon-edit'></span>" +
+                "</button>" +
                 "</h4>" +
                 "</div>" +
                 "<div id='collapseIn-"+categoryId+"' class='panel-collapse collapse'>" +
                 "<div class='panel-body row'>" +
-                "<div class='col-sm-2'><b>Add new Criteria</b></div>" +
-                "<button  class='btn btn-primary btn-xs'" +
+                "<div class='col-md-2 text-primary'><b>Add new Criteria</b></div>" +
+                "<button  class='btn btn-collapse'" +
                 " data-toggle='modal'" +
                 " data-target='#addCriteria'" +
                 " onclick='setCategory("+categoryId+")'>" +
                 "<span class='glyphicon glyphicon-plus'></span>" +
                 "</button></div></div></div>";
 }
+

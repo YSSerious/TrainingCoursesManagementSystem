@@ -1,21 +1,59 @@
-#pagination thead{
+#pagination thead {
 	background-color: #c9d1d8;
 }
 
-#table-listing{
-  width: 100%;
+#table-listing {
+	width: 100%;
 }
+
 .meeting {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-     width: auto;
-     
+	display: block;
+	overflow-x: auto;
+	white-space: nowrap;
+	width: auto;
 }
 
-.meeting th, td { width: 300px; }
-
-th:first-child {
-    position: fixed;
+.meeting table{
+	width: 100%;
 }
 
+.meeting th:first-child {
+	position: fixed;
+	width: 300px;
+}
+
+.meeting th, .meeting td {
+	min-width: 150px;
+	width:auto;
+}
+
+.meeting th:last-child{
+	width: 100%;
+}
+
+.user-table td:first-child {
+	white-space: nowrap; 
+}
+
+.user-table th:first-child {
+	white-space: nowrap; 
+}
+
+.user-table th:not(:first-child) {
+	text-align: center;   
+}
+
+.user-table td:not(:first-child) {
+	font-size:13pt;
+	text-align: center;   
+}
+
+.table-responsive>.fixed-column {
+    position: absolute;
+    width: auto;
+}
+
+.fixed-column{
+	white-space: nowrap;
+	background-color:#fff;
+}

@@ -62,9 +62,13 @@ public class GroupDaoImpl implements GroupDao{
 
     private static final String GET_STUDENTS = "select tcms.user_group.id_user from tcms.user_group inner join tcms.user_role on tcms.user_group.id_user = tcms.user_role.id_user where tcms.user_group.id_group = ? and tcms.user_role.id_role = 4";
     
+    private static final String GET_STUDENTS_AMOUNT = "select COUNT(tcms.user_group.id_user) from tcms.user_group inner join tcms.user_role on tcms.user_group.id_user = tcms.user_role.id_user where tcms.user_group.id_group = ? and tcms.user_role.id_role = 4";
+    
     private static final String REMOVE_MENTOR = "delete from tcms.user_group where id_group = ? and id_user = ?";
     
     private static final String REMOVE_STUDENT = "delete from tcms.user_group where id_group = ? and id_user = ?";
+
+    private static final String GET_BY_USER_PROJECT = "select * from tcms.group where id_project = ? and id in (select id_group from tcms.user_group where id_user = ?)";
     @Override
     public Group getById(Long id) {
         log.info("Getting group with id = {}", id);
@@ -101,6 +105,12 @@ public class GroupDaoImpl implements GroupDao{
         return jdbcTemplate.update(CREATE_GROUP, group.getProject().getId(),group.getName());
     }
 
+    @Override
+    public Group getByUserProject(Long userId, Long projectId) {
+        log.info("Getting group by user = {} & project id = {}", userId, projectId);
+        return jdbcTemplate.queryForObject(GET_BY_USER_PROJECT, new GroupMapper(), projectId, userId);
+    }
+
     private List<User> getUsers(Long groupID) {
         log.info("Getting all users with group id = {}", groupID);
         return jdbcTemplate.query(GET_USERS_BY_ID, new UserGroupMapper(), groupID);
@@ -118,6 +128,11 @@ public class GroupDaoImpl implements GroupDao{
 		return jdbcTemplate.query(GET_STUDENTS,new UserGroupMapper(),groupId);
 	}
 
+        @Override
+	public Long getStudentsAmount(Long groupId) {
+		return jdbcTemplate.queryForObject(GET_STUDENTS_AMOUNT, Long.class, groupId);
+	}
+        
 	@Override
 	public List<User> getMentors(Long groupId) {
 		return jdbcTemplate.query(GET_MENTORS,new UserGroupMapper(),groupId);
