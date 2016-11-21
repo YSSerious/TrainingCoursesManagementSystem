@@ -31,7 +31,7 @@ At ${meeting.time}
 					<tr>
 						<td><font size="3"><b> <a href="#"
 									data-toggle="modal" class="open-Evaluate"
-									data-target="#evaluateModal" data-user="${user.firstName}">
+									data-target="#evaluateModal${user.id}" data-user="${user.firstName}">
 										${user.firstName} ${user.secondName} ${user.lastName} </a></b> </font></td>
 						<c:forEach items="${criteria}" var="criterion">
 							<td><font size="3"><center>
@@ -41,7 +41,7 @@ At ${meeting.time}
 						</c:forEach>
 					</tr>
 					<!-- start evaluate Student modal -->
-					<div id="evaluateModal" class="modal fade" tabindex="-1"
+					<div id="evaluateModal${user.id}" class="modal fade" tabindex="-1"
 						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -91,7 +91,7 @@ At ${meeting.time}
 					<tr>
 						<td><font size="3"><b> <a href="#"
 									data-toggle="modal" class="open-Evaluate"
-									data-target="#evaluateModalEvaluated"
+									data-target="#evaluateModalEvaluated${entry.key.id}"
 									data-user="${entry.key.firstName}">${entry.key.firstName}
 										${entry.key.secondName} ${entry.key.lastName}</a></b></font></td>
 
@@ -111,7 +111,7 @@ At ${meeting.time}
 						</c:if>
 					</tr>
 					<!-- start evaluate Student modal -->
-					<div id="evaluateModalEvaluated" class="modal fade" tabindex="-1"
+					<div id="evaluateModalEvaluated${entry.key.id}" class="modal fade" tabindex="-1"
 						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
