@@ -1,4 +1,5 @@
-<%@include file="header.jsp" %>
+<%@include file="header.jsp"%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <div class="col-sm-11 col-sm-offset-1">
     <div class="col-sm-11">
 

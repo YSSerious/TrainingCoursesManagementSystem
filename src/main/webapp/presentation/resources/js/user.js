@@ -102,6 +102,7 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	
     	 	    	    	$('#stinf-'+value.id).html('<h4><b>Status: </b>'+data.studentStatuses[data.studentStatuses.length - 1].statusDescription+'</h4>');
                             createCharts(data.chartInfo, value.id);
+                            radarChart(data.chartInfo, value.id);
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
     	 	    	    	

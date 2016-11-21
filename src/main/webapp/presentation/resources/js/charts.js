@@ -183,7 +183,7 @@ function drawCriteriaChart(chartdata, wrappingDivId, maxYValue, categoryTitle) {
                 return d.criterionName;
             }));
         }
-        
+
         canvas.selectAll('.chart-bar')
                 .sort(function (a, b) {
                     return y(b.criterionName) - y(a.criterionName);
@@ -191,7 +191,7 @@ function drawCriteriaChart(chartdata, wrappingDivId, maxYValue, categoryTitle) {
 
         var transition = svg.transition().duration(750),
                 delay = function (d, i) {
-                    return i*10;
+                    return i * 10;
                 };
 
         transition.selectAll('.chart-bar')
@@ -346,4 +346,46 @@ function average(array) {
         sum += array[i];
     }
     return sum / array.length;
+}
+
+
+function radarChart(chartData, wrappingDivId) {
+    var labels = [];
+    var data = [];
+    $.each(chartData, function (index, object) {
+        $.each(object.studyResults, function (index, value) {
+            labels.push(value.criterionName);
+            data.push(value.averageValue);
+        });
+    });
+    var preparedData = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Criteria',
+                backgroundColor: "rgba(179,181,198,0.2)",
+                borderColor: "rgba(179,181,198,1)",
+                pointBackgroundColor: "rgba(179,181,198,1)",
+                pointBorderColor: "#fff",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgba(179,181,198,1)",
+                data: data
+            }
+        ]
+    };
+    var canvas = $('<canvas id="myChart" width="400" height="400"></canvas>')
+            .appendTo('#chart' + wrappingDivId);
+    console.log('obj: ', canvas);
+    var chartInstance = new Chart(canvas, {
+        type: 'radar',
+        data: preparedData,
+        options: {
+            scale: {
+                reverse: true,
+                ticks: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
