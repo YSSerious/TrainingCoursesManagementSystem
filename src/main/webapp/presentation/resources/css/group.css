@@ -6,6 +6,43 @@
     width: 350px;
    
 }
+.group-header .panel.panel-horizontal {
+    display:table;
+    width: 350px;
+   
+}
+.group-header .panel.panel-horizontal > .panel-title .h3{
+	padding-left: inherit;
+}
+.group-header .panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-body, .panel.panel-horizontal > .panel-footer {
+    display:table-cell;
+}
+.group-header .panel.panel-horizontal > .panel-heading, .panel.panel-horizontal > .panel-footer {
+    
+    border:0;
+    vertical-align: middle;
+}
+.group-header .panel.panel-horizontal > .panel-heading {
+    border-right: 1px solid #ddd;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 4px;
+    width: min-intrinsic;
+    padding-right: 0 !important;
+    width: 150px;
+    background-color: white;
+}
+
+.group-header .panel.panel-horizontal.top-panel {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-bottom: 0px;
+}
+
+.group-header .panel.panel-default.panel-horizontal.bottom-panel {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-top: none;
+}
 
 .attachment-group .panel.panel-horizontal > .panel-title .h3{
 	padding-left: inherit;

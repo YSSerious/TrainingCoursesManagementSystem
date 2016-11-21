@@ -1,6 +1,7 @@
 
 package ua.ukma.nc.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.GroupAttachment;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.Project;
+import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.entity.impl.real.GroupImpl;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
@@ -25,6 +27,7 @@ import ua.ukma.nc.service.GroupAttachmentService;
 import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.MeetingService;
 import ua.ukma.nc.service.RoleService;
+import ua.ukma.nc.service.StudentStatusService;
 import ua.ukma.nc.service.UserService;
 import ua.ukma.nc.util.exception.RemoveStudentFromGroupException;
 
@@ -45,6 +48,9 @@ public class GroupController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired 
+	private StudentStatusService studentStatusService;
 
 	private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
@@ -70,7 +76,11 @@ public class GroupController {
 		ModelAndView model = new ModelAndView();
 		GroupDto group = new GroupDto(groupService.getById(id));
 		List<User> students = groupService.getStudents(id);
-
+		List<StudentStatus> studentsWithStatus = new ArrayList<StudentStatus>();
+		for(User us : students){
+			studentsWithStatus.add(studentStatusService.getByUserId(us.getId()));
+		}
+		//studentsWithStatus.get(0).getStatus().
 		List<User> mentors = groupService.getMentors(id);
 
 		List<GroupAttachment> groupAttachments= groupAttachmentService.getByGroup(id);
@@ -82,7 +92,7 @@ public class GroupController {
 		model.addObject("projectName",projectName);
 
 
-		model.addObject("students",students);
+		model.addObject("students",studentsWithStatus);
 		model.addObject("mentors",mentors);
 		model.addObject("meetings",meetings);
 		model.addObject("group-id",group.getId());
