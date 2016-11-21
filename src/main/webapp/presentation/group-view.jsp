@@ -19,10 +19,10 @@
 	<div class="panel panel-primary"
 		style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
 		<div class="panel-heading clearfix">
-			<button type="button" class="btn btn-default btn-xs pull-right">Edit</button>
+			
 
 			<div data-toggle="collapse" data-target="#collapseMeetings"
-				class="arrow col-md-1"  style="color:black">
+				class="arrow col-md-1" style="color: black">
 				<span class="glyphicon glyphicon-chevron-down"></span>
 			</div>
 		</div>
@@ -35,6 +35,9 @@
 					<li class="list-group-item">${meeting.name}<span
 						style='padding-left: 10px;'> </span> ${meeting.time} <span
 						style='padding-left: 10px;'> </span> ${meeting.place} <br />
+						<div class="btn rmv-cr-btn  pull-right" type='button'>
+							<span class="glyphicon glyphicon-edit"></span>
+						</div>
 				</c:forEach>
 
 			</ul>
@@ -51,7 +54,7 @@
 		<div class="panel-heading clearfix">
 			<button type="button" class="btn btn-default btn-xs pull-right">Add</button>
 			<div data-toggle="collapse" data-target="#collapseStudents"
-				class="arrow col-md-1"  style="color:black">
+				class="arrow col-md-1" style="color: black">
 				<span class="glyphicon glyphicon-chevron-down"></span>
 			</div>
 		</div>
@@ -63,18 +66,16 @@
 						class="list-group-item group-${group.id}-${student.id} clearfix">
 
 						${student.firstName} <span style='padding-left: 10px;'> </span>
-						${student.lastName}
-					<!-- 	<button id="${group.id}-${student.id}"
+						${student.lastName} <!-- 	<button id="${group.id}-${student.id}"
 							class="btn  delete-student pull-right">
 							<span class="glyphicon glyphicon-remove"></span>
 						</button>
 					-->
-						<div id="${group.id}-${student.id}" class="btn rmv-cr-btn col-md-1 pull-right delete-student"
+						<div id="${group.id}-${student.id}"
+							class="btn rmv-cr-btn col-md-1 pull-right delete-student"
 							type='button'>
 							<span class="glyphicon glyphicon-remove delete"></span>
-						</div> 
-						
-						 <br />
+						</div> <br />
 					</li>
 				</c:forEach>
 			</ul>
@@ -104,7 +105,7 @@
 		<div class="panel-heading clearfix">
 			<button type="button" class="btn btn-default btn-xs pull-right">Add</button>
 			<div data-toggle="collapse" data-target="#collapseMentors"
-				class="arrow col-md-1" style="color:black">
+				class="arrow col-md-1" style="color: black">
 				<span class="glyphicon glyphicon-chevron-down"></span>
 			</div>
 		</div>
@@ -115,15 +116,14 @@
 					<li class="list-group-item group-${group.id}-${mentor.id} clearfix">
 
 						${mentor.firstName} <span style='padding-left: 10px;'> </span>
-						${mentor.lastName} 
-						<!-- <button id="${group.id}-${mentor.id}"
+						${mentor.lastName} <!-- <button id="${group.id}-${mentor.id}"
 							class="btn delete-mentor pull-right"><span class="glyphicon glyphicon-remove"></span>
 						</button> -->
-						<div id="${group.id}-${mentor.id}" class="btn rmv-cr-btn col-md-1 pull-right delete-mentor"
+						<div id="${group.id}-${mentor.id}"
+							class="btn rmv-cr-btn col-md-1 pull-right delete-mentor"
 							type='button'>
 							<span class="glyphicon glyphicon-remove delete"></span>
-						</div> 
-						<br />
+						</div> <br />
 					</li>
 				</c:forEach>
 			</ul>
