@@ -1,4 +1,5 @@
-.container.attachment-group{
+
+/*.container.attachment-group{
 	width: initial;
 }
 .attachment-group .panel.panel-horizontal {
@@ -78,7 +79,7 @@
 
 .attachment-group .panel-btn{
 	padding-bottom: 10px;
-    /*background-color: #ddd;*/
+    background-color: #ddd; 
     background-color: #337ab7;
     margin-bottom: 0px;
     height: 45px;
@@ -127,6 +128,7 @@
 .attachment-group .glyphicon{
 	font-size: 20px;
 }
+*/
 /*
 .panel.add-panel{
 	border: 1px solid #ddd;
@@ -145,8 +147,8 @@
 
 .rmv-btn{
 	float: right!important;
-/*     margin: 2px; */
-/*     border: 1px solid #ddd; */
+     margin: 2px; 
+     border: 1px solid #ddd;  
     border-radius: 5px;
     padding: 0px;
     display: none;

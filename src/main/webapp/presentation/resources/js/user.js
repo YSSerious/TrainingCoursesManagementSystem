@@ -2,8 +2,8 @@ function getMark(mark){
 	if(mark == ' ')
 		return ' ';
 	else if(mark == '-')
-		return '<p style="padding:0px; margin:0px;"><b>-</b></p>';
-	return '<p style="padding:0px; margin:0px;"><b>'+mark+'</b></p>';
+		return '<p style="padding:0px; margin:0px;">-</p>';
+	return '<p style="padding:0px; margin:0px;">'+mark+'</p>';
 }
 
 function getRow(type){
@@ -22,9 +22,22 @@ function createMentorProjectsInfo(userId, divInside){
 	    'success' : function(data) {
 	    	var s = '';
 	    	$.each( data, function( key, value ) {
-	    		s+= '<h2>Mentor projects: </h2><hr/><div class="panel panel-default"><div id="mpr'+value.id+'" class="panel-heading">' + value.name;
+	    		var currentDate = new Date();
+	    		var startDate = new Date(value.startDate);
+	    		var finishDate = new Date(value.finishDate);
+	    		var divClass = 'default';
+	    		
+	    		if(startDate.getTime() < currentDate.getTime() && currentDate.getTime() < finishDate.getTime()){
+	    			divClass = 'current';
+	    		}else if(startDate.getTime() > currentDate.getTime()){
+	    			divClass = 'primary';
+	    		}else{
+	    			divClass = 'finished';
+	    		}
+	    		
+	    		s+= '<h2>Mentor projects: </h2><hr/><div class="panel panel-'+divClass+'"><div id="mpr'+value.id+'" class="panel-body">' + value.name;
 	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
- 	    		s+= '</div><div id="ms'+value.id+'"><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><h4>'+value.description+'</h4></div></div></div></div></div>';
+ 	    		s+= '</div></div>';
 	    	
 	    	});
 
@@ -45,9 +58,21 @@ function createStudentProjectsInfo(userId, divInside){
 	    'success' : function(data) {
 	    	var s = '';
 	    	$.each( data, function( key, value ) {
-	    		s+= '<h2>Student projects: </h2><hr/><div class="panel panel-default"><div id="pr'+value.id+'" class="panel-heading">' + value.name;
+	    		var currentDate = new Date();
+	    		var startDate = new Date(value.startDate);
+	    		var finishDate = new Date(value.finishDate);
+	    		var divClass = 'default';
+	    		
+	    		if(startDate.getTime() < currentDate.getTime() && currentDate.getTime() < finishDate.getTime()){
+	    			divClass = 'current';
+	    		}else if(startDate.getTime() > currentDate.getTime()){
+	    			divClass = 'primary';
+	    		}else{
+	    			divClass = 'finished';
+	    		}
+	    		s+= '<h2>Student projects: </h2><hr/><div class="panel panel-'+divClass+'"><div id="pr'+value.id+'" class="panel-body">' + value.name;
 	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
- 	    		s+= '</div><div id="sub'+value.id+'"><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><h4>'+value.description+'</h4><div class="col-sm-8 col-sm-offset-2 charts-wrapper" id="chart'+value.id+'">Loading...</div></div></div></div></div></div>';
+ 	    		s+= '</div></div><div id="sub'+value.id+'"><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><div id="stinf-'+value.id+'"></div><br/><h4>'+value.description+'</h4><div class="col-sm-8 col-sm-offset-2 charts-wrapper" id="chart'+value.id+'">Loading...</div></div></div></div></div>';
 	    	});
 
 	    	if(jQuery.isEmptyObject(data))
@@ -74,6 +99,8 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	   
     	 	    	    'success' : function(data) {
     	 	    	    	$('#chart'+value.id).html('');
+    	 	    	    	
+    	 	    	    	$('#stinf-'+value.id).html('<h4><b>Status: </b>'+data.studentStatuses[data.studentStatuses.length - 1].statusDescription+'</h4>');
                             createCharts(data.chartInfo, value.id);
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
@@ -101,11 +128,11 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	table+= getMarksTable(data.markTableDto, value.id);
                             
     	 	    	    	table+= '</div>';
-                            table+= '<br/><h2>Statuses: </h2>';
-                            table+= getStatusesTable(data.studentStatuses);
+                            //table+= '<br/><h2>Statuses: </h2>';
+                            //table+= getStatusesTable(data.studentStatuses);
                             
-                            table+= '<br/><h2>Meeting reviews: </h2>';
-                            table+= getMeetingReviewsTable(data.meetingReviews);
+                            //table+= '<br/><h2>Meeting reviews: </h2>';
+                            //table+= getMeetingReviewsTable(data.meetingReviews);
     	 	    	    	
                             table+= '<br/><h2>Final reviews: </h2>';
                             table+= getFinalReviews(data);
@@ -470,16 +497,16 @@ function getFullMeetingReviews(fullMeetingReviews){
 			div += '<hr/>';
 		}
 		
-		div += '<table class="table table-bordered">'
-		
+		div += '<div style="max-height:350px; overflow: auto;"><table class="table table-bordered">'
+		div += '<thead style="background-color:#e6e6e6"><tr><td>Criterion</td><td>Mark</td></tr></thead><tbody>';
 		$.each(meetingReview.marks, function(key, mark) {
 			div += '<tr>';
-			div += '<th>' + mark.criterionName + '</th>';
+			div += '<td>' + mark.criterionName + '</td>';
 			div += '<td>' + mark.value + '</td>';
 			div += '</tr>';
 		});
 		
-		div += '</table></div></div>';
+		div += '</tbody></table></div></div></div>';
 		
 	});
 	

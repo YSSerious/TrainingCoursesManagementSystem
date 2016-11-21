@@ -15,6 +15,7 @@ import ua.ukma.nc.entity.*;
 import ua.ukma.nc.entity.impl.real.FinalReviewImpl;
 import ua.ukma.nc.service.*;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -133,9 +134,14 @@ public class CertainUserController {
 	public List<FinalReviewCriterion> getFinReviewFormData(@RequestParam("user") Long userId){
 		List<FinalReviewCriterion> result = null;
 		List<Project> all = projectService.getStudentProjects(userId);
+		Date date = new Date(System.currentTimeMillis());
 		//only for testing gonna be fixed ASAP
-		all.stream().forEach(p->System.out.println(p));
-		Project current = all.get(0);
+		Project current = null;
+		for(Project project : all)
+			if(project.getFinishDate().compareTo(date)>=0){
+				current = project;
+				break;
+			}
 		if(current!=null){
 			if(finalReviewService.exists(userId, groupService.getByUserProject(userId, current.getId()).getId(), "F")) {
 				result = finalReviewCriterionService.getByFinalReview(finalReviewService.getByStudent(current.getId(), userId, "F").getId());
@@ -157,9 +163,14 @@ public class CertainUserController {
 	public String postFinRev(Principal principal, @PathVariable("id") Long userId, @RequestBody JsonWrapperFinRev data){
 		User mentor = userService.getByEmail(principal.getName());
 		List<Project> all = projectService.getStudentProjects(userId);
+		Date date = new Date(System.currentTimeMillis());
 		//only for testing gonna be fixed ASAP
-		all.stream().forEach(p->System.out.println(p));
-		Project current = all.get(0);
+		Project current = null;
+		for(Project project : all)
+			if(project.getFinishDate().compareTo(date)>=0){
+				current = project;
+				break;
+			}
 		if(current!=null) {
 			FinalReview review = null;
 			if(finalReviewService.exists(userId, groupService.getByUserProject(userId, current.getId()).getId(), "F")){
