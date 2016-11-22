@@ -108,10 +108,13 @@ public class GroupController {
 		return model;
 	}
 
-	@RequestMapping(value = "addAttachment", method = RequestMethod.POST)
+	@RequestMapping(value = "/addAttachment", method = RequestMethod.POST)
+	@ResponseBody
 	public void addGroupAttachment(@RequestParam("id_group") Long idGroup,@RequestParam("name") String name,
 			@RequestParam("attachment_scope") String attachmentScope){
+		
 		GroupAttachment attachment =new GroupAttachment();
+		
 		attachment.setAttachmentScope(attachmentScope);
 		attachment.setGroup(groupService.getById(idGroup));
 		attachment.setName(name);
@@ -136,19 +139,9 @@ public class GroupController {
 			return "Deleted successfully";
 		}
 	}
-
-	@RequestMapping(value = "editAttachment", method = RequestMethod.POST)
-	public void editGroupAttachment(@RequestParam("id_group") Long idGroup,@RequestParam("name") String name,
-			@RequestParam("attachment_scope") String attachmentScope,@RequestParam("id") Long idAttachment){
-		GroupAttachment attachment =new GroupAttachment();
-		attachment.setId(idAttachment);
-		attachment.setAttachmentScope(attachmentScope);
-		attachment.setGroup(groupService.getById(idGroup));
-		attachment.setName(name);
-		groupAttachmentService.updateGroupAttachment(attachment);
-
-	}
-	@RequestMapping(value = "deleteAttachment", method = RequestMethod.POST)
+ 
+	@RequestMapping(value = "/deleteAttachment", method = RequestMethod.POST)
+	@ResponseBody
 	public void deleteGroupAttachment(@RequestParam("id") Long idAttachment){
 		GroupAttachment attachment =groupAttachmentService.getById(idAttachment);
 		groupAttachmentService.deleteGroupAttachment(attachment);
