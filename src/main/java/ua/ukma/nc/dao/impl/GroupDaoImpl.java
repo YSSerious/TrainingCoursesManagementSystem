@@ -50,6 +50,8 @@ public class GroupDaoImpl implements GroupDao{
 
     private static final String GET_BY_ID = "SELECT id, id_project, name FROM tcms.group WHERE id = ?";
 
+    private static final String GET_BY_NAME = "SELECT id, id_project, name FROM tcms.group WHERE name = ?";
+
     private static final String DELETE_GROUP = "DELETE FROM tcms.group WHERE id = ?";
 
     private static final String CREATE_GROUP = "INSERT INTO tcms.group (id_project, name) VALUES (?,?)";
@@ -73,6 +75,11 @@ public class GroupDaoImpl implements GroupDao{
     public Group getById(Long id) {
         log.info("Getting group with id = {}", id);
         return jdbcTemplate.queryForObject(GET_BY_ID, new GroupMapper(), id);
+    }
+
+    @Override
+    public Group getByName(String name) {
+        return jdbcTemplate.queryForObject(GET_BY_NAME, new GroupMapper(), name);
     }
 
     @Override
@@ -147,4 +154,5 @@ public class GroupDaoImpl implements GroupDao{
 	public int removeStudent(Long groupId, Long userId) {
 		return jdbcTemplate.update(REMOVE_STUDENT,groupId,userId);
 	}
+
 }

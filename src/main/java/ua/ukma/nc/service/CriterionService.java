@@ -15,6 +15,8 @@ public interface CriterionService {
 
     Criterion getByName(String name);
 
+    List<Criterion> getByNames(List<String> names);
+
     int deleteCriterion(Criterion criterion);
 
     int deleteCriterion(Long id);

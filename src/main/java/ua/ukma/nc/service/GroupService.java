@@ -14,6 +14,10 @@ public interface GroupService {
 	
     Group getById(Long id);
 
+    Group getByName(String name);
+
+    List<Group> getByNames(List<String> names);
+
     Group getByUserProject(Long userId, Long projectId);
 
     int deleteGroup(Group group);

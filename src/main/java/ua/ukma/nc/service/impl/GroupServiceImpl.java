@@ -7,6 +7,7 @@ import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.GroupService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,18 @@ public class GroupServiceImpl implements GroupService{
     @Override
     public Group getById(Long id) {
         return groupDao.getById(id);
+    }
+
+    @Override
+    public Group getByName(String name) {
+        return groupDao.getByName(name);
+    }
+
+    @Override
+    public List<Group> getByNames(List<String> names) {
+        List<Group> groups = new ArrayList<>();
+        for(String name:names)groups.add(groupDao.getByName(name));
+        return groups;
     }
 
     @Override

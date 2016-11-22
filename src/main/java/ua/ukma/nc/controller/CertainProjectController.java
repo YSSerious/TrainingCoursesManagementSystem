@@ -1,8 +1,11 @@
 package ua.ukma.nc.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -126,9 +129,9 @@ public class CertainProjectController {
     @RequestMapping(value = "/getCriteriaAndGroups", method = RequestMethod.GET)
     @ResponseBody
     public ProjectsCriteriaGroupsDto getCriteriaAndGroups(@RequestParam Long projectId) {
-       ProjectsCriteriaGroupsDto pCG=new ProjectsCriteriaGroupsDto();
-        pCG.setCriterions(criterionService.getByProject(projectId));
-        pCG.setGroupList(groupService.getByProjectId(projectId));
+        ProjectsCriteriaGroupsDto pCG=new ProjectsCriteriaGroupsDto(groupService.getByProjectId(projectId), criterionService.getByProject(projectId));
+//        pCG.setCriterions(criterionService.getByProject(projectId));
+//        pCG.setGroupList(groupService.getByProjectId(projectId));
         return pCG;
     }
 
@@ -136,6 +139,9 @@ public class CertainProjectController {
     @ResponseBody
     public String saveMeeting(@RequestBody AddCriteriaDto dto) {
         System.out.println(dto);
+        meetingService.addMeetings(dto);
         return "success";
     }
+
+
 }

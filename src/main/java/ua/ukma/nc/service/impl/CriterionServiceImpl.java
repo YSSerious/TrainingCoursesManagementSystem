@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.ukma.nc.dao.CriterionDao;
 import ua.ukma.nc.entity.Criterion;
+import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.service.CriterionService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +27,13 @@ public class CriterionServiceImpl implements CriterionService {
 	@Override
 	public Criterion getByName(String name) {
 		return criterionDao.getByName(name);
+	}
+
+	@Override
+	public List<Criterion> getByNames(List<String> names) {
+		List<Criterion> criterions= new ArrayList<>();
+		for(String name:names)criterions.add(criterionDao.getByName(name));
+		return criterions;
 	}
 
 	@Override
