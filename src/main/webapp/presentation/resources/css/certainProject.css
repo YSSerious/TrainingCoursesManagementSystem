@@ -140,24 +140,83 @@
     overflow-y: auto;
 }
 
-#project-groups .panel-heading {
+.panel#project-groups {
+    border: 1px solid #ddd;
+    border-bottom: none;
+}
+
+.panel#project-groups .panel-heading {
     padding-top: 0;
     padding-bottom: 0;
     cursor: pointer;
 }
 
-#project-groups .panel-collapse{
+.panel#project-groups .panel-collapse{
+    padding: 0;
+    border: 1px solid #ddd;
+    border-top: none;
+}
+
+.panel#project-groups .panel-collapse .panel-body{
     padding: 0;
 }
 
-#project-groups .panel-collapse .panel-body{
-    padding: 0;
+.panel#project-groups .panel-heading {
+    border: none;
 }
 
-#project-groups .panel-heading button{
+.panel#project-groups .panel-heading button{
     margin-top: 10px;
 }
 
-#project-groups .panel-heading button:last-child {
+.panel#project-groups .panel-heading button:last-child {
     margin-right: 0;
+}
+
+.panel#project-groups .panel-body table {
+    margin-bottom: 0;
+}
+
+.panel#project-groups .panel-body table tr:first-child th{
+    border: none;
+}
+
+.panel#project-groups .panel-body table tr:nth-child(n + 2) td:last-child{
+    width: 1%;
+    white-space: nowrap;
+}
+
+.panel#project-groups .panel-body table tr:nth-child(n + 2) td:last-child > span:last-child{
+    display: none;
+    visibility: hidden;
+    overflow: hidden;
+}
+
+.panel#project-groups .panel-body button{
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.panel#project-groups .panel-body button .glyphicon{
+    font-size: 15px;
+    color: #919191;
+}
+
+.panel#project-groups .panel-body button:hover .glyphicon{
+    color: #000;
+}
+
+div.modal#editGroupModal form {
+    margin: 0;
+}
+
+div.modal#deleteGroupModal .modal-dialog{
+    width: 40%;
+    margin: auto;
+}
+
+div.modal#deleteGroupModal .modal-body h4 {
+    text-align: center;
+    margin-bottom: 20px;
 }

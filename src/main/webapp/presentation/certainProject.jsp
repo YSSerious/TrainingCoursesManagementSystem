@@ -1,9 +1,10 @@
 <%@include file="header.jsp" %>
+<%@include file="projectGroupsModals.jsp" %>
 <script
     src="<c:url value="/presentation/resources/js/certainProject.js"/>"
     type="text/javascript" defer="defer">
 </script>
-<div class="container certain-project">
+<div class="container certain-project" data-project-id="${project.id}">
     <!-- Example row of columns -->
     <div class="row">
         <div class="col-md-12">
@@ -47,7 +48,7 @@
                             data-target="#meetingCreateModal">
                         <b>Add Meeting</b>
                     </button>
-                    <button type="button" class="btn btn-default btn-sm pull-right" id="createGroupButton">
+                    <button type="button" class="btn btn-default btn-sm pull-right" id="create-group">
                         <b>Add</b>
                     </button>
                     <div class="clearfix"></div>
@@ -60,9 +61,10 @@
                                 <th>Name</th>
                                 <th>Students amount</th>
                                 <th>Upcoming meeting</th>
+                                <th></th>
                             </tr>
                             <c:forEach items="${groups}" var="group">
-                                <tr>
+                                <tr id="${group.id}" data-students-amount="${group.studentsAmount}">
                                     <td><a href="/groups/group?id=${group.id}">${group.name}</a></td>
                                     <td>${group.studentsAmount}</a></td>
                                     <td>
@@ -74,6 +76,14 @@
                                                 No upcoming meetings
                                             </c:otherwise>
                                         </c:choose>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-collapse edit-group" class="edit-group">
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </button>
+                                        <button class="btn btn-collapse delete-group" class="delete-group">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
                                     </td>
                                 </tr>
                             </c:forEach>

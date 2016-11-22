@@ -26,7 +26,6 @@
 	src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"/> ">
 	
 </script>
-<script src="<c:url value="/presentation/resources/js/create_group.js"/>"></script>
 <link rel="stylesheet"
 	href=" <c:url value="/presentation/resources/third-party/jqpagination/css/jqpagination.css" />"
 	type="text/css">
@@ -66,6 +65,8 @@
     <script src="<c:url value="/presentation/resources/js/charts.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/user.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/meeting.js"/>" defer="defer"></script>
+    <script src="<c:url value="/presentation/resources/js/projects.js"/>" defer="defer"></script>
+    <script src="<c:url value="/presentation/resources/js/create_group.js"/>" defer="defer"></script>
     <!--<script src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>-->
    <!--  <script src="<c:url value="/presentation/resources/js/group_attachments.js"/>" defer="defer"></script> -->
 </head>

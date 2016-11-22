@@ -12,12 +12,12 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data);
                 $("#CriteriaCheckBoxId").children().remove();
-                $.each(data.criterions, function(key, value){
-                    $('#CriteriaCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox' class='isCriteriaChecked'>"+value.title+"</label>");
+                $.each(data.criterions, function (key, value) {
+                    $('#CriteriaCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox' class='isCriteriaChecked'>" + value.title + "</label>");
                 });
                 $("#GroupsCheckBoxId").children().remove();
-                $.each(data.groupList, function(key, value){
-                    $('#GroupsCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox' class='isGroupChecked'>"+value.name+"</label>");
+                $.each(data.groupList, function (key, value) {
+                    $('#GroupsCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox' class='isGroupChecked'>" + value.name + "</label>");
                 });
             },
             error: function (textStatus) {
@@ -28,24 +28,24 @@ $(document).ready(function () {
 
     $("#saveMeeting").click(function () {
 
-        var dto={name:'',
-            place:'',
-            date:'',
-            criterions:[],
-            groups:[]};
+        var dto = {name: '',
+            place: '',
+            date: '',
+            criterions: [],
+            groups: []};
 
-        dto.name=$("#inputName").val();
-        dto.place=$("#inputPlace").val();
-        dto.date=$("#inputDate").val();
+        dto.name = $("#inputName").val();
+        dto.place = $("#inputPlace").val();
+        dto.date = $("#inputDate").val();
 
-        $.each($('.isCriteriaChecked'), function(key, value){
-            if(value.checked){
+        $.each($('.isCriteriaChecked'), function (key, value) {
+            if (value.checked) {
                 dto.criterions.push(value.closest('label').textContent);
             }
         });
 
-        $.each($('.isGroupChecked'), function(key, value){
-            if(value.checked){
+        $.each($('.isGroupChecked'), function (key, value) {
+            if (value.checked) {
                 dto.groups.push(value.closest('label').textContent);
             }
         });
@@ -56,7 +56,7 @@ $(document).ready(function () {
             type: "POST",
             contentType: "application/json",
             dataType: 'json',
-            data: JSON.stringify({name:dto.name, place:dto.place, date:dto.date, crit:dto.criterions, gr:dto.groups}),
+            data: JSON.stringify({name: dto.name, place: dto.place, date: dto.date, crit: dto.criterions, gr: dto.groups}),
             success: function (data) {
                 if(data==1)
                 console.log("success");
@@ -77,7 +77,7 @@ $(document).ready(function () {
             data: {projectId: projectId},
             success: function (data) {
                 console.log(data);
-               appendTableRows(data);
+                appendTableRows(data);
             },
             error: function (textStatus) {
                 console.log(textStatus);
@@ -111,7 +111,7 @@ $(document).ready(function () {
             data: {projectId: projectId, criteriaTitle: criteria.title},
             success: function (data) {
                 console.log(data);
-                $('#criteriaId-'+criteria.id).remove();
+                $('#criteriaId-' + criteria.id).remove();
             },
             error: function (textStatus) {
                 console.log(textStatus);
@@ -120,54 +120,131 @@ $(document).ready(function () {
             }
         });
     });
-    
-    function appendTableRows(data){
+
+    function appendTableRows(data) {
         $("#criterionTable > tbody:last").children().remove();
-        $.each(data, function(key, value){
+        $.each(data, function (key, value) {
             $('#criterionTable > tbody:last-child').append("<tr>" +
-                "<td>"+value.title+"</td>" +
-                "<td><button class='addButton btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
-                "</tr>");
+                    "<td>" + value.title + "</td>" +
+                    "<td><button class='addButton btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
+                    "</tr>");
         });
     }
 
-    $("#search").keyup(function() {
+    $("#search").keyup(function () {
         var value = this.value.toLowerCase();
 
-        $("table").find("tr").each(function(index) {
-            if (!index) return;
+        $("table").find("tr").each(function (index) {
+            if (!index)
+                return;
             var id = $(this).find("td").first().text().toLowerCase();
             $(this).toggle(id.indexOf(value) !== -1);
         });
     });
-    
+
 });
 
-$('#project-groups .panel-heading').first().on('click', function(e) {
+$('#project-groups .panel-heading').first().on('click', function (e) {
     console.log(e.target.tagName);
-    if ((e.target.tagName !== "BUTTON")&&(e.target.tagName !== "B")) {
+    if ((e.target.tagName !== "BUTTON") && (e.target.tagName !== "B")) {
         $('#collapse-group').collapse('toggle');
     }
 });
 
-function changeSpan(){
-    if ($("#spanId").hasClass("glyphicon-chevron-down") ){
+function changeSpan() {
+    if ($("#spanId").hasClass("glyphicon-chevron-down")) {
         $("#spanId").removeClass('glyphicon-chevron-down');
         $("#spanId").addClass('glyphicon-chevron-up');
-    }else{
+    } else {
         $("#spanId").removeClass('glyphicon-chevron-up');
         $("#spanId").addClass('glyphicon-chevron-down');
     }
-};
+}
+;
 
-function buildResponseCriteria(data){
-    return "<div class='panel-body' id='criteriaId-"+data.id+"'>" +
-        "<div class='col-md-11'>"+data.title+"</div>" +
-        "<c:if test='"+data.rated+"'>" +
-        "<div class='btn rmv-cr-btn col-md-1' type='button'" +
-        " data-button='{\"id\":\""+data.id+"\", \"title\": \""+data.title+"\"}'>" +
-        "<span class='glyphicon glyphicon-remove'></span>" +
-        "</div>" +
-        "</c:if>" +
-        "</div>";
-};
+function buildResponseCriteria(data) {
+    return "<div class='panel-body' id='criteriaId-" + data.id + "'>" +
+            "<div class='col-md-11'>" + data.title + "</div>" +
+            "<c:if test='" + data.rated + "'>" +
+            "<div class='btn rmv-cr-btn col-md-1' type='button'" +
+            " data-button='{\"id\":\"" + data.id + "\", \"title\": \"" + data.title + "\"}'>" +
+            "<span class='glyphicon glyphicon-remove'></span>" +
+            "</div>" +
+            "</c:if>" +
+            "</div>";
+}
+;
+
+// GROUPS EDITING AND DELETION
+$('button.edit-group').each(function () {
+    $(this).on('click', function (e) {
+        var id = $(this).closest('tr').attr('id');
+        var groupIdSpan = $('<span id="group-id"></span>').appendTo('#editGroupModal .modal-body');
+        groupIdSpan.css("display", "none");
+        groupIdSpan.attr('data-group-id', id);
+//        $('#editGroupModal .modal-title')
+//                .append($('#project-groups table tr#' + id + ' td:first-child a').text);
+        $('#editGroupModal').modal('show');
+    });
+});
+
+$('#editGroupModal form').on('submit', function (e) {
+    e.preventDefault();
+    var groupId = $('#editGroupModal .modal-body #group-id').attr('data-group-id');
+    var groupName = $('#editGroupModal form #group-name').val();
+    editGroupViaAjax(groupId, groupName);
+});
+
+function editGroupViaAjax(id, name) {
+    console.log({"groupId": id, "groupName": name});
+    $.ajax({
+        type: 'POST',
+        url: '/groups/edit.ajax',
+        data: {groupId: id, groupName: name},
+        dataType: 'json',
+        timeout: 100000,
+        statusCode: {
+            200: function () {
+                $('#editGroupModal').modal('hide');
+                $('#project-groups table tr#' + id + ' td:first-child a').text(name);
+            }
+        }
+    });
+}
+
+$('button.delete-group').each(function () {
+    $(this).on('click', function (e) {
+        var parentTr = $(this).closest('tr');
+        var groupId = parentTr.attr('id');
+        var studentsAmount = parseInt(parentTr.attr('data-students-amount'));
+        if (studentsAmount > 0) {
+            $('#cannotDeleteGroupModal').modal('show');
+        } else {
+            var groupIdSpan = $('<span id="group-id"></span>').appendTo('#deleteGroupModal .modal-body');
+            groupIdSpan.css("display", "none");
+            groupIdSpan.attr('data-group-id', groupId);
+            $('#deleteGroupModal').modal('show');
+        }
+    });
+});
+
+$('#deleteGroupModal #delete-group').on('click', function (e) {
+    var groupId = $('#deleteGroupModal .modal-body #group-id').attr('data-group-id');
+    deleteGroupViaAjax(groupId);
+});
+
+function deleteGroupViaAjax(id) {
+    $.ajax({
+        type: 'POST',
+        url: '/groups/delete.ajax',
+        data: {groupId: id},
+        dataType: 'json',
+        timeout: 100000,
+        statusCode: {
+            200: function () {
+                $('#deleteGroupModal').modal('hide');
+                $('#project-groups table tr#' + id).remove();
+            }
+        }
+    });
+}

@@ -54,21 +54,44 @@ public class GroupController {
 
 	private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
-	@RequestMapping(value = "add", method = RequestMethod.POST)
-	public void addGroup(@RequestParam("group_name") String groupName, @RequestParam("project_id") Long projectId){
+	@RequestMapping(value = "/add.ajax", method = RequestMethod.POST)
+        @ResponseBody
+	public String addGroup(@RequestParam("groupName") String groupName, @RequestParam("projectId") Long projectId){
 		Project project = new ProjectImpl();
 		project.setId(projectId);
 		Group group = new GroupImpl();
 		group.setProject(project);
 		group.setName(groupName);
 		groupService.createGroup(group);
+                return "";
 	}
 
-	@RequestMapping(value = "add", method = RequestMethod.GET)
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addGroup(){
 		return "group";
 	}
 
+        @RequestMapping(value = "/edit.ajax", method = RequestMethod.POST)
+        @ResponseBody
+        public String editGroup(
+                @RequestParam Long groupId,
+                @RequestParam String groupName) {
+            Group group = groupService.getById(groupId);
+            group.setName(groupName);
+            groupService.updateGroup(group);
+            return "";
+        }
+        
+        @RequestMapping(value = "/delete.ajax")
+        public String deleteGroup(@RequestParam Long groupId) {
+            Long studentsAmount = groupService.getStudentsAmount(groupId);
+            if (studentsAmount > 0) {
+                return "";
+            }
+            Group group = groupService.getById(groupId);
+            groupService.deleteGroup(group);
+            return "";
+        }
 
 	@RequestMapping(value = "/group", method = RequestMethod.GET)
 	public ModelAndView getGroup(@RequestParam Long id) {
