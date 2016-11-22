@@ -36,5 +36,7 @@ public interface MeetingService {
 
     int[] butchInsert(String name, String place, Timestamp date, List<Group> groups);
 
-    void addMeetings(AddCriteriaDto dto);
+    int addMeetings(AddCriteriaDto dto);
+
+    boolean isExist(Timestamp date);
 }

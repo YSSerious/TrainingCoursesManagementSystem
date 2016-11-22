@@ -219,6 +219,20 @@
     </div>
 </div>
 <!-- finish criteriaDeleteError modal -->
+<!-- start meetingAddError modal -->
+<div id="meetingAddError" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title">Meetings with this date already created.</h4>
+                <button data-dismiss="modal" class="btn btn-link">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- finish meetingAddError modal -->
 <!-- start create Meeting modal -->
 <div id="meetingCreateModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog" role="document">

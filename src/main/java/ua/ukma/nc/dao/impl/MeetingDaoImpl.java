@@ -73,6 +73,8 @@ public class MeetingDaoImpl implements MeetingDao{
     private static final String GET_BY_GROUP = "SELECT  id, id_group, name, time, place FROM  tcms.meeting WHERE id_group = ?";
     
     private static final String GET_UPCOMING_BY_GROUP = "SELECT id, id_group, name, time, place FROM tcms.meeting WHERE id_group = ? AND time > CURRENT_TIMESTAMP ORDER BY time ASC LIMIT 1";
+
+    private static final String IS_EXIST = "SELECT EXISTS (SELECT * from tcms.meeting where time = ?)";
     
     @Override
     public Meeting getById(Long id) {
@@ -125,6 +127,11 @@ public class MeetingDaoImpl implements MeetingDao{
     public int createMeeting(Meeting meeting) {
         log.info("Create new meeting with name = {}", meeting.getName());
         return jdbcTemplate.update(CREATE_MEETING, meeting.getGroup().getId(), meeting.getName(), meeting.getTime(), meeting.getPlace());
+    }
+
+    @Override
+    public boolean isExist(Timestamp date) {
+        return jdbcTemplate.queryForObject(IS_EXIST, Boolean.class, date);
     }
 
     private List<Criterion> getCriterions(Long meetingId) {

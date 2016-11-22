@@ -33,6 +33,8 @@ public interface MeetingDao {
 
     int createMeeting(Meeting meeting);
 
+    boolean isExist(Timestamp date);
+
     int[] butchInsert(String name, String place, Timestamp date, List<Group> groups);
 
     int[] addMeetingCriterion(Meeting meeting, List<Criterion> criterions);

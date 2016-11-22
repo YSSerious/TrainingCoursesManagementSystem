@@ -92,12 +92,20 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void addMeetings(AddCriteriaDto dto) {
+    public int addMeetings(AddCriteriaDto dto) {
+        if(meetingDao.isExist(dateConverter(dto.getDate())))
+            return 0;
         meetingDao.butchInsert(dto.getName(), dto.getPlace(), dateConverter(dto.getDate()),groupService.getByNames(dto.getGroups()));
         List<Meeting> createdMeetings = meetingDao.getByNamePlaceDate(dto.getName(), dto.getPlace(), dateConverter(dto.getDate()));
         for(Meeting meeting: createdMeetings){
             meetingDao.addMeetingCriterion(meeting, criterionService.getByNames(dto.getCriterions()));
         }
+        return 1;
+    }
+
+    @Override
+    public boolean isExist(Timestamp date) {
+        return meetingDao.isExist(date);
     }
 
     private Timestamp dateConverter(String dateTimeLocal){

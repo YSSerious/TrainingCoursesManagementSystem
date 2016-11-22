@@ -129,18 +129,14 @@ public class CertainProjectController {
     @RequestMapping(value = "/getCriteriaAndGroups", method = RequestMethod.GET)
     @ResponseBody
     public ProjectsCriteriaGroupsDto getCriteriaAndGroups(@RequestParam Long projectId) {
-        ProjectsCriteriaGroupsDto pCG=new ProjectsCriteriaGroupsDto(groupService.getByProjectId(projectId), criterionService.getByProject(projectId));
-//        pCG.setCriterions(criterionService.getByProject(projectId));
-//        pCG.setGroupList(groupService.getByProjectId(projectId));
-        return pCG;
+        return new ProjectsCriteriaGroupsDto(groupService.getByProjectId(projectId), criterionService.getByProject(projectId));
     }
 
     @RequestMapping(value = "/saveMeeting", method = RequestMethod.POST)
     @ResponseBody
-    public String saveMeeting(@RequestBody AddCriteriaDto dto) {
+    public int saveMeeting(@RequestBody AddCriteriaDto dto) {
         System.out.println(dto);
-        meetingService.addMeetings(dto);
-        return "success";
+        return meetingService.addMeetings(dto);
     }
 
 
