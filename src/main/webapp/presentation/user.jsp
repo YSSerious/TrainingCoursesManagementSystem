@@ -298,7 +298,7 @@
             </div>
             <div class="modal-footer">
                 <span id="fin-rev-err" class="text-danger hidden">Unknown error</span>
-                <button class="btn btn-default" onclick="doFinalReview(${user.id})" type="button">
+                <button class="btn btn-default hidden" onclick="doFinalReview(${user.id})" type="button">
                 <spring:message code="btn.submit"/>
                 </button>
             </div>
