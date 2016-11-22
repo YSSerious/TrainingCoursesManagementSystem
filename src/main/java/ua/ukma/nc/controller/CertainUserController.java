@@ -1,9 +1,7 @@
 package ua.ukma.nc.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,6 +22,9 @@ import java.util.stream.Collectors;
 
 @Controller
 public class CertainUserController {
+	
+	@Autowired
+	private CategoryService categoryService;
 	
 	@Autowired
 	private RoleService roleService;
@@ -127,6 +128,27 @@ public class CertainUserController {
 	@ResponseBody
 	public List<Project> mentorProjects(@RequestParam("user") Long userId) {
 		return projectService.getMentorProjects(userId);
+	}
+	
+	@RequestMapping("/ajaxcriteria")
+	@ResponseBody
+	public ProjectReportDto projectCriteria(@RequestParam("projects") String projects, @RequestParam("student") Long student) {
+		String[] params = projects.split("\\D");
+		List<Long> projectsId = new ArrayList<Long>();
+		
+		for(String param: params)
+			if(!param.equals(""))
+			projectsId.add(Long.valueOf(param));
+		
+		if(projectsId.isEmpty()){
+			List<Project> projectsEntity = projectService.getStudentProjects(student);
+			for(Project project: projectsEntity)
+				projectsId.add(project.getId());
+		}
+		
+		ProjectReportDto projectReportDto = new ProjectReportDto(criterionService.getByProjects(projectsId), categoryService.getByProjects(projectsId));
+
+		return projectReportDto;
 	}
 
 	@RequestMapping (value = "/ajax/get/final_review_form")

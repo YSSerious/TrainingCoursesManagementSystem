@@ -81,4 +81,9 @@ public class CriterionServiceImpl implements CriterionService {
 	public List<Criterion> getByMeeting(Long meetingId) {
 		return criterionDao.getByMeeting(meetingId);
 	}
+
+	@Override
+	public List<Criterion> getByProjects(List<Long> projects) {
+		return criterionDao.getByProjects(projects);
+	}
 }

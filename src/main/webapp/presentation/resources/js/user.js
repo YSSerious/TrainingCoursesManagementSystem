@@ -56,7 +56,7 @@ function createStudentProjectsInfo(userId, divInside){
 	    'data' : {'user' : userId},
 	    
 	    'success' : function(data) {
-	    	var s = '';
+	    	var s = '<h2>Student projects: </h2><hr/>';
 	    	$.each( data, function( key, value ) {
 	    		var currentDate = new Date();
 	    		var startDate = new Date(value.startDate);
@@ -70,7 +70,7 @@ function createStudentProjectsInfo(userId, divInside){
 	    		}else{
 	    			divClass = 'finished';
 	    		}
-	    		s+= '<h2>Student projects: </h2><hr/><div class="panel panel-'+divClass+'"><div id="pr'+value.id+'" class="panel-body">' + value.name;
+	    		s+= '<div class="panel panel-'+divClass+'"><div id="pr'+value.id+'" class="panel-body">' + value.name;
 	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
  	    		s+= '</div></div><div id="sub'+value.id+'"><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><div id="stinf-'+value.id+'"></div><br/><h4>'+value.description+'</h4><div class="col-sm-8 col-sm-offset-2 charts-wrapper" id="chart'+value.id+'">Loading...</div></div></div></div></div>';
 	    	});
@@ -105,10 +105,13 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
     	 	    	    	
-    	 	    	    	table+= '<br/><h2>Meeting reviews: </h2>';
-    	 	    	    	table+= getFullMeetingReviews(data.fullMeetingReviews);
-    	 	    	    	table+= '<br/>';
+    	 	    	    	if(data.fullMeetingReviews.length > 0){
+    	 	    	    		table+= '<br/><h2>Meeting reviews: </h2>';
+    	 	    	    		table+= getFullMeetingReviews(data.fullMeetingReviews);
+    	 	    	    	}
     	 	    	    	
+    	 	    	    	if(data.markTableDto.tableData.length>0){
+    	 	    	    	table+= '<br/>';
     	 	    	    	table+= '<div class="row"><div class = "col-sm-10"><h2>Grades:</h2></div><div class = "col-sm-2"><h2>';
     	 	    	    	//table+=	'<a href="/studentMarks/'+value.id+'/'+userId+'.xls" class="btn btn-primary pull-right">Report</a>';
     	 	    	    	table+=	'</h2></div></div>';
@@ -128,6 +131,7 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	table+= getMarksTable(data.markTableDto, value.id);
                             
     	 	    	    	table+= '</div>';
+    	 	    	    	}
                             //table+= '<br/><h2>Statuses: </h2>';
                             //table+= getStatusesTable(data.studentStatuses);
                             
@@ -511,4 +515,84 @@ function getFullMeetingReviews(fullMeetingReviews){
 	});
 	
 	return div;
+}
+
+function report(studentId){
+	$.ajax({
+	    'url' : '/ajaxstudentprojects',
+	    'type' : 'GET',
+	    'data' : {'user' : studentId},
+	    
+	    'success' : function(data) {
+	    	var select = '<div class="row"><div class="col-sm-8">';
+	    	select += '<select style="width:100%;" multiple="true" class="select-project-report">';
+	    	
+	    	$.each(data, function(key, value ) {
+	    		select += '<option value="' + value.id + '">' + value.name + '</option>\n';
+	    	});
+	    	
+	    	select += '</select></div><div class="col-sm-4">';
+	    	select += '<button onclick="loadCriteria('+studentId+')" class="btn btn-primary pull-right">Next step</button></div></div>';
+	    	
+	    	if(data.length == 0){
+	    		$('#project-report-back').html('There are no projects!');
+	    	}else{
+	    		$('#project-report-back').html(select);
+	 	    	$('.select-project-report').select2({
+		    		  placeholder: "Select project or leave it empty to select all"
+		    	});
+	    	}
+
+	    }
+	  });
+}
+
+function loadCriteria(studentId){
+	var projects = $('.select-project-report').val();
+	$.ajax({
+	    'url' : '/ajaxcriteria',
+	    'type' : 'GET',
+	    'data' : {
+	    	'student' : studentId,
+	    	'projects' : JSON.stringify(projects)},
+	    'success' : function(data) {
+	    	
+	    	var select = '<br/><div class="row"><div class="col-sm-8">';
+	    	select += '<select style="width:100%;" multiple="true" class="select-category-report">';
+	    	
+	    	$.each(data.categories, function(key, value ) {
+	    		select += '<option value="' + value.id + '">' + value.name + '</option>\n';
+	    	});
+	    	
+	    	select += '</select></div><div class="col-sm-4"></div></div>';
+	    	$('#criteria-report-back').html(select);
+ 	    	$('.select-category-report').select2({
+	    		  placeholder: "Select categories"
+	    	});
+ 	    	
+ 	    	select = '<br/><div class="row"><div class="col-sm-8">';
+	    	select += '<select style="width:100%;" multiple="true" class="select-criterion-report">';
+	    	
+	    	$.each(data.criteria, function(key, value ) {
+	    		select += '<option value="' + value.id + '">' + value.title + '</option>\n';
+	    	});
+	    	
+	    	select += '</select></div><div class="col-sm-4"><button onclick="sendRequest('+studentId+')" class="btn btn-primary pull-right">Download</button></div></div>';
+	    	$('#criteria-report-back').append(select);
+ 	    	$('.select-criterion-report').select2({
+	    		  placeholder: "Select criteria"
+	    	});
+	    }
+	});
+}
+
+function sendRequest(studentId){
+	var projects = $('.select-project-report').val();
+	var categories = $('.select-category-report').val();
+	var criteria = $('.select-criterion-report').val();
+	
+	var url = '/studentMarks/'+studentId+'/';
+	url +=JSON.stringify(projects)+'/'+JSON.stringify(categories);
+	url += '/'+JSON.stringify(criteria)+'.xls';
+	window.location = url;
 }

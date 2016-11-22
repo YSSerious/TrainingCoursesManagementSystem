@@ -37,6 +37,29 @@
                     <c:if test="${item eq 'Student'}">
 
                         <b>Status:</b> ${user.statusTitle} <br/>
+                        
+                        <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
+								<font color="blue" data-toggle="modal"
+									data-target="#projets-report-modal"><b onclick="report(${user.id})">Generate report</b></font>
+									<br/>
+
+								<div id="projets-report-modal" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Generate report</h4>
+											</div>
+											<div id="project-report-back" class="modal-body">
+
+											</div>
+											<div id="criteria-report-back" class="modal-body">
+
+											</div>
+										</div>
+									</div>
+								</div>
+                        </sec:authorize>
 
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 1}">

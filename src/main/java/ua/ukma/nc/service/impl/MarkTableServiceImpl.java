@@ -24,6 +24,7 @@ import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.service.FinalReviewCriterionService;
 import ua.ukma.nc.service.FinalReviewService;
 import ua.ukma.nc.service.MarkTableService;
+import ua.ukma.nc.service.MeetingResultService;
 import ua.ukma.nc.service.MeetingService;
 
 @Service
@@ -40,10 +41,13 @@ public class MarkTableServiceImpl implements MarkTableService {
 
 	@Autowired
 	private CriterionService criterionService;
+	
+	@Autowired
+	private MeetingResultService meetingResultService;
 
 	@Override
-	public MarkTableDto getMarkTableDto(Long studentId, Long projectId, List<MarkInformation> marksInformation) {
-
+	public MarkTableDto getMarkTableDto(Long studentId, Long projectId) {
+		List<MarkInformation> marksInformation = meetingResultService.generateMarkInformation(studentId, projectId);
 		List<Meeting> meetings = meetingService.getByStudentProject(studentId, projectId);
 		List<Criterion> criteria = criterionService.getByProject(projectId);
 
@@ -211,6 +215,41 @@ public class MarkTableServiceImpl implements MarkTableService {
 				dataTable.get(category).get(criterionIndex).getMarks().set(meetingIndex, certainMarkDto);
 			}
 		}
+	}
+
+	@Override
+	public MarkTableDto getMarkTableDto(Long studentId, Long projectId, List<Long> criteriaId,
+			List<Long> categoriesId) {
+		
+		MarkTableDto markTableDto = getMarkTableDto(studentId, projectId);
+		
+		if(categoriesId.isEmpty() && criteriaId.isEmpty())
+			return markTableDto;
+		
+		List<CategoryResult> categoryResults = markTableDto.getTableData();
+		List<CategoryResult> cleanedCategoryResults = new ArrayList<CategoryResult>();
+		
+		for(CategoryResult categoryResult: categoryResults){
+			if(categoriesId.contains(categoryResult.getCategoryDto().getId()))
+				cleanedCategoryResults.add(categoryResult);
+			else{
+				List<CriterionResult> tempCriterionResults = new ArrayList<CriterionResult>();
+				
+				for(CriterionResult criterionResult: categoryResult.getCriteriaResults())
+					if(criteriaId.contains(criterionResult.getCriterionId()))
+						tempCriterionResults.add(criterionResult);
+				
+				if(!tempCriterionResults.isEmpty()){
+					CategoryResult tempCategoryResult = new CategoryResult();
+					tempCategoryResult.setCriteriaResults(tempCriterionResults);
+					tempCategoryResult.setCategoryDto(categoryResult.getCategoryDto());
+					cleanedCategoryResults.add(tempCategoryResult);
+				}
+			}
+				
+		}
+		markTableDto.setTableData(cleanedCategoryResults);
+		return markTableDto;
 	}
 
 }

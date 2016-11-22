@@ -8,6 +8,8 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface CategoryService {
+	
+	List<Category> getByProjects(List<Long> projects);
 
     Category getById(Long id);
 
