@@ -410,10 +410,10 @@ function getReviewForm(userId) {
 		'url' : '/ajax/get/final_review_form',
 		'type' : 'GET',
 		'data' : {'user' : userId},
-		'success' : function(data) {
+		'success' : function(resp) {
 			var s = '';
-			console.warn(data);
-			$.each( data, function( key, value ) {
+			console.warn(resp);
+			$.each( resp.data, function( key, value ) {
 				s+='<tr class="fin-rev-res-item"><td>'+value.criterion.title+'</td><td><select id="sel'
 				+value.criterion.id+'">';
 				for(var i=1; i<6; ++i){
@@ -428,11 +428,15 @@ function getReviewForm(userId) {
 					s+=' value="'+value.commentary+'"';
 				s+='></td></tr>';
 			});
-			s+='<tr><td colspan="3"><label>General: </label><textarea class="form-control" id="fin-rev-com" rows="5"></textarea></td></tr>';
-			if(jQuery.isEmptyObject(data))
+			s+='<tr><td colspan="3"><label>General: </label><textarea class="form-control" id="fin-rev-com" rows="5">';
+			if(resp.comment)
+				s+=resp.comment;
+			s+='</textarea></td></tr>';
+			if(jQuery.isEmptyObject(resp.data))
 				s= '<br/><h4>No criteria for this project!</h4>';
 
 			$('#final-review-form-list').html(s);
+			$('#addFinReview').find('.btn').removeClass('hidden');
 		},
 		'error': function (data) {
 			console.warn(data);
@@ -442,12 +446,13 @@ function getReviewForm(userId) {
 
 function doFinalReview(userId) {
 	function sendAjax(data, comment) {
+		console.log(comment);
 		$.ajax({
 			url: '/ajax/post/final_review_form/'+userId,
 			type: 'POST',
 			contentType: "application/json",
 			dataType: 'json',
-			data: JSON.stringify({data:data,reviewComment:comment}),
+			data: JSON.stringify({data:data,comment:comment}),
 			success: function (data) {
 				console.log('success');
 			},

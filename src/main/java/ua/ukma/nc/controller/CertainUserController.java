@@ -153,7 +153,8 @@ public class CertainUserController {
 
 	@RequestMapping (value = "/ajax/get/final_review_form")
 	@ResponseBody
-	public List<FinalReviewCriterion> getFinReviewFormData(@RequestParam("user") Long userId){
+	public JsonWrapperFinRev getFinReviewFormData(@RequestParam("user") Long userId){
+		JsonWrapperFinRev wrapper = new JsonWrapperFinRev();
 		List<FinalReviewCriterion> result = null;
 		List<Project> all = projectService.getStudentProjects(userId);
 		Date date = new Date(System.currentTimeMillis());
@@ -166,7 +167,10 @@ public class CertainUserController {
 			}
 		if(current!=null){
 			if(finalReviewService.exists(userId, groupService.getByUserProject(userId, current.getId()).getId(), "F")) {
-				result = finalReviewCriterionService.getByFinalReview(finalReviewService.getByStudent(current.getId(), userId, "F").getId());
+				FinalReview review = finalReviewService.getByStudent(current.getId(), userId, "F");
+				result = finalReviewCriterionService.getByFinalReview(review.getId());
+				if(review.getCommentary()!=null)
+					wrapper.setComment(review.getCommentary());
 			}
 			else{
 				result = new LinkedList<FinalReviewCriterion>();
@@ -177,7 +181,8 @@ public class CertainUserController {
 				}
 			}
 		}
-		return result;
+		wrapper.setData(result);
+		return wrapper;
 	}
 
 	@RequestMapping(value = "/ajax/post/final_review_form/{id}", method = RequestMethod.POST, consumes = "application/json")
@@ -207,8 +212,7 @@ public class CertainUserController {
 			}
 			else {
 				review = new FinalReviewImpl((long) 0, new Timestamp(System.currentTimeMillis()), userService.getById(userId), mentor, "F", current, "");
-				if (data.getComment() != null)
-					review.setCommentary(data.getComment());
+				review.setCommentary(data.getComment());
 				finalReviewService.createFinalReview(review);
 				review = finalReviewService.getByStudent(current.getId(), userId, "F");
 			}

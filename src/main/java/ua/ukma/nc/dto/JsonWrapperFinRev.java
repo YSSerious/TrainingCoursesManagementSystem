@@ -4,17 +4,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ua.ukma.nc.entity.FinalReviewCriterion;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Alex_Frankiv on 20.11.2016.
  */
 public class JsonWrapperFinRev{
     @JsonProperty
-    private LinkedList<FinalReviewCriterion> data;
+    private List<FinalReviewCriterion> data;
     @JsonProperty
     private String comment;
 
-    JsonWrapperFinRev() {}
+    public JsonWrapperFinRev() {}
 
     public String getComment() {
         return comment;
@@ -24,11 +25,11 @@ public class JsonWrapperFinRev{
         this.comment = comment;
     }
 
-    public LinkedList<FinalReviewCriterion> getData() {
+    public List<FinalReviewCriterion> getData() {
         return data;
     }
 
-    public void setData(LinkedList<FinalReviewCriterion> data) {
+    public void setData(List<FinalReviewCriterion> data) {
         this.data = data;
     }
 }
