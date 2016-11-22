@@ -30,6 +30,7 @@ import ua.ukma.nc.query.ProjectSearch;
 import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.validator.ProjectFormValidator;
+import ua.ukma.nc.vo.ProjectVo;
 
 @Controller
 public class ProjectsController {
@@ -95,6 +96,14 @@ public class ProjectsController {
             }
 	}
 	
+        @ResponseBody
+        @RequestMapping(value = "/projects/create-project.ajax", method = RequestMethod.POST)
+        public String createProject(@RequestBody ProjectVo projectVo) {
+            Project project = new ProjectImpl(projectVo.getName(), projectVo.getDescription(), projectVo.getStartDate(), projectVo.getFinishDate());
+            projectService.createProject(project);
+            return "";
+        }
+        
 	@RequestMapping(value = "/projects/create-project/is-name-free")
 	public @ResponseBody String isNameFree(@RequestBody String name){
 		String result = "";

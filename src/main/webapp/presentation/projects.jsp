@@ -1,4 +1,5 @@
 <%@include file="header.jsp"%>
+<%@include file="createProjectModal.jsp"%>
 <div class="col-sm-11 col-sm-offset-1">
 	<div class="col-sm-11">
             <div class="top-info">
@@ -13,7 +14,8 @@
                 <div class="row">
                     <h2 class="col-sm-3"><spring:message code="projects.projects"/></h2>
                     <sec:authorize access="hasRole('ADMIN')">
-                        <a href="/projects/create-project" class="btn btn-primary pull-right"><spring:message code="projects.create.project"/></a>
+                        <!--<a href="/projects/create-project" class="btn btn-primary pull-right"><spring:message code="projects.create.project"/></a>-->
+                           <button type="button" class="btn btn-primary pull-right" id="createProject"><spring:message code="projects.create.project"/></button>
                     </sec:authorize>
                 </div>
             </div>
