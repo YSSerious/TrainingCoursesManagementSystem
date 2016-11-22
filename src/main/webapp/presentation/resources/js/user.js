@@ -512,3 +512,23 @@ function getFullMeetingReviews(fullMeetingReviews){
 	
 	return div;
 }
+
+
+$(document).ready(function(){
+	$("#createHRreviewBtn").click(function(){
+		$("#createHRreviewModal").modal();
+	});
+});
+
+
+$(document).ready(function() {
+
+	$("#submitreviewBtn").click(function(event) {
+		$.ajax({
+			url: "/createReview",
+			type: "POST",
+			data: {"type" : $("#reviewtype").val(), "commentary" : $("#commentary").val()}
+		});
+	});
+});
+

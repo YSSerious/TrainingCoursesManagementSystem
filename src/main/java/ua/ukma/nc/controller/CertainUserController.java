@@ -1,23 +1,21 @@
 package ua.ukma.nc.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.security.Principal;
-import org.springframework.ui.Model;
-
-import ua.ukma.nc.dto.*;
+import ua.ukma.nc.dto.JsonWrapperFinRev;
+import ua.ukma.nc.dto.RoleDto;
+import ua.ukma.nc.dto.StudentProfile;
+import ua.ukma.nc.dto.UserDto;
 import ua.ukma.nc.entity.*;
 import ua.ukma.nc.entity.impl.real.FinalReviewImpl;
 import ua.ukma.nc.service.*;
 
+import java.security.Principal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -198,5 +196,21 @@ public class CertainUserController {
 		}
 		else
 			return "false";
+	}
+
+
+	@RequestMapping(value = "/createReview", method = RequestMethod.POST)
+	public void createHRreview(Principal principal, @RequestParam("type") String type, @RequestParam("commentary") String commentary)
+	{
+		FinalReview finalHRreview = new FinalReviewImpl();
+		finalHRreview.setCommentary(commentary);
+		finalHRreview.setType(type);
+		Timestamp date = new Timestamp(System.currentTimeMillis());
+		finalHRreview.setDate(date);
+		User hr = userService.getByEmail(principal.getName());
+		finalHRreview.setEmployee(hr);
+		finalHRreview.setProject(projectService.getById((long) 3));
+		finalHRreview.setStudent(userService.getById((long) 20));
+		finalReviewService.createFinalReview(finalHRreview);
 	}
 }

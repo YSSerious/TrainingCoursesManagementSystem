@@ -173,6 +173,15 @@
                     </c:if>
                 </c:forEach>
 
+				<sec:authorize access="hasRole('HR')">
+
+					<br/><br/>
+					<button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#addHRreview"
+							id="createHRreviewBtn" onclick="createHRreviewForm(${user.id})"><spring:message code="create.review"/>
+					</button>
+					<%@include file="reviewHR.jsp"%>
+				</sec:authorize>
+
                 <sec:authorize access="hasRole('ADMIN')">
 
 					<font data-toggle="modal" data-target="#chooseRoles" color="blue"><b>Choose
@@ -223,6 +232,7 @@
                         </button>
                     <%--</c:if>--%>
                 </sec:authorize>
+
             </div>
         </div>
         <br/>
@@ -283,5 +293,42 @@
     </div>
 </div>
 <!-- end add fin review modal -->
+
+<div id="createHRreviewModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Create review</h4>
+			</div>
+			<div class="modal-body">
+				<div class="showactions"></div>
+				<br class="actions">
+				<br method="post">
+				<br><label class="col-md-4 control-label">Select type</label>
+				<br class="col-lg-6">
+				<select class="form-control" name="reviewtype" id="reviewtype" onchange="">
+					<option selected disabled></option>
+					<option value="G">General</option>
+					<option value="T">Technical</option>
+				</select>
+
+				</br>
+				<br><label class="col-md-4 control-label">Write review</label>
+                        <textarea name="commentary" class="form-control" rows="5"
+								  id="commentary" required></textarea>
+				</br>
+				<button type="submit" class="btn btn-primary pull-right" id="submitreviewBtn">Submit</button>
+				</br>
+				</br>
+			</div>
+
+
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+</div>
 
 <%@include file="footer.jsp" %>
