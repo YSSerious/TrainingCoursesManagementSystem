@@ -14,6 +14,8 @@ public interface GroupDao {
 	
     Group getById(Long id);
 
+    Group getByName(String name);
+
     int deleteGroup(Group group);
 
     int updateGroup(Group group);

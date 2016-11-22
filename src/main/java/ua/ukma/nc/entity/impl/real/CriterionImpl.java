@@ -19,6 +19,11 @@ public class CriterionImpl implements Criterion{
     public CriterionImpl() {
     }
 
+    public CriterionImpl(Long id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
     public CriterionImpl(String title) {
         this.title = title;
     }

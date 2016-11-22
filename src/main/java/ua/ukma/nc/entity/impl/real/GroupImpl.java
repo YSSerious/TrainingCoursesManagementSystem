@@ -16,7 +16,14 @@ public class GroupImpl implements Group{
     private Project project;
     private String name;
     List<User> users;
-   
+
+    public GroupImpl() {
+    }
+
+    public GroupImpl(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Long getId() {
         return id;

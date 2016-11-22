@@ -5,18 +5,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ua.ukma.nc.dao.MeetingDao;
 import ua.ukma.nc.entity.Criterion;
+import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.impl.proxy.CriterionProxy;
 import ua.ukma.nc.entity.impl.proxy.GroupProxy;
 import ua.ukma.nc.entity.impl.real.MeetingImpl;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -56,6 +60,8 @@ public class MeetingDaoImpl implements MeetingDao{
 
     private static final String GET_BY_ID = "SELECT id, id_group, name, time, place FROM tcms.meeting WHERE id = ?";
 
+    private static final String GET_BY_DATA = "SELECT id, id_group, name, time, place FROM tcms.meeting WHERE name = ? and place = ? and time = ?";
+
     private static final String DELETE_MEETING = "DELETE FROM tcms.meeting WHERE id = ?";
 
     private static final String CREATE_MEETING = "INSERT INTO tcms.meeting (id_group, name, time, place) VALUES (?,?,?,?)";
@@ -67,11 +73,18 @@ public class MeetingDaoImpl implements MeetingDao{
     private static final String GET_BY_GROUP = "SELECT  id, id_group, name, time, place FROM  tcms.meeting WHERE id_group = ?";
     
     private static final String GET_UPCOMING_BY_GROUP = "SELECT id, id_group, name, time, place FROM tcms.meeting WHERE id_group = ? AND time > CURRENT_TIMESTAMP ORDER BY time ASC LIMIT 1";
+
+    private static final String IS_EXIST = "SELECT EXISTS (SELECT * from tcms.meeting where time = ?)";
     
     @Override
     public Meeting getById(Long id) {
         log.info("Getting meeting with id = {}", id);
         return jdbcTemplate.queryForObject(GET_BY_ID, new MeetingMapper(), id);
+    }
+
+    @Override
+    public List<Meeting> getByNamePlaceDate(String name, String place, Timestamp date) {
+        return jdbcTemplate.query(GET_BY_DATA, new MeetingMapper(), name, place, date);
     }
 
     @Override
@@ -116,6 +129,11 @@ public class MeetingDaoImpl implements MeetingDao{
         return jdbcTemplate.update(CREATE_MEETING, meeting.getGroup().getId(), meeting.getName(), meeting.getTime(), meeting.getPlace());
     }
 
+    @Override
+    public boolean isExist(Timestamp date) {
+        return jdbcTemplate.queryForObject(IS_EXIST, Boolean.class, date);
+    }
+
     private List<Criterion> getCriterions(Long meetingId) {
         log.info("Getting all criterions with meeting id = {}", meetingId);
         return jdbcTemplate.query(GET_CRITERION_BY_ID, new MeetingCriterionMapper(), meetingId);
@@ -147,5 +165,45 @@ public class MeetingDaoImpl implements MeetingDao{
         return jdbcTemplate.query(GET_WITHOUT_MARKS, new MeetingMapper(), groupId, studentId);
 	}
 
-	
+    @Override
+    public int[] butchInsert(String name, String place, Timestamp date, List<Group> groups) {
+        final String BUTCH_INSERT = "INSERT INTO tcms.meeting (id_group, name, time, place) VALUES (?,?,?,?)";
+
+       return jdbcTemplate.batchUpdate(BUTCH_INSERT, new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                Group group = groups.get(i);
+                ps.setLong(1, group.getId());
+                ps.setString(2, name);
+                ps.setTimestamp(3, date);
+                ps.setString(4, place);
+            }
+
+            @Override
+            public int getBatchSize() {
+                return groups.size();
+            }
+        });
+    }
+
+    @Override
+    public int[] addMeetingCriterion(Meeting meeting, List<Criterion> criterions) {
+        final String BUTCH_ADD_CRITERION = "INSERT INTO tcms.meeting_criterion (id_meeting, id_criterion) VALUES (?,?)";
+
+        return jdbcTemplate.batchUpdate(BUTCH_ADD_CRITERION, new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                Criterion criterion = criterions.get(i);
+                ps.setLong(1, meeting.getId());
+                ps.setLong(2, criterion.getId());
+            }
+            @Override
+            public int getBatchSize() {
+                return criterions.size();
+            }
+        });
+    }
+
 }

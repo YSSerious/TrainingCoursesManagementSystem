@@ -42,6 +42,8 @@ public class CriterionDaoImpl implements CriterionDao{
         }
     }
     
+    private static final String GET_BY_PROJECTS = "SELECT DISTINCT id, name, id_category FROM tcms.criterion WHERE id IN (SELECT id_criterion FROM tcms.project_criterion WHERE id_project IN ?)";
+    
     private static final String GET_BY_PROJECT = "SELECT id, name, id_category FROM tcms.criterion WHERE id IN (SELECT id_criterion FROM tcms.project_criterion WHERE id_project = ?)";
 
     private static final String GET_ALL = "SELECT id, name, id_category FROM tcms.criterion";
@@ -154,6 +156,15 @@ public class CriterionDaoImpl implements CriterionDao{
     public boolean isExistInProjects(Long id) {
         return jdbcTemplate.queryForObject(IS_USED_IN_PROJECTS, Boolean.class, id);
     }
+
+	@Override
+	public List<Criterion> getByProjects(List<Long> projects) {
+		log.info("Getting all criterion");
+		String set =  projects.toString().replace('[', '(').replace(']', ')');
+		String query = GET_BY_PROJECTS.replace("?", set);
+        return jdbcTemplate.query(query, new CriterionMapper());
+	
+	}
 
 
 //    private List<Project> getProjects(Long criterionID) {

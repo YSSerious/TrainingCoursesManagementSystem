@@ -1,7 +1,10 @@
 package ua.ukma.nc.dao;
 
+import ua.ukma.nc.entity.Criterion;
+import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Meeting;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -11,6 +14,8 @@ public interface MeetingDao {
 	List<Meeting> getWithoutReview(Long groupId, Long studentId);
 	
     Meeting getById(Long id);
+
+    List<Meeting> getByNamePlaceDate(String name, String place, Timestamp date);
 
     int deleteMeeting(Meeting meeting);
 
@@ -27,4 +32,10 @@ public interface MeetingDao {
     Meeting getUpcomingByGroup(Long groupId);
 
     int createMeeting(Meeting meeting);
+
+    boolean isExist(Timestamp date);
+
+    int[] butchInsert(String name, String place, Timestamp date, List<Group> groups);
+
+    int[] addMeetingCriterion(Meeting meeting, List<Criterion> criterions);
 }

@@ -5,10 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ua.ukma.nc.dto.JsonWrapperFinRev;
-import ua.ukma.nc.dto.RoleDto;
-import ua.ukma.nc.dto.StudentProfile;
-import ua.ukma.nc.dto.UserDto;
+import ua.ukma.nc.dto.*;
 import ua.ukma.nc.entity.*;
 import ua.ukma.nc.entity.impl.real.FinalReviewImpl;
 import ua.ukma.nc.service.*;
@@ -16,12 +13,16 @@ import ua.ukma.nc.service.*;
 import java.security.Principal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 public class CertainUserController {
+	
+	@Autowired
+	private CategoryService categoryService;
 	
 	@Autowired
 	private RoleService roleService;
@@ -126,10 +127,32 @@ public class CertainUserController {
 	public List<Project> mentorProjects(@RequestParam("user") Long userId) {
 		return projectService.getMentorProjects(userId);
 	}
+	
+	@RequestMapping("/ajaxcriteria")
+	@ResponseBody
+	public ProjectReportDto projectCriteria(@RequestParam("projects") String projects, @RequestParam("student") Long student) {
+		String[] params = projects.split("\\D");
+		List<Long> projectsId = new ArrayList<Long>();
+		
+		for(String param: params)
+			if(!param.equals(""))
+			projectsId.add(Long.valueOf(param));
+		
+		if(projectsId.isEmpty()){
+			List<Project> projectsEntity = projectService.getStudentProjects(student);
+			for(Project project: projectsEntity)
+				projectsId.add(project.getId());
+		}
+		
+		ProjectReportDto projectReportDto = new ProjectReportDto(criterionService.getByProjects(projectsId), categoryService.getByProjects(projectsId));
+
+		return projectReportDto;
+	}
 
 	@RequestMapping (value = "/ajax/get/final_review_form")
 	@ResponseBody
-	public List<FinalReviewCriterion> getFinReviewFormData(@RequestParam("user") Long userId){
+	public JsonWrapperFinRev getFinReviewFormData(@RequestParam("user") Long userId){
+		JsonWrapperFinRev wrapper = new JsonWrapperFinRev();
 		List<FinalReviewCriterion> result = null;
 		List<Project> all = projectService.getStudentProjects(userId);
 		Date date = new Date(System.currentTimeMillis());
@@ -142,7 +165,10 @@ public class CertainUserController {
 			}
 		if(current!=null){
 			if(finalReviewService.exists(userId, groupService.getByUserProject(userId, current.getId()).getId(), "F")) {
-				result = finalReviewCriterionService.getByFinalReview(finalReviewService.getByStudent(current.getId(), userId, "F").getId());
+				FinalReview review = finalReviewService.getByStudent(current.getId(), userId, "F");
+				result = finalReviewCriterionService.getByFinalReview(review.getId());
+				if(review.getCommentary()!=null)
+					wrapper.setComment(review.getCommentary());
 			}
 			else{
 				result = new LinkedList<FinalReviewCriterion>();
@@ -153,7 +179,8 @@ public class CertainUserController {
 				}
 			}
 		}
-		return result;
+		wrapper.setData(result);
+		return wrapper;
 	}
 
 	@RequestMapping(value = "/ajax/post/final_review_form/{id}", method = RequestMethod.POST, consumes = "application/json")
@@ -183,8 +210,7 @@ public class CertainUserController {
 			}
 			else {
 				review = new FinalReviewImpl((long) 0, new Timestamp(System.currentTimeMillis()), userService.getById(userId), mentor, "F", current, "");
-				if (data.getComment() != null)
-					review.setCommentary(data.getComment());
+				review.setCommentary(data.getComment());
 				finalReviewService.createFinalReview(review);
 				review = finalReviewService.getByStudent(current.getId(), userId, "F");
 			}

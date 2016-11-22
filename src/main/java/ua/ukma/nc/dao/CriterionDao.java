@@ -8,6 +8,8 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface CriterionDao {
+	List<Criterion> getByProjects(List<Long> projects);
+	
     Criterion getById(Long id);
 
     Criterion getByName(String name);

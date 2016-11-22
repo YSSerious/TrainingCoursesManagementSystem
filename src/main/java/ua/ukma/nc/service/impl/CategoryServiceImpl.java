@@ -69,4 +69,9 @@ public class CategoryServiceImpl implements CategoryService{
 	public List<Category> getByProjectId(Long projectId) {
 		return categoryDao.getByProjectId(projectId);
 	}
+
+	@Override
+	public List<Category> getByProjects(List<Long> projects) {
+		return categoryDao.getByProjects(projects);
+	}
 }

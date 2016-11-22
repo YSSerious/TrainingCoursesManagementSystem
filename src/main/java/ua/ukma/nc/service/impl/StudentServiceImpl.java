@@ -13,7 +13,6 @@ import ua.ukma.nc.dto.CategoryChartDto;
 import ua.ukma.nc.dto.CategoryDto;
 import ua.ukma.nc.dto.CriterionDto;
 import ua.ukma.nc.dto.FinalReviewDto;
-import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.dto.MeetingResultDto;
 import ua.ukma.nc.dto.MeetingReviewDto;
 import ua.ukma.nc.dto.StudentMeetingReview;
@@ -71,8 +70,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public StudentProfile generateStudentProfile(long studentId, long projectId) {
-		List<MarkInformation> allMarkInfo = meetingResultService.generateMarkInformation(studentId, projectId);
-
+		
 		StudentProfile studentProfile = new StudentProfile();
 		List<StatusLog> statusLoges = statusLogService.getByProjectStudent(projectId, studentId);
 		List<StudentStatusLog> studentStatusLoges = new ArrayList<StudentStatusLog>();
@@ -93,7 +91,7 @@ public class StudentServiceImpl implements StudentService {
 		}
 
 		studentProfile.setMeetingReviews(studentMeetingReviews);
-		studentProfile.setMarkTableDto(markTableService.getMarkTableDto(studentId, projectId, allMarkInfo));
+		studentProfile.setMarkTableDto(markTableService.getMarkTableDto(studentId, projectId));
 
 		studentProfile.setChartInfo(convert(chartService.getChartData(projectId, studentId)));
 		studentProfile.setChartInfoFinal(convert(chartService.getChartDataFinalReview(projectId, studentId)));

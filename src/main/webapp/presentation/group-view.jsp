@@ -203,13 +203,13 @@
 		<div id="collapseAttachment" class="panel-collapse collapse">
 			<ul class="list-group">
 						<c:forEach items="${attachments}" var="attachment">
-						<li class="list-group-item attachment-${attachment.id} clearfix">
+						<li  id="attachment-${attachment.id}" class="list-group-item  clearfix">
 						 	${attachment.name} <span style='padding-left: 10px;'> </span>
 						 
 					 
-						<div id="${attachment.id}" class="btn rmv-cr-btn col-md-1 pull-right "
+						<div id="${attachment.id}" class="btn rmv-cr-btn col-md-1 pull-right delete"
 							type='button'>
-							<span class="glyphicon glyphicon-remove delete"></span>
+							<span class="glyphicon glyphicon-remove "></span>
 						</div> 
 						<br />
 					</li>

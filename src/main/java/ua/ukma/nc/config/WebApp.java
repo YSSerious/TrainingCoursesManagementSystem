@@ -112,6 +112,8 @@ public class WebApp extends WebMvcConfigurerAdapter {
         return new JdbcTemplate(getDataSource());
     }
 
+
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         PasswordEncoder encoder = new BCryptPasswordEncoder();

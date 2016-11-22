@@ -1,23 +1,14 @@
 $(document).ready(function () {
-
-//	$("#addGroupAttachmentButton").click(function(){
-//		$("#addGroupAttachmentModal").modal();
-//	});
-
-
-	/*$(".edit").click(function(){
-		 
-		$("#editGroupAttachmentModal").modal();
-	});
-
-*/
+ 
 	$("#addAttachmentSubmitButton").click(function(event) {
+		var file=$("#groupAttachmentFile").val();
+		var fileSerialized=$("#groupAttachmentFile").serialize();
 		$.ajax({
 			url: "/groups/addAttachment",
 			type: "POST",
 			data: {"id_group" : $(groupId), 
 				"name" : $("#groupAttachmentName").val(),
-				"attachment_scope": $("#groupAttachment").val()},
+				"attachment_scope": fileSerialized},
 				success: function (data) {
 	                console.log(data);
 	             //   buildAttachment(data.id, data.name, data.description);
@@ -29,33 +20,18 @@ $(document).ready(function () {
 		});
 	});
 
-
-
-	$("#editGroupAttachmentButton").click(function(event) {
-		$.ajax({
-			url: "/groups/editAttachment",
-			type: "POST",
-			data: {"id_group" : "${group-id}", 
-				"name" : $("#groupAttachmentName").val(),
-				"attachment_scope": $("#groupAttachment").val(),"id": "3"
-			}
-
-		});
-
-	});
-
 	$('.delete').click(function(event){
-		//var idOfAttachment = event.target.id;
+	 
 		var idOfAttachment = this.id;
 		console.log(idOfAttachment);
-		idOfAttachment = idOfAttachment.substring(1,idOfAttachment.length);
+		//idOfAttachment = idOfAttachment.substring(1,idOfAttachment.length);
 		$.ajax({
 			url: "/groups/deleteAttachment",
 			type: "POST",
 			data:{ "id":idOfAttachment},
 			 success: function (data) {
 	                console.log(data);
-	                $('#attachmentId-'+idOfAttachment).remove();
+	               $('#attachment-'+idOfAttachment).remove();
 	            },
 	            error: function (textStatus) {
 	                console.log(textStatus);
@@ -63,11 +39,7 @@ $(document).ready(function () {
 
 		});
 	});
-	 $(function(){
-		    $("#attachment-title").click(function(){
-		        $("#attachment").slideToggle();
-		    });
-		});
+	 
 
 
 	$('.delete-mentor').click(function(event){

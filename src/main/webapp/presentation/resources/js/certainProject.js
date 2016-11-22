@@ -58,7 +58,10 @@ $(document).ready(function () {
             dataType: 'json',
             data: JSON.stringify({name:dto.name, place:dto.place, date:dto.date, crit:dto.criterions, gr:dto.groups}),
             success: function (data) {
-                console.log(data);
+                if(data==1)
+                console.log("success");
+                if(data==0)
+                    $('#meetingAddError').modal('show');
             },
             error: function (textStatus) {
                 console.log(textStatus);

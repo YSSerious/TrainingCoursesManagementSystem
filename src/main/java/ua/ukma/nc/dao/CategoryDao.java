@@ -23,6 +23,8 @@ public interface CategoryDao {
     List<Category> getAll();
     
     List<Category> getByProjectId(Long projectId);
+    
+    List<Category> getByProjects(List<Long> projects);
 
     int createCategory(Category category);
 }
