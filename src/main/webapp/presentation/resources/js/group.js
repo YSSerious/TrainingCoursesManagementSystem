@@ -1,18 +1,23 @@
 $(document).ready(function () {
  
 	$("#addAttachmentSubmitButton").click(function(event) {
-		var file=$("#groupAttachmentFile").val();
-		var fileSerialized=$("#groupAttachmentFile").serialize();
+		
+		var formData = new FormData(); 
+		formData.append("id_group",groupId);
+		formData.append("name",$("#groupAttachmentName").val())
+		formData.append('attachment_scope', $("input[type=file]")[0].files[0]);
+		console.log($("#groupAttachmentName").val());
+		console.log($("groupId"));
+	//	console.log( $("input[type=file]")[0].files[0])
 		$.ajax({
-			url: "/groups/addAttachment",
-			type: "POST",
-			data: {"id_group" : $(groupId), 
-				"name" : $("#groupAttachmentName").val(),
-				"attachment_scope": fileSerialized},
+			//url: "/groups/addAttachment",
+		//	type: "POST",
+			data: formData,
+				 contentType: false,
+				    processData: false,
 				success: function (data) {
 	                console.log(data);
-	             //   buildAttachment(data.id, data.name, data.description);
-	               // $('#panelGroupId').append(newCategory);
+	             
 	            },
 	            error: function (textStatus) {
 	                console.log(textStatus);

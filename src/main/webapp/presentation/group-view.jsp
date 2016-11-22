@@ -160,9 +160,9 @@
 				<form role="form">
 					<div class="form-group">
 						<label for="groupAttachmentName"> <spring:message code="group.attachment"/> </label><br />
-						<input type=text class="form-control" id="groupAttachmentName"
+						<input type=text class="form-control" name="attachmentName" id="groupAttachmentName"
 							placeholder="Enter attachment name" required="required">
-						 <input type="file" id="groupAttachmentFile" >
+						 <input type="file" name="fileAttachment" id="groupAttachmentFile" >
 
 					</div>
 					<button type="submit"
