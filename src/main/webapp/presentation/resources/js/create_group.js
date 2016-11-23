@@ -18,10 +18,30 @@ $("#createGroupModal form").on('submit', function (event) {
         dataType: 'json',
         timeout: 100000,
         statusCode: {
-            200: function () {
-                $('#createGroupModal').modal('hide');
+            200: function (data) {
+                console.log('data: ', data);
+                afterGroupCreate(data, groupName);
             }
         }
     });
 });
+
+function afterGroupCreate(groupId, groupName) {
+    $('#createGroupModal').modal('hide');
+    var tr = $('<tr></tr>').appendTo('#project-groups table');
+    tr.attr("id", groupId);
+    tr.attr("data-students-amount", 0);
+    var name = $('<td></td>').appendTo(tr);
+    var linkToGroup = $('<a>' + groupName + '</a>').appendTo(name);
+    linkToGroup.attr("link", "groups/group?id=" + groupId);
+    tr.append('<td>0</td>');
+    tr.append('<td>No upcoming meetings</td>');
+    var buttons = $("<td></td>").appendTo(tr);
+    buttons.append('<button class="btn btn-collapse edit-group" class="edit-group">'
+            + '<span class="glyphicon glyphicon-edit"></span>'
+            + '</button>');
+    buttons.append('<button class="btn btn-collapse delete-group" class="edit-group">'
+            + '<span class="glyphicon glyphicon-remove"></span>'
+            + '</button>');
+}
 

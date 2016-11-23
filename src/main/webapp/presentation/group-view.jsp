@@ -157,15 +157,20 @@
 
 		<div class="modal-content">
 			<div class="modal-body" style="padding: 40px 50px;">
-				<form role="form">
+				<form role="form" >
 					<div class="form-group">
 						<label for="groupAttachmentName"> <spring:message code="group.attachment"/> </label><br />
 						<input type=text class="form-control" name="attachmentName" id="groupAttachmentName"
 							placeholder="Enter attachment name" required="required">
-						 <input type="file" name="fileAttachment" id="groupAttachmentFile" >
+						 <label for="groupAttachment"> Attachment: </label><br /> <input
+								type=text class="form-control" id="groupAttachment"
+								placeholder="Enter attachment" required="required">
+								<input
+								type=text   id="groupId" style="display:none"
+								value="${groupId }">
 
 					</div>
-					<button type="submit"
+					<button type="button"
 						class="btn btn-default btn-success pull-center"
 						id="addAttachmentSubmitButton">
 						<span class="glyphicon glyphicon-off"></span><spring:message code="group.send"/> 
@@ -204,8 +209,8 @@
 			<ul class="list-group">
 						<c:forEach items="${attachments}" var="attachment">
 						<li  id="attachment-${attachment.id}" class="list-group-item  clearfix">
-						 	${attachment.name} <span style='padding-left: 10px;'> </span>
-						 
+						 <!-- 	${attachment.name} <span style='padding-left: 10px;'> </span> -->
+						 <a href="${ attachment.attachmentScope}">${attachment.name } </a>
 					 
 						<div id="${attachment.id}" class="btn rmv-cr-btn col-md-1 pull-right delete"
 							type='button'>

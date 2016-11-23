@@ -63,7 +63,7 @@ public class GroupController {
 		group.setProject(project);
 		group.setName(groupName);
 		groupService.createGroup(group);
-                return "";
+                return Long.toString(groupService.getByName(groupName).getId());
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -83,6 +83,7 @@ public class GroupController {
         }
         
         @RequestMapping(value = "/delete.ajax")
+        @ResponseBody
         public String deleteGroup(@RequestParam Long groupId) {
             Long studentsAmount = groupService.getStudentsAmount(groupId);
             if (studentsAmount > 0) {
