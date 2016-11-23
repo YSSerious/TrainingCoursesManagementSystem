@@ -2,19 +2,18 @@ $(document).ready(function () {
  
 	$("#addAttachmentSubmitButton").click(function(event) {
 		
-		var formData = new FormData(); 
-		formData.append("id_group",groupId);
-		formData.append("name",$("#groupAttachmentName").val())
-		formData.append('attachment_scope', $("input[type=file]")[0].files[0]);
+	 
 		console.log($("#groupAttachmentName").val());
-		console.log($("groupId"));
+		console.log( $("#groupId").val());
+		console.log($("#groupAttachment").val());
 	//	console.log( $("input[type=file]")[0].files[0])
 		$.ajax({
-			//url: "/groups/addAttachment",
-		//	type: "POST",
-			data: formData,
-				 contentType: false,
-				    processData: false,
+			url: "/groups/addAttachment",
+			type: "POST",
+			data: {"id_group" : $("#groupId").val(), 
+			"name" : $("#groupAttachmentName").val()},
+			"attachment_scope": $("#groupAttachment").val(),
+				 
 				success: function (data) {
 	                console.log(data);
 	             
