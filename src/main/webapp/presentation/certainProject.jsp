@@ -48,7 +48,7 @@
                             data-target="#meetingCreateModal">
                         <b>Add Meeting</b>
                     </button>
-                    <button type="button" class="btn btn-default btn-sm pull-right" id="create-group">
+                    <button type="button" class="btn btn-default btn-sm pull-right right" id="create-group">
                         <b>Add</b>
                     </button>
                     <div class="clearfix"></div>
@@ -264,9 +264,13 @@
                         <input type="datetime-local" class="form-control" id="inputDate">
                     </div>
                     <label>Criteria</label>
+                    <input type='checkbox' id="checkAllCriteriaId">
+                    <p>
                     <div class="form-group" id="CriteriaCheckBoxId">
                     </div>
                     <label>Groups</label>
+                    <input type='checkbox' id="checkAllGroupsId">
+                    <p>
                     <div class="form-group" id="GroupsCheckBoxId">
                     </div>
                     <br>
@@ -300,7 +304,7 @@
                     <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
                         Save
                     </div>
-                    <button id="saveMeeting" type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    <button id="saveMeeeting" type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
                 </form>
             </div>
         </div>

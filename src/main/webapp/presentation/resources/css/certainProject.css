@@ -129,12 +129,17 @@
  .arrow {
      cursor: pointer;
  }
+
+ .right{
+     margin-right: 10px;
+ }
+
  .modal .modal-header {
     max-height: 550px;
     overflow-y: auto;
 }
 
- .panel-collapse {
+.panel-collapse {
     max-height: 350px;
      max-width: inherit;
     overflow-y: auto;

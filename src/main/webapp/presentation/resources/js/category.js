@@ -130,16 +130,15 @@ function buildCategory(categoryId, categoryTitle, categoryDescription){
                 " onclick='setCategory("+categoryId+")'>" +
                 "<span class='glyphicon glyphicon-edit'></span>" +
                 "</button>" +
-                "</h4>" +
-                "</div>" +
-                "<div id='collapseIn-"+categoryId+"' class='panel-collapse collapse'>" +
-                "<div class='panel-body row'>" +
-                "<div class='col-md-2 text-primary'><b>Add new Criteria</b></div>" +
-                "<button  class='btn btn-collapse'" +
+                "<button class='btn btn-lg pull-right-btn'" +
+                " type='button'" +
                 " data-toggle='modal'" +
                 " data-target='#addCriteria'" +
                 " onclick='setCategory("+categoryId+")'>" +
                 "<span class='glyphicon glyphicon-plus'></span>" +
-                "</button></div></div></div>";
+                "</button>" +
+                "</h4>" +
+                "</div>" +
+                "<div id='collapseIn-"+categoryId+"' class='panel-collapse collapse'>" +
+                "</div></div>";
 }
-

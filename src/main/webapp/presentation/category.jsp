@@ -34,6 +34,7 @@
         /*font-weight: 500;*/
         border-color: white;
     }
+
 </style>
 
 <div class="col-md-12">
@@ -72,18 +73,16 @@
                                     onclick="setCategory(${category.id})">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </button>
-                        </h4>
-                    </div>
-                    <div id="collapseIn-${category.id}" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="col-md-2 text-primary"><b>Add new Criteria</b></div>
-                            <button class="btn btn-collapse"
+                            <button class="btn btn-lg pull-right-btn"
+                                    type="button"
                                     data-toggle="modal"
                                     data-target="#addCriteria"
                                     onclick="setCategory(${category.id})">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
-                        </div>
+                        </h4>
+                    </div>
+                    <div id="collapseIn-${category.id}" class="panel-collapse collapse">
                         <c:forEach items="${category.criteria}" var="criteria" varStatus="loop">
                             <div class="panel-body" id="criteriaId-${criteria.id}">
                                 <div class="col-md-2">${criteria.title}</div>

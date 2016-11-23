@@ -5,6 +5,7 @@
 $(document).ready(function () {
 
     $("#showGroupsAndCriteria").click(function () {
+        clearMeetingTable();
         $.ajax({
             url: "/getCriteriaAndGroups",
             type: "GET",
@@ -25,6 +26,42 @@ $(document).ready(function () {
             }
         });
     });
+
+    $(function () {
+        $("#checkAllCriteriaId").click(function () {
+            if (!$("#checkAllCriteriaId").is(":checked")){
+                $(".isCriteriaChecked").removeAttr("checked");
+            }
+            else{
+                $(".isCriteriaChecked").prop("checked","checked");
+
+            }
+        });
+
+    });
+
+    $(function () {
+        $("#checkAllGroupsId").click(function () {
+            if (!$("#checkAllGroupsId").is(":checked")){
+                $(".isGroupChecked").removeAttr("checked");
+            }
+            else{
+                $(".isGroupChecked").prop("checked","checked");
+
+            }
+        });
+
+    });
+
+    function clearMeetingTable(){
+        $("#checkAllCriteriaId").removeAttr("checked");
+        $("#checkAllGroupsId").removeAttr("checked");
+        $(".isGroupChecked").removeAttr("checked");
+        $(".isCriteriaChecked").removeAttr("checked");
+        $("#inputName").val("");
+        $("#inputPlace").val("");
+        $("#inputDate").val("");
+    };
 
     $("#saveMeeting").click(function () {
 
