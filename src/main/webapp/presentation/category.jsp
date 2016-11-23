@@ -125,7 +125,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" id="saveCategory" type="button" data-dismiss="modal">
+                        <button class="btn btn-primary" id="saveCategory" type="button" data-dismiss="modal">
                             Add
                         </button>
                     </div>
@@ -155,7 +155,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" id="saveCriteria" type="button" data-dismiss="modal">
+                        <button class="btn btn-primary" id="saveCriteria" type="button" data-dismiss="modal">
                             Add
                         </button>
                     </div>

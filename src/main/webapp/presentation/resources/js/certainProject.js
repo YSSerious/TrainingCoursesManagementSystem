@@ -29,11 +29,11 @@ $(document).ready(function () {
 
     $(function () {
         $("#checkAllCriteriaId").click(function () {
-            if (!$("#checkAllCriteriaId").is(":checked")){
+            if (!$("#checkAllCriteriaId").is(":checked")) {
                 $(".isCriteriaChecked").removeAttr("checked");
             }
-            else{
-                $(".isCriteriaChecked").prop("checked","checked");
+            else {
+                $(".isCriteriaChecked").prop("checked", "checked");
 
             }
         });
@@ -42,18 +42,18 @@ $(document).ready(function () {
 
     $(function () {
         $("#checkAllGroupsId").click(function () {
-            if (!$("#checkAllGroupsId").is(":checked")){
+            if (!$("#checkAllGroupsId").is(":checked")) {
                 $(".isGroupChecked").removeAttr("checked");
             }
-            else{
-                $(".isGroupChecked").prop("checked","checked");
+            else {
+                $(".isGroupChecked").prop("checked", "checked");
 
             }
         });
 
     });
 
-    function clearMeetingTable(){
+    function clearMeetingTable() {
         $("#checkAllCriteriaId").removeAttr("checked");
         $("#checkAllGroupsId").removeAttr("checked");
         $(".isGroupChecked").removeAttr("checked");
@@ -65,11 +65,13 @@ $(document).ready(function () {
 
     $("#saveMeeting").click(function () {
 
-        var dto = {name: '',
+        var dto = {
+            name: '',
             place: '',
             date: '',
             criterions: [],
-            groups: []};
+            groups: []
+        };
 
         dto.name = $("#inputName").val();
         dto.place = $("#inputPlace").val();
@@ -93,17 +95,51 @@ $(document).ready(function () {
             type: "POST",
             contentType: "application/json",
             dataType: 'json',
-            data: JSON.stringify({name: dto.name, place: dto.place, date: dto.date, crit: dto.criterions, gr: dto.groups}),
+            data: JSON.stringify({
+                name: dto.name,
+                place: dto.place,
+                date: dto.date,
+                crit: dto.criterions,
+                gr: dto.groups
+            }),
             success: function (data) {
-                if(data==1)
-                console.log("success");
-                if(data==0)
+                if (data == 1)
+                    console.log("success");
+                if (data == 0)
                     $('#meetingAddError').modal('show');
             },
             error: function (textStatus) {
                 console.log(textStatus);
             }
         });
+    });
+
+    $('#saveMeeting').attr('disabled', true);
+    var meetingName = new RegExp('^[a-z0-9_-]{3,15}$');
+    var meetingPlace = new RegExp('^[a-z0-9_-]{3,25}$');
+    var groupRE = function () {
+        var check=false;
+        $.each($('.isGroupChecked'), function (key, value) {
+            if (value.checked)
+                check=true;
+        });
+        return check;
+    };
+    var criteriaRE = function () {
+        var check=false;
+        $.each($('.isCriteriaChecked'), function (key, value) {
+            if (value.checked)
+                check=true;
+        });
+        return check;
+    };
+
+    $('input[type="text"]').on('keyup', function () {
+        if (meetingName.test($("#inputName").val()) && meetingPlace.test($("#inputPlace").val()) && $("#inputDate").val()!="" && groupRE() && criteriaRE()){
+            $('#saveMeeting').attr('disabled', false);
+        } else {
+            $('#saveMeeting').attr('disabled', true);
+        }
     });
 
 
@@ -162,9 +198,9 @@ $(document).ready(function () {
         $("#criterionTable > tbody:last").children().remove();
         $.each(data, function (key, value) {
             $('#criterionTable > tbody:last-child').append("<tr>" +
-                    "<td>" + value.title + "</td>" +
-                    "<td><button class='addButton btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
-                    "</tr>");
+                "<td>" + value.title + "</td>" +
+                "<td><button class='addButton btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
+                "</tr>");
         });
     }
 
@@ -201,14 +237,14 @@ function changeSpan() {
 
 function buildResponseCriteria(data) {
     return "<div class='panel-body' id='criteriaId-" + data.id + "'>" +
-            "<div class='col-md-11'>" + data.title + "</div>" +
-            "<c:if test='" + data.rated + "'>" +
-            "<div class='btn rmv-cr-btn col-md-1' type='button'" +
-            " data-button='{\"id\":\"" + data.id + "\", \"title\": \"" + data.title + "\"}'>" +
-            "<span class='glyphicon glyphicon-remove'></span>" +
-            "</div>" +
-            "</c:if>" +
-            "</div>";
+        "<div class='col-md-11'>" + data.title + "</div>" +
+        "<c:if test='" + data.rated + "'>" +
+        "<div class='btn rmv-cr-btn col-md-1' type='button'" +
+        " data-button='{\"id\":\"" + data.id + "\", \"title\": \"" + data.title + "\"}'>" +
+        "<span class='glyphicon glyphicon-remove'></span>" +
+        "</div>" +
+        "</c:if>" +
+        "</div>";
 }
 ;
 

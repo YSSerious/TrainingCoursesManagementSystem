@@ -81,6 +81,27 @@ $(document).ready(function () {
         });
     });
 
+    $('#saveCategory').attr('disabled', true);
+    var namePattern = new RegExp('^[a-z0-9_-]{3,15}$');
+    var descriptionPattern = new RegExp('^[a-z0-9_-]{3,25}$');
+
+    $('#categoryName, #categoryDescription').on('keyup', function () {
+        if (namePattern.test($("#categoryName").val()) && descriptionPattern.test($("#categoryDescription").val())){
+            $('#saveCategory').attr('disabled', false);
+        } else {
+            $('#saveCategory').attr('disabled', true);
+        }
+    });
+
+    $('#saveCriteria').attr('disabled', true);
+    $('#criteriaName').on('keyup', function () {
+        if (namePattern.test($("#criteriaName").val())){
+            $('#saveCriteria').attr('disabled', false);
+        } else {
+            $('#saveCriteria').attr('disabled', true);
+        }
+    });
+
 });
 
 var categoryId;
