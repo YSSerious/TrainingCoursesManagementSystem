@@ -34,6 +34,7 @@ import ua.ukma.nc.service.MeetingResultService;
 import ua.ukma.nc.service.MeetingReviewService;
 import ua.ukma.nc.service.MeetingService;
 import ua.ukma.nc.service.UserService;
+import ua.ukma.nc.util.exception.CriteriaDeleteException;
 
 /**
  * @author Oleh Khomandiak
@@ -158,5 +159,14 @@ public class MeetingController {
 		Criterion criterion = criterionService.getByName(criteriaTitle);
 		meetingService.addCriteria(meetingId, criterion);
 		return new CriterionDto(criterion.getId(), criterion.getTitle(), criterionService.isRatedInProject(meetingId, criterion));
+	}
+
+	@RequestMapping(value = "/deleteMeetingCriteria", method = RequestMethod.POST)
+	@ResponseBody
+	public String deleteProjectCriteria(@RequestParam Long meetingId, @RequestParam String criteriaTitle) throws CriteriaDeleteException {
+		if(criterionService.isRatedInMeeting(meetingId, criterionService.getByName(criteriaTitle)))
+			throw new CriteriaDeleteException("This criteria was rated and cannot be deleted");
+		meetingService.deleteMeetingCriterion(meetingId, criterionService.getByName(criteriaTitle));
+		return "success";
 	}
 }

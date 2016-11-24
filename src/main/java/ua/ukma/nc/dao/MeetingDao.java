@@ -42,4 +42,6 @@ public interface MeetingDao {
     int[] butchInsert(String name, String place, Timestamp date, List<Group> groups);
 
     int[] addMeetingCriterion(Meeting meeting, List<Criterion> criterions);
+
+    int deleteMeetingCriterion(Long meetingId, Criterion criterion);
 }

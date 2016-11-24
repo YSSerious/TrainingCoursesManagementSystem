@@ -44,4 +44,6 @@ public interface MeetingService {
     Long getProjectByMeetingId(Long meetingId);
 
     int addCriteria(Long meetingId, Criterion criterion);
+
+    int deleteMeetingCriterion(Long meetingId, Criterion criterion);
 }

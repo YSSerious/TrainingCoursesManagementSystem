@@ -247,6 +247,20 @@ At ${meeting.time}
 	</div>
 </div>
 <!-- finish showAvailableCriteria modal -->
+<!-- start criteriaDeleteError modal -->
+<div id="criteriaDeleteErrorModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal"><span
+						class="glyphicon glyphicon-remove"></span></button>
+				<h4 class="modal-title">This criteria was rated, and cannot be deleted.</h4>
+				<button data-dismiss="modal" class="btn btn-link">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- finish criteriaDeleteError modal -->
 <script>
 	var meetingId = "${meeting.id}"
 </script>

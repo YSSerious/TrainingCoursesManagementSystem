@@ -80,6 +80,8 @@ public class MeetingDaoImpl implements MeetingDao{
 
     private static final String ADD_CRITERION = "INSERT INTO tcms.meeting_criterion (id_meeting, id_criterion) VALUES (?,?)";
 
+    private static final String DELETE_MEETING_CRITERION = "DELETE FROM tcms.meeting_criterion WHERE id_meeting = ? and id_criterion = ?";
+
     @Override
     public Meeting getById(Long id) {
         log.info("Getting meeting with id = {}", id);
@@ -218,6 +220,11 @@ public class MeetingDaoImpl implements MeetingDao{
                 return criterions.size();
             }
         });
+    }
+
+    @Override
+    public int deleteMeetingCriterion(Long meetingId, Criterion criterion) {
+        return jdbcTemplate.update(DELETE_MEETING_CRITERION, meetingId, criterion.getId());
     }
 
 }

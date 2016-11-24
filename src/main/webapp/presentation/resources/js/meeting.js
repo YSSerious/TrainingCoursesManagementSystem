@@ -35,6 +35,24 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('click', '.rmv-cr-btn', function () {
+        var criteria = $.parseJSON($(this).attr('data-button'));
+        $.ajax({
+            url: "/deleteMeetingCriteria",
+            type: "POST",
+            data: {meetingId: meetingId, criteriaTitle: criteria.title},
+            success: function (data) {
+                console.log(data);
+                $('#criteriaId-' + criteria.id).remove();
+            },
+            error: function (textStatus) {
+                console.log(textStatus);
+                $('#criteriaDeleteErrorModal').modal('show');
+
+            }
+        });
+    });
+
 
     function appendTableRows(data) {
         $("#criterionTable > tbody:last").children().remove();

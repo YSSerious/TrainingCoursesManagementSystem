@@ -119,6 +119,11 @@ public class MeetingServiceImpl implements MeetingService {
         return meetingDao.addCriteria(meetingId, criterion);
     }
 
+    @Override
+    public int deleteMeetingCriterion(Long meetingId, Criterion criterion) {
+        return meetingDao.deleteMeetingCriterion(meetingId, criterion);
+    }
+
     private Timestamp dateConverter(String dateTimeLocal){
         if (StringUtils.countMatches(dateTimeLocal, ":") == 1) {
             dateTimeLocal+=":00";
