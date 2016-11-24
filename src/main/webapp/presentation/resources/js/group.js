@@ -81,3 +81,12 @@ $(document).ready(function () {
 	
 });
 
+function changeSpan() {
+	if ($("#spanId").hasClass("glyphicon-chevron-down")) {
+		$("#spanId").removeClass('glyphicon-chevron-down');
+		$("#spanId").addClass('glyphicon-chevron-up');
+	} else {
+		$("#spanId").removeClass('glyphicon-chevron-up');
+		$("#spanId").addClass('glyphicon-chevron-down');
+	}
+}
