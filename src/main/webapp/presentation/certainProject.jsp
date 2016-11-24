@@ -250,7 +250,7 @@
                 <h4 class="modal-title">New Meeting</h4>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="newMeetingFormId">
                     <div class="form-group">
                         <label for="inputName">Meeting Name</label>
                         <input type="text" class="form-control" id="inputName">

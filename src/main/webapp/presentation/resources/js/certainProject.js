@@ -134,7 +134,7 @@ $(document).ready(function () {
         return check;
     };
 
-    $('input[type="text"]').on('keyup', function () {
+    $('#newMeetingFormId').change(function () {
         if (meetingName.test($("#inputName").val()) && meetingPlace.test($("#inputPlace").val()) && $("#inputDate").val()!="" && groupRE() && criteriaRE()){
             $('#saveMeeting').attr('disabled', false);
         } else {

@@ -109,7 +109,7 @@
                         </button>
                         <h4 class="modal-title">New Category</h4>
                         <div>
-                            <form name="addCategoryForm">
+                            <form name="addCategoryForm" id="addCategoryFormId">
                                 <table class="table">
                                     <tr>
                                         <td>Name</td>
@@ -143,7 +143,7 @@
                         </button>
                         <h4 class="modal-title">New Criteria</h4>
                         <div>
-                            <form name="addCriteriaForm">
+                            <form name="addCriteriaForm" id="addCriteriaFormId">
                                 <table class="table">
                                     <tr>
                                         <td>Name</td>
