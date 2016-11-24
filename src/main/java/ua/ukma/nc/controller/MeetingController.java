@@ -2,8 +2,12 @@
 package ua.ukma.nc.controller;
 
 import java.security.Principal;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,20 +20,28 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ua.ukma.nc.dto.CriterionDto;
+import ua.ukma.nc.dto.JsonWrapperFinRev;
+import ua.ukma.nc.dto.JsonWrapperReview;
+import ua.ukma.nc.dto.MarkCommentDto;
 import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.entity.Category;
 import ua.ukma.nc.entity.Criterion;
+import ua.ukma.nc.entity.FinalReview;
+import ua.ukma.nc.entity.FinalReviewCriterion;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.MeetingResult;
 import ua.ukma.nc.entity.MeetingReview;
+import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
+import ua.ukma.nc.entity.impl.real.FinalReviewImpl;
 import ua.ukma.nc.entity.impl.real.MeetingImpl;
 import ua.ukma.nc.entity.impl.real.MeetingReviewImpl;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.service.GroupService;
+import ua.ukma.nc.service.MarkService;
 import ua.ukma.nc.service.MeetingResultService;
 import ua.ukma.nc.service.MeetingReviewService;
 import ua.ukma.nc.service.MeetingService;
@@ -63,6 +75,9 @@ public class MeetingController {
 	@Autowired
 	private CategoryService categoryService;
 
+	@Autowired
+	private MarkService markService;
+
 	@RequestMapping(value = "/meeting/{id}", method = RequestMethod.GET)
 	public String getMeetings(Model model, Principal principal, @PathVariable long id) {
 
@@ -85,11 +100,12 @@ public class MeetingController {
 		for (Long user : evaluated)
 			markInformation.put(userService.getById(user), meetingResultService.getByMeeting(user, id));
 
-		//Criteria set
+		// Criteria set
 		List<Criterion> criteria = criterionService.getByMeeting(id);
 		List<CriterionDto> criterionDtos = new ArrayList<>();
-		for(Criterion criterion: criteria){
-			criterionDtos.add(new CriterionDto(criterion.getId(), criterion.getTitle(), criterionService.isRatedInMeeting(id, criterion)));
+		for (Criterion criterion : criteria) {
+			criterionDtos.add(new CriterionDto(criterion.getId(), criterion.getTitle(),
+					criterionService.isRatedInMeeting(id, criterion)));
 		}
 
 		List<Category> category = new ArrayList<>();
@@ -143,11 +159,13 @@ public class MeetingController {
 			return "createMeeting";
 		}
 	}
+
 	@RequestMapping(value = "/getAvailableMeetingCriteria", method = RequestMethod.GET)
 	@ResponseBody
 	public List<CriterionDto> getAvailableMeetingCriteria(@RequestParam Long meetingId) {
 		List<CriterionDto> criterionDtos = new ArrayList<>();
-		for (Criterion criterion : criterionService.getMeetingUnusedCriteria(meetingId, meetingService.getProjectByMeetingId(meetingId))) {
+		for (Criterion criterion : criterionService.getMeetingUnusedCriteria(meetingId,
+				meetingService.getProjectByMeetingId(meetingId))) {
 			criterionDtos.add(new CriterionDto(criterion));
 		}
 		return criterionDtos;
@@ -158,15 +176,58 @@ public class MeetingController {
 	public CriterionDto addMeetingCriteria(@RequestParam Long meetingId, @RequestParam String criteriaTitle) {
 		Criterion criterion = criterionService.getByName(criteriaTitle);
 		meetingService.addCriteria(meetingId, criterion);
-		return new CriterionDto(criterion.getId(), criterion.getTitle(), criterionService.isRatedInProject(meetingId, criterion));
+		return new CriterionDto(criterion.getId(), criterion.getTitle(),
+				criterionService.isRatedInProject(meetingId, criterion));
 	}
 
 	@RequestMapping(value = "/deleteMeetingCriteria", method = RequestMethod.POST)
 	@ResponseBody
-	public String deleteProjectCriteria(@RequestParam Long meetingId, @RequestParam String criteriaTitle) throws CriteriaDeleteException {
-		if(criterionService.isRatedInMeeting(meetingId, criterionService.getByName(criteriaTitle)))
+	public String deleteProjectCriteria(@RequestParam Long meetingId, @RequestParam String criteriaTitle)
+			throws CriteriaDeleteException {
+		if (criterionService.isRatedInMeeting(meetingId, criterionService.getByName(criteriaTitle)))
 			throw new CriteriaDeleteException("This criteria was rated and cannot be deleted");
 		meetingService.deleteMeetingCriterion(meetingId, criterionService.getByName(criteriaTitle));
 		return "success";
+	}
+
+	@RequestMapping(value = "/ajax/post/evaluate/{id}", method = RequestMethod.POST, consumes = "application/json")
+	@ResponseBody
+	public String postEvaluate(Principal principal, @PathVariable("id") Long userId,
+			@RequestBody JsonWrapperReview data) {
+		User mentor = userService.getByEmail(principal.getName());
+		System.out.println(data.getData());
+		MeetingReview review = null;
+		System.out.println(meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId) == null);
+		if (meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId) == null) {
+			review = new MeetingReviewImpl((long) 0, "1");
+			review.setStudent(userService.getById(userId));
+			review.setMeeting(meetingService.getById(data.getMeetingId()));
+			review.setMentor(mentor);
+			review.setCommentary(data.getComment());
+			System.out.println(review);
+			meetingReviewService.createMeetingReview(review);
+			for (MarkCommentDto value : data.getData()) {
+				MeetingResult result = new MeetingResult();
+				result.setId((long) 0);
+				result.setCommentary(value.getCommentary());
+				result.setMark(markService.getByValue(value.getValue()));
+				result.setCriterion(criterionService.getById((long) value.getCriterionId()));
+				result.setMeetingReview(meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId));
+				meetingResultService.createMeetingResult(result);
+			}
+		} else {
+			review = meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId);
+			Iterator<MarkCommentDto> value = data.getData().iterator();
+			Iterator<MeetingResult> result = meetingResultService.getByReview(review.getId()).iterator();
+			while (value.hasNext() && result.hasNext()) {
+				MeetingResult resultus = result.next();
+				MarkCommentDto mark = value.next();
+				resultus.setCommentary(mark.getCommentary());
+				resultus.setMark(markService.getByValue(mark.getValue()));
+				meetingResultService.updateMeetingResult(resultus);
+			}
+		}
+
+		return "true";
 	}
 }

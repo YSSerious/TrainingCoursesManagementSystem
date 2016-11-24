@@ -17,7 +17,16 @@ public class MeetingReviewImpl implements MeetingReview{
     private String type;
     private String commentary;
 
-    public Long getId() {
+
+
+	public MeetingReviewImpl(Long id, String type) {
+		this.id = id;
+		this.type = type;
+	}
+	
+	public MeetingReviewImpl(){}
+
+	public Long getId() {
         return id;
     }
 
