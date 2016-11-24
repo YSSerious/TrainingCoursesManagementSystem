@@ -75,7 +75,11 @@ public class MeetingDaoImpl implements MeetingDao{
     private static final String GET_UPCOMING_BY_GROUP = "SELECT id, id_group, name, time, place FROM tcms.meeting WHERE id_group = ? AND time > CURRENT_TIMESTAMP ORDER BY time ASC LIMIT 1";
 
     private static final String IS_EXIST = "SELECT EXISTS (SELECT * from tcms.meeting where time = ?)";
-    
+
+    private static final String GET_PROJECT_BY_MEETING_ID= "select id from tcms.project where id = (select id_project from tcms.group where id = (select id_group from tcms.meeting where id=?));  ";
+
+    private static final String ADD_CRITERION = "INSERT INTO tcms.meeting_criterion (id_meeting, id_criterion) VALUES (?,?)";
+
     @Override
     public Meeting getById(Long id) {
         log.info("Getting meeting with id = {}", id);
@@ -132,6 +136,16 @@ public class MeetingDaoImpl implements MeetingDao{
     @Override
     public boolean isExist(Timestamp date) {
         return jdbcTemplate.queryForObject(IS_EXIST, Boolean.class, date);
+    }
+
+    @Override
+    public Long getProjectByMeetingId(Long meetingId) {
+        return jdbcTemplate.queryForObject(GET_PROJECT_BY_MEETING_ID, Long.class, meetingId);
+    }
+
+    @Override
+    public int addCriteria(Long meetingId, Criterion criterion) {
+        return  jdbcTemplate.update(ADD_CRITERION, meetingId, criterion.getId());
     }
 
     private List<Criterion> getCriterions(Long meetingId) {

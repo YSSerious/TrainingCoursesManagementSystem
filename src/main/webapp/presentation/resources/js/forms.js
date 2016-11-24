@@ -96,13 +96,13 @@ $(document).ready(function () {
             }
         }
     });
-    
+
     $('#start-search-date').on("change", function(){
     	if ($('#start-search-date').val() == "") {
     		$('#end-search-date').datepicker("option", "minDate", "");
     	}
     });
-    
+
     $('#end-search-date').on("change", function(){
     	if ($('#end-search-date').val() == "") {
     		$('#start-search-date').datepicker("option", "maxDate", "");

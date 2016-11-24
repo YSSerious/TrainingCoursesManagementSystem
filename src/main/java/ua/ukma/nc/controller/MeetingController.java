@@ -12,13 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ua.ukma.nc.dto.CriterionDto;
 import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.entity.Category;
 import ua.ukma.nc.entity.Criterion;
@@ -87,7 +84,13 @@ public class MeetingController {
 		for (Long user : evaluated)
 			markInformation.put(userService.getById(user), meetingResultService.getByMeeting(user, id));
 
+		//Criteria set
 		List<Criterion> criteria = criterionService.getByMeeting(id);
+		List<CriterionDto> criterionDtos = new ArrayList<>();
+		for(Criterion criterion: criteria){
+			criterionDtos.add(new CriterionDto(criterion.getId(), criterion.getTitle(), criterionService.isRatedInMeeting(id, criterion)));
+		}
+
 		List<Category> category = new ArrayList<>();
 		for (Criterion criterion : criteria)
 			if (!category.contains(categoryService.getById(criterion.getCategory().getId())))
@@ -107,7 +110,7 @@ public class MeetingController {
 		}
 
 		model.addAttribute("unevaluatedCriteria", unevaluatedCriteria);
-		model.addAttribute("criteria", criteria);
+		model.addAttribute("criteria", criterionDtos);
 		model.addAttribute("marks", markInformation);
 		model.addAttribute("students", unevaluated);
 		model.addAttribute("meeting", meetingService.getById(id));
@@ -138,5 +141,22 @@ public class MeetingController {
 			System.out.println(result.getAllErrors());
 			return "createMeeting";
 		}
+	}
+	@RequestMapping(value = "/getAvailableMeetingCriteria", method = RequestMethod.GET)
+	@ResponseBody
+	public List<CriterionDto> getAvailableMeetingCriteria(@RequestParam Long meetingId) {
+		List<CriterionDto> criterionDtos = new ArrayList<>();
+		for (Criterion criterion : criterionService.getMeetingUnusedCriteria(meetingId, meetingService.getProjectByMeetingId(meetingId))) {
+			criterionDtos.add(new CriterionDto(criterion));
+		}
+		return criterionDtos;
+	}
+
+	@RequestMapping(value = "/addMeetingCriteria", method = RequestMethod.POST)
+	@ResponseBody
+	public CriterionDto addMeetingCriteria(@RequestParam Long meetingId, @RequestParam String criteriaTitle) {
+		Criterion criterion = criterionService.getByName(criteriaTitle);
+		meetingService.addCriteria(meetingId, criterion);
+		return new CriterionDto(criterion.getId(), criterion.getTitle(), criterionService.isRatedInProject(meetingId, criterion));
 	}
 }

@@ -16,6 +16,8 @@ public interface CriterionDao {
 
     List<Criterion> getProjectUnusedCriteria (Long projectId);
 
+    List<Criterion> getMeetingUnusedCriteria (Long meetingId, Long projectId);
+
     int deleteCriterion(Criterion criterion);
 
     int deleteCriterion(Long id);
@@ -37,4 +39,6 @@ public interface CriterionDao {
 	List<Criterion> getByMeeting(Long meetingId);
 
     boolean isRatedInProject(Long projectId, Criterion criterion);
+
+    boolean isRatedInMeeting(Long meetingId, Criterion criterion);
 }

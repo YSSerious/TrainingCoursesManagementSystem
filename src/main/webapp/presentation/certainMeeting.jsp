@@ -1,11 +1,5 @@
 <%@include file="header.jsp"%>
-<script data-require="jquery@*" data-semver="2.0.3"
-	src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-<script data-require="bootstrap@*" data-semver="3.1.1"
-	src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<link data-require="bootstrap-css@*" data-semver="3.1.1"
-	rel="stylesheet"
-	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+
 This is meeting ${meeting.name}
 <br>
 In ${meeting.place}
@@ -191,23 +185,21 @@ At ${meeting.time}
 	</div>
 </div>
 <br>
-<br>
-<br>
-<br>
+
 
 <div class="row">
 	<div class="col-md-12">
-		<h2>Criteria List</h2>
+		<h2>Criteria List </h2>
 		<div class="panel-group" id="panelGroupId">
 			<div class="panel panel-primary">
 				<div class="panel-heading clearfix">
-					<div data-toggle="collapse" data-target="#collapseIn"
-						class="arrow col-md-1" onclick="changeSpan()">
+					<div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1" onclick="changeSpan()">
 						<span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
 					</div>
 					<button type="button" class="btn btn-default btn-sm pull-right"
-						id="showAvailableCriteria" data-toggle="modal"
-						data-target="#showAvailableCriteriaModal">
+							id="showAvailableCriteria"
+							data-toggle="modal"
+							data-target="#showAvailableCriteriaModal">
 						<b>Add criteria</b>
 					</button>
 				</div>
@@ -215,6 +207,12 @@ At ${meeting.time}
 					<c:forEach items="${criteria}" var="criterion">
 						<div class="panel-body" id="criteriaId-${criterion.id}">
 							<div class="col-md-11">${criterion.title}</div>
+							<c:if test="${!criterion.rated}">
+								<div class="btn rmv-cr-btn col-md-1" type='button'
+									 data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
+									<span class="glyphicon glyphicon-remove"></span>
+								</div>
+							</c:if>
 						</div>
 					</c:forEach>
 				</div>
@@ -222,8 +220,36 @@ At ${meeting.time}
 		</div>
 	</div>
 </div>
-
-
+<!-- start showAvailableCriteria modal -->
+<div id="showAvailableCriteriaModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal"><span
+						class="glyphicon glyphicon-remove"></span></button>
+				<h4 class="modal-title">Add some criteria</h4>
+				<hr>
+				<div class="row">
+					<input type="text" id="search" placeholder="type search" class="col-md-offset-4">
+				</div>
+				<table id="criterionTable" class="table table-condensed table-hover table-responsive">
+					<thead class="table-head">
+					<tr>
+						<th><b>Name</b></th>
+						<th><b>Add</b></th>
+					</tr>
+					</thead>
+					<tbody id="criteriaTableId">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- finish showAvailableCriteria modal -->
+<script>
+	var meetingId = "${meeting.id}"
+</script>
 <script>
 	$(document).on("click", ".open-Evaluate", function() {
 		var user = $(this).data('user');
@@ -232,7 +258,7 @@ At ${meeting.time}
 </script>
 <script>
 	function app_handle_listing_horisontal_scroll(listing_obj) {
-		//get table object   
+		//get table object
 		table_obj = $('.table', listing_obj);
 
 		//get count fixed collumns params
@@ -255,7 +281,7 @@ At ${meeting.time}
 				}
 			})
 
-			//calcualte margin for each column  
+			//calcualte margin for each column
 			$.each(table_collumns_width, function(key, value) {
 				if (key == 0) {
 					table_collumns_margin[key] = wrapper_left_margin;
@@ -273,7 +299,7 @@ At ${meeting.time}
 				}
 			});
 
-			//set wrapper margin               
+			//set wrapper margin
 			if (wrapper_left_margin > 0) {
 				wrapper_obj.css('cssText', 'margin-left:' + wrapper_left_margin
 						+ 'px !important; width: auto')
@@ -295,7 +321,7 @@ At ${meeting.time}
 													$(this).css('height',
 															current_row_height)
 
-													//set position 
+													//set position
 													if (index < count_fixed_collumns) {
 														$(this)
 																.css(

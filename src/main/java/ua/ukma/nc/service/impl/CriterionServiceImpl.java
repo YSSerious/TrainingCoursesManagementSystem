@@ -71,7 +71,12 @@ public class CriterionServiceImpl implements CriterionService {
         return criterionDao.getProjectUnusedCriteria(projectId);
     }
 
-    @Override
+	@Override
+	public List<Criterion> getMeetingUnusedCriteria(Long meetingId, Long projectId) {
+		return criterionDao.getMeetingUnusedCriteria(meetingId, projectId);
+	}
+
+	@Override
     public int createCriterion(String title, Long categoryId) {
         return criterionDao.createCriterion(title, categoryId);
     }
@@ -84,6 +89,11 @@ public class CriterionServiceImpl implements CriterionService {
 	@Override
 	public boolean isRatedInProject(Long projectId, Criterion criterion) {
 		return criterionDao.isRatedInProject(projectId, criterion);
+	}
+
+	@Override
+	public boolean isRatedInMeeting(Long meetingId, Criterion criterion) {
+		return criterionDao.isRatedInMeeting(meetingId, criterion);
 	}
 
 	@Override

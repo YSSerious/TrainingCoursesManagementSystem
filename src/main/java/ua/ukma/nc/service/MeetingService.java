@@ -1,6 +1,7 @@
 package ua.ukma.nc.service;
 
 import ua.ukma.nc.dto.AddCriteriaDto;
+import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Meeting;
 
@@ -39,4 +40,8 @@ public interface MeetingService {
     int addMeetings(AddCriteriaDto dto);
 
     boolean isExist(Timestamp date);
+
+    Long getProjectByMeetingId(Long meetingId);
+
+    int addCriteria(Long meetingId, Criterion criterion);
 }

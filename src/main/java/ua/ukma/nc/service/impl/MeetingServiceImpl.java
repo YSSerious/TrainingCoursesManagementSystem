@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.ukma.nc.dao.GroupDao;
 import ua.ukma.nc.dao.MeetingDao;
 import ua.ukma.nc.dto.AddCriteriaDto;
+import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.service.CriterionService;
@@ -106,6 +107,16 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public boolean isExist(Timestamp date) {
         return meetingDao.isExist(date);
+    }
+
+    @Override
+    public Long getProjectByMeetingId(Long meetingId) {
+        return meetingDao.getProjectByMeetingId(meetingId);
+    }
+
+    @Override
+    public int addCriteria(Long meetingId, Criterion criterion) {
+        return meetingDao.addCriteria(meetingId, criterion);
     }
 
     private Timestamp dateConverter(String dateTimeLocal){

@@ -35,6 +35,10 @@ public interface MeetingDao {
 
     boolean isExist(Timestamp date);
 
+    Long getProjectByMeetingId(Long meetingId);
+
+    int addCriteria(Long meetingId, Criterion criterion);
+
     int[] butchInsert(String name, String place, Timestamp date, List<Group> groups);
 
     int[] addMeetingCriterion(Meeting meeting, List<Criterion> criterions);

@@ -69,11 +69,18 @@ public class CriterionDaoImpl implements CriterionDao{
     private static final String GET_PROJECT_UNUSED_CRITERIA = "select id, name, id_category FROM tcms.criterion " +
                                                                 "where id not in (select id_criterion from tcms.project_criterion where id_project =?) order by name Asc";
 
+    private static final String GET_MEETING_UNUSED_CRITERIA = "select id, name, id_category FROM tcms.criterion " +
+            "where id not in (select id_criterion from tcms.meeting_criterion where id_meeting =?) and id " +
+            " in (select id_criterion from tcms.project_criterion where id_project =?) order by name Asc";
+
     private static final String IS_RATED_IN_PROJECT = "select exists " +
                                                         "(select * from tcms.meeting_result where id_criterion = ? and id_meeting_review in \n" +
                                                         "(select id from tcms.meeting_review where id_meeting in \n" +
                                                         "(select id from tcms.meeting where id_group in \n" +
                                                         "(select id from tcms.group where id_project = ?))))";
+
+    private static final String IS_RATED_IN_MEETING = "select exists (select * from tcms.meeting_result where id_criterion = ? and id_meeting_review in " +
+                                                        "(select id from tcms.meeting_review where id_meeting =?))";
 
     @Override
     public Criterion getById(Long id) {
@@ -94,9 +101,21 @@ public class CriterionDaoImpl implements CriterionDao{
     }
 
     @Override
+    public List<Criterion> getMeetingUnusedCriteria(Long meetingId, Long projectId) {
+        log.info("Getting unused criterion in meeting = {}", meetingId);
+        return jdbcTemplate.query(GET_MEETING_UNUSED_CRITERIA, new CriterionMapper(), meetingId, projectId);
+    }
+
+    @Override
     public boolean isRatedInProject(Long projectId, Criterion criterion) {
         log.info("Is criterion with id = {} rated throughout the project {}", criterion.getId(), projectId);
         return jdbcTemplate.queryForObject(IS_RATED_IN_PROJECT, boolean.class, criterion.getId(), projectId);
+    }
+
+    @Override
+    public boolean isRatedInMeeting(Long meetingId, Criterion criterion) {
+        log.info("Is criterion with id = {} rated throughout the meeting {}", criterion.getId(), meetingId);
+        return jdbcTemplate.queryForObject(IS_RATED_IN_MEETING, boolean.class, criterion.getId(), meetingId);
     }
 
     @Override

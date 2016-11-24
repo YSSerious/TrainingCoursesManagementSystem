@@ -233,7 +233,6 @@ function changeSpan() {
         $("#spanId").addClass('glyphicon-chevron-down');
     }
 }
-;
 
 function buildResponseCriteria(data) {
     return "<div class='panel-body' id='criteriaId-" + data.id + "'>" +

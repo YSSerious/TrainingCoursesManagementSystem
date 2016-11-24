@@ -31,6 +31,8 @@ public interface CriterionService {
 
     List<Criterion> getProjectUnusedCriteria (Long projectId);
 
+    List<Criterion> getMeetingUnusedCriteria (Long meetingId, Long projectId);
+
     int createCriterion(Criterion criterion);
 
     int createCriterion(String title, Long categoryId);
@@ -38,4 +40,6 @@ public interface CriterionService {
     boolean isExistInProjects(Long id);
 
     boolean isRatedInProject(Long projectId, Criterion criterion);
+
+    boolean isRatedInMeeting(Long meetingId, Criterion criterion);
 }
