@@ -45,6 +45,10 @@ body > .container > .panel > .panel-body div:first-child {
 	border-color:#ff0080;
 }
 
+.remove-all-styles {
+    font-weight: normal;
+}
+
 @media (min-width: 1200px) {
     body > .container {
         width: 100%;

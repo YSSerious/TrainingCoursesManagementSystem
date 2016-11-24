@@ -20,12 +20,9 @@ public class StudentProfile {
 	
 	private FinalReviewDto generalReview;
 	private FinalReviewDto technicalReview;
-	private FinalReviewDto finalReview;
 	
 	private List<CategoryDto> projectCategories;
 	private List<CriterionDto> projectCriteria;
-	
-	private List<MeetingReviewDto> fullMeetingReviews;
 
 	public List<StudentStatusLog> getStudentStatuses() {
 		return studentStatuses;
@@ -115,14 +112,6 @@ public class StudentProfile {
 		this.technicalReview = technicalReview;
 	}
 
-	public FinalReviewDto getFinalReview() {
-		return finalReview;
-	}
-
-	public void setFinalReview(FinalReviewDto finalReview) {
-		this.finalReview = finalReview;
-	}
-
 	public List<CategoryDto> getProjectCategories() {
 		return projectCategories;
 	}
@@ -137,14 +126,6 @@ public class StudentProfile {
 
 	public void setProjectCriteria(List<CriterionDto> projectCriteria) {
 		this.projectCriteria = projectCriteria;
-	}
-
-	public List<MeetingReviewDto> getFullMeetingReviews() {
-		return fullMeetingReviews;
-	}
-
-	public void setFullMeetingReviews(List<MeetingReviewDto> fullMeetingReviews) {
-		this.fullMeetingReviews = fullMeetingReviews;
 	}
 
 }

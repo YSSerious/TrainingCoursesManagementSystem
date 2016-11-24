@@ -86,6 +86,7 @@ public class MeetingReviewDto implements Comparable<MeetingReviewDto>{
 	}
 
 	public void setTimestamp(Timestamp timestamp) {
+		date = new SimpleDateFormat("MM/dd/yyyy").format(timestamp);
 		this.timestamp = timestamp;
 	}
 

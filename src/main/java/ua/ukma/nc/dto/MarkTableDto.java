@@ -1,18 +1,19 @@
 package ua.ukma.nc.dto;
 
 import java.util.List;
-import java.util.Map;
 
 public class MarkTableDto {
-	private List<String> meetings;
+	
+	private FinalReviewDto finalReview;
+	private List<MeetingReviewDto> meetings;
 	
 	private List<CategoryResult> tableData;
 
-	public List<String> getMeetings() {
+	public List<MeetingReviewDto> getMeetings() {
 		return meetings;
 	}
 
-	public void setMeetings(List<String> meetings) {
+	public void setMeetings(List<MeetingReviewDto> meetings) {
 		this.meetings = meetings;
 	}
 
@@ -22,5 +23,13 @@ public class MarkTableDto {
 
 	public void setTableData(List<CategoryResult> dataTable) {
 		this.tableData = dataTable;
+	}
+
+	public FinalReviewDto getFinalReview() {
+		return finalReview;
+	}
+
+	public void setFinalReview(FinalReviewDto finalReview) {
+		this.finalReview = finalReview;
 	}
 }
