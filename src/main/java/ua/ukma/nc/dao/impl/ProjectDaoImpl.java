@@ -64,6 +64,9 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	private static final String DELETE_PROJECT_CRITERION = "DELETE FROM tcms.project_criterion WHERE id_project = ? and id_criterion = ?";
 
+	private static final String DELETE_CRITERION_IN_ALL_PROJECT_MEETINGS="delete from tcms.meeting_criterion where id_criterion = ? and id_meeting in " +
+			"(select id from tcms.meeting where id_group in (select id from tcms.group where id_project = ?))";
+
 	@Override
 	public Project getById(Long id) {
 		log.info("Getting project with id = {}", id);
@@ -90,6 +93,11 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public int deleteProjectCriterion(Long projectId, Criterion criterion) {
 		return jdbcTemplate.update(DELETE_PROJECT_CRITERION, projectId, criterion.getId());
+	}
+
+	@Override
+	public int deleteCriterionInAllProjectMeetings(Long projectId, Criterion criterion) {
+		return jdbcTemplate.update(DELETE_CRITERION_IN_ALL_PROJECT_MEETINGS, criterion.getId(), projectId);
 	}
 
 	@Override

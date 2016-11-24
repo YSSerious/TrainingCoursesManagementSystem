@@ -193,22 +193,22 @@ At ${meeting.time}
 		<div class="panel-group" id="panelGroupId">
 			<div class="panel panel-primary">
 				<div class="panel-heading clearfix">
-					<div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1" onclick="changeSpan()">
+					<div data-toggle="collapse" data-target="#collapseMIn" class="arrow col-md-1" onclick="changeSpan()">
 						<span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
 					</div>
 					<button type="button" class="btn btn-default btn-sm pull-right"
-							id="showAvailableCriteria"
+							id="showAvailableMeetingCriteria"
 							data-toggle="modal"
 							data-target="#showAvailableCriteriaModal">
 						<b>Add criteria</b>
 					</button>
 				</div>
-				<div id="collapseIn" class="panel-collapse collapse">
+				<div id="collapseMIn" class="panel-collapse collapse">
 					<c:forEach items="${criteria}" var="criterion">
-						<div class="panel-body" id="criteriaId-${criterion.id}">
+						<div class="panel-body" id="criteriaMId-${criterion.id}">
 							<div class="col-md-11">${criterion.title}</div>
 							<c:if test="${!criterion.rated}">
-								<div class="btn rmv-cr-btn col-md-1" type='button'
+								<div class="btn rmv-mt-btn col-md-1" type='button'
 									 data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
 									<span class="glyphicon glyphicon-remove"></span>
 								</div>
@@ -232,7 +232,7 @@ At ${meeting.time}
 				<div class="row">
 					<input type="text" id="search" placeholder="type search" class="col-md-offset-4">
 				</div>
-				<table id="criterionTable" class="table table-condensed table-hover table-responsive">
+				<table id="criterionMeetingTable" class="table table-condensed table-hover table-responsive">
 					<thead class="table-head">
 					<tr>
 						<th><b>Name</b></th>
@@ -248,7 +248,7 @@ At ${meeting.time}
 </div>
 <!-- finish showAvailableCriteria modal -->
 <!-- start criteriaDeleteError modal -->
-<div id="criteriaDeleteErrorModal" class="modal fade">
+<div id="criteriaMeetingDeleteErrorModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">

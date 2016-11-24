@@ -17,6 +17,8 @@ public interface ProjectDao {
 
 	int deleteProjectCriterion(Long projectId, Criterion criterion);
 
+	int deleteCriterionInAllProjectMeetings(Long projectId, Criterion criterion);
+
 	int updateProject(Project project);
 
 	List<Project> getAll();
