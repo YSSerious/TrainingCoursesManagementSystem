@@ -26,12 +26,7 @@
 	src="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"/> ">
 	
 </script>
-<link rel="stylesheet"
-	href=" <c:url value="/presentation/resources/third-party/jqpagination/css/jqpagination.css" />"
-	type="text/css">
-<script
-	src="<c:url value="/presentation/resources/third-party/jqpagination/js/jquery.jqpagination.js" />"
-	type="text/javascript"></script>
+
 <link
 	href="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />"
 	type="text/css" rel="stylesheet" />
@@ -69,6 +64,7 @@
     <script src="<c:url value="/presentation/resources/js/create_group.js"/>" defer="defer"></script>
     <!--<script src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>-->
    <!--  <script src="<c:url value="/presentation/resources/js/group_attachments.js"/>" defer="defer"></script> -->
+<script type="text/javascript" src="http://botmonster.com/jquery-bootpag/jquery.bootpag.js"></script>
 </head>
 <body>
 <div class="container">

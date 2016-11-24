@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html;charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@include file="header.jsp"%>
 <%@include file="createProjectModal.jsp"%>
 <div class="col-sm-11 col-sm-offset-1">
@@ -158,31 +160,44 @@
 				</form:form>
 			</div>
 		</div>
-		<div style="min-width:260px;" class="col-sm-3 col-sm-offset-3">
+		<div class="text-center">
+		<div class="col-sm-3 col-sm-offset-3">
 			<c:if test="${not empty projects}">
-				<div class="pagination">
-					<a href="#" class="first" data-action="first">&laquo;</a> <a
-						href="#" class="previous" data-action="previous">&lsaquo;</a> <input
-						type="text" readonly="readonly" data-current-page="${currPage}"
-						data-max-page="${maxPage}" /> <a href="#" class="next"
-						data-action="next">&rsaquo;</a> <a href="#" class="last"
-						data-action="last">&raquo;</a>
+				<c:if test="${maxPage > 1}">
+				<div style="min-width:100%;" id="bootstrap-pagination">
+
 				</div>
+				</c:if>
 			</c:if>
+		</div>
 		</div>
 	</div>
 </div>
 <script>
-	$('.pagination').jqPagination({
-		current_page: '${currPage}',
-		max_page : '${maxPage}',
-		paged : function(page) {
-			$("#hidden-page").val(page);
-			$("#searchRequest").val('');
-			
-			cleanAndSubmit();
-		}
-	});
+	var max = ${maxPage};
+	var curr = ${currPage};
+	$('#bootstrap-pagination').bootpag({
+    	total: max,
+    	page: curr,
+    	maxVisible: 5,
+    	leaps: true,
+    	firstLastUse: true,
+    	first: '←',
+    	last: '→',
+    	wrapClass: 'pagination',
+    	activeClass: 'active',
+    	disabledClass: 'disabled',
+    	nextClass: 'next',
+    	prevClass: 'prev',
+    	lastClass: 'last',
+    	firstClass: 'first'
+	}).on("page", function(event, num){
+		$("#hidden-page").val(num);
+		$("#searchRequest").val('');
+	
+		cleanAndSubmit();
+	}); 
+
 	
 	function cleanAndSubmit(){
 		$('#searchForm').find('input, textarea, select, checkbox').each(function(_, inp) {
