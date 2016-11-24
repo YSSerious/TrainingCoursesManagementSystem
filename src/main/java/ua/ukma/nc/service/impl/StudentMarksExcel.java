@@ -11,6 +11,7 @@ import ua.ukma.nc.dto.CategoryResult;
 import ua.ukma.nc.dto.CertainMarkDto;
 import ua.ukma.nc.dto.CriterionResult;
 import ua.ukma.nc.dto.MarkTableDto;
+import ua.ukma.nc.dto.MeetingReviewDto;
 import ua.ukma.nc.dto.StudentProfile;
 import ua.ukma.nc.dto.UserDto;
 import ua.ukma.nc.service.MarkTableService;
@@ -48,9 +49,9 @@ public class StudentMarksExcel extends AbstractXlsView {
 		Row header = sheet.createRow(0);
 		header.createCell(0).setCellValue("#");
 
-		List<String> meetings = markTableDto.getMeetings();
+		List<MeetingReviewDto> meetings = markTableDto.getMeetings();
 		for (int i = 1; i < meetings.size() + 1; i++)
-			header.createCell(i).setCellValue(meetings.get(i - 1));
+			header.createCell(i).setCellValue(meetings.get(i - 1).getName());
 
 		int rowCount = 1;
 		List<CategoryResult> marks = markTableDto.getTableData();

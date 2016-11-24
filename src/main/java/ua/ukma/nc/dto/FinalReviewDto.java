@@ -2,6 +2,7 @@ package ua.ukma.nc.dto;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import ua.ukma.nc.entity.FinalReview;
 import ua.ukma.nc.entity.User;
@@ -15,6 +16,8 @@ public class FinalReviewDto {
 	private String type;
 	private String commentary;
 	private String date;
+	
+	private List<FinalReviewCriterionDto> marks;
 
 	public FinalReviewDto() {
 
@@ -77,5 +80,13 @@ public class FinalReviewDto {
 
 	public void setDate(Timestamp date) {
 		this.date = new SimpleDateFormat("MM/dd/yyyy").format(date);
+	}
+
+	public List<FinalReviewCriterionDto> getMarks() {
+		return marks;
+	}
+
+	public void setMarks(List<FinalReviewCriterionDto> finalReviewCriteriaDto) {
+		this.marks = finalReviewCriteriaDto;
 	}
 }

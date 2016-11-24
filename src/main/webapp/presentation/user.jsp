@@ -81,10 +81,10 @@
 														<br /> <input type="radio" name="status" value="3" checked>Interview
 														offer
 														<button type="submit" style="margin-top: -5px;"
-															class="btn btn-primary pull-right">Submit</button>
+															class="btn btn-primary pull-right">Submit</button><br/>
 														<br />
 														<br />
-														<textarea name="commentary" class="form-control" rows="2"
+														<textarea name="commentary" class="form-control" rows="5"
 															id="comment" required></textarea>
 													</form>
 												</div>
@@ -114,10 +114,10 @@
 													<form method="post">
 														<br /> <input type="radio" name="status" value="1" checked>Inactive
 														<button type="submit" style="margin-top: -5px;"
-															class="btn btn-primary pull-right">Submit</button>
+															class="btn btn-primary pull-right">Submit</button><br/>
 														<br />
 														<br />
-														<textarea name="commentary" class="form-control" rows="2"
+														<textarea name="commentary" class="form-control" rows="5"
 															id="comment" required></textarea>
 													</form>
 												</div>
@@ -146,10 +146,10 @@
 														<br /> <input type="radio" name="status" value="1" checked>Inactive
 														<input type="radio" name="status" value="3">Interview
 														offer
-														<button type="submit" class="btn btn-primary pull-right">Submit</button>
+														<button type="submit" class="btn btn-primary pull-right">Submit</button><br/>
 														<br />
 														<br />
-														<textarea name="commentary" class="form-control" rows="2"
+														<textarea name="commentary" class="form-control" rows="5"
 															id="comment" required></textarea>
 													</form>
 												</div>
@@ -180,10 +180,10 @@
 															<br /> <input type="radio" name="status" value="1"
 																checked>Inactive <input type="radio"
 																name="status" value="4">Job offer
-															<button type="submit" class="btn btn-primary pull-right">Submit</button>
+															<button type="submit" class="btn btn-primary pull-right">Submit</button><br/>
 															<br />
 															<br />
-															<textarea name="commentary" class="form-control" rows="2"
+															<textarea name="commentary" class="form-control" rows="5"
 																id="comment" required></textarea>
 														</form>
 													</div>

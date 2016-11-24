@@ -103,9 +103,6 @@ public class StudentServiceImpl implements StudentService {
 		
 		studentProfile.setProjectName(projectService.getById(projectId).getName());
 		
-		if(finalReviewService.existsForProject(studentId, projectId, "F"))
-			studentProfile.setFinalReview(new FinalReviewDto(finalReviewService.getByStudent(projectId, studentId, "F")));
-		
 		if(finalReviewService.existsForProject(studentId, projectId, "G"))
 			studentProfile.setGeneralReview(new FinalReviewDto(finalReviewService.getByStudent(projectId, studentId, "G")));
 		
@@ -118,24 +115,6 @@ public class StudentServiceImpl implements StudentService {
 		studentProfile.setProjectCategories(categories);
 		studentProfile.setProjectCriteria(criteria);
 		
-		List<MeetingReviewDto> fullMeetingReviews = new ArrayList<MeetingReviewDto>();
-		
-		for(MeetingReview meetingReview: meetingReviews){
-			MeetingReviewDto meetingReviewDto = new MeetingReviewDto(meetingReview);
-			
-			List<MeetingResultDto> meetingResultsDto = new ArrayList<MeetingResultDto>();
-			
-			for(MeetingResult meetingResult: meetingResultService.getByReview(meetingReview.getId())){
-				MeetingResultDto meetingResultDto = new MeetingResultDto(meetingResult);
-				meetingResultsDto.add(meetingResultDto);
-			}
-			
-			meetingReviewDto.setMarks(meetingResultsDto);
-			
-			fullMeetingReviews.add(meetingReviewDto);
-		}
-		Collections.sort(fullMeetingReviews);
-		studentProfile.setFullMeetingReviews(fullMeetingReviews);
 		return studentProfile;
 	}
 
