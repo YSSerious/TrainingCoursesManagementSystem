@@ -172,7 +172,7 @@
 					</div>
 					<button type="button"
 						class="btn btn-default btn-success pull-center"
-						id="addAttachmentSubmitButton">
+						id="addAttachmentSubmitButton"  >
 						<span class="glyphicon glyphicon-off"></span><spring:message code="group.send"/> 
 					</button>
 				</form>
@@ -206,7 +206,7 @@
 		</div>
 
 		<div id="collapseAttachment" class="panel-collapse collapse">
-			<ul class="list-group">
+			<ul id="listAttachments"class="list-group">
 						<c:forEach items="${attachments}" var="attachment">
 						<li  id="attachment-${attachment.id}" class="list-group-item  clearfix">
 						 <!-- 	${attachment.name} <span style='padding-left: 10px;'> </span> -->

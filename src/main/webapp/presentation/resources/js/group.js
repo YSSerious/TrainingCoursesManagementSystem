@@ -2,27 +2,41 @@ $(document).ready(function () {
  
 	$("#addAttachmentSubmitButton").click(function(event) {
 		
+		if($("#groupAttachmentName").val().length==0 ||$("#groupAttachment").val().length==0)
+			return
 	 
-		console.log($("#groupAttachmentName").val());
-		console.log( $("#groupId").val());
-		console.log($("#groupAttachment").val());
-	//	console.log( $("input[type=file]")[0].files[0])
+	 
 		$.ajax({
 			url: "/groups/addAttachment",
 			type: "POST",
 			data: {"id_group" : $("#groupId").val(), 
-			"name" : $("#groupAttachmentName").val()},
-			"attachment_scope": $("#groupAttachment").val(),
-				 
-				success: function (data) {
+			"name" : $("#groupAttachmentName").val(),
+			"attachment_scope": $("#groupAttachment").val()},
+		
+			success: function (data) {
 	                console.log(data);
-	             
+	                $('#listAttachments').append(buildAttachment($("#groupAttachmentName").val(),
+	                		$("#groupAttachment").val()));
+	                $('#addGroupAttachmentModal').modal("hide");
 	            },
 	            error: function (textStatus) {
 	                console.log(textStatus);
 	            }
 		});
+		
 	});
+
+	function buildAttachment(name,scope) {
+		 
+	    return "<li   class='list-group-item  clearfix'>"+
+        
+        "<a href="+scope+">"+name+" </a>"+
+        
+        
+          // "<br/>"+
+       "<li/>";
+	    
+	}
 
 	$('.delete').click(function(event){
 	 
@@ -80,4 +94,5 @@ $(document).ready(function () {
 	
 	
 });
+
 
