@@ -33,16 +33,6 @@
                 <div class="form-group">
                     <input type="password" name="password" class="form-control" placeholder="<spring:message code="login.password.placeholder"/>">
                 </div>
-                <%--<div class="form-group">--%>
-                    <%--<label for="select"></label>--%>
-                    <%--<select class="form-control"  name="chosenRole" id="select">--%>
-                        <%--<option value="" disabled selected hidden>Choose role...</option>--%>
-                        <%--<option value="ROLE_ADMIN">ADMIN</option>--%>
-                        <%--<option value="ROLE_MENTOR">MENTOR</option>--%>
-                        <%--<option value="ROLE_HR">HR</option>--%>
-                       <%--<!--<option>STUDENT</option>-->--%>
-                    <%--</select>--%>
-                <%--</div>--%>
             </div>
             <div class="col-sm-8 col-sm-offset-2 bottom-row">
                 <div class="col-md-7 ">
