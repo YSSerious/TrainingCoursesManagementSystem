@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,13 @@ import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.ProjectAttachment;
+import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.MeetingService;
 import ua.ukma.nc.service.ProjectAttachmentService;
 import ua.ukma.nc.service.ProjectService;
+import ua.ukma.nc.service.UserService;
 import ua.ukma.nc.util.exception.CriteriaDeleteException;
 
 @Controller
@@ -35,6 +38,10 @@ public class CertainProjectController {
 
     @Autowired
     private GroupService groupService;
+    
+    @Autowired
+    private CategoryService categoryService;
+    
     @Autowired
     private CriterionService criterionService;
     
@@ -43,12 +50,29 @@ public class CertainProjectController {
 
     @Autowired
     private ProjectAttachmentService attachmentService;
+    
+    @Autowired
+    private UserService userService;
 
     private Long project_id;
 
     @RequestMapping(value = "/certainProject/{id}", method = RequestMethod.GET)
     public ModelAndView viewProject(@PathVariable("id") Long id) {
         ModelAndView model = new ModelAndView();
+        
+		List<CategoryDto> categories = categoryService.getByProjectId(id).stream().map(CategoryDto::new)
+				.collect(Collectors.toList());
+		
+		List<CriterionDto> criteria = criterionService.getByProject(id).stream().map(CriterionDto::new)
+				.collect(Collectors.toList());
+		
+		List<UserDto> students = userService.studentsByProjectId(id).stream().map(UserDto::new)
+				.collect(Collectors.toList());
+		
+		model.addObject("categories", categories);
+		model.addObject("criteria", criteria);
+		model.addObject("students", students);
+		
         project_id = id;
 
         ProjectDto prDto = new ProjectDto(projectService.getById(id));

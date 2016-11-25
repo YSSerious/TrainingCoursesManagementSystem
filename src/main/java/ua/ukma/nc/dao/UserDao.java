@@ -39,6 +39,10 @@ public interface UserDao {
 	boolean hasReviews(Long studentId , Long groupId);
 
 	int count();
+	
+	List<User> studentsByProjectId(Long projectId);
+	
+	List<User> studentsByGroupId(Long groupId);
 
 	List<User> getByName(String name);
 

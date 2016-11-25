@@ -15,7 +15,6 @@ import ua.ukma.nc.entity.User;
 import ua.ukma.nc.entity.impl.proxy.RoleProxy;
 import ua.ukma.nc.entity.impl.proxy.StatusProxy;
 import ua.ukma.nc.entity.impl.proxy.UserProxy;
-import ua.ukma.nc.entity.impl.real.RoleImpl;
 import ua.ukma.nc.entity.impl.real.UserImpl;
 
 import java.sql.ResultSet;
@@ -52,9 +51,9 @@ public class UserDaoImpl implements UserDao {
 			return user;
 		}
 	}
-	
+
 	private static final String MENTOR_CHECK = "SELECT EXISTS (SELECT * FROM tcms.user WHERE id = ? AND id IN (SELECT id_user FROM tcms.user_group WHERE id_group IN (SELECT id_group FROM tcms.user_group WHERE id_user = (SELECT id FROM tcms.user WHERE email = ?)) AND id_group NOT IN (SELECT id_group FROM tcms.status_log WHERE id_student IN (SELECT id FROM tcms.user WHERE email = ?))))";
-	
+
 	private static final String GET_ALL = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student";
 
 	private static final String GET_BY_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id = ?";
@@ -62,9 +61,9 @@ public class UserDaoImpl implements UserDao {
 	private static final String GET_BY_EMAIL = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE email=?";
 
 	private static final String COUNT = "SELECT COUNT(*) FROM tcms.user";
-	
+
 	private static final String DELETE_ROLES = "DELETE FROM tcms.user_role WHERE id_user = ?";
-	
+
 	private static final String DELETE_USER = "DELETE FROM tcms.user WHERE id = ?";
 
 	private static final String CREATE_USER = " INSERT INTO tcms.user (email, first_name, second_name, last_name, password, is_active) VALUES (?,?,?,?,?,?)";
@@ -80,10 +79,13 @@ public class UserDaoImpl implements UserDao {
 	private static final String SET_STUDENT_STATUS = "insert into student_status (id_student, id_status) values (?, ?)";
 
 	private static final String HAS_REVIEWS = "SELECT EXISTS (SELECT * FROM (tcms.meeting_review INNER JOIN tcms.user_group ON tcms.meeting_review.id_student = tcms.user_group.id_user ) WHERE (tcms.meeting_review.id_student = ? AND tcms.user_group.id_group = ? ))";
-	
+
 	private static final String GET_BY_NAME = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE first_name LIKE '";
-	
-	
+
+	private static final String GET_STUDENTS_BY_PROJECT_ID = "SELECT * FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project = ?))";
+
+	private static final String GET_STUDENTS_BY_GROUP_ID = "SELECT * FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group = ?)";
+
 	@Override
 	public User getByEmail(String email) {
 		log.info("Getting user with email = {}", email);
@@ -101,9 +103,9 @@ public class UserDaoImpl implements UserDao {
 		log.info("Deleting user with id = {}", user.getId());
 		return jdbcTemplate.update(DELETE_USER, user.getId());
 	}
-	
+
 	@Override
-	public int count(){
+	public int count() {
 		return jdbcTemplate.queryForObject(COUNT, int.class);
 	}
 
@@ -165,23 +167,35 @@ public class UserDaoImpl implements UserDao {
 	public boolean canView(String mentorEmail, Long studentId) {
 		log.info("Is exist this user {} ?");
 		return jdbcTemplate.queryForObject(MENTOR_CHECK, Boolean.class, studentId, mentorEmail, mentorEmail);
-	
+
 	}
 
 	@Override
 	public void deleteRoles(User user) {
 		jdbcTemplate.update(DELETE_ROLES, user.getId());
-		
+
 	}
 
 	@Override
 	public boolean hasReviews(Long studentId, Long groupId) {
-		return jdbcTemplate.queryForObject(HAS_REVIEWS, Boolean.class , studentId, groupId);
+		return jdbcTemplate.queryForObject(HAS_REVIEWS, Boolean.class, studentId, groupId);
 	}
 
 	@Override
 	public List<User> getByName(String name) {
 		log.info("Getting all users");
-		return jdbcTemplate.query(GET_BY_NAME+name+"%'", new UserMapper());
+		return jdbcTemplate.query(GET_BY_NAME + name + "%'", new UserMapper());
 	}
+
+	public List<User> studentsByProjectId(Long projectId) {
+		log.info("Getting all users from project with id=" + projectId);
+		return jdbcTemplate.query(GET_STUDENTS_BY_PROJECT_ID, new UserMapper(), projectId);
+	}
+
+	@Override
+	public List<User> studentsByGroupId(Long groupId) {
+		log.info("Getting all users from group with id=" + groupId);
+		return jdbcTemplate.query(GET_STUDENTS_BY_GROUP_ID, new UserMapper(), groupId);
+	}
+
 }

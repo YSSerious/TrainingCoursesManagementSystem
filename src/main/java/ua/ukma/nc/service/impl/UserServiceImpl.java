@@ -246,4 +246,14 @@ public class UserServiceImpl implements UserService {
 	public List<User> getByName(String name) {
 		return userDao.getByName(name);
 	}
+
+	@Override
+	public List<User> studentsByProjectId(Long projectId) {
+		return userDao.studentsByProjectId(projectId);
+	}
+
+	@Override
+	public List<User> studentsByGroupId(Long groupId) {
+		return userDao.studentsByGroupId(groupId);
+	}
 }

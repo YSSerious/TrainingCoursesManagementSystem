@@ -10,36 +10,41 @@ import java.util.List;
  * Created by Алексей on 15.10.2016.
  */
 public interface UserService {
-	
+
 	boolean canView(Long id);
-	
+
 	void changeStatus(Long id, Long statusId, String commentary);
 
-    User getByEmail(String email);
+	User getByEmail(String email);
 
-    User getById(Long id);
+	User getById(Long id);
 
-    int deleteUser(User user);
+	int deleteUser(User user);
 
-    int updateUser(User user);
+	int updateUser(User user);
 
-    List<User> getAll();
+	List<User> getAll();
 
-    void createUser(User user, List<Role> roles);
+	void createUser(User user, List<Role> roles);
 
-    boolean isExist(User user);
+	boolean isExist(User user);
 
-    int addRole(User user, Role role);
+	int addRole(User user, Role role);
 
-    int setStatus(User user, Status status);
+	int setStatus(User user, Status status);
 
 	List<User> getSome(int limit, int offset);
 
 	void deleteRoles(User user);
-	
+
 	int count();
-	
+
 	boolean hasReview(Long studentId, Long groupId);
 
 	List<User> getByName(String name);
+
+	List<User> studentsByProjectId(Long projectId);
+
+	List<User> studentsByGroupId(Long groupId);
+
 }
