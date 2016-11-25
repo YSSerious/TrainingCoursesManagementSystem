@@ -157,12 +157,12 @@
 			<div class="modal-body" style="padding: 40px 50px;">
 				<form role="form" >
 					<div class="form-group">
-						<label for="groupAttachmentName"> <spring:message code="group.attachment"/> </label><br />
+						<label for="groupAttachmentName"> <spring:message code="group.attachment.name"/> </label><br />
 						<input type=text class="form-control" name="attachmentName" id="groupAttachmentName"
-							placeholder="Enter attachment name" required="required">
-						 <label for="groupAttachment"> Attachment: </label><br /> <input
+							placeholder=" <spring:message code="group.attachment.name.placeholder"/>" required="required">
+						 <label for="groupAttachment"> <spring:message code="group.attachment"/> </label><br /> <input
 								type=text class="form-control" id="groupAttachment"
-								placeholder="Enter attachment" required="required">
+								placeholder="<spring:message code="group.attachment.placeholder"/>" required="required">
 								<input
 								type=text   id="groupId" style="display:none"
 								value="${groupId }">
