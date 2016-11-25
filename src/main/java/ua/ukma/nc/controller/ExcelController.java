@@ -11,15 +11,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ua.ukma.nc.dto.MarkTableDto;
 import ua.ukma.nc.dto.ProjectReportItemDto;
+import ua.ukma.nc.dto.StudentProfile;
 import ua.ukma.nc.dto.UserDto;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.service.MarkTableService;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.service.StatusLogService;
+import ua.ukma.nc.service.StudentService;
 import ua.ukma.nc.service.UserService;
 
 @Controller
 public class ExcelController {
+
+	@Autowired
+	private StudentService studentService;
 
 	@Autowired
 	private MarkTableService markTableService;
@@ -46,13 +51,13 @@ public class ExcelController {
 				projects.add(project.getId());
 		}
 		
-		Map<String, MarkTableDto> values = new TreeMap<>();
+		Map<String, StudentProfile> values = new TreeMap<>();
 
 		for (Long projectId : projects) {
-			MarkTableDto markTableDto = markTableService.getMarkTableDto(student, projectId, criteria, categories);
+			StudentProfile studentProfile = studentService.generateStudentProfile(student, projectId, criteria, categories);
 			Project project = projectService.getById(projectId);
 			
-			values.put(project.getName(), markTableDto);
+			values.put(project.getName(), studentProfile);
 		}
 
 		UserDto user = new UserDto(userService.getById(student));
