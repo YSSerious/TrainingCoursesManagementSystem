@@ -3,6 +3,7 @@ package ua.ukma.nc.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import ua.ukma.nc.dto.CategoryDto;
+import ua.ukma.nc.dto.CriterionDto;
 import ua.ukma.nc.dto.GroupDto;
+import ua.ukma.nc.dto.UserDto;
 import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.GroupAttachment;
 import ua.ukma.nc.entity.Meeting;
@@ -23,6 +27,8 @@ import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.entity.impl.real.GroupImpl;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
+import ua.ukma.nc.service.CategoryService;
+import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.service.GroupAttachmentService;
 import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.MeetingService;
@@ -48,6 +54,12 @@ public class GroupController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private CategoryService categoryService;
+	
+	@Autowired
+	private CriterionService criterionService;
 	
 	@Autowired 
 	private StudentStatusService studentStatusService;
@@ -96,9 +108,23 @@ public class GroupController {
 
 	@RequestMapping(value = "/group", method = RequestMethod.GET)
 	public ModelAndView getGroup(@RequestParam Long id) {
-
+		
 		ModelAndView model = new ModelAndView();
 		GroupDto group = new GroupDto(groupService.getById(id));
+		
+		List<CategoryDto> categories = categoryService.getByProjectId(group.getProject().getId()).stream().map(CategoryDto::new)
+				.collect(Collectors.toList());
+		
+		List<CriterionDto> criteria = criterionService.getByProject(group.getProject().getId()).stream().map(CriterionDto::new)
+				.collect(Collectors.toList());
+		
+		List<UserDto> selectStudents = userService.studentsByGroupId(id).stream().map(UserDto::new)
+				.collect(Collectors.toList());
+		
+		model.addObject("categories", categories);
+		model.addObject("criteria", criteria);
+		model.addObject("selectStudents", selectStudents);
+		
 		List<User> students = groupService.getStudents(id);
 		List<StudentStatus> studentsWithStatus = new ArrayList<StudentStatus>();
 		for(User us : students){

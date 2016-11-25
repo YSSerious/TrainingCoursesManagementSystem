@@ -15,7 +15,6 @@ import ua.ukma.nc.entity.User;
 import ua.ukma.nc.entity.impl.proxy.RoleProxy;
 import ua.ukma.nc.entity.impl.proxy.StatusProxy;
 import ua.ukma.nc.entity.impl.proxy.UserProxy;
-import ua.ukma.nc.entity.impl.real.RoleImpl;
 import ua.ukma.nc.entity.impl.real.UserImpl;
 
 import java.sql.ResultSet;
@@ -81,6 +80,9 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String HAS_REVIEWS = "SELECT EXISTS (SELECT * FROM (tcms.meeting_review INNER JOIN tcms.user_group ON tcms.meeting_review.id_student = tcms.user_group.id_user ) WHERE (tcms.meeting_review.id_student = ? AND tcms.user_group.id_group = ? ))";
 	
+	private static final String GET_STUDENTS_BY_PROJECT_ID = "SELECT * FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project = ?))";
+	
+	private static final String GET_STUDENTS_BY_GROUP_ID = "SELECT * FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group = ?)";
 	@Override
 	public User getByEmail(String email) {
 		log.info("Getting user with email = {}", email);
@@ -174,6 +176,18 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean hasReviews(Long studentId, Long groupId) {
 		return jdbcTemplate.queryForObject(HAS_REVIEWS, Boolean.class , studentId, groupId);
+	}
+
+	@Override
+	public List<User> studentsByProjectId(Long projectId) {
+		log.info("Getting all users from project with id=" + projectId);
+		return jdbcTemplate.query(GET_STUDENTS_BY_PROJECT_ID, new UserMapper(), projectId);
+	}
+
+	@Override
+	public List<User> studentsByGroupId(Long groupId) {
+		log.info("Getting all users from group with id=" + groupId);
+		return jdbcTemplate.query(GET_STUDENTS_BY_GROUP_ID, new UserMapper(), groupId);
 	}
 
 }

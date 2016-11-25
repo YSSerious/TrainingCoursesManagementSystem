@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ua.ukma.nc.dto.MarkTableDto;
 import ua.ukma.nc.dto.ProjectReportItemDto;
 import ua.ukma.nc.dto.StudentProfile;
 import ua.ukma.nc.dto.UserDto;
+import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Project;
-import ua.ukma.nc.service.MarkTableService;
+import ua.ukma.nc.entity.User;
+import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.service.StatusLogService;
 import ua.ukma.nc.service.StudentService;
@@ -22,12 +23,12 @@ import ua.ukma.nc.service.UserService;
 
 @Controller
 public class ExcelController {
+	
+	@Autowired
+	private GroupService groupService;
 
 	@Autowired
 	private StudentService studentService;
-
-	@Autowired
-	private MarkTableService markTableService;
 
 	@Autowired
 	private ProjectService projectService;
@@ -37,9 +38,88 @@ public class ExcelController {
 
     @Autowired
     private StatusLogService statusLogService;
+    
+	@RequestMapping(value = "/projectReport", method = RequestMethod.GET)
+	public ModelAndView projectReport(@RequestParam(name = "students", required = false) List<Long> students,
+			@RequestParam(name = "criteria", required = false) List<Long> criteria,
+			@RequestParam(name = "categories", required = false) List<Long> categories,
+			@RequestParam("projectId") Long projectId) {
 
+		if(students == null)
+			students = new ArrayList<Long>();
+		
+		if(criteria == null)
+			criteria = new ArrayList<Long>();
+		
+		if(categories == null)
+			categories = new ArrayList<Long>();
+		
+		if (students.isEmpty()) {
+			students = new ArrayList<>();
+			List<User> users = userService.studentsByProjectId(projectId);
+			for (User user : users)
+				students.add(user.getId());
+		}
+		
+		Map<String, StudentProfile> values = new TreeMap<>();
+
+		for (Long studentId : students) {
+			StudentProfile studentProfile = studentService.generateStudentProfile(studentId, projectId, criteria, categories);
+			User user = userService.getById(studentId);
+			
+			values.put(user.getLastName()+" " +user.getFirstName(), studentProfile);
+		}
+
+		ModelAndView modelAndView = new ModelAndView("projectExcelBuilder");
+		modelAndView.addObject("values", values);
+		modelAndView.addObject("title", projectService.getById(projectId).getName());
+
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/groupReport", method = RequestMethod.GET)
+	public ModelAndView groupReport(@RequestParam(name = "students", required = false) List<Long> students,
+			@RequestParam(name = "criteria", required = false) List<Long> criteria,
+			@RequestParam(name = "categories", required = false) List<Long> categories,
+			@RequestParam("groupId") Long groupId) {
+
+		if(students == null)
+			students = new ArrayList<Long>();
+		
+		if(criteria == null)
+			criteria = new ArrayList<Long>();
+		
+		if(categories == null)
+			categories = new ArrayList<Long>();
+		
+		if (students.isEmpty()) {
+			students = new ArrayList<>();
+			List<User> users = userService.studentsByGroupId(groupId);
+			for (User user : users)
+				students.add(user.getId());
+		}
+		
+		Group group = groupService.getById(groupId);
+		Long projectId = group.getProject().getId();
+		
+		Map<String, StudentProfile> values = new TreeMap<>();
+
+		for (Long studentId : students) {
+			StudentProfile studentProfile = studentService.generateStudentProfile(studentId, projectId, criteria, categories);
+			User user = userService.getById(studentId);
+			
+			values.put(user.getLastName()+" " +user.getFirstName(), studentProfile);
+		}
+		
+		ModelAndView modelAndView = new ModelAndView("groupExcelBuilder");
+		modelAndView.addObject("title", group.getName());
+		modelAndView.addObject("values", values);
+
+		return modelAndView;
+	}
+	
 	@RequestMapping(value = "/studentMarks", method = RequestMethod.GET)
-	public ModelAndView downloadExcel(@RequestParam(name = "projects", required = false) List<Long> projects,
+	public ModelAndView studentReport(@RequestParam(name = "projects", required = false) List<Long> projects,
 			@RequestParam(name = "criteria", required = false) List<Long> criteria,
 			@RequestParam(name = "categories", required = false) List<Long> categories,
 			@RequestParam("studentId") Long student) {
@@ -64,7 +144,7 @@ public class ExcelController {
 
 		ModelAndView modelAndView = new ModelAndView("studentExcelBuilder");
 		modelAndView.addObject("values", values);
-		modelAndView.addObject("student", user);
+		modelAndView.addObject("title", user.getLastName() + " " + user.getFirstName());
 
 		return modelAndView;
 	}

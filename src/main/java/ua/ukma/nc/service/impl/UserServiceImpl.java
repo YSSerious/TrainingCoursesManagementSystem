@@ -240,4 +240,14 @@ public class UserServiceImpl implements UserService {
 	public boolean hasReview(Long studentId, Long groupId) {
 		return userDao.hasReviews(studentId, groupId);
 	}
+
+	@Override
+	public List<User> studentsByProjectId(Long projectId) {
+		return userDao.studentsByProjectId(projectId);
+	}
+
+	@Override
+	public List<User> studentsByGroupId(Long groupId) {
+		return userDao.studentsByGroupId(groupId);
+	}
 }

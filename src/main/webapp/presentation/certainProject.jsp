@@ -4,6 +4,7 @@
     src="<c:url value="/presentation/resources/js/certainProject.js"/>"
     type="text/javascript" defer="defer">
 </script>
+
 <div class="container certain-project" data-project-id="${project.id}">
     <!-- Example row of columns -->
     <div class="row">
@@ -32,6 +33,8 @@
                         <p>${project.description}</p>
                     </div>
                 </div>
+                 <sec:authorize access="hasAnyRole('ADMIN', 'HR')"><font color="blue" data-toggle="modal" data-target="#projet-report-modal"><b>Generate report</b></font>
+            	</sec:authorize>
             </div>
         </div>
     </div>
@@ -336,4 +339,58 @@
 <script>
     var projectId = "${project.id}"
 </script>
+<sec:authorize access="hasAnyRole('ADMIN', 'HR')">
+<div id="project-report-modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Generate report</h4>
+			</div>
+			<div id="project-report-back" class="modal-body">
+				<form id="project-form-report" action="/projectReport.xls">
+					Select students (or leave this field empty to select all):<br /> <select
+						style="width: 100%;" multiple name="students">
+						<c:forEach items="${students}" var="student">
+							<option value="${student.id}">${student.firstName}
+								${student.lastName}</option>
+						</c:forEach>
+					</select> <br />
+					<hr />
+
+					Select categories (leave criteria and category fields empty to
+					select all criteria):<br /> <select style="width: 100%;" multiple
+						name="categories">
+						<c:forEach items="${categories}" var="category">
+							<option value="${category.id}">${category.name}</option>
+						</c:forEach>
+					</select> <br />
+					<hr />
+
+					Select criteria (leave criteria and category fields empty to select
+					all criteria):<br /> <select style="width: 100%;" multiple
+						name="criteria">
+						<c:forEach items="${criteria}" var="criterion">
+							<option value="${criterion.id}">${criterion.title}</option>
+						</c:forEach>
+					</select> <br />
+					<hr />
+					<input type="hidden" name="projectId" value="${project.id}" />
+					<input onclick="getProjectReport()" class="btn btn-primary pull-right" type="submit" />
+					<br/>
+					<br/>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function getProjectReport(){
+		$('#project-report-modal').modal('hide');
+		$('#project-form-report').submit();
+	}
+   	$('select').select2();
+</script>
+</sec:authorize>
 <%@include file="footer.jsp" %>

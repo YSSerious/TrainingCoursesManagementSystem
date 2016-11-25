@@ -40,4 +40,8 @@ public interface UserService {
 	int count();
 	
 	boolean hasReview(Long studentId, Long groupId);
+	
+	List<User> studentsByProjectId(Long projectId);
+	
+	List<User> studentsByGroupId(Long groupId);
 }
