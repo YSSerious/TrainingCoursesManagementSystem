@@ -22,4 +22,10 @@ public interface StatusLogDao {
     int createStatusLog(StatusLog statusLog);
 
 	List<StatusLog> getByProjectStudent(Long projectId, Long studentId);
+
+    int getNumOfStartedProject(Long projectId);
+
+    int getNumOfInvitedByProject(Long projectId);
+
+    int getNumOfJobOffersByProject(Long projectId);
 }

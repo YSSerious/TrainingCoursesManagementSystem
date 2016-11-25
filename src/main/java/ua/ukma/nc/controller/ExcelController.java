@@ -1,9 +1,6 @@
 package ua.ukma.nc.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ua.ukma.nc.dto.MarkTableDto;
+import ua.ukma.nc.dto.ProjectReportItemDto;
 import ua.ukma.nc.dto.UserDto;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.service.MarkTableService;
 import ua.ukma.nc.service.ProjectService;
+import ua.ukma.nc.service.StatusLogService;
 import ua.ukma.nc.service.UserService;
 
 @Controller
@@ -30,6 +29,9 @@ public class ExcelController {
 
 	@Autowired
 	private UserService userService;
+
+    @Autowired
+    private StatusLogService statusLogService;
 
 	@RequestMapping(value = "/studentMarks", method = RequestMethod.GET)
 	public ModelAndView downloadExcel(@RequestParam(name = "projects", required = false) List<Long> projects,
@@ -71,8 +73,20 @@ public class ExcelController {
 
     @RequestMapping (value = "/reports/get")
 	public ModelAndView doGetReport(@RequestParam Long[] projectIds){
-		ModelAndView mv = new ModelAndView("excelProjectReports");
-		mv.addObject("projectIds", projectIds);
+        List<ProjectReportItemDto> data = new LinkedList<>();
+        ProjectReportItemDto item = null;
+        for(Long id : projectIds){
+            item = new ProjectReportItemDto();
+            item.setProjectId(id);
+            item.setProjectName(projectService.getById(id).getName());
+            item.setNumOfStarted(statusLogService.getNumOfStartedProject(id));
+            item.setNumOfWasInvited(statusLogService.getNumOfInvitedByProject(id));
+            item.setNumOfNotInvited(item.getNumOfStarted()-item.getNumOfWasInvited());
+            item.setNumOfJobOffer(statusLogService.getNumOfJobOffersByProject(id));
+            data.add(item);
+        }
+        ModelAndView mv = new ModelAndView("excelProjectReports");
+        mv.addObject("data", data);
 		return mv;
 	}
 }

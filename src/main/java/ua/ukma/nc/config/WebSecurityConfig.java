@@ -45,6 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/projects").hasAnyRole("ADMIN", "MENTOR", "HR")
                     .antMatchers("/users/*", "/cookie").hasAnyRole("ADMIN", "MENTOR", "HR")
                     .antMatchers("/getuser").hasRole("ADMIN")     //for testing
+                    .antMatchers("/reports/*").hasAnyRole("HR", "ADMIN")
                     .and()
                 .formLogin()
                     .loginPage("/login")

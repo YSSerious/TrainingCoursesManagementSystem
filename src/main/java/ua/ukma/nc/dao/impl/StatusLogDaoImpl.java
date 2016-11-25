@@ -60,6 +60,12 @@ public class StatusLogDaoImpl implements StatusLogDao{
 
     private static final String UPDATE_STATUS_LOG = "UPDATE tcms.status_log SET id_old_status = ?, id_new_status = ?, commentary = ?, id_student = ?, id_employee = ?, date = ?, id_group = ? WHERE id = ?";
 
+    private static final String GET_NUM_STARTED = "SELECT COUNT(*) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project=?) AND id_new_status=2";
+
+    private static final String GET_NUM_INVITED = "SELECT COUNT(*) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project=?) AND id_new_status=3";
+
+    private static final String GET_NUM_JOB_OFFER = "SELECT COUNT(*) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project=?) AND id_new_status=4";
+
     @Override
     public StatusLog getById(Long id) {
         log.info("Getting status log with id = {}", id);
@@ -70,7 +76,22 @@ public class StatusLogDaoImpl implements StatusLogDao{
     public List<StatusLog> getByProjectStudent(Long projectId, Long studentId) {
     	return jdbcTemplate.query(GET_BY_STUDENT_PROJECT, new StatusLogMapper(), studentId, projectId);
     }
-    
+
+    @Override
+    public int getNumOfStartedProject(Long projectId) {
+        return jdbcTemplate.queryForObject(GET_NUM_STARTED, new Object[]{projectId}, Integer.class);
+    }
+
+    @Override
+    public int getNumOfInvitedByProject(Long projectId) {
+        return jdbcTemplate.queryForObject(GET_NUM_INVITED, new Object[]{projectId}, Integer.class);
+    }
+
+    @Override
+    public int getNumOfJobOffersByProject(Long projectId) {
+        return jdbcTemplate.queryForObject(GET_NUM_JOB_OFFER, new Object[]{projectId}, Integer.class);
+    }
+
     @Override
     public int deleteStatusLog(StatusLog statusLog) {
         log.info("Deleting status log with id = {}", statusLog.getId());

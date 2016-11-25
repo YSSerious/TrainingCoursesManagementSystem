@@ -47,7 +47,22 @@ public class StatusLogServiceImpl implements StatusLogService{
 		return statusLogDao.getByProjectStudent(projectId, studentId);
 	}
 
-	@Override
+    @Override
+    public int getNumOfStartedProject(Long projectId) {
+        return statusLogDao.getNumOfStartedProject(projectId);
+    }
+
+    @Override
+    public int getNumOfInvitedByProject(Long projectId) {
+        return statusLogDao.getNumOfInvitedByProject(projectId);
+    }
+
+    @Override
+    public int getNumOfJobOffersByProject(Long projectId) {
+        return statusLogDao.getNumOfJobOffersByProject(projectId);
+    }
+
+    @Override
 	public Long getNewestGroup(Long userId) {
 		return statusLogDao.getNewestGroup(userId);
 	}
