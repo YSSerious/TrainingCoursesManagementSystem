@@ -40,4 +40,6 @@ public interface UserService {
 	int count();
 	
 	boolean hasReview(Long studentId, Long groupId);
+
+	List<User> getByName(String name);
 }

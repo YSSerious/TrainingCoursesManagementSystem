@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ua.ukma.nc.dao.UserDao;
+import ua.ukma.nc.dao.impl.UserDaoImpl.UserMapper;
 import ua.ukma.nc.entity.FinalReview;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.MeetingReview;
@@ -239,5 +240,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean hasReview(Long studentId, Long groupId) {
 		return userDao.hasReviews(studentId, groupId);
+	}
+	
+	@Override
+	public List<User> getByName(String name) {
+		return userDao.getByName(name);
 	}
 }

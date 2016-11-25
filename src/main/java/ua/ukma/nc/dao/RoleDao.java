@@ -22,4 +22,6 @@ public interface RoleDao {
     List<Role> getCurrentUserRoles(String email, Long userId);
 
     int createRole(Role role);
+
+	Role getByRole(String role);
 }

@@ -40,4 +40,6 @@ public interface UserDao {
 
 	int count();
 
+	List<User> getByName(String name);
+
 }

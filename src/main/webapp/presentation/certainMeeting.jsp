@@ -56,10 +56,10 @@
 									data-user="${user.firstName}"> ${user.firstName}
 										${user.secondName} ${user.lastName} </a></b> </font></td>
 						<c:forEach items="${criteria}" var="criterion">
-							<td><font size="3"><center>
+							<td><font size="3">
 										<a href="#" data-toggle="tooltip" data-placement="top"
 											title="No mark, yet">-</a>
-									</center></font></td>
+									</font></td>
 						</c:forEach>
 					</tr>
 					<!-- start evaluate Student modal -->
@@ -124,17 +124,17 @@
 										${entry.key.secondName} ${entry.key.lastName}</a></b></font></td>
 
 						<c:forEach items="${entry.value}" var="mark">
-							<td><font size="3"><center>
+							<td><font size="3">
 										<a href="#" data-toggle="tooltip" data-placement="top"
 											title="${mark.commentary}">${mark.mark}</a>
-									</center></font></td>
+									</font></td>
 						</c:forEach>
 						<c:if test="${entry.value.size() < criteria.size()}">
 							<c:forEach items="${criteria}" begin="${entry.value.size()}">
-								<td><font size="3"><center>
+								<td><font size="3">
 											<a href="#" data-toggle="tooltip" data-placement="top"
 												title="No mark, yet">-</a>
-										</center></font></td>
+										</font></td>
 							</c:forEach>
 						</c:if>
 					</tr>
@@ -197,7 +197,8 @@
 									</ul>
 									<label>General: </label>
 									<textarea class="form-control" id="rev-com" rows="5"></textarea>
-								</div>
+									<span id="rev-err" class="text-danger hidden">Unknown
+										error</span>								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default"
 										data-dismiss="modal">Close</button>

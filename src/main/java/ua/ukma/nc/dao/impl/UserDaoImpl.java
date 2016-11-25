@@ -81,6 +81,9 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String HAS_REVIEWS = "SELECT EXISTS (SELECT * FROM (tcms.meeting_review INNER JOIN tcms.user_group ON tcms.meeting_review.id_student = tcms.user_group.id_user ) WHERE (tcms.meeting_review.id_student = ? AND tcms.user_group.id_group = ? ))";
 	
+	private static final String GET_BY_NAME = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE first_name LIKE '";
+	
+	
 	@Override
 	public User getByEmail(String email) {
 		log.info("Getting user with email = {}", email);
@@ -176,4 +179,9 @@ public class UserDaoImpl implements UserDao {
 		return jdbcTemplate.queryForObject(HAS_REVIEWS, Boolean.class , studentId, groupId);
 	}
 
+	@Override
+	public List<User> getByName(String name) {
+		log.info("Getting all users");
+		return jdbcTemplate.query(GET_BY_NAME+name+"%'", new UserMapper());
+	}
 }
