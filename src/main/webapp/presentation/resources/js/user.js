@@ -6,12 +6,6 @@ function getMark(mark){
 	return '<p style="padding:0px; margin:0px;">'+mark+'</p>';
 }
 
-function getRow(type){
-	if(type == 'A')
-		return ' class="danger"';
-	return '';
-}
-
 function createMentorProjectsInfo(userId, divInside){
 
 	$.ajax({
@@ -35,7 +29,9 @@ function createMentorProjectsInfo(userId, divInside){
 	    			divClass = 'finished';
 	    		}
 	    		
-	    		s+= '<h2>Mentor projects: </h2><hr/><div class="panel panel-'+divClass+'"><div id="mpr'+value.id+'" class="panel-body">' + value.name;
+	    		s+= '<h2>Mentor projects: </h2><hr/>';
+	    		s+= '<div class="panel panel-'+divClass+'">';
+	    		s+= '<div id="mpr'+value.id+'" class="panel-body">' + value.name;
 	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
  	    		s+= '</div></div>';
 	    	
@@ -46,8 +42,8 @@ function createMentorProjectsInfo(userId, divInside){
 	    		
 	    	$(divInside).html(s);
 	    }
-	  });
-};
+	});
+}
 
 function createStudentProjectsInfo(userId, divInside){
 	$.ajax({
@@ -70,9 +66,20 @@ function createStudentProjectsInfo(userId, divInside){
 	    		}else{
 	    			divClass = 'finished';
 	    		}
-	    		s+= '<div class="panel panel-'+divClass+'"><div id="pr'+value.id+'" class="panel-body">' + value.name;
+	    		s+= '<div class="panel panel-'+divClass+'">';
+	    		s+= '<div id="pr'+value.id+'" class="panel-body">' + value.name;
 	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
- 	    		s+= '</div></div><div id="sub'+value.id+'"><div class="row"><div class="col-sm-12"> <div class="col-sm-12"><div id="stinf-'+value.id+'"></div><br/><h4>'+value.description+'</h4><div class="col-sm-8 col-sm-offset-2 charts-wrapper" id="chart'+value.id+'">Loading...</div></div></div></div></div>';
+ 	    		s+= '</div>';
+ 	    		s+= '</div>';
+ 	    		
+ 	    		s+= '<div id="sub'+value.id+'">';
+ 	    		s+= '<div class="row">';
+ 	    		s+= '<div class="col-sm-12">';
+ 	    		s+= '<div class="col-sm-12">';
+ 	    		s+= '<div id="stinf-'+value.id+'"></div>';
+ 	    		s+= '<br/><h4>'+value.description+'</h4>';
+ 	    		s+= '<div class="col-sm-8 col-sm-offset-2 charts-wrapper" id="chart'+value.id+'">Loading...<br/><br/></div>';
+ 	    		s+= '</div></div></div></div>';
 	    	});
 
 	    	if(jQuery.isEmptyObject(data))
@@ -106,44 +113,32 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
     	 	    	    	
-    	 	    	    	//if(data.fullMeetingReviews.length > 0){
-    	 	    	    		//table+= '<br/><h2>Meeting reviews: </h2>';
-    	 	    	    		//table+= getFullMeetingReviews(data.fullMeetingReviews);
-    	 	    	    	//}
-    	 	    	    	
-    	 	    	    	if(data.markTableDto.tableData.length>0){
-    	 	    	    	table+= '<br/>';
-    	 	    	    	table+= '<div class="row"><div class = "col-sm-10"><h2>Grades:</h2></div><div class = "col-sm-2"><h2>';
-    	 	    	    	//table+=	'<a href="/studentMarks/'+value.id+'/'+userId+'.xls" class="btn btn-primary pull-right">Report</a>';
-    	 	    	    	table+=	'</h2></div></div>';
-                            
-    	 	    	    	table+= '<div class="panel panel-default"><div class="panel-heading"><div class="row">';
-    	 	    	    	table+= '<div class = "col-sm-5">';
-    	 	    	    	table+= getSelectCategories(data.projectCategories, value.id);
-    	 	    	    	table+= '</div>';
-    	 	    	    	table+= '<div class = "col-sm-5">';
-    	 	    	    	table+= getSelectCriteria(data.projectCriteria, value.id);
-    	 	    	    	table+= '</div>';
-    	 	    	    	table+= '<div class = "col-sm-2">';
-    	 	    	    	table+= '<button onclick="search('+value.id+')" class="form-control btn btn-default">Search</button>';
-    	 	    	    	table+= '</div>';
-    	 	    	    	table+= '</div></div>';
-    	 	    	    	
-    	 	    	    	table+= getMarksTable(data.markTableDto, value.id);
-                            
-    	 	    	    	table+= '</div>';
+    	 	    	    	if(data.technicalReview !== null || data.generalReview !== null){
+    	 	    	    		table+= '<br/><h2>Final reviews: </h2>';
+    	 	    	    		table+= getFinalReviews(data);
     	 	    	    	}
     	 	    	    	
-                            //table+= '<br/><h2>Statuses: </h2>';
-                            //table+= getStatusesTable(data.studentStatuses);
+    	 	    	    	if(data.markTableDto.tableData.length>0){
+    	 	    	    		table+= '<br/>';
+    	 	    	    		table+= '<div class="row"><div class = "col-sm-10"><h2>Grades:</h2></div><div class = "col-sm-2"><h2>';
+    	 	    	    		table+=	'</h2></div></div>';
                             
-                            //table+= '<br/><h2>Meeting reviews: </h2>';
-                            //table+= getMeetingReviewsTable(data.meetingReviews);
+    	 	    	    		table+= '<div class="panel panel-default"><div class="panel-heading"><div class="row">';
+    	 	    	    		table+= '<div class = "col-sm-5">';
+    	 	    	    		table+= getSelectCategories(data.projectCategories, value.id);
+    	 	    	    		table+= '</div>';
+    	 	    	    		table+= '<div class = "col-sm-5">';
+    	 	    	    		table+= getSelectCriteria(data.projectCriteria, value.id);
+    	 	    	    		table+= '</div>';
+    	 	    	    		table+= '<div class = "col-sm-2">';
+    	 	    	    		table+= '<button onclick="search('+value.id+')" class="form-control btn btn-default">Search</button>';
+    	 	    	    		table+= '</div>';
+    	 	    	    		table+= '</div></div>';
+    	 	    	    		table+= getMarksTable(data.markTableDto, value.id);
+    	 	    	    		table+= '</div>';
+    	 	    	    	}
     	 	    	    	
-                            table+= '<br/><h2>Final reviews: </h2>';
-                            table+= getFinalReviews(data);
-                            
-                            table+= '</div></div></div>';
+                            table+= '<br/></div></div></div>';
     	 	    	    	$('#sub'+value.id).append(table);
     	 	    	    	
     	 	    	    	$('.criteria-select-'+value.id).select2({
@@ -178,7 +173,7 @@ function createStudentProjectsInfo(userId, divInside){
 	    	});
 	    }
 	  });
-};
+}
 
 function createCharts(data, projectId) {
     var chart = $("#chart" + projectId);
@@ -212,24 +207,6 @@ function createCharts(data, projectId) {
     drawCriteriaChart(data, '#chart' + projectId, 6, 'title');
 }
 
-function getMeetingReviewsTable(meetingReviews){
-	var table = '';
- 	table+= '<table class="table table-bordered"><tr><th>ID</th><th>Name</th>';
- 	table+= '<th>Type</th>';
- 	table+= '<th>Employee</th>';
- 	table+= '<th>Commentary</th></tr>';
- 	$.each(meetingReviews, function( key, value ) {
- 		table+= '<tr'+getRow(value.type)+'><td>M'+(key+1)+'</td><td>'+value.meetingName+'</td>';
- 		table+= '<td>'+value.type+'</td>';
- 		table+= '<td>'+value.firstName+' '+value.secondName+' '+value.lastName+'</td>';
-	    	table+= '<td>'+value.commentary+'</td></tr>';
-	    	
- 	});
- 	table+= '</table>';
- 	
- 	return table;
-}
-
 function getMarksTable(markTableDto, projectId){
 	var table = '';
  	table+= '<div class="table-responsive">';
@@ -260,8 +237,7 @@ function getMarksTable(markTableDto, projectId){
 	    		});
  			table+= '</tr>';
  		});
- 		
- 		
+ 			
  	});
  	
  	table+= '</table></div>';
@@ -269,28 +245,11 @@ function getMarksTable(markTableDto, projectId){
  	return table;
 }
 
-function getStatusesTable(studentStatuses){
-	var table = '';
- 	
-	table+= '<table class="table table-bordered"><tr><th>Status:</th>';
- 	table+= '<th>Commentary</th>';
- 	table+= '<th>Employee</th>';
- 	table+= '<th>Time</th></tr>';
- 	$.each(studentStatuses, function( key, value ) {
- 		table+= '<tr><td>'+value.statusDescription+'</td>';
-	    	table+= '<td>'+value.commentary+'</td>';
-	    	table+= '<td>'+value.firstName+' '+value.secondName+' '+value.lastName+'</td>';
-	    	table+= '<td>'+value.date+'</td></tr>';
- 	});
- 	table+= '</table>';
- 	
- 	return table;
-}
-
 function getFinalReviews(studentProfile){
 	var reviews = '';
 	
-	reviews += '<table class="table table-bordered"><tr>';
+	reviews += '<table class="table table-bordered">';
+	reviews += '<tr>';
 	reviews += '<th style="width:50%">General</th>';
 	reviews += '<th style="width:50%">Technical</th>';
 	reviews += '</tr>';
@@ -300,9 +259,8 @@ function getFinalReviews(studentProfile){
 				+ studentProfile.technicalReview.lastName + ' '
 				+ studentProfile.technicalReview.firstName + '</b><br/>'
 				+ studentProfile.technicalReview.commentary + '</td>';
-	} else {
+	} else
 		reviews += '<td>There is no technical review!</td>';
-	}
 
 	if (studentProfile.generalReview !== null) {
 		reviews += '<td><b>On ' + studentProfile.generalReview.date + ' by '
@@ -311,9 +269,8 @@ function getFinalReviews(studentProfile){
 				+ studentProfile.generalReview.commentary + '</td>';
 
 		reviews += '</tr>';
-	} else {
+	} else 
 		reviews += '<td>There is no general review!</td>';
-	}
 	
 	return reviews;
 }
@@ -333,21 +290,21 @@ function getSelectCategories(projectCategories, projectId){
 function search(projectId){
 	var emptyCategoties = [];
 	var selectedCriteria = []; 
+	var selectedCategories = []; 
+	
 	$('.criteria-select-'+projectId+' :selected').each(function(){
 		selectedCriteria.push($(this).val()); 
     });
 	
-	var selectedCategories = []; 
 	$('.categories-select-'+projectId+' :selected').each(function(){
         selectedCategories.push($(this).val()); 
     });
     
+	$('#marks-'+projectId+' > tbody  > tr').each(function(index, value) {
+		if($(value).css('display') == 'none')
+			$(value).show();
+	});
 	
-		$('#marks-'+projectId+' > tbody  > tr').each(function(index, value) {
-			if($(value).css('display') == 'none'){
-				$(value).show();
-			}
-		});
 	if(selectedCriteria.length != 0 || selectedCategories.length != 0){
 		var currentCategory;
 		var open = 0;
@@ -366,18 +323,10 @@ function search(projectId){
 			}
  		
 			if(keys.length === 4){
-				if(($.inArray(keys[2], selectedCategories)) == -1 && ($.inArray(keys[3], selectedCriteria)) == -1){
+				if(($.inArray(keys[2], selectedCategories)) == -1 && ($.inArray(keys[3], selectedCriteria)) == -1)
 					$(value).hide();
-				}else{
-					if($(value).css('display') == 'none'){
-						$(value).show();
-						var parent = '#'+keys[0]+'-'+keys[1]+'-'+keys[2];
-						if($(parent).css('display') == 'none'){
-							$(parent).show();
-						}
-					}
+				else
 					open = open + 1;
-				}
 			}
 		});
  	
@@ -436,7 +385,7 @@ function getReviewForm(userId) {
 			console.warn(data);
 		}
 	});
-};
+}
 
 function doFinalReview(userId) {
 	function sendAjax(data, comment) {
@@ -477,45 +426,6 @@ function doFinalReview(userId) {
 	}
 };
 
-function getFullMeetingReviews(fullMeetingReviews){
-	var div = '';
-	
-	$.each(fullMeetingReviews, function(key, meetingReview) {
-		
-		var type = '';
-		
-		if(meetingReview.marks.length == 0){
-			type = 'default';
-		}else{
-			type = 'primary';
-		}
-		
-		div  += '<div class="panel panel-'+type+'"><div id=m'+meetingReview.id+' class="panel-heading">';
-		div += meetingReview.name + ' <div class="pull-right">' + meetingReview.date + '</div></div><div id=sm'+meetingReview.id+' class="panel-body">';
-			  
-		
-		div += '<h4>' + meetingReview.commentary + '</h4>';
-		
-		if(meetingReview.marks.length != 0){
-			div += '<hr/>';
-		}
-		
-		div += '<div style="max-height:350px; overflow: auto;"><table class="table table-bordered">'
-		div += '<thead style="background-color:#e6e6e6"><tr><td>Criterion</td><td>Mark</td></tr></thead><tbody>';
-		$.each(meetingReview.marks, function(key, mark) {
-			div += '<tr>';
-			div += '<td>' + mark.criterionName + '</td>';
-			div += '<td>' + mark.value + '</td>';
-			div += '</tr>';
-		});
-		
-		div += '</tbody></table></div></div></div>';
-		
-	});
-	
-	return div;
-}
-
 $(document).ready(function(){
 	$("#createHRreviewBtn").click(function(){
 		$("#createHRreviewModal").modal();
@@ -539,21 +449,26 @@ function report(studentId){
 	    'url' : '/ajaxstudentprojects',
 	    'type' : 'GET',
 	    'data' : {'user' : studentId},
-	    
 	    'success' : function(data) {
-	    	var select = '<div class="row"><div class="col-sm-8">';
+	    	var select = '<div class="row">';
+	    	select += '<div class="col-sm-8">';
 	    	select += '<select style="width:100%;" multiple="true" class="select-project-report">';
 	    	
 	    	$.each(data, function(key, value ) {
 	    		select += '<option value="' + value.id + '">' + value.name + '</option>\n';
 	    	});
 	    	
-	    	select += '</select></div><div class="col-sm-4">';
-	    	select += '<button onclick="loadCriteria('+studentId+')" class="btn btn-primary pull-right">Next step</button></div></div>';
+	    	select += '</select>';
+	    	select += '</div>';
+	    	select += '<div class="col-sm-4">';
 	    	
-	    	if(data.length == 0){
+	    	select += '<button onclick="loadCriteria('+studentId+')" class="btn btn-primary pull-right">Next step</button>';
+	    	select += '</div>';
+	    	select += '</div>';
+	    	
+	    	if(data.length == 0)
 	    		$('#project-report-back').html('There are no projects!');
-	    	}else{
+	    	else{
 	    		$('#project-report-back').html(select);
 	 	    	$('.select-project-report').select2({
 		    		  placeholder: "Select project or leave it empty to select all"
@@ -561,40 +476,53 @@ function report(studentId){
 	    	}
 
 	    }
-	  });
+	});
 }
 
 function loadCriteria(studentId){
-	var projects = $('.select-project-report').val();
+	var projects = [];
+	var selectedProjects = $('.select-project-report').val();
+	
+	if(selectedProjects != null)
+		projects = selectedProjects;
+	
 	$.ajax({
-	    'url' : '/ajaxcriteria',
+	    'url' : '/ajaxcriteria?projects='+projects+'&student='+studentId,
 	    'type' : 'GET',
-	    'data' : {
-	    	'student' : studentId,
-	    	'projects' : JSON.stringify(projects)},
 	    'success' : function(data) {
 	    	
-	    	var select = '<br/><div class="row"><div class="col-sm-8">';
+	    	var select = '<br/><div class="row">';
+	    	select += '<div class="col-sm-8">';
 	    	select += '<select style="width:100%;" multiple="true" class="select-category-report">';
 	    	
 	    	$.each(data.categories, function(key, value ) {
 	    		select += '<option value="' + value.id + '">' + value.name + '</option>\n';
 	    	});
 	    	
-	    	select += '</select></div><div class="col-sm-4"></div></div>';
+	    	select += '</select>';
+	    	select += '</div>';
+	    	select += '<div class="col-sm-4"></div>';
+	    	select += '</div>';
 	    	$('#criteria-report-back').html(select);
  	    	$('.select-category-report').select2({
 	    		  placeholder: "Select categories"
 	    	});
  	    	
- 	    	select = '<br/><div class="row"><div class="col-sm-8">';
+ 	    	select = '<br/><div class="row">';
+ 	    	select += '<div class="col-sm-8">';
 	    	select += '<select style="width:100%;" multiple="true" class="select-criterion-report">';
 	    	
 	    	$.each(data.criteria, function(key, value ) {
 	    		select += '<option value="' + value.id + '">' + value.title + '</option>\n';
 	    	});
 	    	
-	    	select += '</select></div><div class="col-sm-4"><button onclick="sendRequest('+studentId+')" class="btn btn-primary pull-right">Download</button></div></div>';
+	    	select += '</select>';
+	    	select += '</div>';
+	    	select += '<div class="col-sm-4">';
+	    	select += '<button onclick="sendRequest('+studentId+')" class="btn btn-primary pull-right">Download</button>';
+	    	select += '</div>';
+	    	select += '</div>';
+	    	
 	    	$('#criteria-report-back').append(select);
  	    	$('.select-criterion-report').select2({
 	    		  placeholder: "Select criteria"
@@ -604,13 +532,27 @@ function loadCriteria(studentId){
 }
 
 function sendRequest(studentId){
-	var projects = $('.select-project-report').val();
-	var categories = $('.select-category-report').val();
-	var criteria = $('.select-criterion-report').val();
+	var projects = [];
+	var selectedProjects = $('.select-project-report').val();
 	
-	var url = '/studentMarks/'+studentId+'/';
-	url +=JSON.stringify(projects)+'/'+JSON.stringify(categories);
-	url += '/'+JSON.stringify(criteria)+'.xls';
+	if(selectedProjects != null)
+		projects = selectedProjects;
+	
+	var selectedCategories = $('.select-category-report').val();
+	var categories = [];
+	
+	if(selectedCategories != null)
+		categories = selectedCategories;
+	
+	var criteria = [];
+	var selectedCriteria = $('.select-criterion-report').val();
+	
+	if(selectedCriteria != null)
+		criteria = selectedCriteria;
+
+	var url = '/studentMarks.xls?studentId='+studentId+'&projects=';
+	url +=projects+'&categories='+categories;
+	url += '&criteria='+criteria;
 	window.location = url;
 	
 	$('#projets-report-modal').modal('hide');
@@ -638,7 +580,7 @@ function getModal(modalId, modalName, modalTitle, reviewDto){
 	
     	$.each(reviewDto.marks, function(key, value ) {
     		modal += '<b>Criterion name:</b> ' + value.criterionName + '<br/>';
-    		modal += '<b>Mark:</b> ' + value.value + ' - '+value.description+'<br/>';
+    		modal += '<b>Mark:</b> ' + value.value + ' ('+value.description+')<br/>';
     		modal += '<b>Commentary:</b> ' + value.commentary + '<hr/>';
     	});
 	}
