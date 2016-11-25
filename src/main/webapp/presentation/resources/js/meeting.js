@@ -3,7 +3,7 @@
  */
 
 $(document).ready(function () {
-    $("#showAvailableCriteria").click(function () {
+    $("#showAvailableMeetingCriteria").click(function () {
         $.ajax({
             url: "/getAvailableMeetingCriteria",
             type: "GET",
@@ -18,7 +18,7 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.addButton', function () {
+    $(document).on('click', '.addMeetingButton', function () {
         var a = $(this);
         $.ajax({
             url: "/addMeetingCriteria",
@@ -26,7 +26,7 @@ $(document).ready(function () {
             data: {meetingId: meetingId, criteriaTitle: a.closest('tr').find('td:first').text()},
             success: function (data) {
                 console.log(data);
-                $('#collapseIn').append(buildResponseCriteria(data));
+                $('#collapseMIn').append(buildResponseCriteria(data));
                 a.parent().parent().remove();
             },
             error: function (textStatus) {
@@ -35,7 +35,7 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.rmv-cr-btn', function () {
+    $(document).on('click', '.rmv-mt-btn', function () {
         var criteria = $.parseJSON($(this).attr('data-button'));
         $.ajax({
             url: "/deleteMeetingCriteria",
@@ -43,11 +43,11 @@ $(document).ready(function () {
             data: {meetingId: meetingId, criteriaTitle: criteria.title},
             success: function (data) {
                 console.log(data);
-                $('#criteriaId-' + criteria.id).remove();
+                $('#criteriaMId-' + criteria.id).remove();
             },
             error: function (textStatus) {
                 console.log(textStatus);
-                $('#criteriaDeleteErrorModal').modal('show');
+                $('#criteriaMeetingDeleteErrorModal').modal('show');
 
             }
         });
@@ -55,11 +55,11 @@ $(document).ready(function () {
 
 
     function appendTableRows(data) {
-        $("#criterionTable > tbody:last").children().remove();
+        $("#criterionMeetingTable > tbody:last").children().remove();
         $.each(data, function (key, value) {
-            $('#criterionTable > tbody:last-child').append("<tr>" +
+            $('#criterionMeetingTable > tbody:last-child').append("<tr>" +
                 "<td>" + value.title + "</td>" +
-                "<td><button class='addButton btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
+                "<td><button class='addMeetingButton btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
                 "</tr>");
         });
     }
@@ -137,10 +137,10 @@ function changeSpan() {
 }
 
 function buildResponseCriteria(data) {
-    return "<div class='panel-body' id='criteriaId-" + data.id + "'>" +
+    return "<div class='panel-body' id='criteriaMId-" + data.id + "'>" +
         "<div class='col-md-11'>" + data.title + "</div>" +
         "<c:if test='" + data.rated + "'>" +
-        "<div class='btn rmv-cr-btn col-md-1' type='button'" +
+        "<div class='btn rmv-mt-btn col-md-1' type='button'" +
         " data-button='{\"id\":\"" + data.id + "\", \"title\": \"" + data.title + "\"}'>" +
         "<span class='glyphicon glyphicon-remove'></span>" +
         "</div>" +

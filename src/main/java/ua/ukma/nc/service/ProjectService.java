@@ -33,4 +33,6 @@ public interface ProjectService {
 	int addCriteria(Long projectId, Criterion criterion);
 
 	int deleteProjectCriterion(Long projectId, Criterion criterion);
+
+	int deleteCriterionInAllProjectMeetings(Long projectId, Criterion criterion);
 }

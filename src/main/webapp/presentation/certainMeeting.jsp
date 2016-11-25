@@ -1,10 +1,4 @@
 <%@include file="header.jsp"%>
-
-This is meeting
-<br>
-In
-<br>
-At ${meeting.time}
 <div class="row container certain-project">
 	<div class="col-md-12">
 		<div class="page-header">
@@ -231,22 +225,22 @@ At ${meeting.time}
 		<div class="panel-group" id="panelGroupId">
 			<div class="panel panel-primary">
 				<div class="panel-heading clearfix">
-					<div data-toggle="collapse" data-target="#collapseIn"
+					<div data-toggle="collapse" data-target="#collapseMIn"
 						class="arrow col-md-1" onclick="changeSpan()">
 						<span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
 					</div>
 					<button type="button" class="btn btn-default btn-sm pull-right"
-						id="showAvailableCriteria" data-toggle="modal"
+						id="showAvailableMeetingCriteria" data-toggle="modal"
 						data-target="#showAvailableCriteriaModal">
 						<b>Add criteria</b>
 					</button>
 				</div>
-				<div id="collapseIn" class="panel-collapse collapse">
+				<div id="collapseMIn" class="panel-collapse collapse">
 					<c:forEach items="${criteria}" var="criterion">
-						<div class="panel-body" id="criteriaId-${criterion.id}">
+						<div class="panel-body" id="criteriaMId-${criterion.id}">
 							<div class="col-md-11">${criterion.title}</div>
 							<c:if test="${!criterion.rated}">
-								<div class="btn rmv-cr-btn col-md-1" type='button'
+								<div class="btn rmv-mt-btn col-md-1" type='button'
 									data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
 									<span class="glyphicon glyphicon-remove"></span>
 								</div>
@@ -272,7 +266,7 @@ At ${meeting.time}
 					<input type="text" id="search" placeholder="type search"
 						class="col-md-offset-4">
 				</div>
-				<table id="criterionTable"
+				<table id="criterionMeetingTable"
 					class="table table-condensed table-hover table-responsive">
 					<thead class="table-head">
 						<tr>
@@ -289,7 +283,7 @@ At ${meeting.time}
 </div>
 <!-- finish showAvailableCriteria modal -->
 <!-- start criteriaDeleteError modal -->
-<div id="criteriaDeleteErrorModal" class="modal fade">
+<div id="criteriaMeetingDeleteErrorModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -315,30 +309,22 @@ At ${meeting.time}
 </script>
 <script>
 	function app_handle_listing_horisontal_scroll(listing_obj) {
-		//get table object
 		table_obj = $('.table', listing_obj);
-
-		//get count fixed collumns params
 		count_fixed_collumns = table_obj.attr('data-count-fixed-columns')
 
 		if (count_fixed_collumns > 0) {
-			//get wrapper object
 			wrapper_obj = $('.meeting', listing_obj);
 
 			wrapper_left_margin = 0;
 
 			table_collumns_width = new Array();
 			table_collumns_margin = new Array();
-
-			//calculate wrapper margin and fixed column width
 			$('th', table_obj).each(function(index) {
 				if (index < count_fixed_collumns) {
 					wrapper_left_margin += $(this).outerWidth();
 					table_collumns_width[index] = $(this).outerWidth();
 				}
 			})
-
-			//calcualte margin for each column
 			$.each(table_collumns_width, function(key, value) {
 				if (key == 0) {
 					table_collumns_margin[key] = wrapper_left_margin;
@@ -355,30 +341,20 @@ At ${meeting.time}
 							- next_margin;
 				}
 			});
-
-			//set wrapper margin
 			if (wrapper_left_margin > 0) {
 				wrapper_obj.css('cssText', 'margin-left:' + wrapper_left_margin
 						+ 'px !important; width: auto')
 			}
-
-			//set position for fixed columns
 			$('tr', table_obj)
 					.each(
 							function() {
-
-								//get current row height
 								current_row_height = $(this).outerHeight();
 
 								$('th,td', $(this))
 										.each(
 												function(index) {
-
-													//set row height for all cells
 													$(this).css('height',
 															current_row_height)
-
-													//set position
 													if (index < count_fixed_collumns) {
 														$(this)
 																.css(

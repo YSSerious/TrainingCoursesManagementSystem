@@ -106,10 +106,10 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	
     	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
     	 	    	    	
-    	 	    	    	if(data.fullMeetingReviews.length > 0){
-    	 	    	    		table+= '<br/><h2>Meeting reviews: </h2>';
-    	 	    	    		table+= getFullMeetingReviews(data.fullMeetingReviews);
-    	 	    	    	}
+    	 	    	    	//if(data.fullMeetingReviews.length > 0){
+    	 	    	    		//table+= '<br/><h2>Meeting reviews: </h2>';
+    	 	    	    		//table+= getFullMeetingReviews(data.fullMeetingReviews);
+    	 	    	    	//}
     	 	    	    	
     	 	    	    	if(data.markTableDto.tableData.length>0){
     	 	    	    	table+= '<br/>';
@@ -133,6 +133,7 @@ function createStudentProjectsInfo(userId, divInside){
                             
     	 	    	    	table+= '</div>';
     	 	    	    	}
+    	 	    	    	
                             //table+= '<br/><h2>Statuses: </h2>';
                             //table+= getStatusesTable(data.studentStatuses);
                             
@@ -231,16 +232,19 @@ function getMeetingReviewsTable(meetingReviews){
 
 function getMarksTable(markTableDto, projectId){
 	var table = '';
- 	table+= '<div class="table-responsive"><table class="table table-bordered user-table" id="marks-'+projectId+'"><tr><th>#</th>';
+ 	table+= '<div class="table-responsive">';
+ 	table+= '<table class="table table-bordered user-table" id="marks-'+projectId+'">';
+ 	table+= '<tr><th>#</th>';
  	
- 	for(var i =0; i<15; i++){
  	$.each(markTableDto.meetings, function( key, value ) {
- 		if(key<markTableDto.meetings.length-1)
- 			table+= '<th>M' + (key+1) + '</th>';
- 		else
- 			table+= '<th>FR</th>';
+ 			table+= '<th>'+getModal(value.id, 'M', value.name, value)+'</th>';
  	});
- 	}
+ 	
+ 	if(markTableDto.finalReview == null)
+ 		table+= '<th>F</th>';
+ 	else
+ 		table+= '<th>'+getModal('f'+markTableDto.finalReview.id, 'F', 'Final Review', markTableDto.finalReview)+'</th>';
+ 	
  	table+= '</tr>';
 
  	$.each(markTableDto.tableData, function(key, categoryResult ) {
@@ -248,14 +252,12 @@ function getMarksTable(markTableDto, projectId){
  		
  		$.each(categoryResult.criteriaResults, function( i, criterionResult ) {
  			table+= '<tr class="active" id="row-'+projectId+'-'+categoryResult.categoryDto.id+'-'+criterionResult.criterionId+'"><td style="padding-left:30px;">' + criterionResult.criterionName + '</td>';
- 			for(var i =0; i<15; i++){
  			$.each(criterionResult.marks, function(index, mark) {
  					if(mark.commentary == '')
  						table+= '<td><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
  					else
  						table+= '<td><span title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
 	    		});
- 			}
  			table+= '</tr>';
  		});
  		
@@ -288,19 +290,10 @@ function getStatusesTable(studentStatuses){
 function getFinalReviews(studentProfile){
 	var reviews = '';
 	
-	reviews += '<table class="table table-bordered"><tr><th style="width:33%">Final</th>';
-	reviews += '<th style="width:33%">General</th>';
-	reviews += '<th style="width:33%">Technical</th>';
+	reviews += '<table class="table table-bordered"><tr>';
+	reviews += '<th style="width:50%">General</th>';
+	reviews += '<th style="width:50%">Technical</th>';
 	reviews += '</tr>';
-
-	if (studentProfile.finalReview !== null) {
-		reviews += '<tr><td><b>On ' + studentProfile.finalReview.date + ' by '
-				+ studentProfile.finalReview.lastName + ' '
-				+ studentProfile.finalReview.firstName + '</b><br/>'
-				+ studentProfile.finalReview.commentary + '</td>';
-	} else {
-		reviews += '<tr><td>There is no final review!</td>';
-	}
 
 	if (studentProfile.technicalReview !== null) {
 		reviews += '<td><b>On ' + studentProfile.technicalReview.date + ' by '
@@ -619,4 +612,42 @@ function sendRequest(studentId){
 	url +=JSON.stringify(projects)+'/'+JSON.stringify(categories);
 	url += '/'+JSON.stringify(criteria)+'.xls';
 	window.location = url;
+	
+	$('#projets-report-modal').modal('hide');
+}
+
+function getModal(modalId, modalName, modalTitle, reviewDto){
+	
+	var modal = '<font color="blue" data-toggle="modal" data-target="#'+modalId+'"><b>'+modalName+'</b></font>';
+
+	modal += '<div id="'+modalId+'" class="modal fade" role="dialog">';
+	modal += '<div class="modal-dialog">';
+	modal += '<div class="modal-content">';
+	modal += '<div class="modal-header">';
+	modal += '<button type="button" class="close" data-dismiss="modal">&times;</button>';
+	modal += '<h4 class="modal-title">'+modalTitle+'</h4>';
+	modal += '</div>'
+	modal += '<div style="max-height:80vh;overflow-y:auto;" class="modal-body text-left">';
+	modal += '<div class="remove-all-styles">';
+	modal += '<b>Date:</b>'+reviewDto.date;
+	
+	if(reviewDto.type === '-')
+		modal += '<br/>No information about this meeting!';
+	else if(reviewDto.commentary != null){
+		modal += '<br/><b>General commentary:</b> '+reviewDto.commentary + '<br/><hr/>';
+	
+    	$.each(reviewDto.marks, function(key, value ) {
+    		modal += '<b>Criterion name:</b> ' + value.criterionName + '<br/>';
+    		modal += '<b>Mark:</b> ' + value.value + ' - '+value.description+'<br/>';
+    		modal += '<b>Commentary:</b> ' + value.commentary + '<hr/>';
+    	});
+	}
+
+	modal += '</div>';
+	modal += '</div>';
+	modal += '</div>';
+	modal += '</div>';
+	modal += '</div>';
+	
+	return modal;
 }

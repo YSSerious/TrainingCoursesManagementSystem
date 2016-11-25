@@ -6,6 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ua.ukma.nc.dao.ProjectDao;
 import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Project;
@@ -106,7 +108,15 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public int deleteProjectCriterion(Long projectId, Criterion criterion) {
-		return projectDao.deleteProjectCriterion(projectId, criterion);
+		projectDao.deleteCriterionInAllProjectMeetings(projectId, criterion);
+		projectDao.deleteProjectCriterion(projectId, criterion);
+		return 1;
+	}
+
+	@Override
+	public int deleteCriterionInAllProjectMeetings(Long projectId, Criterion criterion) {
+		return projectDao.deleteCriterionInAllProjectMeetings(projectId, criterion);
 	}
 }
