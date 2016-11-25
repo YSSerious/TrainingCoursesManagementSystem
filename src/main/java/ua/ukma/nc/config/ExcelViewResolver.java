@@ -8,16 +8,16 @@ import org.springframework.web.servlet.ViewResolver;
 import ua.ukma.nc.service.impl.ReportsExcel;
 import ua.ukma.nc.service.impl.StudentMarksExcel;
 
+
 public class ExcelViewResolver implements ViewResolver {
 
-    @Override
-    public View resolveViewName(String viewName, Locale locale) throws Exception {
-        if (viewName.equals("excelBuilder"))
-            return new StudentMarksExcel();
+	@Override
+	public View resolveViewName(String viewName, Locale locale) throws Exception {
+		if (viewName.equals("studentExcelBuilder"))
+			return new StudentMarksExcel();
         if (viewName.equals("excelProjectReports"))
             return new ReportsExcel();
-
-        return null;
-    }
+		return null;
+	}
 
 }

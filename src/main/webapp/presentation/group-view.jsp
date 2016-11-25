@@ -28,38 +28,36 @@
 
 <br />
 
-<div class="meetings_template">
-	<h2><spring:message code="group.meetings"/></h2>
-
-	<div class="panel panel-primary"
-		style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
-		<div class="panel-heading clearfix">
-
-
-			<div data-toggle="collapse" data-target="#collapseMeetings"
-				class="arrow col-md-1" style="color: black">
-				<span class="glyphicon glyphicon-chevron-down"></span>
-			</div>
-		</div>
-
-
-		<div id="collapseMeetings" class="panel-collapse collapse">
-			<ul class="list-group">
-
-				<c:forEach items="${meetings}" var="meeting">
-					<li class="list-group-item"><a href="/meeting/${meeting.id}">${meeting.name}</a><span
-						style='padding-left: 10px;'> </span> ${meeting.time} <span
-						style='padding-left: 10px;'> </span> ${meeting.place} <br />
-						<div class="btn rmv-cr-btn  pull-right" type='button'>
-							<span class="glyphicon glyphicon-edit"></span>
-						</div>
-				</c:forEach>
-
-			</ul>
-		</div>
-
-	</div>
-	<br />
+<div class="row">
+    <div class="col-md-12">
+        <h2><spring:message code="group.meetings"/></h2>
+        <div class="panel-group" id="panelGroupId">
+            <div class="panel panel-primary"
+                 style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
+                <div class="panel-heading clearfix">
+                    <div data-toggle="collapse" data-target="#collapseMeetings"
+                         class="arrow col-md-1" style="color: black" onclick="changeSpan()">
+                        <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
+                    </div>
+                </div>
+                <div id="collapseMeetings" class="panel-collapse collapse clearfix">
+                    <ul class="list-group">
+                        <c:forEach items="${meetings}" var="meeting">
+                            <li class="list-group-item  clearfix">
+                                <a href="/meeting/${meeting.id}" class="col-md-2">${meeting.name}</a>
+                                <div class="col-md-2">${meeting.time}</div>
+                                <div class="col-md-4">${meeting.place}</div>
+                                <div class="btn rmv-cr-btn col-md-1 pull-right "
+                                     type='button'>
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="students_template">
@@ -159,12 +157,12 @@
 			<div class="modal-body" style="padding: 40px 50px;">
 				<form role="form" >
 					<div class="form-group">
-						<label for="groupAttachmentName"> <spring:message code="group.attachment"/> </label><br />
+						<label for="groupAttachmentName"> <spring:message code="group.attachment.name"/> </label><br />
 						<input type=text class="form-control" name="attachmentName" id="groupAttachmentName"
-							placeholder="Enter attachment name" required="required">
-						 <label for="groupAttachment"> Attachment: </label><br /> <input
+							placeholder=" <spring:message code="group.attachment.name.placeholder"/>" required="required">
+						 <label for="groupAttachment"> <spring:message code="group.attachment"/> </label><br /> <input
 								type=text class="form-control" id="groupAttachment"
-								placeholder="Enter attachment" required="required">
+								placeholder="<spring:message code="group.attachment.placeholder"/>" required="required">
 								<input
 								type=text   id="groupId" style="display:none"
 								value="${groupId }">
@@ -172,7 +170,7 @@
 					</div>
 					<button type="button"
 						class="btn btn-default btn-success pull-center"
-						id="addAttachmentSubmitButton">
+						id="addAttachmentSubmitButton"  >
 						<span class="glyphicon glyphicon-off"></span><spring:message code="group.send"/> 
 					</button>
 				</form>
@@ -206,7 +204,7 @@
 		</div>
 
 		<div id="collapseAttachment" class="panel-collapse collapse">
-			<ul class="list-group">
+			<ul id="listAttachments"class="list-group">
 						<c:forEach items="${attachments}" var="attachment">
 						<li  id="attachment-${attachment.id}" class="list-group-item  clearfix">
 						 <!-- 	${attachment.name} <span style='padding-left: 10px;'> </span> -->

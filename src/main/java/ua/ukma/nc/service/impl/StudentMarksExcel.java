@@ -2,30 +2,23 @@ package ua.ukma.nc.service.impl;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractXlsView;
 
-import ua.ukma.nc.dto.CategoryDto;
 import ua.ukma.nc.dto.CategoryResult;
 import ua.ukma.nc.dto.CertainMarkDto;
 import ua.ukma.nc.dto.CriterionResult;
 import ua.ukma.nc.dto.MarkTableDto;
 import ua.ukma.nc.dto.MeetingReviewDto;
-import ua.ukma.nc.dto.StudentProfile;
 import ua.ukma.nc.dto.UserDto;
-import ua.ukma.nc.service.MarkTableService;
-import ua.ukma.nc.service.StudentService;
-
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class StudentMarksExcel extends AbstractXlsView {
 
@@ -33,14 +26,13 @@ public class StudentMarksExcel extends AbstractXlsView {
 	protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
-		List<MarkTableDto> markTablesDto = (List<MarkTableDto>) model.get("markTablesDto");
+		Map<String, MarkTableDto> values = (Map<String, MarkTableDto>) model.get("values");
 		UserDto student = (UserDto) model.get("student");
-		List<String> names = (List<String>) model.get("names");
 		
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + "student-"+ student.getLastName()+"-"+ student.getFirstName() + ".xls\"");
 		
-		for(int i=0; i<markTablesDto.size();i++)
-			createSheet(workbook, markTablesDto.get(i), names.get(i));
+		for(Entry<String, MarkTableDto> entry: values.entrySet())
+			createSheet(workbook, entry.getValue(), entry.getKey());
 	}
 	
 	private void createSheet(Workbook workbook, MarkTableDto markTableDto, String name){
@@ -52,6 +44,8 @@ public class StudentMarksExcel extends AbstractXlsView {
 		List<MeetingReviewDto> meetings = markTableDto.getMeetings();
 		for (int i = 1; i < meetings.size() + 1; i++)
 			header.createCell(i).setCellValue(meetings.get(i - 1).getName());
+		
+		header.createCell(meetings.size() + 1).setCellValue("Final Review");
 
 		int rowCount = 1;
 		List<CategoryResult> marks = markTableDto.getTableData();

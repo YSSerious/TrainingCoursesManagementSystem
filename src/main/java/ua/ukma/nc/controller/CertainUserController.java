@@ -13,7 +13,6 @@ import ua.ukma.nc.service.*;
 import java.security.Principal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -128,23 +127,17 @@ public class CertainUserController {
 		return projectService.getMentorProjects(userId);
 	}
 	
-	@RequestMapping("/ajaxcriteria")
+	@RequestMapping(value = "/ajaxcriteria", method = RequestMethod.GET)
 	@ResponseBody
-	public ProjectReportDto projectCriteria(@RequestParam("projects") String projects, @RequestParam("student") Long student) {
-		String[] params = projects.split("\\D");
-		List<Long> projectsId = new ArrayList<Long>();
+	public ProjectReportDto projectCriteria(@RequestParam("projects") List<Long> projects, @RequestParam("student") Long student) {
 		
-		for(String param: params)
-			if(!param.equals(""))
-			projectsId.add(Long.valueOf(param));
-		
-		if(projectsId.isEmpty()){
+		if(projects.isEmpty()){
 			List<Project> projectsEntity = projectService.getStudentProjects(student);
 			for(Project project: projectsEntity)
-				projectsId.add(project.getId());
+				projects.add(project.getId());
 		}
 		
-		ProjectReportDto projectReportDto = new ProjectReportDto(criterionService.getByProjects(projectsId), categoryService.getByProjects(projectsId));
+		ProjectReportDto projectReportDto = new ProjectReportDto(criterionService.getByProjects(projects), categoryService.getByProjects(projects));
 
 		return projectReportDto;
 	}
