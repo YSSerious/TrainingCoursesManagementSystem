@@ -130,47 +130,31 @@
 
 
     <div class="row">
-        <div-- class="col-md-12">
+        <div class="col-md-12">
             <h2>
                 Attachments
             </h2>
-            <div class="panel-heading collapsed">
-
-                <div role="button" class="btn btn-default btn-sm pull-right" data-toggle="collapse"
-                     data-target="#add-attachment-panel,#save-att-btn" id="add-att-btn">Add
+            <div class="panel-heading">
+				<div role="button" data-toggle="collapse" data-target="#att-collapse">
+                                <span id="spanId" class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
                 </div>
-                <div class="clearfix"></div>
-            </div>
-            <!--div class="col-sm-12">
-            <!--div class="panel panel-btn">
-                <!--   div role="button" class="btn btn-default btn-xs pull-right-btn" id="rmv-att-main-btn">Remove</div-->
-                <!--  div role="button" class="btn btn-default btn-xs pull-right-btn">Edit</div>
-
-                <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
-                    Save
-                </div>
-            </div -->
-            <div class="panel add-panel collapse" id="add-attachment-panel">
-                <div class="form-group">
-                    <label for="usr">Name:</label>
-                    <input type="text" class="form-control" id="att-name">
-                </div>
-                <div class="form-group">
-                    <label for="usr">Link:</label>
-                    <input type="text" class="form-control" id="att-link">
+                <div role="button" class="btn btn-default btn-sm pull-right" id="add-att-btn" 
+                	data-toggle="modal" data-target="#addAttachmentModal"><b>Add</b>
                 </div>
             </div>
+	        <div class="panel-collapse collapse" id="att-collapse">
+		        <ul class="list-group " id="attachment-group">
+		            <c:forEach items="${attachments}" var="attachment">
+		                <li class="list-group-item">
+		                    <a href="${attachment.attachmentScope}">${attachment.name}</a>
+		                    <div class="btn rmv-btn" role='button' data-button='{"id_attachment": "${attachment.id}"}'>
+		                        <span class="glyphicon glyphicon-remove"></span>
+		                    </div>
+		                </li>
+		            </c:forEach>
+		        </ul>
+	        <div>
         </div>
-        <ul class="list-group" id="attachment-group">
-            <c:forEach items="${attachments}" var="attachment">
-                <li class="list-group-item">
-                    <a href="${attachment.attachmentScope}">${attachment.name}</a>
-                    <div class="btn rmv-btn" type='button' data-button='{"id_attachment": "${attachment.id}"}'>
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </div>
-                </li>
-            </c:forEach>
-        </ul>
     </div>
 
 </div>
@@ -282,7 +266,7 @@
 </div>
 <!-- finish create Meeting modal -->
 <!-- start create Attachment modal -->
-<div id="" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+<div id="addAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -304,7 +288,7 @@
                     <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
                         Save
                     </div>
-                    <button id="saveMeeeting" type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    <button id="saveAttachment" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
                 </form>
             </div>
         </div>
@@ -315,7 +299,7 @@
 <script>
     $(document).ready(function () {
 
-        $("#save-att-btn").click(function (event) {
+        $("#saveAttachment").click(function (event) {
             var name = $("#att-name").val();
             var link = $("#att-link").val();
             if (name && link) {
@@ -331,40 +315,19 @@
                     data: {
                         "attachmentName": name,
                         "attachmentLink": link
-                    },
-                    success: function (savingStatus) {
-                        console.log("Sent");
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        console.log("Failed");
                     }
-
-                });
+				 });
             }
         });
 
 
-
-
-        $('.rmv-btn').each(function () {
-            $(this).css("display", "inline-block");
-        });
-
-
         $('.rmv-btn').click(function () {
-            //console.log("Hello");
             $(this).parent().remove();
             var id = $(this).data('button').id_attachment;
             $.ajax({
                 url: "/removeProjectAttachment",
                 type: "POST",
-                data: {"id_attachment": id},
-                success: function (savingStatus) {
-                    console.log("att deleted");
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.log("att delete failed");
-                }
+                data: {"id_attachment": id}
 
             });
         });

@@ -71,6 +71,7 @@ public class CertainProjectController {
             criterionDtos.add(new CriterionDto(criterion.getId(), criterion.getTitle(), criterionService.isRatedInProject(id, criterion)));
         }
         model.addObject("criterions", criterionDtos);
+        
         //Attachment set
         List<ProjectAttachment> attachmentList = attachmentService.getAllById(id);
         model.addObject("attachments", attachmentList);
