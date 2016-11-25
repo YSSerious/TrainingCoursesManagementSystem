@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html;charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@include file="header.jsp"%>
 	<div class="panel panel-success">
 		<div class="panel-heading">
@@ -27,25 +29,32 @@
 		</table>
 	</div>
 	<br />
+<div class="text-center">
+	<div style="min-width:100%;" id="bootstrap-pagination">
+	</div>
+</div>
 	
-				<div class="pagination">
-					<a href="#" class="first" data-action="first">&laquo;</a> <a
-						href="#" class="previous" data-action="previous">&lsaquo;</a> <input
-						type="text" readonly="readonly" data-current-page="${currentPage}"
-						data-max-page="${noOfPages}" /> <a href="#" class="next"
-						data-action="next">&rsaquo;</a> <a href="#" class="last"
-						data-action="last">&raquo;</a>
-				</div>
-	
-	<script>
-		$('.pagination').jqPagination({
-			link_string : '?page={page_number}',
-			max_page : "${noOfPages}",
-			paged : function(page) {
-				window.location.href = "?page="+page;
-				
-			}
-		});
-	</script>
+<script>
+var max = ${noOfPages};
+var curr = ${currentPage};
+$('#bootstrap-pagination').bootpag({
+	total: max,
+    page: curr,
+    maxVisible: 5,
+    leaps: true,
+    firstLastUse: true,
+    first: '←',
+    last: '→',
+    wrapClass: 'pagination',
+    activeClass: 'active',
+    disabledClass: 'disabled',
+    nextClass: 'next',
+    prevClass: 'prev',
+    lastClass: 'last',
+    firstClass: 'first'
+}).on("page", function(event, num){
+	window.location.href = "?page="+num;
+}); 
+</script>
 
 	<%@include file="footer.jsp"%>
