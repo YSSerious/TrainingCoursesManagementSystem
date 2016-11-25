@@ -98,6 +98,7 @@ public class CertainUserController {
 		UserDto userDto = new UserDto(userService.getById(id));
 		model.addObject("user", userDto);
 		model.setViewName("user");
+		model.addObject("title", userDto.getLastName()+" "+userDto.getFirstName());
 
 		List<RoleDto> roles = roleService.getAll().stream().map(RoleDto::new).collect(Collectors.toList());
 		model.addObject("roles", roles);
