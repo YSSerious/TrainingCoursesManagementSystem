@@ -66,6 +66,29 @@
     <!--<script src="<c:url value="/presentation/resources/js/create-project-ajax.js"/>"></script>-->
    <!--  <script src="<c:url value="/presentation/resources/js/group_attachments.js"/>" defer="defer"></script> -->
 <script type="text/javascript" src="http://botmonster.com/jquery-bootpag/jquery.bootpag.js"></script>
+
+<script>
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length,c.length);
+        }
+    }
+    return "";
+}
+
+if(getCookie('lang') == 'uk')
+	$.getScript("<c:url value="/presentation/resources/js/ua.js"/>");
+else
+	$.getScript("<c:url value="/presentation/resources/js/en.js"/>");
+	
+</script>
 </head>
 <body>
 <div class="container">

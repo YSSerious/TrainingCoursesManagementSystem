@@ -7,7 +7,6 @@ function getMark(mark){
 }
 
 function createMentorProjectsInfo(userId, divInside){
-
 	$.ajax({
 	    'url' : '/ajaxmentorprojects',
 	    'type' : 'GET',
@@ -38,7 +37,7 @@ function createMentorProjectsInfo(userId, divInside){
 	    	});
 
 	    	if(jQuery.isEmptyObject(data))
-	    		s= '<br/><h2>Mentor projects: </h2><hr/><h4>No projects</h4>';
+	    		s= '<br/><h2>'+lang.user_mentor_projects+'</h2><hr/><h4>'+lang.user_no_projects+'</h4>';
 	    		
 	    	$(divInside).html(s);
 	    }
@@ -52,7 +51,7 @@ function createStudentProjectsInfo(userId, divInside){
 	    'data' : {'user' : userId},
 	    
 	    'success' : function(data) {
-	    	var s = '<h2>Student projects: </h2><hr/>';
+	    	var s = '<h2>'+lang.user_student_projects+'</h2><hr/>';
 	    	$.each( data, function( key, value ) {
 	    		var currentDate = new Date();
 	    		var startDate = new Date(value.startDate);
@@ -78,12 +77,12 @@ function createStudentProjectsInfo(userId, divInside){
  	    		s+= '<div class="col-sm-12">';
  	    		s+= '<div id="stinf-'+value.id+'"></div>';
  	    		s+= '<br/><h4>'+value.description+'</h4>';
- 	    		s+= '<div class="col-sm-8 col-sm-offset-2 charts-wrapper" id="chart'+value.id+'">Loading...<br/><br/></div>';
+ 	    		s+= '<div class="col-sm-8 col-sm-offset-2 charts-wrapper" id="chart'+value.id+'">'+lang.user_loading+'...<br/><br/></div>';
  	    		s+= '</div></div></div></div>';
 	    	});
 
 	    	if(jQuery.isEmptyObject(data))
-	    		s= '<br/><h2>Student projects: </h2><hr/><h4>No projects</h4>';
+	    		s= '<br/><h2>'+lang.user_student_projects+'</h2><hr/><h4>'+lang.user_no_projects+'</h4>';
 	    	
 	    	$(divInside).html(s);
                 
@@ -107,20 +106,21 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    'success' : function(data) {
     	 	    	    	$('#chart'+value.id).html('');
     	 	    	    	
-    	 	    	    	$('#stinf-'+value.id).html('<h4><b>Status: </b>'+data.studentStatuses[data.studentStatuses.length - 1].statusDescription+'</h4>');
+    	 	    	    	$('#stinf-'+value.id).html('<h4><b>'+lang.user_status_title+'</b>'+data.studentStatuses[data.studentStatuses.length - 1].statusDescription+'</h4>');
                             createCharts(data.chartInfo, value.id);
                             radarChart(data.chartInfo, value.id);
     	 	    	    	
-    	 	    	    	var table = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
-    	 	    	    	
+                            var reviews = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
     	 	    	    	if(data.technicalReview !== null || data.generalReview !== null){
-    	 	    	    		table+= '<br/><h2>Final reviews: </h2>';
-    	 	    	    		table+= getFinalReviews(data);
+    	 	    	    		reviews+= '<br/><div class="row"><h2>'+lang.user_final_reviews+'</h2>';
+    	 	    	    		reviews+= getFinalReviews(data)+'</div>';
     	 	    	    	}
+    	 	    	    	var table= '';
     	 	    	    	
     	 	    	    	if(data.markTableDto.tableData.length>0){
     	 	    	    		table+= '<br/>';
-    	 	    	    		table+= '<div class="row"><div class = "col-sm-10"><h2>Grades:</h2></div><div class = "col-sm-2"><h2>';
+    	 	    	    		table+= '<div class="row"><div class = "col-sm-10"><h2>'+lang.user_grades_title+'</h2></div>';
+    	 	    	    		table+= '<div class = "col-sm-2"><h2>';
     	 	    	    		table+=	'</h2></div></div>';
                             
     	 	    	    		table+= '<div class="panel panel-default"><div class="panel-heading"><div class="row">';
@@ -131,7 +131,7 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    		table+= getSelectCriteria(data.projectCriteria, value.id);
     	 	    	    		table+= '</div>';
     	 	    	    		table+= '<div class = "col-sm-2">';
-    	 	    	    		table+= '<button onclick="search('+value.id+')" class="form-control btn btn-default">Search</button>';
+    	 	    	    		table+= '<button onclick="search('+value.id+')" class="form-control btn btn-default">'+lang.user_marks_search+'</button>';
     	 	    	    		table+= '</div>';
     	 	    	    		table+= '</div></div>';
     	 	    	    		table+= getMarksTable(data.markTableDto, value.id);
@@ -139,13 +139,14 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	}
     	 	    	    	
                             table+= '<br/></div></div></div>';
+    	 	    	    	$('#sub'+value.id).append(reviews);
     	 	    	    	$('#sub'+value.id).append(table);
     	 	    	    	
     	 	    	    	$('.criteria-select-'+value.id).select2({
-    	 	    	    		  placeholder: "Select criteria"
+    	 	    	    		  placeholder: lang.user_select_criteria
     	 	    	    	});
     	 	    	    	$('.categories-select-'+value.id).select2({
-    	 	    	    		  placeholder: "Select categories"
+    	 	    	    		  placeholder: lang.user_select_categories
     	 	    	    	});
 
     	 	    	       var $table = $('#marks-'+value.id);
@@ -157,16 +158,6 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	           $(this).height($table.find('tr:eq(' + i + ')').height());
     	 	    	           $(this).width($table.find('tr:eq(' + i + ')').width());
     	 	    	       });
-    	 	    	       
-    	 	    	      $.each(data.fullMeetingReviews, function(key, meetingReview) {
-    	 	    			$('#m'+meetingReview.id).click(function() {
-    	 	    				$('#sm'+meetingReview.id).slideToggle();
-    	 	    			});
-    	 	    			
-    	 	    			if(key != 0){
-    	 	    				$('#sm'+meetingReview.id).hide();
-    	 	    			}
-    	 	    	      });
     	 	    	    }
     	 	    	  });
     			});
@@ -220,7 +211,7 @@ function getMarksTable(markTableDto, projectId){
  	if(markTableDto.finalReview == null)
  		table+= '<th>F</th>';
  	else
- 		table+= '<th>'+getModal('f'+markTableDto.finalReview.id, 'F', 'Final Review', markTableDto.finalReview)+'</th>';
+ 		table+= '<th>'+getModal('f'+markTableDto.finalReview.id, 'F', lang.user_final_review, markTableDto.finalReview)+'</th>';
  	
  	table+= '</tr>';
 
@@ -250,8 +241,8 @@ function getFinalReviews(studentProfile){
 	
 	reviews += '<table class="table table-bordered">';
 	reviews += '<tr>';
-	reviews += '<th style="width:50%">General</th>';
-	reviews += '<th style="width:50%">Technical</th>';
+	reviews += '<th style="width:50%">'+lang.user_general_review+'</th>';
+	reviews += '<th style="width:50%">'+lang.user_technical_review+'</th>';
 	reviews += '</tr>';
 
 	if (studentProfile.technicalReview !== null) {
@@ -260,7 +251,7 @@ function getFinalReviews(studentProfile){
 				+ studentProfile.technicalReview.firstName + '</b><br/>'
 				+ studentProfile.technicalReview.commentary + '</td>';
 	} else
-		reviews += '<td>There is no technical review!</td>';
+		reviews += '<td>'+lang.user_no_technical_review+'</td>';
 
 	if (studentProfile.generalReview !== null) {
 		reviews += '<td><b>On ' + studentProfile.generalReview.date + ' by '
@@ -270,7 +261,7 @@ function getFinalReviews(studentProfile){
 
 		reviews += '</tr>';
 	} else 
-		reviews += '<td>There is no general review!</td>';
+		reviews += '<td>'+user.user_no_general_review+'</td>';
 	
 	return reviews;
 }
@@ -462,16 +453,16 @@ function report(studentId){
 	    	select += '</div>';
 	    	select += '<div class="col-sm-4">';
 	    	
-	    	select += '<button onclick="loadCriteria('+studentId+')" class="btn btn-primary pull-right">Next step</button>';
+	    	select += '<button onclick="loadCriteria('+studentId+')" class="btn btn-primary pull-right">'+lang.user_next_step+'</button>';
 	    	select += '</div>';
 	    	select += '</div>';
 	    	
 	    	if(data.length == 0)
-	    		$('#project-report-back').html('There are no projects!');
+	    		$('#project-report-back').html(lang.user_no_projects);
 	    	else{
 	    		$('#project-report-back').html(select);
 	 	    	$('.select-project-report').select2({
-		    		  placeholder: "Select project or leave it empty to select all"
+		    		  placeholder: lang.user_select_projects
 		    	});
 	    	}
 
@@ -505,7 +496,7 @@ function loadCriteria(studentId){
 	    	select += '</div>';
 	    	$('#criteria-report-back').html(select);
  	    	$('.select-category-report').select2({
-	    		  placeholder: "Select categories"
+	    		  placeholder: lang.user_select_categories
 	    	});
  	    	
  	    	select = '<br/><div class="row">';
@@ -519,13 +510,13 @@ function loadCriteria(studentId){
 	    	select += '</select>';
 	    	select += '</div>';
 	    	select += '<div class="col-sm-4">';
-	    	select += '<button onclick="sendRequest('+studentId+')" class="btn btn-primary pull-right">Download</button>';
+	    	select += '<button onclick="sendRequest('+studentId+')" class="btn btn-primary pull-right">'+lang.user_download+'</button>';
 	    	select += '</div>';
 	    	select += '</div>';
 	    	
 	    	$('#criteria-report-back').append(select);
  	    	$('.select-criterion-report').select2({
-	    		  placeholder: "Select criteria"
+	    		  placeholder: lang.user_select_criteria
 	    	});
 	    }
 	});
@@ -574,14 +565,14 @@ function getModal(modalId, modalName, modalTitle, reviewDto){
 	modal += '<b>Date:</b>'+reviewDto.date;
 	
 	if(reviewDto.type === '-')
-		modal += '<br/>No information about this meeting!';
+		modal += '<br/>'+lang.user_no_meeting_info;
 	else if(reviewDto.commentary != null){
-		modal += '<br/><b>General commentary:</b> '+reviewDto.commentary + '<br/><hr/>';
+		modal += '<br/><b>'+lang.user_general_comment+'</b> '+reviewDto.commentary + '<br/><hr/>';
 	
     	$.each(reviewDto.marks, function(key, value ) {
-    		modal += '<b>Criterion name:</b> ' + value.criterionName + '<br/>';
-    		modal += '<b>Mark:</b> ' + value.value + ' ('+value.description+')<br/>';
-    		modal += '<b>Commentary:</b> ' + value.commentary + '<hr/>';
+    		modal += '<b>'+lang.user_criterion_name+':</b> ' + value.criterionName + '<br/>';
+    		modal += '<b>'+lang.user_mark+':</b> ' + value.value + ' ('+value.description+')<br/>';
+    		modal += '<b>'+lang.user_commentary+':</b> ' + value.commentary + '<hr/>';
     	});
 	}
 
