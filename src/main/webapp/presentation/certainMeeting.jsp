@@ -50,7 +50,7 @@
 			<tbody class="results">
 				<c:forEach items="${students}" var="user">
 					<tr>
-						<td><font size="3"><b> <a href="#"
+						<td><font size="3"><b> <a href="javascript:;"
 									data-toggle="modal" class="open-Evaluate"
 									data-target="#evaluateModal${user.id}"
 									data-user="${user.firstName}"> ${user.firstName}
@@ -117,7 +117,7 @@
 				<c:forEach items="${marks}" var="entry">
 					<tr>
 						<td><font size="3"><b> <span id="fin-rev-err"
-									class="text-danger hidden">Unknown error</span> <a href="#"
+									class="text-danger hidden">Unknown error</span> <a href="javascript:;"
 									data-toggle="modal" class="open-Evaluate"
 									data-target="#evaluateModal${entry.key.id}"
 									data-user="${entry.key.firstName}">${entry.key.firstName}
