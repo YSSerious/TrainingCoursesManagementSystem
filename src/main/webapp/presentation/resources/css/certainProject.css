@@ -276,7 +276,7 @@ div#editProjectDataModal form > div:last-child:before{
     height: 100%;
 }
 
-div#editProjectDataModal form div:last-child > * {
+div#editProjectDataModal form > div:last-child > * {
     vertical-align: middle;
     margin-left: 15px;
 }
