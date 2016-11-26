@@ -43,11 +43,11 @@
 	white-space: nowrap;
 }
 
-.user-table th:not (:first-child ) {
+.user-table th:not (:first-child) {
 	text-align: center;
 }
 
-.user-table td:not (:first-child ) {
+.user-table td:not (:first-child) {
 	font-size: 13pt;
 	text-align: center;
 }

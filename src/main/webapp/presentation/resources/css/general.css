@@ -61,5 +61,14 @@ body > .container > .panel > .panel-body div:first-child {
 }
 
 textarea {
-	resize: none;
+    resize: none;
 }
+
+/* Prevents modal shifting on hide, but scroll lefts on modal show*/
+/*.modal {
+ overflow-y: auto;
+}
+
+.modal-open {
+ overflow: auto;
+}*/

@@ -2,7 +2,7 @@ package ua.ukma.nc.controller;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +20,7 @@ import ua.ukma.nc.dto.*;
 import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Meeting;
+import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.ProjectAttachment;
 import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.CriterionService;
@@ -104,6 +105,52 @@ public class CertainProjectController {
         return model;
     }
 
+    @RequestMapping(value = "/updateProjectName", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateProjectName(
+            @RequestParam("projectId") String projectId,
+            @RequestParam("projectName") String projectName) throws InterruptedException {
+        Project project = projectService.getById(project_id);
+        project.setName(projectName);
+        projectService.updateProject(project);
+//        Thread.sleep(1000);
+        return "";
+    }
+    
+    @RequestMapping(value = "/updateProjectStartDate", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateProjectStartDate(
+            @RequestParam("projectId") String projectId,
+            @RequestParam("projectStartDate") Date startDate) {
+        Project project = projectService.getById(project_id);
+        project.setStartDate(startDate);
+        projectService.updateProject(project);
+        return "";
+    }
+    
+    @RequestMapping(value = "/updateProjectFinishDate", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateProjectFinishDate(
+            @RequestParam("projectId") String projectId,
+            @RequestParam("projectFinishDate") Date finishDate) {
+        Project project = projectService.getById(project_id);
+        project.setFinishDate(finishDate);
+        projectService.updateProject(project);
+        return "";
+    }
+    
+    @RequestMapping(value = "/updateProjectDescription", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateProjectDescription(
+            @RequestParam("projectId") String projectId,
+            @RequestParam("projectDescription") String description) throws InterruptedException {
+        Project project = projectService.getById(project_id);
+        project.setDescription(description);
+        projectService.updateProject(project);
+        Thread.sleep(1000);
+        return "";
+    }
+    
     @RequestMapping(value = "/addProjectAttachment", method = RequestMethod.POST)
     public void addGroupAttachment
             (@RequestParam("attachmentName") String attachmentName,

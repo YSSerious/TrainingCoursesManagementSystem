@@ -5,8 +5,8 @@
  * @returns {string}
  */
 function getFormattedDate(date, plus_days){
-    date = date == undefined ? new Date() : date;
-    plus_days = plus_days == undefined ? 0 : plus_days;
+    date = date === undefined ? new Date() : date;
+    plus_days = plus_days === undefined ? 0 : plus_days;
     date.setDate(date.getDate() + plus_days);
     var day = date.getDate();
     var month = date.getMonth() + 1;
@@ -39,31 +39,7 @@ $(document).ready(function () {
  * Standart start date and finish date fields datepickers
  */
 $(document).ready(function () {
-    $('#start-date').datepicker({
-        dateFormat: "yy-mm-dd",
-        changeMonth: true,
-        changeYear: true,
-        firstDay: 1,
-        minDate: new Date(),
-        onSelect: function () {
-            var new_date = $('#start-date').val();
-            var new_date_parsed = $.datepicker.parseDate("yy-mm-dd", new_date);
-            var this_date_parsed = $.datepicker.parseDate("yy-mm-dd", $('#finish-date').val());
-            if (new_date_parsed > this_date_parsed) {
-	            // Case: if finish date must be at least tomorrow
-	            // var new_date_parsed = getFormattedDate($.datepicker.parseDate("yy-mm-dd", $('#start-date').val()), 1);
-	            $('#finish-date').val(new_date);
-            }
-            $('#finish-date').datepicker("option", "minDate", new_date_parsed);
-        }
-    });
-    $('#finish-date').datepicker({
-        dateFormat: "yy-mm-dd",
-        changeMonth: true,
-        changeYear: true,
-        firstDay: 1,
-        minDate: "+1d"
-    });
+    setStartAndFinishDatePickers();
 });
 
 /**
@@ -98,14 +74,42 @@ $(document).ready(function () {
     });
 
     $('#start-search-date').on("change", function(){
-    	if ($('#start-search-date').val() == "") {
-    		$('#end-search-date').datepicker("option", "minDate", "");
+    	if ($(this).val() === "") {
+    		$(this).datepicker("option", "minDate", "");
     	}
     });
 
     $('#end-search-date').on("change", function(){
-    	if ($('#end-search-date').val() == "") {
-    		$('#start-search-date').datepicker("option", "maxDate", "");
+    	if ($(this).val() === "") {
+    		$(this).datepicker("option", "maxDate", "");
     	}
     });
 });
+
+function setStartAndFinishDatePickers() {
+    $('#start-date').datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+        firstDay: 1,
+        minDate: new Date(),
+        onSelect: function () {
+            var new_date = $('#start-date').val();
+            var new_date_parsed = $.datepicker.parseDate("yy-mm-dd", new_date);
+            var this_date_parsed = $.datepicker.parseDate("yy-mm-dd", $('#finish-date').val());
+            if (new_date_parsed > this_date_parsed) {
+	            // Case: if finish date must be at least tomorrow
+	            // var new_date_parsed = getFormattedDate($.datepicker.parseDate("yy-mm-dd", $('#start-date').val()), 1);
+	            $('#finish-date').val(new_date);
+            }
+            $('#finish-date').datepicker("option", "minDate", new_date_parsed);
+        }
+    });
+    $('#finish-date').datepicker({
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+        firstDay: 1,
+        minDate: "+1d"
+    });
+}

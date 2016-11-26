@@ -9,6 +9,7 @@
     width: 350px;
    
 }
+
 .certain-project .panel.panel-horizontal > .panel-title .h3{
 	padding-left: inherit;
 }
@@ -28,6 +29,20 @@
     padding-right: 0 !important;
     width: 150px;
     background-color: white;
+}
+
+.certain-project .editable-label > * {
+    display: inline;
+}
+
+div#project-name {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding-right: 20px;
+}
+
+div#project-name > *{
+    display: inline;
 }
 
 .certain-project .panel.panel-horizontal.top-panel {
@@ -157,6 +172,7 @@
 }
 
 .panel#project-groups .panel-collapse{
+    overflow: hidden;
     padding: 0;
     border: 1px solid #ddd;
     border-top: none;
@@ -197,21 +213,6 @@
     overflow: hidden;
 }
 
-.panel#project-groups .panel-body button{
-    padding: 0;
-    border: none;
-    background-color: transparent;
-}
-
-.panel#project-groups .panel-body button .glyphicon{
-    font-size: 15px;
-    color: #919191;
-}
-
-.panel#project-groups .panel-body button:hover .glyphicon{
-    color: #000;
-}
-
 div.modal#editGroupModal form {
     margin: 0;
 }
@@ -224,4 +225,66 @@ div.modal#deleteGroupModal .modal-dialog{
 div.modal#deleteGroupModal .modal-body h4 {
     text-align: center;
     margin-bottom: 20px;
+}
+
+/*div#project-name h3 {
+    font-size: 2em;
+}*/
+
+.glyphicon-button,
+.glyphicon-button:hover,
+.glyphicon-button:active,
+.glyphicon-button:focus{
+    padding: 0;
+    border: none;
+    outline: 0 !important;
+    background-color: transparent;
+}
+
+.glyphicon-button .glyphicon {
+    font-size: 15px !important;
+    color: #919191;
+    cursor: pointer;
+}
+
+.glyphicon-button:hover .glyphicon{
+    color: #000;
+}
+
+.project-modal form {
+    margin: 0;
+}
+
+div#editProjectDataModal .modal-dialog {
+    width: 40%;
+    margin-left: 30%;
+}
+
+div#editProjectDataModal form > div:nth-child(n - 1),
+div#editProjectDataModal form > div:nth-child(n - 1) div{
+    padding: 0;
+}
+
+div#editProjectDataModal form > div:last-child{
+    text-align: center;
+    padding: 0;
+    line-height: 30px;
+}
+
+div#editProjectDataModal form > div:last-child:before{
+    content: ' ';
+    height: 100%;
+}
+
+div#editProjectDataModal form div:last-child > * {
+    vertical-align: middle;
+    margin-left: 15px;
+}
+
+div#editProjectDataModal form div:last-child > *:not(.loading) {
+    display: inline-block;
+}
+
+.loading {
+    display: none;
 }
