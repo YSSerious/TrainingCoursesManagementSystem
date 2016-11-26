@@ -115,6 +115,11 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    public boolean isReviewed(Long meetingId) {
+        return meetingDao.isReviewed(meetingId);
+    }
+
+    @Override
     public Long getProjectByMeetingId(Long meetingId) {
         return meetingDao.getProjectByMeetingId(meetingId);
     }

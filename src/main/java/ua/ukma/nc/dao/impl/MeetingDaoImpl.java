@@ -78,6 +78,8 @@ public class MeetingDaoImpl implements MeetingDao{
 
     private static final String IS_EXIST = "SELECT EXISTS (SELECT * from tcms.meeting where time = ?)";
 
+    private static final String IS_REVIEWED = "select exists (select id from tcms.meeting_review where id_meeting = ?)";
+
     private static final String GET_PROJECT_BY_MEETING_ID= "select id from tcms.project where id = (select id_project from tcms.group where id = (select id_group from tcms.meeting where id=?));  ";
 
     private static final String ADD_CRITERION = "INSERT INTO tcms.meeting_criterion (id_meeting, id_criterion) VALUES (?,?)";
@@ -140,6 +142,11 @@ public class MeetingDaoImpl implements MeetingDao{
     @Override
     public boolean isExist(Timestamp date) {
         return jdbcTemplate.queryForObject(IS_EXIST, Boolean.class, date);
+    }
+
+    @Override
+    public boolean isReviewed(Long meetingId) {
+        return jdbcTemplate.queryForObject(IS_REVIEWED,Boolean.class, meetingId);
     }
 
     @Override

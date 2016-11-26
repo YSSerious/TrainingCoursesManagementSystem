@@ -45,10 +45,12 @@
                 <div id="collapseMeetings" class="panel-collapse collapse clearfix">
                     <ul class="list-group">
                         <c:forEach items="${meetings}" var="meeting">
-                            <li class="list-group-item  clearfix">
+                            <li class="list-group-item  clearfix" id="meetingId-${meeting.id}">
                                 <a href="/meeting/${meeting.id}" class="col-md-2" id="editMeetingNameId-${meeting.id}">${meeting.name}</a>
                                 <div class="col-md-2" id="editMeetingDateId-${meeting.id}">${meeting.time}</div>
                                 <div class="col-md-4" id="editMeetingPlaceId-${meeting.id}">${meeting.place}</div>
+								<sec:authorize access="hasRole('ADMIN')">
+								<c:if test="${!meeting.reviewed}">
 								<div class="btn rmv-cr-btn col-md-1 pull-right "
 									 type='button'
 									 data-toggle="modal"
@@ -56,7 +58,9 @@
 									 onclick="setMeeting(${meeting.id})">
 									<span class="glyphicon glyphicon-remove"></span>
 								</div>
-								<div class="btn rmv-cr-btn col-md-1 pull-right "
+								</c:if>
+								</sec:authorize>
+								<div class="btn rmv-cr-btn col-md-1 col-md-offset-2 "
                                      type='button'
 									 data-toggle="modal"
 									 data-target="#editMeetingModal"
@@ -319,13 +323,27 @@
 					 <button class="close" type="button" data-dismiss="modal"><span
 							 class="glyphicon glyphicon-remove"></span></button>
 					 <h4 class="modal-title">Are you sure?</h4>
-					 <button data-dismiss="modal" class="btn btn-link">Yes</button>
+					 <button data-dismiss="modal" id="deleteMeetingButton" class="btn btn-link">Yes</button>
 					 <button data-dismiss="modal" class="btn btn-link">NO</button>
 				 </div>
 			 </div>
 		 </div>
 	 </div>
 	 <!-- finish delete meeting modal -->
+	 <!-- start meetingDeleteError modal -->
+	 <div id="meetingDeleteError" class="modal fade">
+		 <div class="modal-dialog">
+			 <div class="modal-content">
+				 <div class="modal-header">
+					 <button class="close" type="button" data-dismiss="modal"><span
+							 class="glyphicon glyphicon-remove"></span></button>
+					 <h4 class="modal-title">This meeting was reviewed and cannot be deleted.</h4>
+					 <button data-dismiss="modal" class="btn btn-link">Close</button>
+				 </div>
+			 </div>
+		 </div>
+	 </div>
+	 <!-- finish meetingDeleteError modal -->
 <script type="text/javascript">
 	function getGroupReport(){
 		$('#group-report-modal').modal('hide');

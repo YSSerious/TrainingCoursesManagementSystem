@@ -43,6 +43,8 @@ public interface MeetingService {
 
     boolean isExist(Timestamp date);
 
+    boolean isReviewed(Long meetingId);
+
     Long getProjectByMeetingId(Long meetingId);
 
     int addCriteria(Long meetingId, Criterion criterion);

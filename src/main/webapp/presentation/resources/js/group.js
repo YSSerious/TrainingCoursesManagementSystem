@@ -92,6 +92,23 @@ $(document).ready(function () {
 		});
 	});
 
+	$("#deleteMeetingButton").click(function () {
+		$.ajax({
+			url: "/groups/deleteMeeting",
+			type: "POST",
+			data: {meetingId: chosenMeetingId},
+			success: function (data) {
+				console.log(data);
+				$('#meetingId-'+chosenMeetingId).remove();
+			},
+			error: function (textStatus) {
+				console.log(textStatus);
+				$('#meetingDeleteError').modal('show');
+
+			}
+		});
+	});
+	
 	$("#editMeetingButton").click(function () {
 		$.ajax({
 			url: "/groups/editMeeting",
