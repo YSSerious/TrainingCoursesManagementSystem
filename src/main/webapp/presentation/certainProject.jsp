@@ -1,4 +1,5 @@
 <%@include file="header.jsp" %>
+<%@include file="projectDataEditingModals.jsp" %>
 <%@include file="projectGroupsModals.jsp" %>
 <script
     src="<c:url value="/presentation/resources/js/certainProject.js"/>"
@@ -10,27 +11,41 @@
     <div class="row">
         <div class="col-md-12">
             <div class="page-header">
-                <h3>
-                    Project ${project.name}
-                </h3>
+                <sec:authorize access="hasAnyRole('ADMIN')">
+                    <input id="can-edit" type="hidden" value="true" />
+                </sec:authorize>
+                <div class="editable-wrapper" id="project-name">
+                    <!--                    <h3><b>Project:</b></h3>-->
+                    <div class="editable-label editable">
+                        <h3 style="font-size: 3rem">${project.name}</h3>
+                    </div>
+                </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="panel panel-default panel-horizontal top-panel">
+                    <div class="col-md-6 editable-group">
+                        <div class="panel panel-default panel-horizontal top-panel editable-wrapper" id="project-startdate">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Start date</h3>
                             </div>
-                            <div class="panel-body">${project.startDate}</div>
+                            <div class="panel-body editable-label editable">
+                                <h5>${project.startDate}</h5>
+                            </div>
                         </div>
-                        <div class="panel panel-default panel-horizontal bottom-panel">
+                        <div class="panel panel-default panel-horizontal bottom-panel editable-wrapper" id="project-finishdate">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Finish date</h3>
                             </div>
-                            <div class="panel-body">${project.finishDate}</div>
+                            <div class="panel-body editable-label editable">
+                                <h5>${project.finishDate}</h5>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <h4 class="desc-label" style="margin-top: 0px;"> Description:</h4>
-                        <p>${project.description}</p>
+                    <div class="col-md-6 editable-wrapper" id="project-description">
+                        <div class="description-title editable-label">
+                            <h4 class="desc-label" style="margin-top: 0px;"> Description</h4>
+                        </div>
+                        <div class="editable">
+                            <h5>${project.description.trim()}</h5>
+                        </div>
                     </div>
                 </div>
                  <sec:authorize access="hasAnyRole('ADMIN', 'HR')"><font color="blue" data-toggle="modal" data-target="#project-report-modal"><b><spring:message code="project.generate.report"/></b></font>
@@ -81,10 +96,10 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <button class="btn btn-collapse edit-group" class="edit-group">
+                                        <button class="btn btn-collapse edit-group glyphicon-button">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </button>
-                                        <button class="btn btn-collapse delete-group" class="delete-group">
+                                        <button class="btn btn-collapse delete-group glyphicon-button">
                                             <span class="glyphicon glyphicon-remove"></span>
                                         </button>
                                     </td>
@@ -103,15 +118,15 @@
             <div class="panel-group" id="panelGroupId">
                 <div class="panel panel-default">
                     <div class="panel-heading clearfix">
-                            <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1" onclick="changeSpan()">
-                                <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
-                            </div>
-                            <button type="button" class="btn btn-default btn-sm pull-right"
-                                 id="showAvailableCriteria"
-                                 data-toggle="modal"
-                                 data-target="#showAvailableCriteriaModal">
-                                <b>Add criteria</b>
-                            </button>
+                        <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1" onclick="changeSpan()">
+                            <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
+                        </div>
+                        <button type="button" class="btn btn-default btn-sm pull-right"
+                                id="showAvailableCriteria"
+                                data-toggle="modal"
+                                data-target="#showAvailableCriteriaModal">
+                            <b>Add criteria</b>
+                        </button>
                     </div>
                     <div id="collapseIn" class="panel-collapse collapse">
                         <c:forEach items="${criterions}" var="criterion">
@@ -159,6 +174,17 @@
 	        <div>
         </div>
     </div>
+    <ul class="list-group" id="attachment-group">
+        <c:forEach items="${attachments}" var="attachment">
+            <li class="list-group-item">
+                <a href="${attachment.attachmentScope}">${attachment.name}</a>
+                <div class="btn rmv-btn" type='button' data-button='{"id_attachment": "${attachment.id}"}'>
+                    <span class="glyphicon glyphicon-remove"></span>
+                </div>
+            </li>
+        </c:forEach>
+    </ul>
+</div>
 
 </div>
 <hr>
