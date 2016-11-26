@@ -33,7 +33,7 @@
                         <p>${project.description}</p>
                     </div>
                 </div>
-                 <sec:authorize access="hasAnyRole('ADMIN', 'HR')"><font color="blue" data-toggle="modal" data-target="#projet-report-modal"><b>Generate report</b></font>
+                 <sec:authorize access="hasAnyRole('ADMIN', 'HR')"><font color="blue" data-toggle="modal" data-target="#project-report-modal"><b><spring:message code="project.generate.report"/></b></font>
             	</sec:authorize>
             </div>
         </div>
@@ -345,11 +345,12 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Generate report</h4>
+				<h4 class="modal-title"><spring:message code="project.generate.report"/></h4>
 			</div>
 			<div id="project-report-back" class="modal-body">
 				<form id="project-form-report" action="/projectReport.xls">
-					Select students (or leave this field empty to select all):<br /> <select
+				
+				<spring:message code="report.select.students"/>:<br /> <select
 						style="width: 100%;" multiple name="students">
 						<c:forEach items="${students}" var="student">
 							<option value="${student.id}">${student.firstName}
@@ -358,8 +359,7 @@
 					</select> <br />
 					<hr />
 
-					Select categories (leave criteria and category fields empty to
-					select all criteria):<br /> <select style="width: 100%;" multiple
+				<spring:message code="report.select.categories"/>:<br /> <select style="width: 100%;" multiple
 						name="categories">
 						<c:forEach items="${categories}" var="category">
 							<option value="${category.id}">${category.name}</option>
@@ -367,16 +367,18 @@
 					</select> <br />
 					<hr />
 
-					Select criteria (leave criteria and category fields empty to select
-					all criteria):<br /> <select style="width: 100%;" multiple
+				<spring:message code="report.select.criteria"/>:<br /> <select style="width: 100%;" multiple
 						name="criteria">
 						<c:forEach items="${criteria}" var="criterion">
 							<option value="${criterion.id}">${criterion.title}</option>
 						</c:forEach>
 					</select> <br />
 					<hr />
+					* <spring:message code="report.note.students"/><br/>
+					* <spring:message code="report.note.criteria"/><br/>
+					<br/>
 					<input type="hidden" name="projectId" value="${project.id}" />
-					<input onclick="getProjectReport()" class="btn btn-primary pull-right" type="submit" />
+					<input onclick="getProjectReport()" class="btn btn-primary pull-right" type="submit" value="<spring:message code="report.submit"/>"/>
 					<br/>
 					<br/>
 				</form>

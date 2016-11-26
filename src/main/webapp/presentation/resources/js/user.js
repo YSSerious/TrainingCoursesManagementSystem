@@ -462,7 +462,12 @@ function report(studentId){
 	    'data' : {'user' : studentId},
 	    'success' : function(data) {
 	    	var select = '<div class="row">';
-	    	select += '<div class="col-sm-8">';
+	    	select += '<div class="col-sm-12">';
+	    	select += lang.user_select_projects;
+	    	select += '</div>';
+	    	select += '</div>'
+	    	select += '<div class="row">';
+	    	select += '<div class="col-sm-12">';
 	    	select += '<select style="width:100%;" multiple="true" class="select-project-report">';
 	    	
 	    	$.each(data, function(key, value ) {
@@ -471,19 +476,18 @@ function report(studentId){
 	    	
 	    	select += '</select>';
 	    	select += '</div>';
-	    	select += '<div class="col-sm-4">';
+	    	select += '</div><hr/>';
+	    	select += '* '+lang.user_note_projects+'<br/>';
+	    	select += '* '+lang.user_note_projects2+'<br/><br/>';
 	    	
+	    	select += '<div class="row"><div class="col-sm-12">';
 	    	select += '<button onclick="loadCriteria('+studentId+')" class="btn btn-primary pull-right">'+lang.user_next_step+'</button>';
-	    	select += '</div>';
-	    	select += '</div>';
-	    	
+	    	select += '</div></div>';
 	    	if(data.length == 0)
 	    		$('#project-report-back').html(lang.user_no_projects);
 	    	else{
 	    		$('#project-report-back').html(select);
-	 	    	$('.select-project-report').select2({
-		    		  placeholder: lang.user_select_projects
-		    	});
+	 	    	$('.select-project-report').select2();
 	    	}
 
 	    }
@@ -501,9 +505,14 @@ function loadCriteria(studentId){
 	    'url' : '/ajaxcriteria?projects='+projects+'&student='+studentId,
 	    'type' : 'GET',
 	    'success' : function(data) {
-	    	
-	    	var select = '<br/><div class="row">';
-	    	select += '<div class="col-sm-8">';
+
+	    	select = '<hr/><div class="row">';
+	    	select += '<div class="col-sm-12">';
+	    	select += lang.user_select_categories + ':';
+	    	select += '</div>';
+	    	select += '</div>';
+	    	select += '<div class="row">';
+	    	select += '<div class="col-sm-12">';
 	    	select += '<select style="width:100%;" multiple="true" class="select-category-report">';
 	    	
 	    	$.each(data.categories, function(key, value ) {
@@ -512,15 +521,16 @@ function loadCriteria(studentId){
 	    	
 	    	select += '</select>';
 	    	select += '</div>';
-	    	select += '<div class="col-sm-4"></div>';
 	    	select += '</div>';
 	    	$('#criteria-report-back').html(select);
- 	    	$('.select-category-report').select2({
-	    		  placeholder: lang.user_select_categories
-	    	});
- 	    	
- 	    	select = '<br/><div class="row">';
- 	    	select += '<div class="col-sm-8">';
+ 	    	$('.select-category-report').select2();
+ 	    	select = '<hr/><div class="row">';
+ 	    	select += '<div class="col-sm-12">';
+ 	    	select += lang.user_select_criteria + ':';
+ 	    	select += '</div>';
+ 	    	select += '</div>';
+ 	    	select += '<div class="row">';
+ 	    	select += '<div class="col-sm-12">';
 	    	select += '<select style="width:100%;" multiple="true" class="select-criterion-report">';
 	    	
 	    	$.each(data.criteria, function(key, value ) {
@@ -529,15 +539,16 @@ function loadCriteria(studentId){
 	    	
 	    	select += '</select>';
 	    	select += '</div>';
-	    	select += '<div class="col-sm-4">';
+
+	    	select += '</div>';
+	    	select += '<hr/>';
+	    	select += '* '+lang.user_note_criteria+'<br/><br/>';
+	    	select += '<div class="row><div class="col-sm-12">';
 	    	select += '<button onclick="sendRequest('+studentId+')" class="btn btn-primary pull-right">'+lang.user_download+'</button>';
-	    	select += '</div>';
-	    	select += '</div>';
-	    	
+	    	select += '</div></div><br/><br/>';
+	    	$('#criteria-report-back').show();
 	    	$('#criteria-report-back').append(select);
- 	    	$('.select-criterion-report').select2({
-	    		  placeholder: lang.user_select_criteria
-	    	});
+ 	    	$('.select-criterion-report').select2();
 	    }
 	});
 }
@@ -566,7 +577,7 @@ function sendRequest(studentId){
 	url += '&criteria='+criteria;
 	window.location = url;
 	
-	$('#projets-report-modal').modal('hide');
+	$('#projects-report-modal').modal('hide');
 }
 
 function getModal(modalId, modalName, modalTitle, reviewDto){

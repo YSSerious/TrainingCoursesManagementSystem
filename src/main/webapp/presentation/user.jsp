@@ -46,10 +46,10 @@
 
                         <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
 								<font color="blue" data-toggle="modal"
-									data-target="#projets-report-modal"><b onclick="report(${user.id})"><spring:message code="user.generate.report"/></b></font>
+									data-target="#projects-report-modal"><b onclick="report(${user.id})"><spring:message code="user.generate.report"/></b></font>
 									<br/>
 
-								<div id="projets-report-modal" class="modal fade" role="dialog">
+								<div id="projects-report-modal" class="modal fade" role="dialog">
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-header">
@@ -59,7 +59,7 @@
 											<div id="project-report-back" class="modal-body">
 
 											</div>
-											<div id="criteria-report-back" class="modal-body">
+											<div id="criteria-report-back" style="display:none;padding-top:0px;margin-top:0px;" class="modal-body">
 
 											</div>
 										</div>
