@@ -115,8 +115,8 @@ $(document).ready(function () {
     });
 
     $('#saveMeeting').attr('disabled', true);
-    var meetingName = new RegExp('^[a-z0-9_-]{3,15}$');
-    var meetingPlace = new RegExp('^[a-z0-9_-]{3,25}$');
+    var meetingName = new RegExp('^[a-zA-Z0-9_-\\s]{3,15}$');
+    var meetingPlace = new RegExp('^[a-zA-Z0-9_-\\s]{3,25}$');
     var groupRE = function () {
         var check=false;
         $.each($('.isGroupChecked'), function (key, value) {

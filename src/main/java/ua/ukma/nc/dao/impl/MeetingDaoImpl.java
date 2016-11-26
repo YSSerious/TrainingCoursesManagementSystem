@@ -68,6 +68,8 @@ public class MeetingDaoImpl implements MeetingDao{
 
     private static final String UPDATE_MEETING = "UPDATE tcms.meeting SET id_group = ?, name = ?, time = ?, place =? WHERE id = ?";
 
+    private static final String EDIT_MEETING = "UPDATE tcms.meeting SET name = ?, time = ?, place = ? WHERE id = ?";
+
     private static final String GET_CRITERION_BY_ID = "SELECT id_criterion FROM tcms.meeting_criterion WHERE id_meeting = ?";
     
     private static final String GET_BY_GROUP = "SELECT  id, id_group, name, time, place FROM  tcms.meeting WHERE id_group = ?";
@@ -225,6 +227,11 @@ public class MeetingDaoImpl implements MeetingDao{
     @Override
     public int deleteMeetingCriterion(Long meetingId, Criterion criterion) {
         return jdbcTemplate.update(DELETE_MEETING_CRITERION, meetingId, criterion.getId());
+    }
+
+    @Override
+    public int editMeeting(Long id, String name, Timestamp date, String place) {
+        return jdbcTemplate.update(EDIT_MEETING, name, date, place, id);
     }
 
 }

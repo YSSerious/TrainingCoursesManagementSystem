@@ -44,4 +44,6 @@ public interface MeetingDao {
     int[] addMeetingCriterion(Meeting meeting, List<Criterion> criterions);
 
     int deleteMeetingCriterion(Long meetingId, Criterion criterion);
+
+    int editMeeting(Long id, String name, Timestamp date, String place );
 }

@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import ua.ukma.nc.dto.CategoryDto;
-import ua.ukma.nc.dto.CriterionDto;
-import ua.ukma.nc.dto.GroupDto;
-import ua.ukma.nc.dto.UserDto;
+import ua.ukma.nc.dto.*;
 import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.GroupAttachment;
 import ua.ukma.nc.entity.Meeting;
@@ -198,5 +195,16 @@ public class GroupController {
 
 	}
 
+	@RequestMapping(value = "/editMeeting", method = RequestMethod.POST)
+	@ResponseBody
+	public MeetingDto editMeeting(@RequestParam Long id, @RequestParam String name, @RequestParam String date, @RequestParam String place) {
+		int check =meetingService.editMeeting(id, name, date, place);
+		if(check==1){
+			Meeting meeting = meetingService.getById(id);
+			System.out.println(meeting.getTime());
+			return new MeetingDto(meeting.getId(), meeting.getName(), meeting.getTime(), meeting.getPlace());
+		}
+		return null;
+	}
 
 }

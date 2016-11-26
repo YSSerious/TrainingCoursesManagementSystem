@@ -20,6 +20,14 @@ public class MeetingDto {
 	public MeetingDto() {
 
 	}
+
+	public MeetingDto(long id, String name, Timestamp time, String place) {
+		this.id = id;
+		this.name = name;
+		this.time = time;
+		this.place = place;
+	}
+
 	public MeetingDto(Meeting mt){
 		setId(mt.getId());
 		Group gr = mt.getGroup();

@@ -27,6 +27,8 @@ public interface MeetingService {
 
     int updateMeeting(Meeting meeting);
 
+    int editMeeting(Long id, String name, String date, String place );
+
     List<Meeting> getAll();
     
     List<Meeting> getByGroup(Long groupId);
