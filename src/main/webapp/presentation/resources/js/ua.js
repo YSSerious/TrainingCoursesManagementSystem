@@ -21,5 +21,6 @@ lang = {
 	user_general_comment: 'Загальний коментар:',
 	user_criterion_name: 'Критерія',
 	user_mark: 'Оцінка',
-	user_commentary: 'Коментар'
+	user_commentary: 'Коментар',
+	user_date: 'Дата'
 };

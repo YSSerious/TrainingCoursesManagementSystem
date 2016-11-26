@@ -118,14 +118,14 @@ public class CertainUserController {
 
 	@RequestMapping("/ajaxstudentprojects")
 	@ResponseBody
-	public List<Project> studentProjects(@RequestParam("user") Long userId) {
-		return projectService.getStudentProjects(userId);
+	public List<ProjectDto> studentProjects(@RequestParam("user") Long userId) {
+		return projectService.getStudentProjects(userId).stream().map(ProjectDto::new).collect(Collectors.toList());
 	}
 
 	@RequestMapping("/ajaxmentorprojects")
 	@ResponseBody
-	public List<Project> mentorProjects(@RequestParam("user") Long userId) {
-		return projectService.getMentorProjects(userId);
+	public List<ProjectDto> mentorProjects(@RequestParam("user") Long userId) {
+		return projectService.getMentorProjects(userId).stream().map(ProjectDto::new).collect(Collectors.toList());
 	}
 	
 	@RequestMapping(value = "/ajaxcriteria", method = RequestMethod.GET)

@@ -9,29 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ua.ukma.nc.dao.UserDao;
-import ua.ukma.nc.dao.impl.UserDaoImpl.UserMapper;
-import ua.ukma.nc.entity.FinalReview;
-import ua.ukma.nc.entity.Meeting;
-import ua.ukma.nc.entity.MeetingReview;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.Status;
 import ua.ukma.nc.entity.StatusLog;
 import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
-import ua.ukma.nc.entity.impl.real.FinalReviewImpl;
-import ua.ukma.nc.entity.impl.real.MeetingReviewImpl;
-import ua.ukma.nc.entity.impl.real.StatusImpl;
-import ua.ukma.nc.query.clause.project.MentorLogicClause;
 import ua.ukma.nc.service.FinalReviewService;
 import ua.ukma.nc.service.GroupService;
-import ua.ukma.nc.service.MeetingReviewService;
-import ua.ukma.nc.service.MeetingService;
 import ua.ukma.nc.service.StatusLogService;
 import ua.ukma.nc.service.StatusService;
 import ua.ukma.nc.service.StudentStatusService;
 import ua.ukma.nc.service.UserService;
-
-import javax.sql.DataSource;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -42,9 +30,6 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
-
-	@Autowired
-	private MeetingReviewService meetingReviewService;
 
 	@Autowired
 	private UserDao userDao;
@@ -60,9 +45,6 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private StudentStatusService studentStatusService;
-
-	@Autowired
-	private MeetingService meetingService;
 
 	@Autowired
 	private FinalReviewService finalReviewService;

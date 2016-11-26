@@ -6,6 +6,20 @@ function getMark(mark){
 	return '<p style="padding:0px; margin:0px;">'+mark+'</p>';
 }
 
+function getStringDate(date){
+	var month = date.getMonth() + 1;
+	if(month < 10)
+		month = '0'+month;
+	
+	var day = date.getDate();
+	if(day < 10)
+		day = '0'+day;
+	
+    return month + 
+    "/" +  day +
+    "/" +  date.getFullYear();
+}
+
 function createMentorProjectsInfo(userId, divInside){
 	$.ajax({
 	    'url' : '/ajaxmentorprojects',
@@ -31,7 +45,7 @@ function createMentorProjectsInfo(userId, divInside){
 	    		s+= '<h2>Mentor projects: </h2><hr/>';
 	    		s+= '<div class="panel panel-'+divClass+'">';
 	    		s+= '<div id="mpr'+value.id+'" class="panel-body">' + value.name;
-	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
+	    		s+= '<div class="pull-right">'+getStringDate(new Date(value.startDate))+' - '+getStringDate(new Date(value.finishDate))+'</div>';
  	    		s+= '</div></div>';
 	    	
 	    	});
@@ -58,6 +72,12 @@ function createStudentProjectsInfo(userId, divInside){
 	    		var finishDate = new Date(value.finishDate);
 	    		var divClass = 'default';
 	    		
+	    		try{
+	    			getStringDate(new Date(value.startDate));
+	    		}catch(error){
+	    			alert(error);
+	    		}
+	    		
 	    		if(startDate.getTime() < currentDate.getTime() && currentDate.getTime() < finishDate.getTime()){
 	    			divClass = 'current';
 	    		}else if(startDate.getTime() > currentDate.getTime()){
@@ -67,7 +87,7 @@ function createStudentProjectsInfo(userId, divInside){
 	    		}
 	    		s+= '<div class="panel panel-'+divClass+'">';
 	    		s+= '<div id="pr'+value.id+'" class="panel-body">' + value.name;
-	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
+	    		s+= '<div class="pull-right">'+getStringDate(new Date(value.startDate))+' - '+getStringDate(new Date(value.finishDate))+'</div>';
  	    		s+= '</div>';
  	    		s+= '</div>';
  	    		
@@ -205,13 +225,13 @@ function getMarksTable(markTableDto, projectId){
  	table+= '<tr><th>#</th>';
  	
  	$.each(markTableDto.meetings, function( key, value ) {
- 			table+= '<th>'+getModal(value.id, 'M', value.name, value)+'</th>';
+ 			table+= '<th align="center">'+getModal(value.id, 'M', value.name, value)+'</th>';
  	});
  	
  	if(markTableDto.finalReview == null)
- 		table+= '<th>F</th>';
+ 		table+= '<th align="center">F</th>';
  	else
- 		table+= '<th>'+getModal('f'+markTableDto.finalReview.id, 'F', lang.user_final_review, markTableDto.finalReview)+'</th>';
+ 		table+= '<th align="center">'+getModal('f'+markTableDto.finalReview.id, 'F', lang.user_final_review, markTableDto.finalReview)+'</th>';
  	
  	table+= '</tr>';
 
@@ -222,9 +242,9 @@ function getMarksTable(markTableDto, projectId){
  			table+= '<tr class="active" id="row-'+projectId+'-'+categoryResult.categoryDto.id+'-'+criterionResult.criterionId+'"><td style="padding-left:30px;">' + criterionResult.criterionName + '</td>';
  			$.each(criterionResult.marks, function(index, mark) {
  					if(mark.commentary == '')
- 						table+= '<td><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
+ 						table+= '<td align="center"><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
  					else
- 						table+= '<td><span title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
+ 						table+= '<td align="center"><span title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
 	    		});
  			table+= '</tr>';
  		});
@@ -551,7 +571,7 @@ function sendRequest(studentId){
 
 function getModal(modalId, modalName, modalTitle, reviewDto){
 	
-	var modal = '<font color="blue" data-toggle="modal" data-target="#'+modalId+'"><b>'+modalName+'</b></font>';
+	var modal = '<center><font color="blue" data-toggle="modal" data-target="#'+modalId+'"><b>'+modalName+'</b></font></center>';
 
 	modal += '<div id="'+modalId+'" class="modal fade" role="dialog">';
 	modal += '<div class="modal-dialog">';
@@ -562,7 +582,7 @@ function getModal(modalId, modalName, modalTitle, reviewDto){
 	modal += '</div>'
 	modal += '<div style="max-height:80vh;overflow-y:auto;" class="modal-body text-left">';
 	modal += '<div class="remove-all-styles">';
-	modal += '<b>Date:</b>'+reviewDto.date;
+	modal += '<b>'+lang.user_date+': </b>'+reviewDto.date;
 	
 	if(reviewDto.type === '-')
 		modal += '<br/>'+lang.user_no_meeting_info;

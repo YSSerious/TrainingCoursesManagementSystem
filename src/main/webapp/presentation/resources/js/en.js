@@ -21,5 +21,6 @@ lang = {
 	user_general_comment: 'General commentary:',
 	user_criterion_name: 'Criterion name',
 	user_mark: 'Mark',
-	user_commentary: 'Commentary'
+	user_commentary: 'Commentary',
+	user_date: 'Date'
 };

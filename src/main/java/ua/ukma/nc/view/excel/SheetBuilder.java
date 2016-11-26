@@ -10,7 +10,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.stereotype.Service;
 
 import ua.ukma.nc.dto.CategoryResult;
 import ua.ukma.nc.dto.CertainMarkDto;
@@ -34,6 +33,10 @@ public class SheetBuilder {
 		Font font = workbook.createFont();
 		font.setColor(IndexedColors.GREY_50_PERCENT.index);
 		style.setFont(font);
+		
+		CellStyle noMarkStyle = workbook.createCellStyle();
+		noMarkStyle.setFillForegroundColor(IndexedColors.RED.index);
+		noMarkStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
 		CellStyle finalReviewStyle = workbook.createCellStyle();
 		font = workbook.createFont();
@@ -98,7 +101,10 @@ public class SheetBuilder {
 					try {
 						markRow.createCell(column).setCellValue(Integer.valueOf(stringMark));
 					} catch (Exception e) {
-						markRow.createCell(column).setCellValue(stringMark);
+						markRow.createCell(column);
+						
+						if(stringMark.equals("-"))
+							markRow.getCell(column).setCellStyle(noMarkStyle);
 					}
 					column++;
 					markRow.createCell(column++).setCellValue(mark.getCommentary());

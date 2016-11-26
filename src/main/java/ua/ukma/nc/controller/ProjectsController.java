@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ua.ukma.nc.dto.CategoryDto;
+import ua.ukma.nc.dto.ProjectDto;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.query.ProjectSearch;
@@ -53,7 +54,7 @@ public class ProjectsController {
 
 		model.addObject("currPage", projectSearch.getPage());
 		model.addObject("criteria", projectSearch.getCriteria());
-		model.addObject("projects", projectService.search(projectSearch));
+		model.addObject("projects", projectService.search(projectSearch).stream().map(ProjectDto::new).collect(Collectors.toList()));
 		model.addObject("maxPage", projectService.getMaxPage(projectSearch));
 		model.addObject("title", "All projects");
 
