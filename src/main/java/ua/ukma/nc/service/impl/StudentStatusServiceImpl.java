@@ -41,4 +41,9 @@ public class StudentStatusServiceImpl implements StudentStatusService{
     public int createStudentStatus(StudentStatus studentStatus) {
         return studentStatusDao.createStudentStatus(studentStatus);
     }
+
+	@Override
+	public boolean exists(Long id) {
+		return studentStatusDao.exists(id);
+	}
 }

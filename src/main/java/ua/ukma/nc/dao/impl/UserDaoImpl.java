@@ -7,6 +7,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import ua.ukma.nc.dao.StatusDao;
+import ua.ukma.nc.dao.StudentStatusDao;
 import ua.ukma.nc.dao.UserDao;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.Status;
@@ -28,9 +31,15 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
 
 	private static Logger log = LoggerFactory.getLogger(UserDaoImpl.class.getName());
-
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private StudentStatusDao studentStatusDao;
+	
+	@Autowired
+	private StatusDao statusDao;
 
 	@Autowired
 	private ApplicationContext appContext;
@@ -62,7 +71,7 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String COUNT = "SELECT COUNT(*) FROM tcms.user";
 
-	private static final String DELETE_ROLES = "DELETE FROM tcms.user_role WHERE id_user = ?";
+	private static final String DELETE_ROLE = "DELETE FROM tcms.user_role WHERE id_user = ? AND id_role = ?";
 
 	private static final String DELETE_USER = "DELETE FROM tcms.user WHERE id = ?";
 
@@ -86,6 +95,7 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String GET_BY_LAST_NAME = "last_name LIKE '";
 
+
 	private static final String GET_BY_SECOND_NAME = "second_name LIKE '";
 
 	private static final String GET_STUDENTS_BY_PROJECT_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project = ?))";
@@ -101,6 +111,13 @@ public class UserDaoImpl implements UserDao {
 	private static final String COUNT_PROJECT = "SELECT COUNT(*) FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT id_user FROM tcms.user_group WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project IN (SELECT id FROM tcms.project WHERE name LIKE '";
 	
 	private static final String COUNT_NAME = "SELECT COUNT(*) FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE (first_name LIKE '";
+
+	private static final String HAS_STUDENT_PROJECTS = "SELECT EXISTS (SELECT * FROM tcms.status_log WHERE id_student = ?)";
+	
+	private static final String HAS_MENTOR_PROJECTS = "SELECT EXISTS (SELECT * FROM tcms.user_group WHERE id_user = ? AND id_group NOT IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?))";
+	
+	private static final String HAS_HR_REVIEWS = "SELECT EXISTS (SELECT * FROM tcms.final_review WHERE id_employee = ? AND (type = 'G' OR type = 'T'))";
+
 	@Override
 	public User getByEmail(String email) {
 		log.info("Getting user with email = {}", email);
@@ -157,7 +174,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public int addRole(User user, Role role) {
+	public int addRole(User user, Role role) {			
 		return jdbcTemplate.update(ADD_ROLES, user.getId(), role.getId());
 	}
 
@@ -186,9 +203,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void deleteRoles(User user) {
-		jdbcTemplate.update(DELETE_ROLES, user.getId());
-
+	public void deleteRole(User user, Long id) {
+		jdbcTemplate.update(DELETE_ROLE, user.getId(), id);
 	}
 
 	@Override
@@ -241,6 +257,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
+
 	public List<User> studentsByGroupName(String name, int limit, int offset) {
 		log.info("Getting all users from group with name=" + name);
 		return jdbcTemplate.query(GET_STUDENTS_BY_GROUP_NAME+name+"%'))"+ " LIMIT " + limit + " OFFSET " + offset, new UserMapper());
@@ -276,4 +293,20 @@ public class UserDaoImpl implements UserDao {
 				+ GET_BY_SECOND_NAME + secondName + "%')", int.class);
 	}
 	
+
+	public boolean hasStudentProjects(Long studentId) {
+		return jdbcTemplate.queryForObject(HAS_STUDENT_PROJECTS, Boolean.class, studentId);
+	}
+
+	@Override
+	public boolean hasMentorProjects(Long mentorId) {
+		return jdbcTemplate.queryForObject(HAS_MENTOR_PROJECTS, Boolean.class, mentorId, mentorId);
+	}
+
+	@Override
+	public boolean hasHRReviews(Long hrId) {
+		return jdbcTemplate.queryForObject(HAS_HR_REVIEWS, Boolean.class, hrId);
+	}
+
+
 }

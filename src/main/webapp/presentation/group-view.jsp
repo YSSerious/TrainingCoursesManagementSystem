@@ -166,7 +166,7 @@
 
 
 
-<div class="modal fade" id="addGroupAttachmentModal" role="dialog">
+<!--  <div class="modal fade" id="addGroupAttachmentModal" role="dialog">
 	<div class="modal-dialog">
 
 		<div class="modal-content">
@@ -202,6 +202,7 @@
 
 	</div>
 </div>
+-->
 <!--  -->
  
  
@@ -220,9 +221,10 @@
 		</div>
 
 		<div id="collapseAttachment" class="panel-collapse collapse">
-			<ul id="listAttachments"class="list-group">
+			<ul id="listAttachments" class="list-group">
+			 
 						<c:forEach items="${attachments}" var="attachment">
-						<li  id="attachment-${attachment.id}" class="list-group-item  clearfix">
+						<li  id="attachment-${attachment.id}" class="list-group-item group-attachment clearfix">
 						 <!-- 	${attachment.name} <span style='padding-left: 10px;'> </span> -->
 						 <a href="${ attachment.attachmentScope}">${attachment.name } </a>
 					 
@@ -230,7 +232,7 @@
 							type='button'>
 							<span class="glyphicon glyphicon-remove "></span>
 						</div> 
-						<br />
+						
 					</li>
 							 
 							
@@ -239,6 +241,41 @@
 					 
 				</div>
 </div>
+<<<<<<< HEAD
+<!--  -->
+	<div id="addGroupAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title">New Attachment</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="usr">Name:</label>
+                        <input type="text" class="form-control" id="groupAttachmentName">
+                    </div>
+                    <div class="form-group">
+                        <label for="usr">Link:</label>
+                        <input type="text" class="form-control" id="groupAttachment	">
+                    </div>
+                    <input
+								type=text   id="groupId" style="display:none"
+								value="${groupId }">
+                    <br>
+                    <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
+                        Save
+                    </div>
+                    <button id="addAttachmentSubmitButton" type="button" class="btn btn-primary"  >Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>	 
+ 
+=======
 		 
  <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
 <div id="group-report-modal" class="modal fade" role="dialog">
@@ -266,6 +303,7 @@
 						</c:forEach>
 					</select> <br />
 					<hr />
+>>>>>>> origin/master
 
 					<spring:message code="report.select.criteria"/>:<br /> <select style="width: 100%;" multiple
 						name="criteria">
