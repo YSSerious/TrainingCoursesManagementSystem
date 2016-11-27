@@ -64,6 +64,13 @@ textarea {
     resize: none;
 }
 
+.clickable{
+    cursor: pointer;
+}
+.clickable:hover{
+    color: darkblue;
+    text-decoration: underline;
+}
 /* Prevents modal shifting on hide, but scroll lefts on modal show*/
 /*.modal {
  overflow-y: auto;

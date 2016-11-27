@@ -280,7 +280,7 @@
                 <sec:authorize access="hasRole('MENTOR')">
                     <%--<c:if test="${user.statusId eq 2}">--%>
                     <br/><br/>
-                    <div data-toggle="modal"
+                    <div class="clickable" data-toggle="modal"
                          data-target="#finReviewProject" onClick="getMentorStudentProjects(${user.id});"><b>Create final review</b>
                     </div>
                     <%--</c:if>--%>
