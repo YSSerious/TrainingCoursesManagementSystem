@@ -29,6 +29,8 @@ public interface ProjectDao {
 	
 	List<Project> getMentorProjects(Long userId);
 
+	List<Project> getMentorStudentProjects(Long mentorId, Long studentId);
+
 	Integer count(String query);
 
 	int createProject(Project project);

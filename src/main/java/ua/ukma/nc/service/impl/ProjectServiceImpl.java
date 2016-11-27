@@ -103,6 +103,11 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+	public List<Project> getMentorStudentProjects(Long mentorId, Long studentId) {
+		return projectDao.getMentorStudentProjects(mentorId, studentId);
+	}
+
+	@Override
 	public int addCriteria(Long projectId, Criterion criterion) {
 		return projectDao.addCriteria(projectId, criterion);
 	}
