@@ -68,6 +68,8 @@ public class MeetingDaoImpl implements MeetingDao{
 
     private static final String UPDATE_MEETING = "UPDATE tcms.meeting SET id_group = ?, name = ?, time = ?, place =? WHERE id = ?";
 
+    private static final String EDIT_MEETING = "UPDATE tcms.meeting SET name = ?, time = ?, place = ? WHERE id = ?";
+
     private static final String GET_CRITERION_BY_ID = "SELECT id_criterion FROM tcms.meeting_criterion WHERE id_meeting = ?";
     
     private static final String GET_BY_GROUP = "SELECT  id, id_group, name, time, place FROM  tcms.meeting WHERE id_group = ?";
@@ -75,6 +77,8 @@ public class MeetingDaoImpl implements MeetingDao{
     private static final String GET_UPCOMING_BY_GROUP = "SELECT id, id_group, name, time, place FROM tcms.meeting WHERE id_group = ? AND time > CURRENT_TIMESTAMP ORDER BY time ASC LIMIT 1";
 
     private static final String IS_EXIST = "SELECT EXISTS (SELECT * from tcms.meeting where time = ?)";
+
+    private static final String IS_REVIEWED = "select exists (select id from tcms.meeting_review where id_meeting = ?)";
 
     private static final String GET_PROJECT_BY_MEETING_ID= "select id from tcms.project where id = (select id_project from tcms.group where id = (select id_group from tcms.meeting where id=?));  ";
 
@@ -138,6 +142,11 @@ public class MeetingDaoImpl implements MeetingDao{
     @Override
     public boolean isExist(Timestamp date) {
         return jdbcTemplate.queryForObject(IS_EXIST, Boolean.class, date);
+    }
+
+    @Override
+    public boolean isReviewed(Long meetingId) {
+        return jdbcTemplate.queryForObject(IS_REVIEWED,Boolean.class, meetingId);
     }
 
     @Override
@@ -225,6 +234,11 @@ public class MeetingDaoImpl implements MeetingDao{
     @Override
     public int deleteMeetingCriterion(Long meetingId, Criterion criterion) {
         return jdbcTemplate.update(DELETE_MEETING_CRITERION, meetingId, criterion.getId());
+    }
+
+    @Override
+    public int editMeeting(Long id, String name, Timestamp date, String place) {
+        return jdbcTemplate.update(EDIT_MEETING, name, date, place, id);
     }
 
 }

@@ -45,12 +45,26 @@
                 <div id="collapseMeetings" class="panel-collapse collapse clearfix">
                     <ul class="list-group">
                         <c:forEach items="${meetings}" var="meeting">
-                            <li class="list-group-item  clearfix">
-                                <a href="/meeting/${meeting.id}" class="col-md-2">${meeting.name}</a>
-                                <div class="col-md-2">${meeting.time}</div>
-                                <div class="col-md-4">${meeting.place}</div>
-                                <div class="btn rmv-cr-btn col-md-1 pull-right "
-                                     type='button'>
+                            <li class="list-group-item  clearfix" id="meetingId-${meeting.id}">
+                                <a href="/meeting/${meeting.id}" class="col-md-2" id="editMeetingNameId-${meeting.id}">${meeting.name}</a>
+                                <div class="col-md-2" id="editMeetingDateId-${meeting.id}">${meeting.time}</div>
+                                <div class="col-md-4" id="editMeetingPlaceId-${meeting.id}">${meeting.place}</div>
+								<sec:authorize access="hasRole('ADMIN')">
+								<c:if test="${!meeting.reviewed}">
+								<div class="btn rmv-cr-btn col-md-1 pull-right "
+									 type='button'
+									 data-toggle="modal"
+									 data-target="#deleteMeetingModal"
+									 onclick="setMeeting(${meeting.id})">
+									<span class="glyphicon glyphicon-remove"></span>
+								</div>
+								</c:if>
+								</sec:authorize>
+								<div class="btn rmv-cr-btn col-md-1 col-md-offset-2 "
+                                     type='button'
+									 data-toggle="modal"
+									 data-target="#editMeetingModal"
+									 onclick="setMeeting(${meeting.id})">
                                     <span class="glyphicon glyphicon-edit"></span>
                                 </div>
                             </li>
@@ -152,7 +166,7 @@
 
 
 
-<div class="modal fade" id="addGroupAttachmentModal" role="dialog">
+<!--  <div class="modal fade" id="addGroupAttachmentModal" role="dialog">
 	<div class="modal-dialog">
 
 		<div class="modal-content">
@@ -188,6 +202,7 @@
 
 	</div>
 </div>
+-->
 <!--  -->
  
  
@@ -206,9 +221,10 @@
 		</div>
 
 		<div id="collapseAttachment" class="panel-collapse collapse">
-			<ul id="listAttachments"class="list-group">
+			<ul id="listAttachments" class="list-group">
+			 
 						<c:forEach items="${attachments}" var="attachment">
-						<li  id="attachment-${attachment.id}" class="list-group-item  clearfix">
+						<li  id="attachment-${attachment.id}" class="list-group-item group-attachment clearfix">
 						 <!-- 	${attachment.name} <span style='padding-left: 10px;'> </span> -->
 						 <a href="${ attachment.attachmentScope}">${attachment.name } </a>
 					 
@@ -216,7 +232,7 @@
 							type='button'>
 							<span class="glyphicon glyphicon-remove "></span>
 						</div> 
-						<br />
+						
 					</li>
 							 
 							
@@ -225,6 +241,41 @@
 					 
 				</div>
 </div>
+<<<<<<< HEAD
+<!--  -->
+	<div id="addGroupAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title">New Attachment</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="usr">Name:</label>
+                        <input type="text" class="form-control" id="groupAttachmentName">
+                    </div>
+                    <div class="form-group">
+                        <label for="usr">Link:</label>
+                        <input type="text" class="form-control" id="groupAttachment	">
+                    </div>
+                    <input
+								type=text   id="groupId" style="display:none"
+								value="${groupId }">
+                    <br>
+                    <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
+                        Save
+                    </div>
+                    <button id="addAttachmentSubmitButton" type="button" class="btn btn-primary"  >Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>	 
+ 
+=======
 		 
  <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
 <div id="group-report-modal" class="modal fade" role="dialog">
@@ -252,6 +303,7 @@
 						</c:forEach>
 					</select> <br />
 					<hr />
+>>>>>>> origin/master
 
 					<spring:message code="report.select.criteria"/>:<br /> <select style="width: 100%;" multiple
 						name="criteria">
@@ -272,7 +324,64 @@
 		</div>
 	</div>
 </div>
-
+	 <!-- start edit meeting modal -->
+	 <div id="editMeetingModal" class="modal fade" data-backdrop="static">
+		 <div class="modal-dialog">
+			 <div class="modal-content">
+				 <div class="modal-header">
+					 <button class="close" type="button" data-dismiss="modal"><span
+							 class="glyphicon glyphicon-remove"></span></button>
+					 <h4 class="modal-title">Edit Meeting</h4>
+					 <form id="editMeetingFormId">
+						 <div class="form-group">
+							 <label for="editMeetingName">Meeting Name</label>
+							 <input type="text" class="form-control" id="editMeetingName">
+						 </div>
+						 <div class="form-group">
+							 <label for="editMeetingPlace">Place</label>
+							 <input type="text" class="form-control" id="editMeetingPlace">
+						 </div>
+						 <div class="form-group">
+							 <label for="editMeetingDate">Date/Time</label>
+							 <input type="datetime-local" class="form-control" id="editMeetingDate">
+						 </div>
+						 <br>
+						 <button id="editMeetingButton" type="submit" class="btn btn-primary" data-dismiss="modal">Save</button>
+					 </form>
+				 </div>
+			 </div>
+		 </div>
+	 </div>
+	 <!-- finish edit category modal -->
+	 <!-- start delete meeting modal -->
+	 <div id="deleteMeetingModal" class="modal fade" data-backdrop="static">
+		 <div class="modal-dialog">
+			 <div class="modal-content">
+				 <div class="modal-header">
+					 <button class="close" type="button" data-dismiss="modal"><span
+							 class="glyphicon glyphicon-remove"></span></button>
+					 <h4 class="modal-title">Are you sure?</h4>
+					 <button data-dismiss="modal" id="deleteMeetingButton" class="btn btn-link">Yes</button>
+					 <button data-dismiss="modal" class="btn btn-link">NO</button>
+				 </div>
+			 </div>
+		 </div>
+	 </div>
+	 <!-- finish delete meeting modal -->
+	 <!-- start meetingDeleteError modal -->
+	 <div id="meetingDeleteError" class="modal fade">
+		 <div class="modal-dialog">
+			 <div class="modal-content">
+				 <div class="modal-header">
+					 <button class="close" type="button" data-dismiss="modal"><span
+							 class="glyphicon glyphicon-remove"></span></button>
+					 <h4 class="modal-title">This meeting was reviewed and cannot be deleted.</h4>
+					 <button data-dismiss="modal" class="btn btn-link">Close</button>
+				 </div>
+			 </div>
+		 </div>
+	 </div>
+	 <!-- finish meetingDeleteError modal -->
 <script type="text/javascript">
 	function getGroupReport(){
 		$('#group-report-modal').modal('hide');

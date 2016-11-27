@@ -61,6 +61,7 @@ public class FinalReviewDaoImpl implements FinalReviewDao{
 
     private static final String UPDATE_FINAL_REVIEW = "UPDATE tcms.final_review SET date = ?, id_student = ?, id_employee = ?, type = ?, id_project = ?, commentary = ? WHERE id = ?";
 
+    private static final String GET_NUM_BY_PROJECT_AND_TYPE = "SELECT COUNT(*) FROM tcms.final_review WHERE id_project=? AND type=?";
     @Override
     public FinalReview getById(Long id) {
         log.info("Getting final review with id = {}", id);
@@ -107,4 +108,8 @@ public class FinalReviewDaoImpl implements FinalReviewDao{
 	public boolean existsForProject(Long studentId, Long projectId, String type) {
 		return jdbcTemplate.queryForObject(EXISTS_BY_STUDENT_PROJECT_TYPE, Boolean.class, studentId, projectId, type);
 	}
+
+	public int getNumOfFinalReviewsByProjectAndType(Long projectId, String type){
+        return jdbcTemplate.queryForObject(GET_NUM_BY_PROJECT_AND_TYPE, new Object[]{projectId, type}, Integer.class);
+    }
 }

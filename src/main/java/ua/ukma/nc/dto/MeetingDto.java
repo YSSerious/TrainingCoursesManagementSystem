@@ -10,16 +10,33 @@ import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Meeting;
 
 public class MeetingDto {
-	long id;
-	GroupDto group;
-	String name;
-	Timestamp time;
-	String place;
-	List<CriterionDto> criterions;
+	private long id;
+	private GroupDto group;
+	private String name;
+	private Timestamp time;
+	private String place;
+	private boolean reviewed;
+	private List<CriterionDto> criterions;
 
 	public MeetingDto() {
 
 	}
+
+	public MeetingDto(long id, String name, Timestamp time, String place) {
+		this.id = id;
+		this.name = name;
+		this.time = time;
+		this.place = place;
+	}
+
+	public MeetingDto(long id, String name, Timestamp time, String place, boolean reviewed) {
+		this.id = id;
+		this.name = name;
+		this.time = time;
+		this.place = place;
+		this.reviewed = reviewed;
+	}
+
 	public MeetingDto(Meeting mt){
 		setId(mt.getId());
 		Group gr = mt.getGroup();
@@ -71,4 +88,11 @@ public class MeetingDto {
 		this.criterions = criterions;
 	}
 
+	public boolean isReviewed() {
+		return reviewed;
+	}
+
+	public void setReviewed(boolean reviewed) {
+		this.reviewed = reviewed;
+	}
 }

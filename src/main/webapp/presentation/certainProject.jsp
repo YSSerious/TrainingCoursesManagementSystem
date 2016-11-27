@@ -128,18 +128,20 @@
                             <b>Add criteria</b>
                         </button>
                     </div>
-                    <div id="collapseIn" class="panel-collapse collapse">
-                        <c:forEach items="${criterions}" var="criterion">
-                            <div class="panel-body" id="criteriaId-${criterion.id}">
-                                <div class="col-md-11">${criterion.title}</div>
-                                <c:if test="${!criterion.rated}">
-                                    <div class="btn rmv-cr-btn col-md-1" type='button'
-                                         data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </div>
-                                </c:if>
-                            </div>
-                        </c:forEach>
+                    <div id="collapseIn" class="panel-collapse collapse clearfix">
+                            <ul class="list-group" id="collapseUL">
+                                <c:forEach items="${criterions}" var="criterion">
+                                    <li class="list-group-item  clearfix" id="criteriaId-${criterion.id}">
+                                        <div class="col-md-11">${criterion.title}</div>
+                                        <c:if test="${!criterion.rated}">
+                                            <div class="btn rmv-cr-btn col-md-1" type='button'
+                                                 data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </div>
+                                        </c:if>
+                                    </li>
+                                </c:forEach>
+                            </ul>
                     </div>
                 </div>
             </div>
@@ -154,7 +156,8 @@
             </h2>
             <div class="panel-heading">
 				<div role="button" data-toggle="collapse" data-target="#att-collapse">
-                                <span id="spanId" class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
+                    <!--Пожалуйста, не ставь зедсь уже использующийся ID. Если тебе так сильно нужен мой метод смены кнопки, используй class.-->
+                                <span id="spanIId" class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
                 </div>
                 <div role="button" class="btn btn-default btn-sm pull-right" id="add-att-btn" 
                 	data-toggle="modal" data-target="#addAttachmentModal"><b>Add</b>
@@ -165,7 +168,7 @@
 		            <c:forEach items="${attachments}" var="attachment">
 		                <li class="list-group-item">
 		                    <a href="${attachment.attachmentScope}">${attachment.name}</a>
-		                    <div class="btn rmv-btn" role='button' data-button='{"id_attachment": "${attachment.id}"}'>
+		                    <div class="btn rmv-btn col-md-1" role='button' data-button='{"id_attachment": "${attachment.id}"}'>
 		                        <span class="glyphicon glyphicon-remove"></span>
 		                    </div>
 		                </li>
@@ -178,7 +181,7 @@
         <c:forEach items="${attachments}" var="attachment">
             <li class="list-group-item">
                 <a href="${attachment.attachmentScope}">${attachment.name}</a>
-                <div class="btn rmv-btn" type='button' data-button='{"id_attachment": "${attachment.id}"}'>
+                <div class="btn rmv-btn col-md-1" type='button' data-button='{"id_attachment": "${attachment.id}"}'>
                     <span class="glyphicon glyphicon-remove"></span>
                 </div>
             </li>

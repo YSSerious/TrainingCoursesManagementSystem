@@ -109,11 +109,10 @@ public class CertainProjectController {
     @ResponseBody
     public String updateProjectName(
             @RequestParam("projectId") String projectId,
-            @RequestParam("projectName") String projectName) throws InterruptedException {
+            @RequestParam("projectName") String projectName) {
         Project project = projectService.getById(project_id);
         project.setName(projectName);
         projectService.updateProject(project);
-//        Thread.sleep(1000);
         return "";
     }
     
@@ -143,11 +142,10 @@ public class CertainProjectController {
     @ResponseBody
     public String updateProjectDescription(
             @RequestParam("projectId") String projectId,
-            @RequestParam("projectDescription") String description) throws InterruptedException {
+            @RequestParam("projectDescription") String description) {
         Project project = projectService.getById(project_id);
         project.setDescription(description);
         projectService.updateProject(project);
-        Thread.sleep(1000);
         return "";
     }
     

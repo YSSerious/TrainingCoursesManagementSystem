@@ -173,20 +173,25 @@ public class CertainUserController {
 		return projectReportDto;
 	}
 
+	@RequestMapping(value = "/ajax/get/projects_final_review", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ProjectDto> getProjectsForFinalReview(@RequestParam("studentId") Long studentId, Principal principal){
+		List<ProjectDto> response = new LinkedList<ProjectDto>();
+		Long mentorId = userService.getByEmail(principal.getName()).getId();
+		Date date = new Date(System.currentTimeMillis());
+		for (Project project : projectService.getMentorStudentProjects(mentorId, studentId)){
+			if(project.getFinishDate().compareTo(date)>0||(!finalReviewService.existsForProject(studentId, project.getId(), "F")))
+				response.add(new ProjectDto(project));
+		}
+		return response;
+	}
+
 	@RequestMapping (value = "/ajax/get/final_review_form")
 	@ResponseBody
-	public JsonWrapperFinRev getFinReviewFormData(@RequestParam("user") Long userId){
+	public JsonWrapperFinRev getFinReviewFormData(@RequestParam("user") Long userId, @RequestParam("projectId") Long projectId){
 		JsonWrapperFinRev wrapper = new JsonWrapperFinRev();
 		List<FinalReviewCriterion> result = null;
-		List<Project> all = projectService.getStudentProjects(userId);
-		Date date = new Date(System.currentTimeMillis());
-		//only for testing gonna be fixed ASAP
-		Project current = null;
-		for(Project project : all)
-			if(project.getFinishDate().compareTo(date)>=0){
-				current = project;
-				break;
-			}
+		Project current = projectService.getById(projectId);
 		if(current!=null){
 			if(finalReviewService.exists(userId, groupService.getByUserProject(userId, current.getId()).getId(), "F")) {
 				FinalReview review = finalReviewService.getByStudent(current.getId(), userId, "F");

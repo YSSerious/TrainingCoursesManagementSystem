@@ -118,8 +118,8 @@ $(document).ready(function () {
     });
 
     $('#saveMeeting').attr('disabled', true);
-    var meetingName = new RegExp('^[a-z0-9_-]{3,15}$');
-    var meetingPlace = new RegExp('^[a-z0-9_-]{3,25}$');
+    var meetingName = new RegExp('^[a-zA-Z0-9_-\\s]{3,15}$');
+    var meetingPlace = new RegExp('^[a-zA-Z0-9_-\\s]{3,25}$');
     var groupRE = function () {
         var check = false;
         $.each($('.isGroupChecked'), function (key, value) {
@@ -172,7 +172,7 @@ $(document).ready(function () {
                         find('td:first').text()},
             success: function (data) {
                 console.log(data);
-                $('#collapseIn').append(buildResponseCriteria(data));
+                $('#collapseUL').append(buildResponseCriteria(data));
                 a.parent().parent().remove();
             },
             error: function (textStatus) {
@@ -241,7 +241,7 @@ function changeSpan() {
 }
 
 function buildResponseCriteria(data) {
-    return "<div class='panel-body' id='criteriaId-" + data.id + "'>" +
+    return "<li class='list-group-item  clearfix' id='criteriaId-" + data.id + "'>" +
             "<div class='col-md-11'>" + data.title + "</div>" +
             "<c:if test='" + data.rated + "'>" +
             "<div class='btn rmv-cr-btn col-md-1' type='button'" +
@@ -250,9 +250,9 @@ function buildResponseCriteria(data) {
             "<span class='glyphicon glyphicon-remove'></span>" +
             "</div>" +
             "</c:if>" +
-            "</div>";
-}
-;
+            "</li>";
+};
+
 
 $(document).ready(function () {
     if ($('#can-edit').length) {

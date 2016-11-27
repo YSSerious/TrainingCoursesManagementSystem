@@ -359,14 +359,15 @@ function getSelectCriteria(projectCriteria, projectId){
 	return select;
 }
 
-function getReviewForm(userId) {
+function getReviewForm(userId, projectId) {
+	$('#addFinReview').modal('toggle');
+	$('#finReviewProject').modal('toggle');
 	$.ajax({
 		'url' : '/ajax/get/final_review_form',
 		'type' : 'GET',
-		'data' : {'user' : userId},
+		'data' : {'user' : userId, 'projectId' : (projectId)?projectId:$('#fin-rev-proj-switch').val()},
 		'success' : function(resp) {
 			var s = '';
-			console.warn(resp);
 			$.each( resp.data, function( key, value ) {
 				s+='<tr class="fin-rev-res-item"><td>'+value.criterion.title+'</td><td><select id="sel'
 				+value.criterion.id+'">';
@@ -398,6 +399,28 @@ function getReviewForm(userId) {
 	});
 }
 
+function getMentorStudentProjects(userId){
+	$.ajax({
+		'url': '/ajax/get/projects_final_review',
+		'type': 'GET',
+		'data': {'studentId': userId},
+		'success': function (resp) {
+			if(resp.length==1){
+				getReviewForm(userId, resp[0].id);
+				return;
+			}
+			var s = '<br/><tr><td colspan="3"><select class="form-control" id="fin-rev-proj-switch">';
+			$.each(resp, function (key, value) {
+				s+='<option value="'+value.id+'">'+value.name+'</option>';
+			});
+			s+='</select></td></tr>';
+			$('#final-review-project-list').html(s);
+			if(resp.length>0)
+				$('#finReviewProject').find('.btn').removeClass('hidden');
+		}
+	});
+}
+
 function doFinalReview(userId) {
 	function sendAjax(data, comment) {
 		console.log(comment);
@@ -422,8 +445,11 @@ function doFinalReview(userId) {
 		var finReview = {"mark": {"value": $(this).find('select').val()}, "criterion": {"id": $(this).find('input').attr('id')}, "commentary": $(this).find('input').val()};
 		if(!$(this).find('input').val()) {
 			error = 'All comments are required!';
-			return false;
+			$(this).addClass('error');
 		}
+		else if($(this).hasClass('error'))
+			$(this).removeClass('error');
+
 		data.push(finReview);
 	});
 	if(!error){
