@@ -15,7 +15,7 @@ $(document).ready(function () {
 		
 			success: function (data) {
 	                console.log(data);
-	                $('#listAttachments').append(buildAttachment($("#groupAttachmentName").val(),
+	                $('#listAttachments').prepend(buildAttachment($("#groupAttachmentName").val(),
 	                		$("#groupAttachment").val()));
 	                $('#addGroupAttachmentModal').modal("hide");
 	            },
@@ -28,13 +28,13 @@ $(document).ready(function () {
 
 	function buildAttachment(name,scope) {
 		 
-	    return "<li   class='list-group-item  clearfix'>"+
+	     return '<li   class="list-group-item  clearfix">'+
         
-        "<a href="+scope+">"+name+" </a>"+
+        '<a href='+scope+'>'+name+'</a>'+
         
         
           // "<br/>"+
-       "<li/>";
+       '</li>';
 	    
 	}
 
