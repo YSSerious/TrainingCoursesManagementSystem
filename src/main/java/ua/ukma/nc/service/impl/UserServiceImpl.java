@@ -225,10 +225,20 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<User> getByName(String name) {
-		return userDao.getByName(name);
+	public List<User> getByName(String name, int limit, int offset) {
+		return userDao.getByName(name, limit, offset);
 	}
-
+	
+	@Override
+	public List<User> getByName(String name, String secondName, String lastName, int limit, int offset) {
+		return userDao.getByName(name, secondName, lastName, limit, offset);
+	}
+	
+	@Override
+	public List<User> getByName(String value1, String value2, int limit, int offset) {
+		return userDao.getByName(value1, value2, limit, offset);
+	}
+	
 	@Override
 	public List<User> studentsByProjectId(Long projectId) {
 		return userDao.studentsByProjectId(projectId);
@@ -237,5 +247,39 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> studentsByGroupId(Long groupId) {
 		return userDao.studentsByGroupId(groupId);
+	}
+	
+	@Override
+	public List<User> studentsByProjectName(String name, int limit, int offset) {
+		return userDao.studentsByProjectName(name, limit, offset);
+	}
+
+	@Override
+	public List<User> studentsByGroupName(String name, int limit, int offset) {
+		return userDao.studentsByGroupName(name, limit, offset);
+	}
+	
+	@Override
+	public int countGroup(String name) {
+		return userDao.countGroup(name);
+	}
+	
+	@Override
+	public int countProject(String name) {
+		return userDao.countProject(name);
+	}
+	@Override
+	public int countName(String name) {
+		return userDao.countName(name);
+	}
+	
+	@Override
+	public int countHalfName(String value1, String value2) {
+		return userDao.countHalfName(value1, value2);
+	}
+	
+	@Override
+	public int countFullName(String name, String secondName, String lastName) {
+		return userDao.countFullName(name, secondName, lastName);
 	}
 }

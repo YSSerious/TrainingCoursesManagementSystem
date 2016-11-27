@@ -80,12 +80,27 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String HAS_REVIEWS = "SELECT EXISTS (SELECT * FROM (tcms.meeting_review INNER JOIN tcms.user_group ON tcms.meeting_review.id_student = tcms.user_group.id_user ) WHERE (tcms.meeting_review.id_student = ? AND tcms.user_group.id_group = ? ))";
 
-	private static final String GET_BY_NAME = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE first_name LIKE '";
+	private static final String GET_BY_NAME = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE (first_name LIKE '";
 
-	private static final String GET_STUDENTS_BY_PROJECT_ID = "SELECT * FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project = ?))";
+	private static final String GET_BY_FIRST_NAME = "first_name LIKE '";
 
-	private static final String GET_STUDENTS_BY_GROUP_ID = "SELECT * FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group = ?)";
+	private static final String GET_BY_LAST_NAME = "last_name LIKE '";
 
+	private static final String GET_BY_SECOND_NAME = "second_name LIKE '";
+
+	private static final String GET_STUDENTS_BY_PROJECT_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project = ?))";
+
+	private static final String GET_STUDENTS_BY_GROUP_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group = ?)";
+	
+	private static final String GET_STUDENTS_BY_PROJECT_NAME = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT id_user FROM tcms.user_group WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project IN (SELECT id FROM tcms.project WHERE name LIKE '";
+
+	private static final String GET_STUDENTS_BY_GROUP_NAME =   "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT id_user FROM tcms.user_group WHERE id_group IN (SELECT id FROM tcms.group WHERE name LIKE '";
+
+	private static final String COUNT_GROUP = "SELECT COUNT(*) FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT id_user FROM tcms.user_group WHERE id_group IN (SELECT id FROM tcms.group WHERE name LIKE '";
+	
+	private static final String COUNT_PROJECT = "SELECT COUNT(*) FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT id_user FROM tcms.user_group WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project IN (SELECT id FROM tcms.project WHERE name LIKE '";
+	
+	private static final String COUNT_NAME = "SELECT COUNT(*) FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE (first_name LIKE '";
 	@Override
 	public User getByEmail(String email) {
 		log.info("Getting user with email = {}", email);
@@ -182,9 +197,30 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public List<User> getByName(String name) {
-		log.info("Getting all users");
-		return jdbcTemplate.query(GET_BY_NAME + name + "%'", new UserMapper());
+	public List<User> getByName(String name, int limit, int offset) {
+		log.info("Getting all users with name=" + name);
+		return jdbcTemplate.query(
+				GET_BY_NAME + name + "%' OR " + GET_BY_LAST_NAME + name + "%' OR " + GET_BY_SECOND_NAME + name + "%')"+ " LIMIT " + limit + " OFFSET " + offset,
+				new UserMapper());
+	}
+
+	@Override
+	public List<User> getByName(String name, String secondName, String lastName, int limit, int offset) {
+		log.info("Getting all users with name=" + name);
+		return jdbcTemplate.query(GET_BY_NAME + name + "%' AND " + GET_BY_LAST_NAME + lastName + "%' AND "
+				+ GET_BY_SECOND_NAME + secondName + "%')"+ " LIMIT " + limit + " OFFSET " + offset, new UserMapper());
+	}
+
+	@Override
+	public List<User> getByName(String value1, String value2, int limit, int offset) {
+		log.info("Getting all users with name=" + value1);
+		return jdbcTemplate.query(
+				GET_BY_NAME + value1 + "%' AND " + GET_BY_LAST_NAME + value2 + "%') OR (" + GET_BY_FIRST_NAME + value2 +"%' AND "
+						+ GET_BY_LAST_NAME + value1 + "%') OR (" + GET_BY_FIRST_NAME  + value1 +"%' AND " + GET_BY_SECOND_NAME
+						+ value2 + "%') OR (" + GET_BY_FIRST_NAME + value2 +"%' AND " + GET_BY_SECOND_NAME + value1
+				+"%') OR (" + GET_BY_LAST_NAME + value1 +"%' AND " + GET_BY_SECOND_NAME + value2 + "%') OR (" + GET_BY_LAST_NAME
+						+ value2 +"%' AND " + GET_BY_SECOND_NAME + value1+"%')"+ " LIMIT " + limit + " OFFSET " + offset,
+				new UserMapper());
 	}
 
 	public List<User> studentsByProjectId(Long projectId) {
@@ -197,5 +233,47 @@ public class UserDaoImpl implements UserDao {
 		log.info("Getting all users from group with id=" + groupId);
 		return jdbcTemplate.query(GET_STUDENTS_BY_GROUP_ID, new UserMapper(), groupId);
 	}
+	
+	@Override
+	public List<User> studentsByProjectName(String name, int limit, int offset) {
+		log.info("Getting all users from project with name=" + name);
+		return jdbcTemplate.query(GET_STUDENTS_BY_PROJECT_NAME+name+"%')))"+ " LIMIT " + limit + " OFFSET " + offset, new UserMapper());
+	}
 
+	@Override
+	public List<User> studentsByGroupName(String name, int limit, int offset) {
+		log.info("Getting all users from group with name=" + name);
+		return jdbcTemplate.query(GET_STUDENTS_BY_GROUP_NAME+name+"%'))"+ " LIMIT " + limit + " OFFSET " + offset, new UserMapper());
+	}
+
+	@Override
+	public int countGroup(String name) {
+		return jdbcTemplate.queryForObject(COUNT_GROUP+name+"%'))", int.class);
+	}
+	
+	@Override
+	public int countProject(String name) {
+		return jdbcTemplate.queryForObject(COUNT_PROJECT+name+"%'))", int.class);
+	}
+	
+	@Override
+	public int countName(String name) {
+		return jdbcTemplate.queryForObject(COUNT_NAME+name+"%')", int.class);
+	}
+	
+	@Override
+	public int countHalfName(String value1, String value2) {
+		return jdbcTemplate.queryForObject(COUNT_NAME+ value1 + "%' AND " + GET_BY_LAST_NAME + value2 + "%') OR (" + GET_BY_FIRST_NAME + value2 +"%' AND "
+				+ GET_BY_LAST_NAME + value1 + "%') OR (" + GET_BY_FIRST_NAME  + value1 +"%' AND " + GET_BY_SECOND_NAME
+				+ value2 + "%') OR (" + GET_BY_FIRST_NAME + value2 +"%' AND " + GET_BY_SECOND_NAME + value1
+		+"%') OR (" + GET_BY_LAST_NAME + value1 +"%' AND " + GET_BY_SECOND_NAME + value2 + "%') OR (" + GET_BY_LAST_NAME
+				+ value2 +"%' AND " + GET_BY_SECOND_NAME + value1+"%')", int.class);
+	}
+	
+	@Override
+	public int countFullName(String name, String secondName, String lastName) {
+		return jdbcTemplate.queryForObject(COUNT_NAME+ name + "%' AND " + GET_BY_LAST_NAME + lastName + "%' AND "
+				+ GET_BY_SECOND_NAME + secondName + "%')", int.class);
+	}
+	
 }
