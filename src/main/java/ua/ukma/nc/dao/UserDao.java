@@ -30,7 +30,7 @@ public interface UserDao {
 
     int addRole(User user, Role role);
     
-    void deleteRoles(User user);
+    void deleteRole(User user, Long roleId);
 
     int setStatus(User user, Status status);
 
@@ -45,5 +45,9 @@ public interface UserDao {
 	List<User> studentsByGroupId(Long groupId);
 
 	List<User> getByName(String name);
+	
+	boolean hasStudentProjects(Long studentId);
+	boolean hasMentorProjects(Long mentorId);
+	boolean hasHRReviews(Long hrId);
 
 }

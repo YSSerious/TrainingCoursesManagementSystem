@@ -13,6 +13,7 @@ import ua.ukma.nc.service.*;
 import java.security.Principal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,12 +56,22 @@ public class CertainUserController {
 	}
 	
 	@RequestMapping(value = "/manageRoles", method = RequestMethod.POST)
-	public ModelAndView changeRole(@RequestParam("student") Long student, @RequestParam("roles") Long[] chroles){
+	public ModelAndView changeRole(@RequestParam("student") Long student, @RequestParam("roles") List<Long> chRoles){
 		User user = userService.getById(student);
-		userService.deleteRoles(user);
 		
-		for(Long roleId: chroles)
-			userService.addRole(user, roleService.getById(roleId));
+		List<Role> roles = user.getRoles();
+		List<Long> rolesId = new ArrayList<Long>();
+		
+		for(Role role: roles)
+			rolesId.add(role.getId());
+		
+		for(Long roleId: rolesId)
+			if(!chRoles.contains(roleId))
+				userService.deleteRole(user, roleId);
+		
+		for(Long roleId: chRoles)
+			if(!rolesId.contains(roleId))
+				userService.addRole(user, roleService.getById(roleId));
 		
 		return new ModelAndView("redirect:" + "users/"+student);
 	}
@@ -95,14 +106,33 @@ public class CertainUserController {
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public ModelAndView viewUser(@PathVariable("id") Long id) {
 		ModelAndView model = new ModelAndView();
-		UserDto userDto = new UserDto(userService.getById(id));
+		
+		User user = userService.getById(id);
+		UserDto userDto = new UserDto(user);
+		
 		model.addObject("user", userDto);
 		model.setViewName("user");
 		model.addObject("title", userDto.getLastName()+" "+userDto.getFirstName());
 
-		List<RoleDto> roles = roleService.getAll().stream().map(RoleDto::new).collect(Collectors.toList());
-		model.addObject("roles", roles);
+		List<Role> allRoles = roleService.getAll();
+		List<Role> userRoles = user.getRoles();
 		
+		List<RoleDto> rolesDto = new ArrayList<RoleDto>();
+		
+		for(Role role: allRoles){
+			RoleDto roleDto = new RoleDto(role);
+			
+			for(Role userRole: userRoles)
+				if(role.getId() == userRole.getId()){
+					roleDto.setHave(true);
+					roleDto.setActive(userService.isUsingRole(id, role.getId()));
+					break;
+				}
+			
+			rolesDto.add(roleDto);
+		}
+		
+		model.addObject("roles", rolesDto);
 		return model;
 	}
 

@@ -18,4 +18,6 @@ public interface StudentStatusDao {
     List<StudentStatus> getAll();
 
     int createStudentStatus(StudentStatus studentStatus);
+    
+    boolean exists(Long id);
 }

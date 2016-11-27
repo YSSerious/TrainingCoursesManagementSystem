@@ -227,11 +227,22 @@
 											<div class="col-sm-12">
 												<c:forEach var="role" items="${roles}">
 													<div class="checkbox">
-														<label><input type="checkbox" name="roles"
-															<c:forEach var="userRole" items="${user.roles}">
-                                                      			<c:if test="${role.title eq userRole}">checked</c:if>
-                                        					</c:forEach>
-															value="${role.id}">${role.title}</label>
+														<label>
+
+                                                      	<c:if test="${role.have eq true}">
+                                                      		<c:if test="${role.active eq true}">
+                                                      			<input type="checkbox" name="roles" disabled checked value="${role.id}">
+                                                      			<input type="hidden" name="roles" value="${role.id}">
+                                                      		</c:if>
+                                                     		<c:if test="${!(role.active eq true)}">
+                                                      			<input type="checkbox" name="roles" checked value="${role.id}">
+                                                      		</c:if>
+                                                      	</c:if>
+
+                                        				<c:if test="${role.have eq false}">
+                                        					<input type="checkbox" name="roles" value="${role.id}">
+                                        				</c:if>
+														${role.title}</label>
 													</div>
 												</c:forEach>
 											</div>

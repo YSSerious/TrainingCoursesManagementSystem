@@ -35,7 +35,7 @@ public interface UserService {
 
 	List<User> getSome(int limit, int offset);
 
-	void deleteRoles(User user);
+	void deleteRole(User user, Long roleId);
 
 	int count();
 
@@ -46,5 +46,13 @@ public interface UserService {
 	List<User> studentsByProjectId(Long projectId);
 
 	List<User> studentsByGroupId(Long groupId);
+	
+	boolean hasStudentProjects(Long studentId);
+	boolean hasMentorProjects(Long mentorId);
+	boolean hasHRReviews(Long hrId);
+	
+	boolean isUsingRole(Long userId, Long roleId);
+	
+	boolean isCurrentUser(Long userId);
 
 }

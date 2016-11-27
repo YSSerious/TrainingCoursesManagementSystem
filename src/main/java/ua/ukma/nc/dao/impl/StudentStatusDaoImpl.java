@@ -49,6 +49,8 @@ public class StudentStatusDaoImpl implements StudentStatusDao{
 
     private static final String UPDATE_STUDENT_STATUS = "UPDATE tcms.student_status SET id_status = ? WHERE id_student = ?";
 
+    private static final String EXISTS = "SELECT EXISTS (SELECT * FROM tcms.student_status WHERE id_student = ?)";
+   
     @Override
     public StudentStatus getByUserId(Long id) {
         log.info("Getting student status with student id = {}", id);
@@ -78,4 +80,9 @@ public class StudentStatusDaoImpl implements StudentStatusDao{
         log.info("Create new student status for student with id = {}", studentStatus.getStudent().getId());
         return jdbcTemplate.update(CREATE_STUDENT_STATUS, studentStatus.getStudent().getId(), studentStatus.getStatus().getId());
     }
+
+	@Override
+	public boolean exists(Long id) {
+		return jdbcTemplate.queryForObject(EXISTS, Boolean.class, id);
+	}
 }
