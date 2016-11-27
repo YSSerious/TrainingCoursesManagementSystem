@@ -40,7 +40,7 @@
 	<div class="panel-heading">
 		<h3 class="panel-title">Users</h3>
 	</div>
-	<table class="table table-striped table-bordered" id="pagination">
+	<table class="table table-striped table-bordered users" id="pagination">
 		<tr>
 			<th>User</th>
 			<th>User role</th>
