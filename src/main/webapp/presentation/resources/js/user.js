@@ -445,8 +445,11 @@ function doFinalReview(userId) {
 		var finReview = {"mark": {"value": $(this).find('select').val()}, "criterion": {"id": $(this).find('input').attr('id')}, "commentary": $(this).find('input').val()};
 		if(!$(this).find('input').val()) {
 			error = 'All comments are required!';
-			return false;
+			$(this).addClass('error');
 		}
+		else if($(this).hasClass('error'))
+			$(this).removeClass('error');
+
 		data.push(finReview);
 	});
 	if(!error){
