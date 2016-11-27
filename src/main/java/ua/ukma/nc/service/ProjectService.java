@@ -30,6 +30,8 @@ public interface ProjectService {
 	
 	List<Project> getMentorProjects(Long userId);
 
+	List<Project> getMentorStudentProjects(Long mentorId, Long studentId);
+
 	int addCriteria(Long projectId, Criterion criterion);
 
 	int deleteProjectCriterion(Long projectId, Criterion criterion);

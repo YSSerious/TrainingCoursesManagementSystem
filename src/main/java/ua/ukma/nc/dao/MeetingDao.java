@@ -35,6 +35,8 @@ public interface MeetingDao {
 
     boolean isExist(Timestamp date);
 
+    boolean isReviewed(Long meetingId);
+
     Long getProjectByMeetingId(Long meetingId);
 
     int addCriteria(Long meetingId, Criterion criterion);
@@ -44,4 +46,6 @@ public interface MeetingDao {
     int[] addMeetingCriterion(Meeting meeting, List<Criterion> criterions);
 
     int deleteMeetingCriterion(Long meetingId, Criterion criterion);
+
+    int editMeeting(Long id, String name, Timestamp date, String place );
 }

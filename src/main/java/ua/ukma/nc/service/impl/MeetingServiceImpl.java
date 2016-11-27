@@ -47,6 +47,11 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    public int editMeeting(Long id, String name, String date, String place) {
+        return meetingDao.editMeeting(id, name, dateConverter(date), place);
+    }
+
+    @Override
     public List<Meeting> getAll() {
         return meetingDao.getAll();
     }
@@ -107,6 +112,11 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public boolean isExist(Timestamp date) {
         return meetingDao.isExist(date);
+    }
+
+    @Override
+    public boolean isReviewed(Long meetingId) {
+        return meetingDao.isReviewed(meetingId);
     }
 
     @Override

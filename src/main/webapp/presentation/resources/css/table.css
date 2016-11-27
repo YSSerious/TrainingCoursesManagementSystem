@@ -2,6 +2,10 @@
 	background-color: #c9d1d8;
 }
 
+#pagination th, #pagination td {
+	text-align: center;
+}
+
 #table-listing {
 	width: 100%;
 }
@@ -13,7 +17,7 @@
 	width: auto;
 }
 
-.meeting table{
+.meeting table {
 	width: 100%;
 }
 
@@ -24,36 +28,36 @@
 
 .meeting th, .meeting td {
 	min-width: 150px;
-	width:auto;
+	width: auto;
 }
 
-.meeting th:last-child{
+.meeting th:last-child {
 	width: 100%;
 }
 
 .user-table td:first-child {
-	white-space: nowrap; 
+	white-space: nowrap;
 }
 
 .user-table th:first-child {
-	white-space: nowrap; 
+	white-space: nowrap;
 }
 
-.user-table th:not(:first-child) {
-	text-align: center;   
+.user-table th:not (:first-child) {
+	text-align: center;
 }
 
-.user-table td:not(:first-child) {
-	font-size:13pt;
-	text-align: center;   
+.user-table td:not (:first-child) {
+	font-size: 13pt;
+	text-align: center;
 }
 
 .table-responsive>.fixed-column {
-    position: absolute;
-    width: auto;
+	position: absolute;
+	width: auto;
 }
 
-.fixed-column{
+.fixed-column {
 	white-space: nowrap;
-	background-color:#fff;
+	background-color: #fff;
 }

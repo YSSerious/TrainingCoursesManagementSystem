@@ -33,6 +33,11 @@ public class FinalReviewServiceImpl implements FinalReviewService{
     }
 
     @Override
+    public int getNumOfFinalReviewsByProjectAndType(Long projectId, String type) {
+        return finalReviewDao.getNumOfFinalReviewsByProjectAndType(projectId, type);
+    }
+
+    @Override
     public List<FinalReview> getAll() {
         return finalReviewDao.getAll();
     }

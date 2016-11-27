@@ -22,4 +22,6 @@ public interface RoleService {
     List<Role> getAll();
 
     int createRole(Role role);
+
+	Role getByRole(String role);
 }

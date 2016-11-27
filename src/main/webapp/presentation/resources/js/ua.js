@@ -7,6 +7,7 @@ lang = {
 	user_grades_title : 'Оцінки:',
 	user_marks_search : 'Пошук',
 	user_select_criteria : 'Виберіть критерії',
+	user_select_projects : 'Виберіть проекти',
 	user_select_categories: 'Виберіть категорії',
 	user_final_review: 'Фінальний відгук',
 	user_general_review: 'Загальний',
@@ -16,10 +17,13 @@ lang = {
 	user_next_step: 'Наступний крок',
 	user_loading: 'Завантаження',
 	user_download: 'Завантажити',
-	user_select_projects: 'Виберіть проекти або лишіть поле порожнім, щоб вибрати всі',
+	user_note_projects: 'Залиште поле проектів порожнім, щоб вибрати всі',
+	user_note_projects2: 'Для оновлення списку критеріїв нажміть кнопку "Наступний крок"',
+	user_note_criteria: 'Залиште поля критеріїв і категорій порожніми, щоб вибрати всі критерії',
 	user_no_meeting_info: 'Відсутня інформація про зустріч!',
 	user_general_comment: 'Загальний коментар:',
 	user_criterion_name: 'Критерія',
 	user_mark: 'Оцінка',
-	user_commentary: 'Коментар'
+	user_commentary: 'Коментар',
+	user_date: 'Дата'
 };

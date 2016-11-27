@@ -6,6 +6,20 @@ function getMark(mark){
 	return '<p style="padding:0px; margin:0px;">'+mark+'</p>';
 }
 
+function getStringDate(date){
+	var month = date.getMonth() + 1;
+	if(month < 10)
+		month = '0'+month;
+	
+	var day = date.getDate();
+	if(day < 10)
+		day = '0'+day;
+	
+    return month + 
+    "/" +  day +
+    "/" +  date.getFullYear();
+}
+
 function createMentorProjectsInfo(userId, divInside){
 	$.ajax({
 	    'url' : '/ajaxmentorprojects',
@@ -31,7 +45,7 @@ function createMentorProjectsInfo(userId, divInside){
 	    		s+= '<h2>Mentor projects: </h2><hr/>';
 	    		s+= '<div class="panel panel-'+divClass+'">';
 	    		s+= '<div id="mpr'+value.id+'" class="panel-body">' + value.name;
-	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
+	    		s+= '<div class="pull-right">'+getStringDate(new Date(value.startDate))+' - '+getStringDate(new Date(value.finishDate))+'</div>';
  	    		s+= '</div></div>';
 	    	
 	    	});
@@ -58,6 +72,12 @@ function createStudentProjectsInfo(userId, divInside){
 	    		var finishDate = new Date(value.finishDate);
 	    		var divClass = 'default';
 	    		
+	    		try{
+	    			getStringDate(new Date(value.startDate));
+	    		}catch(error){
+	    			alert(error);
+	    		}
+	    		
 	    		if(startDate.getTime() < currentDate.getTime() && currentDate.getTime() < finishDate.getTime()){
 	    			divClass = 'current';
 	    		}else if(startDate.getTime() > currentDate.getTime()){
@@ -67,7 +87,7 @@ function createStudentProjectsInfo(userId, divInside){
 	    		}
 	    		s+= '<div class="panel panel-'+divClass+'">';
 	    		s+= '<div id="pr'+value.id+'" class="panel-body">' + value.name;
-	    		s+= '<div class="pull-right">'+new Date(value.startDate).toString().slice(3,15)+' - '+new Date(value.finishDate).toString().slice(3,15)+'</div>';
+	    		s+= '<div class="pull-right">'+getStringDate(new Date(value.startDate))+' - '+getStringDate(new Date(value.finishDate))+'</div>';
  	    		s+= '</div>';
  	    		s+= '</div>';
  	    		
@@ -205,13 +225,13 @@ function getMarksTable(markTableDto, projectId){
  	table+= '<tr><th>#</th>';
  	
  	$.each(markTableDto.meetings, function( key, value ) {
- 			table+= '<th>'+getModal(value.id, 'M', value.name, value)+'</th>';
+ 			table+= '<th align="center">'+getModal(value.id, 'M', value.name, value)+'</th>';
  	});
  	
  	if(markTableDto.finalReview == null)
- 		table+= '<th>F</th>';
+ 		table+= '<th align="center">F</th>';
  	else
- 		table+= '<th>'+getModal('f'+markTableDto.finalReview.id, 'F', lang.user_final_review, markTableDto.finalReview)+'</th>';
+ 		table+= '<th align="center">'+getModal('f'+markTableDto.finalReview.id, 'F', lang.user_final_review, markTableDto.finalReview)+'</th>';
  	
  	table+= '</tr>';
 
@@ -222,9 +242,9 @@ function getMarksTable(markTableDto, projectId){
  			table+= '<tr class="active" id="row-'+projectId+'-'+categoryResult.categoryDto.id+'-'+criterionResult.criterionId+'"><td style="padding-left:30px;">' + criterionResult.criterionName + '</td>';
  			$.each(criterionResult.marks, function(index, mark) {
  					if(mark.commentary == '')
- 						table+= '<td><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
+ 						table+= '<td align="center"><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
  					else
- 						table+= '<td><span title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
+ 						table+= '<td align="center"><span title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
 	    		});
  			table+= '</tr>';
  		});
@@ -339,14 +359,15 @@ function getSelectCriteria(projectCriteria, projectId){
 	return select;
 }
 
-function getReviewForm(userId) {
+function getReviewForm(userId, projectId) {
+	$('#addFinReview').modal('toggle');
+	$('#finReviewProject').modal('toggle');
 	$.ajax({
 		'url' : '/ajax/get/final_review_form',
 		'type' : 'GET',
-		'data' : {'user' : userId},
+		'data' : {'user' : userId, 'projectId' : (projectId)?projectId:$('#fin-rev-proj-switch').val()},
 		'success' : function(resp) {
 			var s = '';
-			console.warn(resp);
 			$.each( resp.data, function( key, value ) {
 				s+='<tr class="fin-rev-res-item"><td>'+value.criterion.title+'</td><td><select id="sel'
 				+value.criterion.id+'">';
@@ -378,6 +399,28 @@ function getReviewForm(userId) {
 	});
 }
 
+function getMentorStudentProjects(userId){
+	$.ajax({
+		'url': '/ajax/get/projects_final_review',
+		'type': 'GET',
+		'data': {'studentId': userId},
+		'success': function (resp) {
+			if(resp.length==1){
+				getReviewForm(userId, resp[0].id);
+				return;
+			}
+			var s = '<br/><tr><td colspan="3"><select class="form-control" id="fin-rev-proj-switch">';
+			$.each(resp, function (key, value) {
+				s+='<option value="'+value.id+'">'+value.name+'</option>';
+			});
+			s+='</select></td></tr>';
+			$('#final-review-project-list').html(s);
+			if(resp.length>0)
+				$('#finReviewProject').find('.btn').removeClass('hidden');
+		}
+	});
+}
+
 function doFinalReview(userId) {
 	function sendAjax(data, comment) {
 		console.log(comment);
@@ -402,8 +445,11 @@ function doFinalReview(userId) {
 		var finReview = {"mark": {"value": $(this).find('select').val()}, "criterion": {"id": $(this).find('input').attr('id')}, "commentary": $(this).find('input').val()};
 		if(!$(this).find('input').val()) {
 			error = 'All comments are required!';
-			return false;
+			$(this).addClass('error');
 		}
+		else if($(this).hasClass('error'))
+			$(this).removeClass('error');
+
 		data.push(finReview);
 	});
 	if(!error){
@@ -442,7 +488,12 @@ function report(studentId){
 	    'data' : {'user' : studentId},
 	    'success' : function(data) {
 	    	var select = '<div class="row">';
-	    	select += '<div class="col-sm-8">';
+	    	select += '<div class="col-sm-12">';
+	    	select += lang.user_select_projects;
+	    	select += '</div>';
+	    	select += '</div>'
+	    	select += '<div class="row">';
+	    	select += '<div class="col-sm-12">';
 	    	select += '<select style="width:100%;" multiple="true" class="select-project-report">';
 	    	
 	    	$.each(data, function(key, value ) {
@@ -451,19 +502,18 @@ function report(studentId){
 	    	
 	    	select += '</select>';
 	    	select += '</div>';
-	    	select += '<div class="col-sm-4">';
+	    	select += '</div><hr/>';
+	    	select += '* '+lang.user_note_projects+'<br/>';
+	    	select += '* '+lang.user_note_projects2+'<br/><br/>';
 	    	
+	    	select += '<div class="row"><div class="col-sm-12">';
 	    	select += '<button onclick="loadCriteria('+studentId+')" class="btn btn-primary pull-right">'+lang.user_next_step+'</button>';
-	    	select += '</div>';
-	    	select += '</div>';
-	    	
+	    	select += '</div></div>';
 	    	if(data.length == 0)
 	    		$('#project-report-back').html(lang.user_no_projects);
 	    	else{
 	    		$('#project-report-back').html(select);
-	 	    	$('.select-project-report').select2({
-		    		  placeholder: lang.user_select_projects
-		    	});
+	 	    	$('.select-project-report').select2();
 	    	}
 
 	    }
@@ -481,9 +531,14 @@ function loadCriteria(studentId){
 	    'url' : '/ajaxcriteria?projects='+projects+'&student='+studentId,
 	    'type' : 'GET',
 	    'success' : function(data) {
-	    	
-	    	var select = '<br/><div class="row">';
-	    	select += '<div class="col-sm-8">';
+
+	    	select = '<hr/><div class="row">';
+	    	select += '<div class="col-sm-12">';
+	    	select += lang.user_select_categories + ':';
+	    	select += '</div>';
+	    	select += '</div>';
+	    	select += '<div class="row">';
+	    	select += '<div class="col-sm-12">';
 	    	select += '<select style="width:100%;" multiple="true" class="select-category-report">';
 	    	
 	    	$.each(data.categories, function(key, value ) {
@@ -492,15 +547,16 @@ function loadCriteria(studentId){
 	    	
 	    	select += '</select>';
 	    	select += '</div>';
-	    	select += '<div class="col-sm-4"></div>';
 	    	select += '</div>';
 	    	$('#criteria-report-back').html(select);
- 	    	$('.select-category-report').select2({
-	    		  placeholder: lang.user_select_categories
-	    	});
- 	    	
- 	    	select = '<br/><div class="row">';
- 	    	select += '<div class="col-sm-8">';
+ 	    	$('.select-category-report').select2();
+ 	    	select = '<hr/><div class="row">';
+ 	    	select += '<div class="col-sm-12">';
+ 	    	select += lang.user_select_criteria + ':';
+ 	    	select += '</div>';
+ 	    	select += '</div>';
+ 	    	select += '<div class="row">';
+ 	    	select += '<div class="col-sm-12">';
 	    	select += '<select style="width:100%;" multiple="true" class="select-criterion-report">';
 	    	
 	    	$.each(data.criteria, function(key, value ) {
@@ -509,15 +565,16 @@ function loadCriteria(studentId){
 	    	
 	    	select += '</select>';
 	    	select += '</div>';
-	    	select += '<div class="col-sm-4">';
+
+	    	select += '</div>';
+	    	select += '<hr/>';
+	    	select += '* '+lang.user_note_criteria+'<br/><br/>';
+	    	select += '<div class="row><div class="col-sm-12">';
 	    	select += '<button onclick="sendRequest('+studentId+')" class="btn btn-primary pull-right">'+lang.user_download+'</button>';
-	    	select += '</div>';
-	    	select += '</div>';
-	    	
+	    	select += '</div></div><br/><br/>';
+	    	$('#criteria-report-back').show();
 	    	$('#criteria-report-back').append(select);
- 	    	$('.select-criterion-report').select2({
-	    		  placeholder: lang.user_select_criteria
-	    	});
+ 	    	$('.select-criterion-report').select2();
 	    }
 	});
 }
@@ -546,12 +603,12 @@ function sendRequest(studentId){
 	url += '&criteria='+criteria;
 	window.location = url;
 	
-	$('#projets-report-modal').modal('hide');
+	$('#projects-report-modal').modal('hide');
 }
 
 function getModal(modalId, modalName, modalTitle, reviewDto){
 	
-	var modal = '<font color="blue" data-toggle="modal" data-target="#'+modalId+'"><b>'+modalName+'</b></font>';
+	var modal = '<center><font color="blue" data-toggle="modal" data-target="#'+modalId+'"><b>'+modalName+'</b></font></center>';
 
 	modal += '<div id="'+modalId+'" class="modal fade" role="dialog">';
 	modal += '<div class="modal-dialog">';
@@ -562,7 +619,7 @@ function getModal(modalId, modalName, modalTitle, reviewDto){
 	modal += '</div>'
 	modal += '<div style="max-height:80vh;overflow-y:auto;" class="modal-body text-left">';
 	modal += '<div class="remove-all-styles">';
-	modal += '<b>Date:</b>'+reviewDto.date;
+	modal += '<b>'+lang.user_date+': </b>'+reviewDto.date;
 	
 	if(reviewDto.type === '-')
 		modal += '<br/>'+lang.user_no_meeting_info;

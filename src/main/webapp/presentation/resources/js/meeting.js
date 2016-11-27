@@ -67,7 +67,7 @@ $(document).ready(function () {
     $("#search").keyup(function () {
         var value = this.value.toLowerCase();
 
-        $("table").find("tr").each(function (index) {
+        $("table#criterionMeetingTable").find("tr").each(function (index) {
             if (!index)
                 return;
             var id = $(this).find("td").first().text().toLowerCase();

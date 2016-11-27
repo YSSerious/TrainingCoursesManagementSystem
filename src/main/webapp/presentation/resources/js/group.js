@@ -91,7 +91,57 @@ $(document).ready(function () {
 			}
 		});
 	});
+
+	$("#deleteMeetingButton").click(function () {
+		$.ajax({
+			url: "/groups/deleteMeeting",
+			type: "POST",
+			data: {meetingId: chosenMeetingId},
+			success: function (data) {
+				console.log(data);
+				$('#meetingId-'+chosenMeetingId).remove();
+			},
+			error: function (textStatus) {
+				console.log(textStatus);
+				$('#meetingDeleteError').modal('show');
+
+			}
+		});
+	});
 	
+	$("#editMeetingButton").click(function () {
+		$.ajax({
+			url: "/groups/editMeeting",
+			type: "POST",
+			data: {id: chosenMeetingId, name: $("#editMeetingName").val(), date: $("#editMeetingDate").val(), place: $("#editMeetingPlace").val()},
+			success: function (data) {
+				console.log(data);
+				$('#editMeetingNameId-'+data.id).html(data.name);
+				$('#editMeetingDateId-'+data.id).html(convertTimestamp(data.time));
+				$('#editMeetingPlaceId-'+data.id).html(data.place);
+			},
+			error: function (textStatus) {
+				console.log(textStatus);
+			}
+		});
+	});
+
+	$('#editMeetingButton').attr('disabled', true);
+	var meetingName = new RegExp('^[a-zA-Z0-9_-\\s]{3,15}$');
+	var meetingPlace = new RegExp('^[a-zA-Z0-9_-\\s]{3,25}$');
+
+	$('#editMeetingFormId').change(function () {
+		if (meetingName.test($("#editMeetingName").val()) && meetingPlace.test($("#editMeetingPlace").val()) && $("#editMeetingDate").val()!=""){
+			$('#editMeetingButton').attr('disabled', false);
+		} else {
+			$('#editMeetingButton').attr('disabled', true);
+		}
+	});
+
+	function convertTimestamp(timestamp) {
+		var d = new Date(timestamp);
+		return d.toLocaleDateString()+", "+d.getHours()+":"+d.getMinutes();
+	}
 	
 });
 
@@ -103,4 +153,9 @@ function changeSpan() {
 		$("#spanId").removeClass('glyphicon-chevron-up');
 		$("#spanId").addClass('glyphicon-chevron-down');
 	}
+}
+var chosenMeetingId;
+
+function setMeeting(id) {
+	chosenMeetingId = id;
 }

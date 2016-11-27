@@ -31,11 +31,10 @@ public class ReportsExcel extends AbstractXlsView{
         Row header = sheet.createRow(0);
         header.createCell(0).setCellValue("Projects");
         header.createCell(1).setCellValue("Started");
-        //plus left
-        header.createCell(2).setCellValue("Not invited to interview");
-        header.createCell(3).setCellValue("Invited to interview");
-        header.createCell(4).setCellValue("Job offers");
-//        header.createCell(5).setCellValue("Projects");
+        header.createCell(2).setCellValue("Left");
+        header.createCell(3).setCellValue("Not invited to interview");
+        header.createCell(4).setCellValue("Invited to interview");
+        header.createCell(5).setCellValue("Job offers");
 
         int rows = 1;
         for(ProjectReportItemDto item : data){
@@ -43,9 +42,10 @@ public class ReportsExcel extends AbstractXlsView{
 
             row.createCell(0).setCellValue(item.getProjectName());
             row.createCell(1).setCellValue(item.getNumOfStarted());
-            row.createCell(2).setCellValue(item.getNumOfNotInvited());
-            row.createCell(3).setCellValue(item.getNumOfWasInvited());
-            row.createCell(4).setCellValue(item.getNumOfJobOffer());
+            row.createCell(2).setCellValue(item.getNumOfLeft());
+            row.createCell(3).setCellValue(item.getNumOfNotInvited());
+            row.createCell(4).setCellValue(item.getNumOfWasInvited());
+            row.createCell(5).setCellValue(item.getNumOfJobOffer());
         }
     }
 }

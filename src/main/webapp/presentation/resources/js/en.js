@@ -7,6 +7,7 @@ lang = {
 	user_grades_title : 'Grades:',
 	user_marks_search : 'Search',
 	user_select_criteria : 'Select criteria',
+	user_select_projects : 'Select projects',
 	user_select_categories: 'Select categories',
 	user_final_review: 'Final Review',
 	user_general_review: 'General',
@@ -16,10 +17,13 @@ lang = {
 	user_next_step: 'Next step',
 	user_loading: 'Loading',
 	user_download: 'Download',
-	user_select_projects: 'Select project or leave it empty to select all',
+	user_note_projects: 'Leave projects field empty to select all',
+	user_note_projects2: 'In order to reload criteria list click "Next step" button',
+	user_note_criteria: 'Leave criteria and category fields empty to select all criteria',
 	user_no_meeting_info: 'No information about this meeting!',
 	user_general_comment: 'General commentary:',
 	user_criterion_name: 'Criterion name',
 	user_mark: 'Mark',
-	user_commentary: 'Commentary'
+	user_commentary: 'Commentary',
+	user_date: 'Date'
 };

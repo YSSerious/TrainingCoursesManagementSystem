@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 import ua.ukma.nc.dao.RoleDao;
+import ua.ukma.nc.dao.impl.RoleDaoImpl.RoleMapper;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.service.RoleService;
 
@@ -52,4 +53,9 @@ public class RoleServiceImpl implements RoleService{
 	public List<Role> getCurrentUserRoles(String email, Long userId) {
 		return roleDao.getCurrentUserRoles(email, userId);
 	}
+	
+	@Override
+    public Role getByRole(String role) {
+        return roleDao.getByRole(role);
+    }
 }

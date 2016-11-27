@@ -54,6 +54,8 @@ public class RoleDaoImpl implements RoleDao {
     private static final String UPDATE_ROLE = "UPDATE tcms.role SET role = ? WHERE id = ?";
 
     private static final String GET_USERS_BY_ID = "SELECT id_user FROM tcms.user_role WHERE id_role = ?";
+    
+    private static final String GET_BY_ROLE = "SELECT id, role FROM tcms.role WHERE role LIKE '%";
 
     @Override
     public Role getById(Long id) {
@@ -107,4 +109,10 @@ public class RoleDaoImpl implements RoleDao {
 		log.info("Getting all users");
         return jdbcTemplate.query(GET_CURRENT_USER_ROLE, new RoleMapper(), email, userId, email);
 	}
+	
+	@Override
+    public Role getByRole(String role) {
+        log.info("Getting role with name = {}", role);
+        return jdbcTemplate.queryForObject(GET_BY_ROLE+role+"%'", new RoleMapper());
+    }
 }
