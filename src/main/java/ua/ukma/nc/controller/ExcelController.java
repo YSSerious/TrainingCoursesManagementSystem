@@ -15,11 +15,7 @@ import ua.ukma.nc.dto.UserDto;
 import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.User;
-import ua.ukma.nc.service.GroupService;
-import ua.ukma.nc.service.ProjectService;
-import ua.ukma.nc.service.StatusLogService;
-import ua.ukma.nc.service.StudentService;
-import ua.ukma.nc.service.UserService;
+import ua.ukma.nc.service.*;
 
 @Controller
 public class ExcelController {
@@ -38,6 +34,9 @@ public class ExcelController {
 
     @Autowired
     private StatusLogService statusLogService;
+
+	@Autowired
+	private FinalReviewService finalReviewService;
     
 	@RequestMapping(value = "/projectReport", method = RequestMethod.GET)
 	public ModelAndView projectReport(@RequestParam(name = "students", required = false) List<Long> students,
@@ -166,7 +165,8 @@ public class ExcelController {
             item.setProjectName(projectService.getById(id).getName());
             item.setNumOfStarted(statusLogService.getNumOfStartedProject(id));
             item.setNumOfWasInvited(statusLogService.getNumOfInvitedByProject(id));
-            item.setNumOfNotInvited(item.getNumOfStarted()-item.getNumOfWasInvited());
+			item.setNumOfLeft(item.getNumOfStarted()-finalReviewService.getNumOfFinalReviewsByProjectAndType(id,"F"));
+            item.setNumOfNotInvited(item.getNumOfStarted()-(item.getNumOfWasInvited()+item.getNumOfLeft()));
             item.setNumOfJobOffer(statusLogService.getNumOfJobOffersByProject(id));
             data.add(item);
         }
