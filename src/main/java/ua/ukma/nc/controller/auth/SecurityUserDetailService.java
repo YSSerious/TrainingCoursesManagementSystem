@@ -40,9 +40,9 @@ public class SecurityUserDetailService implements UserDetailsService {
             if (cookie.getName().equals("tcms-chosen-role"))
                 role = cookie.getValue();
         grantedAuthorityList.add(new SimpleGrantedAuthority(role));
-        //no students allowed in system
+        //no students allowed in system; fail student-only authentication
         List<Role> availableRoles = user.getRoles();
-        if(availableRoles.size()==1&&availableRoles.stream().anyMatch(item  -> item.getId()==4))
+        if(availableRoles.size()==1&&availableRoles.get(0).getId()==4)
             return null;
         return new org.springframework.security.core.userdetails.User(email, user.getPassword(), grantedAuthorityList);
     }
