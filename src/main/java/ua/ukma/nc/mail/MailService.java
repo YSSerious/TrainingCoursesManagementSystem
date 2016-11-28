@@ -7,6 +7,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
+import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.UserService;
 
@@ -27,13 +28,15 @@ public class MailService {
 	Environment env;
 	
 	
-	public String registration(User user){
+	public String newProject(User user, Project project){
 		String from = env.getProperty("mail.username");
 		String to = user.getEmail();
 		StringBuilder message = new StringBuilder();
 		message.append("Hello"+user.getFirstName()+" "+user.getLastName());
+		message.append(". Your project "+project.getName()+" starts "+project.getStartDate());
+		message.append(". Get ready soon.");
 		try{
-		mail.sendMail(from, to, "Succesful registration", message.toString());
+		mail.sendMail(from, to, "New project", message.toString());
 		return "Sent succesfully";
 		}
 		catch(MailException e){

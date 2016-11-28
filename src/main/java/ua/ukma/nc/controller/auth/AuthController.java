@@ -34,10 +34,10 @@ public class AuthController {
     @RequestMapping(value = "/set_role", method = {RequestMethod.GET, RequestMethod.POST})
     public String setRole(HttpServletRequest request, Principal principal) {
         User user = userService.getByEmail(principal.getName());
-        List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>(4);
         String chosenRole = request.getParameter("chosenRole");
         if (chosenRole != null) {
-            for (Role role : user.getRoles())              //one more validation
+            for (Role role : user.getRoles())              //one more validation for security reasons
                 if (role.getTitle().equals(chosenRole))
                     grantedAuthorityList.add(new SimpleGrantedAuthority(role.getTitle()));
         }
@@ -90,7 +90,7 @@ public class AuthController {
         User user = userService.getByEmail(principal.getName());
         List<String> available = new LinkedList<>();
         for (Role role : user.getRoles())
-            if (!role.getTitle().equals("ROLE_STUDENT"))
+//            if (!role.getTitle().equals("ROLE_STUDENT"))    //no students in system now
                 available.add(role.getTitle());
         //no chance to choose for users with one role
         if (available.size() == 1) {

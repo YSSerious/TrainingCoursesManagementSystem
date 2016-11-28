@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import ua.ukma.nc.entity.Criterion;
 
 /**
  *@author Oleh Khomandiak

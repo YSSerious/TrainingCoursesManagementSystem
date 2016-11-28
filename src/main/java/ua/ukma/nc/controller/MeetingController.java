@@ -2,12 +2,9 @@
 package ua.ukma.nc.controller;
 
 import java.security.Principal;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,24 +17,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ua.ukma.nc.dto.CriterionDto;
-import ua.ukma.nc.dto.JsonWrapperFinRev;
+import ua.ukma.nc.dto.JsonWrapperAbsent;
 import ua.ukma.nc.dto.JsonWrapperReview;
 import ua.ukma.nc.dto.MarkCommentDto;
 import ua.ukma.nc.dto.MarkInformation;
 import ua.ukma.nc.entity.Category;
 import ua.ukma.nc.entity.Criterion;
-import ua.ukma.nc.entity.FinalReview;
-import ua.ukma.nc.entity.FinalReviewCriterion;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.MeetingResult;
 import ua.ukma.nc.entity.MeetingReview;
-import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
-import ua.ukma.nc.entity.impl.real.FinalReviewImpl;
 import ua.ukma.nc.entity.impl.real.MeetingImpl;
 import ua.ukma.nc.entity.impl.real.MeetingReviewImpl;
-import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.service.GroupService;
@@ -230,4 +222,15 @@ public class MeetingController {
 
 		return "true";
 	}
+	
+	@RequestMapping(value = "/ajax/post/absent/{id}", method = RequestMethod.POST, consumes = "application/json")
+	@ResponseBody
+	public String postAbsent(Principal principal, @PathVariable("id") Long userId,
+			@RequestBody JsonWrapperAbsent data) {
+		
+		System.out.println(userId+"  "+data.getMeetingId());
+				return "true";
+		
+	}
+	
 }
