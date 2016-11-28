@@ -70,8 +70,17 @@
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                <h4 class="modal-title col-xs-offset-2 col-sm-6" 
+                                id="myModalLabel">Evaluate ${user.firstName} ${user.lastName}</h4>
+                                 
+                                
                             </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-primary col-xs-offset-1"
+                                        onclick="guf228(${user.id}, ${meeting.id})">
+                                    Absent
+                                </button>
+                           </div>
                             <div class="modal-body edit-content">
                                 <ul class="list-group">
                                     <c:forEach items="${criteria}" var="criterion">
