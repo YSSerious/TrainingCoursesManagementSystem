@@ -1,4 +1,8 @@
 <%@include file="header.jsp" %>
+<script
+        src="<c:url value="/presentation/resources/js/meeting.js"/>"
+        type="text/javascript" defer="defer">
+</script>
 <div class="row container certain-project">
     <div class="col-md-12">
         <div class="page-header">
@@ -239,7 +243,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading clearfix">
                     <div data-toggle="collapse" data-target="#collapseMIn"
-                         class="arrow col-md-1" onclick="changeSpan()">
+                         class="arrow col-md-1" onclick="changeSpan(this)">
                         <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
                     </div>
                     <sec:authorize access="hasRole('ADMIN')">

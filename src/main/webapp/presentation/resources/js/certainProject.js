@@ -230,13 +230,14 @@ $('#project-groups .panel-heading').first().on('click', function (e) {
     }
 });
 
-function changeSpan() {
-    if ($("#spanId").hasClass("glyphicon-chevron-down")) {
-        $("#spanId").removeClass('glyphicon-chevron-down');
-        $("#spanId").addClass('glyphicon-chevron-up');
+function changeSpan(el) {
+    var chevron = jQuery(el);
+    if(chevron.children('.glyphicon').hasClass("glyphicon-chevron-down")){
+        chevron.children('.glyphicon').removeClass('glyphicon-chevron-down');
+        chevron.children('.glyphicon').addClass('glyphicon-chevron-up');
     } else {
-        $("#spanId").removeClass('glyphicon-chevron-up');
-        $("#spanId").addClass('glyphicon-chevron-down');
+        chevron.children('.glyphicon').removeClass('glyphicon-chevron-up');
+        chevron.children('.glyphicon').addClass('glyphicon-chevron-down');
     }
 }
 

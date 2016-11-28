@@ -120,7 +120,7 @@
             <div class="panel-group" id="panelGroupId">
                 <div class="panel panel-default">
                     <div class="panel-heading clearfix">
-                        <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1" onclick="changeSpan()">
+                        <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1" onclick="changeSpan(this)">
                             <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
                         </div>
                         <sec:authorize access="hasRole('ADMIN')">
@@ -159,12 +159,12 @@
                 Attachments
             </h2>
             <div class="panel-heading">
-				<div role="button" data-toggle="collapse" data-target="#att-collapse">
+				<div role="button" data-toggle="collapse" data-target="#att-collapse" class="arrow col-md-1" onclick="changeSpan(this)">
                     <!--Пожалуйста, не ставь зедсь уже использующийся ID. Если тебе так сильно нужен мой метод смены кнопки, используй class.-->
                                 <span id="spanIId" class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
                 </div>
                 <div role="button" class="btn btn-default btn-sm pull-right" id="add-att-btn" 
-                	data-toggle="modal" data-target="#addAttachmentModal"><b>Add</b>
+                	data-toggle="modal" data-target="#addAttachmentModal"><b>Add Attach</b>
                 </div>
             </div>
 	        <div class="panel-collapse collapse" id="att-collapse">
