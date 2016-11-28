@@ -61,6 +61,7 @@
             </h2>
             <div class="panel panel-default" id="project-groups">
                 <div class="panel-heading collapsed">
+                    <sec:authorize access="hasRole('ADMIN')">
                     <button type="button" class="btn btn-default btn-sm pull-right" id="showGroupsAndCriteria"
                             data-toggle="modal"
                             data-target="#meetingCreateModal">
@@ -69,6 +70,7 @@
                     <button type="button" class="btn btn-default btn-sm pull-right right" id="create-group">
                         <b>Add</b>
                     </button>
+                        </sec:authorize>
                     <div class="clearfix"></div>
                 </div>
                 <%--<%@include file="createGroup.jsp"%>--%>
@@ -121,12 +123,14 @@
                         <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1" onclick="changeSpan()">
                             <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
                         </div>
+                        <sec:authorize access="hasRole('ADMIN')">
                         <button type="button" class="btn btn-default btn-sm pull-right"
                                 id="showAvailableCriteria"
                                 data-toggle="modal"
                                 data-target="#showAvailableCriteriaModal">
                             <b>Add criteria</b>
                         </button>
+                        </sec:authorize>
                     </div>
                     <div id="collapseIn" class="panel-collapse collapse clearfix">
                             <ul class="list-group" id="collapseUL">
