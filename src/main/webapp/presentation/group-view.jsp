@@ -241,7 +241,7 @@
 					 
 				</div>
 </div>
-<<<<<<< HEAD
+
 <!--  -->
 	<div id="addGroupAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog" role="document">
@@ -275,7 +275,6 @@
     </div>
 </div>	 
  
-=======
 		 
  <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
 <div id="group-report-modal" class="modal fade" role="dialog">
@@ -303,7 +302,6 @@
 						</c:forEach>
 					</select> <br />
 					<hr />
->>>>>>> origin/master
 
 					<spring:message code="report.select.criteria"/>:<br /> <select style="width: 100%;" multiple
 						name="criteria">

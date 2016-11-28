@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import ua.ukma.nc.dto.CategoryDto;
 import ua.ukma.nc.dto.CategoryResult;
 import ua.ukma.nc.dto.CertainMarkDto;
+import ua.ukma.nc.dto.CriterionDto;
 import ua.ukma.nc.dto.CriterionResult;
 import ua.ukma.nc.dto.FinalReviewCriterionDto;
 import ua.ukma.nc.dto.FinalReviewDto;
@@ -23,12 +26,14 @@ import ua.ukma.nc.entity.Category;
 import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.FinalReview;
 import ua.ukma.nc.entity.FinalReviewCriterion;
+import ua.ukma.nc.entity.Mark;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.MeetingResult;
 import ua.ukma.nc.entity.MeetingReview;
-import ua.ukma.nc.service.CriterionService;
+import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.FinalReviewCriterionService;
 import ua.ukma.nc.service.FinalReviewService;
+import ua.ukma.nc.service.MarkService;
 import ua.ukma.nc.service.MarkTableService;
 import ua.ukma.nc.service.MeetingResultService;
 import ua.ukma.nc.service.MeetingReviewService;
@@ -47,26 +52,34 @@ public class MarkTableServiceImpl implements MarkTableService {
 	private MeetingService meetingService;
 
 	@Autowired
-	private CriterionService criterionService;
-
-	@Autowired
 	private MeetingResultService meetingResultService;
+	
+	@Autowired
+	private CategoryService categoryService;
 
 	@Autowired
 	private MeetingReviewService meetingReviewService;
+	
+	@Autowired
+	private MarkService markService;
 
 	@Override
 	public MarkTableDto getMarkTableDto(Long studentId, Long projectId) {
+		
+		MarkTableDto markTableDto = new MarkTableDto();
+		
+		List<Mark> marks = markService.getAll();
 		List<MarkInformation> marksInformation = meetingResultService.generateMarkInformation(studentId, projectId);
 		List<Meeting> meetings = meetingService.getByStudentProject(studentId, projectId);
-		List<Criterion> criteria = criterionService.getByProject(projectId);
+		List<Criterion> criteria = new ArrayList<Criterion>();
+		List<Category> categoriesEntity = categoryService.getByProjectId(projectId);
 
-		MarkTableDto markTableDto = new MarkTableDto();
-
+		List<CategoryDto> categoriesDto = new ArrayList<CategoryDto>();
+		
 		List<Long> meetingId = new ArrayList<Long>();
 		List<String> meetingNames = new ArrayList<String>();
+		
 		List<MeetingReviewDto> meetingReviewsDto = new ArrayList<MeetingReviewDto>();
-
 		for (Meeting meeting : meetings) {
 			String meetingName = meeting.getName();
 			Long id = meeting.getId();
@@ -89,7 +102,14 @@ public class MarkTableServiceImpl implements MarkTableService {
 				List<MeetingResultDto> meetingResultsDto = new ArrayList<MeetingResultDto>();
 
 				for (MeetingResult meetingResult : meetingResultService.getByReview(meetingReview.getId())) {
-					MeetingResultDto meetingResultDto = new MeetingResultDto(meetingResult);
+					MeetingResultDto meetingResultDto = new MeetingResultDto();
+					Mark meetingMark = meetingResult.getMark();
+					
+					meetingResultDto.setCommentary(meetingResult.getCommentary());
+					meetingResultDto.setCriterionName(findCriterionName(criteria, meetingResult.getCriterion().getId()));
+					meetingResultDto.setValue(meetingMark.getValue());
+					meetingResultDto.setDescription(findDescription(marks, meetingMark.getValue()));
+					
 					meetingResultsDto.add(meetingResultDto);
 				}
 
@@ -100,29 +120,29 @@ public class MarkTableServiceImpl implements MarkTableService {
 		}
 
 		meetingNames.add("Final");
-
 		markTableDto.setMeetings(meetingReviewsDto);
 
 		Map<CategoryDto, List<Criterion>> categories = new TreeMap<CategoryDto, List<Criterion>>();
-
-		for (Criterion criterion : criteria) {
+		
+		for(Category categoryEntity: categoriesEntity){
 			CategoryDto category = new CategoryDto();
-			Category categoryEntity = criterion.getCategory();
 			category.setId(categoryEntity.getId());
-			category.setName(categoryEntity.getName());
 			category.setDescription(categoryEntity.getDescription());
-
-			List<Criterion> currentList = categories.get(category);
-
-			if (currentList == null) {
-				List<Criterion> newList = new ArrayList<Criterion>();
-				newList.add(criterion);
-				categories.put(category, newList);
-			} else
-				currentList.add(criterion);
-
+			category.setName(categoryEntity.getName());
+			
+			List<Criterion> criteriaList = categoryEntity.getCriteria();
+			categories.put(category, criteriaList);
+			criteria.addAll(criteriaList);
+			
+			categoriesDto.add(category);
 		}
-
+		
+		List<CriterionDto> criteriaDto = criteria.stream().map(CriterionDto::new)
+				.collect(Collectors.toList());
+		
+		markTableDto.setProjectCriteria(criteriaDto);
+		markTableDto.setProjectCategories(categoriesDto);
+		
 		Map<CategoryDto, List<CriterionResult>> dataTable = new TreeMap<CategoryDto, List<CriterionResult>>();
 		boolean hasFinal = true;
 
@@ -140,7 +160,14 @@ public class MarkTableServiceImpl implements MarkTableService {
 			List<FinalReviewCriterionDto> finalReviewCriteriaDto = new ArrayList<FinalReviewCriterionDto>();
 
 			for (FinalReviewCriterion finalReviewCriterion : finalReviewCriteria) {
-				FinalReviewCriterionDto finalReviewCriterionDto = new FinalReviewCriterionDto(finalReviewCriterion);
+				FinalReviewCriterionDto finalReviewCriterionDto = new FinalReviewCriterionDto();
+				Mark finalMark = finalReviewCriterion.getMark();
+				
+				finalReviewCriterionDto.setCommentary(finalReviewCriterion.getCommentary());
+				finalReviewCriterionDto.setCriterionName(findCriterionName(criteria, finalReviewCriterion.getCriterion().getId()));
+				finalReviewCriterionDto.setValue(finalMark.getValue());
+				finalReviewCriterionDto.setDescription(findDescription(marks, finalMark.getValue()));
+				
 				finalReviewCriteriaDto.add(finalReviewCriterionDto);
 			}
 
@@ -190,13 +217,12 @@ public class MarkTableServiceImpl implements MarkTableService {
 		markTableDto.setTableData(dataTableDto);
 
 		putMarks(meetings, categories, meetingId, dataTable, "-", "No review.");
-
 		for (MarkInformation markInformation : marksInformation) {
 
 			CategoryDto category = new CategoryDto();
 			category.setName(markInformation.getCategory());
 
-			int criterionIndex = find(categories.get(category), markInformation.getCriterionName());
+			int criterionIndex = find(categories.get(category), markInformation.getCriterionId());
 			int meetingIndex = meetingId.indexOf(markInformation.getMeetingId());
 
 			CertainMarkDto certainMarkDto = new CertainMarkDto();
@@ -211,22 +237,19 @@ public class MarkTableServiceImpl implements MarkTableService {
 			List<FinalReviewCriterion> reviews = finalReviewCriterionService.getByFinalReview(finalReview.getId());
 
 			for (FinalReviewCriterion review : reviews) {
-				String criterionName = review.getCriterion().getTitle();
+				Long criterionId = review.getCriterion().getId();
 				Category categoryEntity = review.getCriterion().getCategory();
-				CategoryDto category = new CategoryDto();
-				category.setId(categoryEntity.getId());
-				category.setName(categoryEntity.getName());
-				category.setDescription(categoryEntity.getDescription());
+				Long categoryId = categoryEntity.getId();
 
-				int criterionIndex = find(categories.get(category), criterionName);
+				int criterionIndex = find(getCriterionList(categories, categoryId), criterionId);
 				int meetingIndex = meetingId.size();
 
 				CertainMarkDto certainMarkDto = new CertainMarkDto();
 				certainMarkDto.setValue(String.valueOf(review.getMark().getValue()));
 				certainMarkDto.setCommentary(review.getCommentary());
-				certainMarkDto.setDescription(review.getMark().getDescription());
+				certainMarkDto.setDescription(findDescription(marks, review.getMark().getValue()));
 
-				dataTable.get(category).get(criterionIndex).getMarks().set(meetingIndex, certainMarkDto);
+				getCriterionResultList(dataTable, categoryId).get(criterionIndex).getMarks().set(meetingIndex, certainMarkDto);
 			}
 		}
 
@@ -235,10 +258,40 @@ public class MarkTableServiceImpl implements MarkTableService {
 
 		return markTableDto;
 	}
+	
+	private String findCriterionName(List<Criterion> criteria, Long id) {
+		for(Criterion criterion: criteria)
+			if(criterion.getId() == id)
+				return criterion.getTitle();
+		return null;
+	}
 
-	private int find(List<Criterion> criteria, String name) {
+	private String findDescription(List<Mark> marks, int value) {
+		for(Mark mark: marks)
+			if(mark.getValue() == value)
+				return mark.getDescription();
+		return null;
+	}
+
+	private List<CriterionResult> getCriterionResultList(Map<CategoryDto, List<CriterionResult>> categories, Long categoryId) {
+		for(Entry<CategoryDto, List<CriterionResult>> category: categories.entrySet())
+			if(category.getKey().getId() == categoryId)
+				return category.getValue();
+			
+		return null;
+	}
+
+	private List<Criterion> getCriterionList(Map<CategoryDto, List<Criterion>> categories, Long categoryId) {
+		for(Entry<CategoryDto, List<Criterion>> category: categories.entrySet())
+			if(category.getKey().getId() == categoryId)
+				return category.getValue();
+			
+		return null;
+	}
+
+	private int find(List<Criterion> criteria, Long id) {
 		for (int i = 0; i < criteria.size(); i++)
-			if (criteria.get(i).getTitle().equals(name))
+			if (criteria.get(i).getId() == id)
 				return i;
 
 		return -1;
@@ -250,15 +303,12 @@ public class MarkTableServiceImpl implements MarkTableService {
 			List<Criterion> currentCriteria = meeting.getCriterions();
 			for (Criterion currentCriterion : currentCriteria) {
 
-				String criterionName = currentCriterion.getTitle();
+				Long criterionId = currentCriterion.getId();
 				Long currentMeetingId = meeting.getId();
 				Category categoryEntity = currentCriterion.getCategory();
-				CategoryDto category = new CategoryDto();
-				category.setId(categoryEntity.getId());
-				category.setName(categoryEntity.getName());
-				category.setDescription(categoryEntity.getDescription());
+				Long categoryId = categoryEntity.getId();
 
-				int criterionIndex = find(categories.get(category), criterionName);
+				int criterionIndex = find(getCriterionList(categories, categoryId), criterionId);
 				int meetingIndex = meetingId.indexOf(currentMeetingId);
 
 				CertainMarkDto certainMarkDto = new CertainMarkDto();
@@ -266,7 +316,7 @@ public class MarkTableServiceImpl implements MarkTableService {
 				certainMarkDto.setCommentary("");
 				certainMarkDto.setDescription(description);
 
-				dataTable.get(category).get(criterionIndex).getMarks().set(meetingIndex, certainMarkDto);
+				getCriterionResultList(dataTable, categoryId).get(criterionIndex).getMarks().set(meetingIndex, certainMarkDto);
 			}
 		}
 	}

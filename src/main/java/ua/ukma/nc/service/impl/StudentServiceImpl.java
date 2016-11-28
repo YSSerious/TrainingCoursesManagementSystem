@@ -110,13 +110,6 @@ public class StudentServiceImpl implements StudentService {
 			studentProfile
 					.setTechnicalReview(new FinalReviewDto(finalReviewService.getByStudent(projectId, studentId, "T")));
 
-		List<CategoryDto> categories = categoryService.getByProjectId(projectId).stream().map(CategoryDto::new)
-				.collect(Collectors.toList());
-		List<CriterionDto> criteria = criterionService.getByProject(projectId).stream().map(CriterionDto::new)
-				.collect(Collectors.toList());
-
-		studentProfile.setProjectCategories(categories);
-		studentProfile.setProjectCriteria(criteria);
 	}
 
 	private List<CategoryChartDto> convert(Map<String, List<StudyResultDto>> data) {

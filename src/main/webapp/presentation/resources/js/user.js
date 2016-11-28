@@ -145,10 +145,10 @@ function createStudentProjectsInfo(userId, divInside){
                             
     	 	    	    		table+= '<div class="panel panel-default"><div class="panel-heading"><div class="row">';
     	 	    	    		table+= '<div class = "col-sm-5">';
-    	 	    	    		table+= getSelectCategories(data.projectCategories, value.id);
+    	 	    	    		table+= getSelectCategories(data.markTableDto.projectCategories, value.id);
     	 	    	    		table+= '</div>';
     	 	    	    		table+= '<div class = "col-sm-5">';
-    	 	    	    		table+= getSelectCriteria(data.projectCriteria, value.id);
+    	 	    	    		table+= getSelectCriteria(data.markTableDto.projectCriteria, value.id);
     	 	    	    		table+= '</div>';
     	 	    	    		table+= '<div class = "col-sm-2">';
     	 	    	    		table+= '<button onclick="search('+value.id+')" class="form-control btn btn-default">'+lang.user_marks_search+'</button>';
@@ -229,7 +229,7 @@ function getMarksTable(markTableDto, projectId){
  	});
  	
  	if(markTableDto.finalReview == null)
- 		table+= '<th align="center">F</th>';
+ 		table+= '<th align="center"><center>F</center></th>';
  	else
  		table+= '<th align="center">'+getModal('f'+markTableDto.finalReview.id, 'F', lang.user_final_review, markTableDto.finalReview)+'</th>';
  	

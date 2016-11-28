@@ -148,7 +148,7 @@
 
 						<div class="col-md-12">
 							<form:select path="criteria" multiple="true" name="criteria"
-								class="criteria-select" style="min-width: 88%;">
+								class="criteria-select" style="width:100%;">
 							</form:select>
 						</div>
 					</div>
@@ -162,7 +162,7 @@
 			</div>
 		</div>
 		<div class="text-center">
-		<div class="col-sm-3 col-sm-offset-3">
+		
 			<c:if test="${not empty projects}">
 				<c:if test="${maxPage > 1}">
 				<div style="min-width:100%;" id="bootstrap-pagination">
@@ -170,7 +170,6 @@
 				</div>
 				</c:if>
 			</c:if>
-		</div>
 		</div>
 	</div>
 </div>
