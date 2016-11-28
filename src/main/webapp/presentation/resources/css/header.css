@@ -53,5 +53,18 @@
 }
 
 .nav {
-	z-index: 100;
+    z-index: 100;
+}
+
+.nav .user-role {
+    padding: 6px 12px;
+}
+
+.nav .user-role > *{
+    color: #cecece;
+    display: inline;
+    vertical-align: middle;
+    line-height: 1.42857143;
+    font-size: 14px;
+    font-weight: 400;
 }

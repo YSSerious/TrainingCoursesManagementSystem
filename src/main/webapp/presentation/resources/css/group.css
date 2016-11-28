@@ -1,5 +1,5 @@
 
-/*.container.attachment-group{
+.container.attachment-group{
 	width: initial;
 }
 .attachment-group .panel.panel-horizontal {
@@ -44,7 +44,7 @@
     border-top-right-radius: 0px;
     border-top: none;
 }
-
+/*
 .attachment-group .panel.panel-horizontal > .panel-title .h3{
 	padding-left: inherit;
 }

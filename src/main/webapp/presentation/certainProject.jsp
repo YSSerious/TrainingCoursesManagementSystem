@@ -181,16 +181,6 @@
 	        <div>
         </div>
     </div>
-    <ul class="list-group" id="attachment-group">
-        <c:forEach items="${attachments}" var="attachment">
-            <li class="list-group-item">
-                <a href="${attachment.attachmentScope}">${attachment.name}</a>
-                <div class="btn rmv-btn col-md-1" type='button' data-button='{"id_attachment": "${attachment.id}"}'>
-                    <span class="glyphicon glyphicon-remove"></span>
-                </div>
-            </li>
-        </c:forEach>
-    </ul>
 </div>
 
 </div>
