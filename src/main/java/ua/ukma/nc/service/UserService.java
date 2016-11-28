@@ -35,16 +35,42 @@ public interface UserService {
 
 	List<User> getSome(int limit, int offset);
 
-	void deleteRoles(User user);
+	void deleteRole(User user, Long roleId);
 
 	int count();
 
 	boolean hasReview(Long studentId, Long groupId);
 
-	List<User> getByName(String name);
+	List<User> getByName(String name, int limit, int offset);
 
 	List<User> studentsByProjectId(Long projectId);
 
 	List<User> studentsByGroupId(Long groupId);
+	
+	boolean hasStudentProjects(Long studentId);
+	boolean hasMentorProjects(Long mentorId);
+	boolean hasHRReviews(Long hrId);
+	
+	boolean isUsingRole(Long userId, Long roleId);
+	
+	boolean isCurrentUser(Long userId);
+
+	List<User> getByName(String name, String secondName, String lastName, int limit, int offset);
+
+	List<User> getByName(String value1, String value2, int limit, int offset);
+
+	List<User> studentsByProjectName(String name, int limit, int offset);
+
+	List<User> studentsByGroupName(String name, int limit, int offset);
+
+	int countGroup(String name);
+
+	int countProject(String name);
+
+	int countName(String name);
+
+	int countHalfName(String value1, String value2);
+
+	int countFullName(String name, String secondName, String lastName);
 
 }

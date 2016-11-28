@@ -8,7 +8,7 @@ public class ProjectReportItemDto {
     private long projectId;
     private String projectName;
     private int numOfStarted;
-    //altogether left + not invited
+    private int numOfLeft;
     private int numOfNotInvited;
     private int numOfWasInvited;
     private int numOfJobOffer;
@@ -60,5 +60,13 @@ public class ProjectReportItemDto {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public int getNumOfLeft() {
+        return numOfLeft;
+    }
+
+    public void setNumOfLeft(int numOfLeft) {
+        this.numOfLeft = numOfLeft;
     }
 }

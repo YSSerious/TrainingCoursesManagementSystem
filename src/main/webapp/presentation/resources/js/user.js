@@ -44,7 +44,7 @@ function createMentorProjectsInfo(userId, divInside){
 	    		
 	    		s+= '<h2>Mentor projects: </h2><hr/>';
 	    		s+= '<div class="panel panel-'+divClass+'">';
-	    		s+= '<div id="mpr'+value.id+'" class="panel-body">' + value.name;
+	    		s+= '<div id="mpr'+value.id+'" class="panel-body"><a href="/certainProject/'+value.id+'">' + value.name + '</a>';
 	    		s+= '<div class="pull-right">'+getStringDate(new Date(value.startDate))+' - '+getStringDate(new Date(value.finishDate))+'</div>';
  	    		s+= '</div></div>';
 	    	
@@ -86,7 +86,7 @@ function createStudentProjectsInfo(userId, divInside){
 	    			divClass = 'finished';
 	    		}
 	    		s+= '<div class="panel panel-'+divClass+'">';
-	    		s+= '<div id="pr'+value.id+'" class="panel-body">' + value.name;
+	    		s+= '<div id="pr'+value.id+'" class="panel-body clickable">' + value.name;
 	    		s+= '<div class="pull-right">'+getStringDate(new Date(value.startDate))+' - '+getStringDate(new Date(value.finishDate))+'</div>';
  	    		s+= '</div>';
  	    		s+= '</div>';
@@ -126,7 +126,7 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    'success' : function(data) {
     	 	    	    	$('#chart'+value.id).html('');
     	 	    	    	
-    	 	    	    	$('#stinf-'+value.id).html('<h4><b>'+lang.user_status_title+'</b>'+data.studentStatuses[data.studentStatuses.length - 1].statusDescription+'</h4>');
+    	 	    	    	$('#stinf-'+value.id).html('<h4><b>'+lang.user_status_title+'</b>'+data.studentStatuses[data.studentStatuses.length - 1].statusTitle+'</h4>');
                             createCharts(data.chartInfo, value.id);
                             radarChart(data.chartInfo, value.id);
     	 	    	    	
@@ -145,10 +145,10 @@ function createStudentProjectsInfo(userId, divInside){
                             
     	 	    	    		table+= '<div class="panel panel-default"><div class="panel-heading"><div class="row">';
     	 	    	    		table+= '<div class = "col-sm-5">';
-    	 	    	    		table+= getSelectCategories(data.projectCategories, value.id);
+    	 	    	    		table+= getSelectCategories(data.markTableDto.projectCategories, value.id);
     	 	    	    		table+= '</div>';
     	 	    	    		table+= '<div class = "col-sm-5">';
-    	 	    	    		table+= getSelectCriteria(data.projectCriteria, value.id);
+    	 	    	    		table+= getSelectCriteria(data.markTableDto.projectCriteria, value.id);
     	 	    	    		table+= '</div>';
     	 	    	    		table+= '<div class = "col-sm-2">';
     	 	    	    		table+= '<button onclick="search('+value.id+')" class="form-control btn btn-default">'+lang.user_marks_search+'</button>';
@@ -229,7 +229,7 @@ function getMarksTable(markTableDto, projectId){
  	});
  	
  	if(markTableDto.finalReview == null)
- 		table+= '<th align="center">F</th>';
+ 		table+= '<th align="center"><center>F</center></th>';
  	else
  		table+= '<th align="center">'+getModal('f'+markTableDto.finalReview.id, 'F', lang.user_final_review, markTableDto.finalReview)+'</th>';
  	
@@ -445,8 +445,11 @@ function doFinalReview(userId) {
 		var finReview = {"mark": {"value": $(this).find('select').val()}, "criterion": {"id": $(this).find('input').attr('id')}, "commentary": $(this).find('input').val()};
 		if(!$(this).find('input').val()) {
 			error = 'All comments are required!';
-			return false;
+			$(this).addClass('error');
 		}
+		else if($(this).hasClass('error'))
+			$(this).removeClass('error');
+
 		data.push(finReview);
 	});
 	if(!error){
@@ -605,7 +608,7 @@ function sendRequest(studentId){
 
 function getModal(modalId, modalName, modalTitle, reviewDto){
 	
-	var modal = '<center><font color="blue" data-toggle="modal" data-target="#'+modalId+'"><b>'+modalName+'</b></font></center>';
+	var modal = '<center><font class="clickable" color="blue" data-toggle="modal" data-target="#'+modalId+'"><b>'+modalName+'</b></font></center>';
 
 	modal += '<div id="'+modalId+'" class="modal fade" role="dialog">';
 	modal += '<div class="modal-dialog">';

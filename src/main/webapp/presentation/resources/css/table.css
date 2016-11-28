@@ -61,3 +61,7 @@
 	white-space: nowrap;
 	background-color: #fff;
 }
+
+.users th:last-child {
+	width: 50%;
+}

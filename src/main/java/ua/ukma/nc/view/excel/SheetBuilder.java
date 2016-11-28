@@ -58,7 +58,7 @@ public class SheetBuilder {
 		Row header = sheet.createRow(0);
 		header.createCell(0).setCellValue("#");
 		header.getCell(0).setCellStyle(headerStyle);
-		sheet.setColumnWidth(0, WIDTH);
+		sheet.setColumnWidth(0, WIDTH * 2);
 
 		List<MeetingReviewDto> meetings = markTableDto.getMeetings();
 		for (int i = 1; i < meetings.size() * 2; i += 2) {

@@ -20,6 +20,8 @@ public interface FinalReviewDao {
 
     int updateFinalReview(FinalReview finalReview);
 
+    int getNumOfFinalReviewsByProjectAndType(Long projectId, String type);
+
     List<FinalReview> getAll();
 
     int createFinalReview(FinalReview finalReview);

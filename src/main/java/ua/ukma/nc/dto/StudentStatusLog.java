@@ -3,10 +3,12 @@ package ua.ukma.nc.dto;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
+import ua.ukma.nc.entity.Status;
 import ua.ukma.nc.entity.StatusLog;
 
 public class StudentStatusLog {
 	private String statusDescription;
+	private String statusTitle;
 	private String commentary;
 	private Long employeeId;
 	private String firstName;
@@ -19,13 +21,15 @@ public class StudentStatusLog {
 	}
 	
 	public StudentStatusLog(StatusLog statusLog) {
+		Status status = statusLog.getNewStatus();
 		setCommentary(statusLog.getCommentary());
 		setDate(statusLog.getDate());
 		setEmployeeId(statusLog.getEmployee().getId());
-		setStatusDescription(statusLog.getNewStatus().getDescription());
+		setStatusDescription(status.getDescription());
 		setFirstName(statusLog.getEmployee().getFirstName());
 		setLastName(statusLog.getEmployee().getLastName());
 		setSecondName(statusLog.getEmployee().getSecondName());
+		setStatusTitle(status.getTitle());
 	}
 	public String getStatusDescription() {
 		return statusDescription;
@@ -69,5 +73,13 @@ public class StudentStatusLog {
 
 	public void setDate(Timestamp time) {
 		this.date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(time);
+	}
+
+	public String getStatusTitle() {
+		return statusTitle;
+	}
+
+	public void setStatusTitle(String statusTitle) {
+		this.statusTitle = statusTitle;
 	}
 }

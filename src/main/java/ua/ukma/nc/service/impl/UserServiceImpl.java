@@ -31,6 +31,13 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+	private static final Long INACTIVE_STATUS = 1l;
+
+	private static final Long ROLE_STUDENT = 4L;
+	private static final Long ROLE_MENTOR = 2L;
+	private static final Long ROLE_HR = 3L;
+	private static final Long ROLE_ADMIN = 1L;
+
 	@Autowired
 	private UserDao userDao;
 
@@ -85,6 +92,17 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int addRole(User user, Role role) {
+
+		if (role.getId() == ROLE_STUDENT)
+			if (!studentStatusService.exists(user.getId())) {
+				StudentStatus studentStatus = new StudentStatus();
+				studentStatus.setStudent(user);
+				studentStatus.setStatus(statusService.getById(INACTIVE_STATUS));
+
+				studentStatusService.createStudentStatus(studentStatus);
+
+			}
+
 		return userDao.addRole(user, role);
 	}
 
@@ -206,7 +224,7 @@ public class UserServiceImpl implements UserService {
 		boolean showAllUsers = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
 				|| authorities.contains(new SimpleGrantedAuthority("ROLE_HR"));
 
-		if (!showAllUsers){
+		if (!showAllUsers) {
 			String name = authentication.getName();
 			return userDao.canView(name, id);
 		}
@@ -215,18 +233,47 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteRoles(User user) {
-		userDao.deleteRoles(user);
+	public void deleteRole(User user, Long roleId) {
+
+		if (roleId == ROLE_STUDENT) {
+			if (hasStudentProjects(user.getId()))
+				throw new IllegalArgumentException();
+			else if (studentStatusService.exists(user.getId())) {
+				StudentStatus studentStatus = new StudentStatus();
+				studentStatus.setStudent(user);
+				studentStatusService.deleteStudentStatus(studentStatus);
+			}
+		} else if (roleId == ROLE_MENTOR) {
+			if (hasMentorProjects(user.getId()))
+				throw new IllegalArgumentException();
+		} else if (roleId == ROLE_HR) {
+			if (hasHRReviews(user.getId()))
+				throw new IllegalArgumentException();
+		} else if (roleId == ROLE_ADMIN) {
+			if (isCurrentUser(user.getId()))
+				throw new IllegalArgumentException();
+		}
+		userDao.deleteRole(user, roleId);
 	}
 
 	@Override
 	public boolean hasReview(Long studentId, Long groupId) {
 		return userDao.hasReviews(studentId, groupId);
 	}
-	
+
 	@Override
-	public List<User> getByName(String name) {
-		return userDao.getByName(name);
+	public List<User> getByName(String name, int limit, int offset) {
+		return userDao.getByName(name, limit, offset);
+	}
+
+	@Override
+	public List<User> getByName(String name, String secondName, String lastName, int limit, int offset) {
+		return userDao.getByName(name, secondName, lastName, limit, offset);
+	}
+
+	@Override
+	public List<User> getByName(String value1, String value2, int limit, int offset) {
+		return userDao.getByName(value1, value2, limit, offset);
 	}
 
 	@Override
@@ -237,5 +284,77 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> studentsByGroupId(Long groupId) {
 		return userDao.studentsByGroupId(groupId);
+	}
+
+	@Override
+	public List<User> studentsByProjectName(String name, int limit, int offset) {
+		return userDao.studentsByProjectName(name, limit, offset);
+	}
+
+	@Override
+	public List<User> studentsByGroupName(String name, int limit, int offset) {
+		return userDao.studentsByGroupName(name, limit, offset);
+	}
+
+	@Override
+	public int countGroup(String name) {
+		return userDao.countGroup(name);
+	}
+
+	@Override
+	public int countProject(String name) {
+		return userDao.countProject(name);
+	}
+
+	@Override
+	public int countName(String name) {
+		return userDao.countName(name);
+	}
+
+	@Override
+	public int countHalfName(String value1, String value2) {
+		return userDao.countHalfName(value1, value2);
+	}
+
+	@Override
+	public int countFullName(String name, String secondName, String lastName) {
+		return userDao.countFullName(name, secondName, lastName);
+	}
+
+	@Override
+	public boolean hasStudentProjects(Long studentId) {
+		return userDao.hasStudentProjects(studentId);
+	}
+
+	@Override
+	public boolean hasMentorProjects(Long mentorId) {
+		return userDao.hasMentorProjects(mentorId);
+	}
+
+	@Override
+	public boolean hasHRReviews(Long hrId) {
+		return userDao.hasHRReviews(hrId);
+	}
+
+	@Override
+	public boolean isUsingRole(Long userId, Long roleId) {
+		if (roleId == ROLE_STUDENT)
+			return hasStudentProjects(userId);
+		else if (roleId == ROLE_MENTOR)
+			return hasMentorProjects(userId);
+		else if (roleId == ROLE_HR)
+			return hasHRReviews(userId);
+		else if (roleId == ROLE_ADMIN)
+			return isCurrentUser(userId);
+		return true;
+	}
+
+	@Override
+	public boolean isCurrentUser(Long userId) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String email = authentication.getName();
+		User user = getByEmail(email);
+		return userId == user.getId();
+
 	}
 }

@@ -45,7 +45,7 @@
                         <b><spring:message code="user.status"/>:</b> ${user.statusTitle} <br/>
 
                         <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
-                            <font color="blue" data-toggle="modal"
+                            <font class="clickable" color="blue" data-toggle="modal"
                                   data-target="#projects-report-modal"><b onclick="report(${user.id})"><spring:message
                                     code="user.generate.report"/></b></font>
                             <br/>
@@ -71,7 +71,7 @@
 
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 1}">
-                                <font color="blue" data-toggle="modal"
+                                <font class="clickable" color="blue" data-toggle="modal"
                                       data-target="#switchStatus"><b><spring:message
                                         code="user.switch.status"/></b></font>
 
@@ -110,7 +110,7 @@
                         <c:if test="${user.statusId eq 2}">
                             <sec:authorize access="hasRole('MENTOR')">
 
-                                <font color="blue" data-toggle="modal"
+                                <font class="clickable" color="blue" data-toggle="modal"
                                       data-target="#switchStatus"><b><spring:message
                                         code="user.switch.status"/></b></font>
 
@@ -146,7 +146,7 @@
 
                             </sec:authorize>
                             <sec:authorize access="hasRole('HR')">
-                                <font color="blue" data-toggle="modal"
+                                <font class="clickable" color="blue" data-toggle="modal"
                                       data-target="#switchStatus"><b><spring:message
                                         code="user.switch.status"/></b></font>
 
@@ -185,7 +185,7 @@
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 3}">
                                 <sec:authorize access="hasRole('HR')">
-                                    <font color="blue" data-toggle="modal"
+                                    <font class="clickable" color="blue" data-toggle="modal"
                                           data-target="#switchStatus"><b><spring:message code="user.switch.status"/></b></font>
 
                                     <div id="switchStatus" class="modal fade" role="dialog">
@@ -237,46 +237,56 @@
 
                 <sec:authorize access="hasRole('ADMIN')">
 
-                    <font data-toggle="modal" data-target="#chooseRoles" color="blue"><b><spring:message
-                            code="user.choose.roles"/></b></font>
+					<font class="clickable" data-toggle="modal" data-target="#chooseRoles" color="blue"><b><spring:message code="user.choose.roles"/></b></font>
 
-                    <div id="chooseRoles" class="modal fade" role="dialog">
-                        <div class="modal-dialog modal-sm">
+					<div id="chooseRoles" class="modal fade" role="dialog">
+						<div class="modal-dialog modal-sm">
 
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title"><spring:message code="user.choose.roles"/></h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <form action="/manageRoles" method="post">
-                                            <div class="col-sm-12">
-                                                <c:forEach var="role" items="${roles}">
-                                                    <div class="checkbox">
-                                                        <label><input type="checkbox" name="roles"
-                                                        <c:forEach var="userRole" items="${user.roles}">
-                                                                      <c:if test="${role.title eq userRole}">checked</c:if>
-                                                        </c:forEach>
-                                                                      value="${role.id}">${role.title}</label>
-                                                    </div>
-                                                </c:forEach>
-                                            </div>
-                                            <br/>
-                                            <input type="hidden" name="student" value="${user.id}">
-                                            <center>
-                                                <button type="submit" class="btn btn-primary"><spring:message
-                                                        code="user.submit"/></button>
-                                            </center>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title"><spring:message code="user.choose.roles"/></h4>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<form action="/manageRoles" method="post">
+											<div class="col-sm-12">
+												<c:forEach var="role" items="${roles}">
+													<div class="checkbox">
+														<label>
 
-                        </div>
-                    </div>
+                                                      	<c:if test="${role.have eq true}">
+                                                      		<c:if test="${role.active eq true}">
+                                                      			<input type="checkbox" name="roles" disabled checked value="${role.id}">
+                                                      			<input type="hidden" name="roles" value="${role.id}">
+                                                      		</c:if>
+                                                     		<c:if test="${!(role.active eq true)}">
+                                                      			<input type="checkbox" name="roles" checked value="${role.id}">
+                                                      		</c:if>
+                                                      	</c:if>
 
-                </sec:authorize>
+                                        				<c:if test="${role.have eq false}">
+                                        					<input type="checkbox" name="roles" value="${role.id}">
+                                        				</c:if>
+														${role.title}</label>
+													</div>
+												</c:forEach>
+											</div>
+											<br />
+											<input type="hidden" name="student" value="${user.id}">
+											<center>
+												<button type="submit" class="btn btn-primary"><spring:message code="user.submit"/></button>
+											</center>
+										</form>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</sec:authorize>
+
                 <sec:authorize access="hasRole('MENTOR')">
                     <%--<c:if test="${user.statusId eq 2}">--%>
                     <br/><br/>
