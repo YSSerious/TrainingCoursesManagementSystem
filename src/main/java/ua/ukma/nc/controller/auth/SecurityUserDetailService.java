@@ -1,6 +1,7 @@
 package ua.ukma.nc.controller.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
+import ua.ukma.nc.entity.impl.real.RoleImpl;
 import ua.ukma.nc.service.UserService;
 
 import javax.servlet.http.Cookie;
@@ -32,10 +35,15 @@ public class SecurityUserDetailService implements UserDetailsService {
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>();
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String role = "ROLE_TEMP";
+        //trying to assign role from cookie (if it's remember-me logging in)
         for (Cookie cookie : request.getCookies())
             if (cookie.getName().equals("tcms-chosen-role"))
                 role = cookie.getValue();
         grantedAuthorityList.add(new SimpleGrantedAuthority(role));
+        //no students allowed in system
+        List<Role> availableRoles = user.getRoles();
+        if(availableRoles.size()==1&&availableRoles.stream().anyMatch(item  -> item.getId()==4))
+            return null;
         return new org.springframework.security.core.userdetails.User(email, user.getPassword(), grantedAuthorityList);
     }
 }
