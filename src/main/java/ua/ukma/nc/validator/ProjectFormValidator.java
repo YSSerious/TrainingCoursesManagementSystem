@@ -9,21 +9,22 @@ import org.springframework.validation.Validator;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.service.ProjectService;
+import ua.ukma.nc.vo.ProjectVo;
 
 @Component
 public class ProjectFormValidator implements Validator {
     
     @Autowired
     ProjectService projectService;
-
+    
     @Override
     public boolean supports(Class<?> arg0) {
-        return ProjectImpl.class.equals(arg0);
+        return ProjectVo.class.equals(arg0);
     }
 
     @Override
     public void validate(Object arg0, Errors errors) {
-        Project project = (Project) arg0;
+        ProjectVo project = (ProjectVo) arg0;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty.projectForm.name");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "startDate", "NotEmpty.projectForm.startDate");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "finishDate", "NotEmpty.projectForm.finishDate");
@@ -39,9 +40,6 @@ public class ProjectFormValidator implements Validator {
         }
         if ((project.getStartDate() != null) && (project.getFinishDate() != null) && (project.getFinishDate().compareTo(project.getStartDate()) < 0)) {
             errors.rejectValue("finishDate", "NotValid.projectForm.finishDate");
-        }
-        if ((project.getStartDate() == null)) {
-            errors.rejectValue("startDate", "Null.projectForm.startDate");
         }
     }
 

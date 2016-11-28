@@ -1,4 +1,4 @@
-<div id="editProjectDataModal" class="modal fade project-modal" tabindex="-1" role="dialog">
+<div id="editProjectDataModal" class="modal fade custom-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,7 +9,7 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <form class="default-form" method="post" data-project-id=${project.id}>
-                        <div class="col-sm-12">
+                        <div class="col-sm-12 bottom-controls">
                             <button type="submit" class="btn btn-primary pull-right">
                                 Save
                             </button>

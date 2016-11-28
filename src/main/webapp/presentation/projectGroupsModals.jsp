@@ -20,7 +20,7 @@
                                 <label id="name-message"></label>
                             </div>
                         </div>
-                        <div class="col-sm-12">
+                        <div class="col-sm-12 bottom-controls">
                             <button type="submit" class="btn btn-primary">
                                 Create
                             </button>

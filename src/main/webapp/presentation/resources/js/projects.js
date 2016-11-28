@@ -17,13 +17,28 @@ function createProjectAjax() {
     $.ajax({
         type: 'POST',
         contentType: "application/json",
-        url: '/projects/create-project.ajax',
+        url: '/projects/add',
         data: JSON.stringify(project),
         dataType: 'json',
         timeout: 100000,
+        beforeSend: function () {
+            $('#createProjectModal').find('.loading').
+                    css('display', 'inline-block');
+        },
+        complete: function () {
+            $('#createProjectModal').find('.loading').css('display', 'none');
+        },
         statusCode: {
-            200: function () {
-                console.log("Success!");
+            200: function (response) {
+                switch (response.code) {
+                    case '200':
+                        $('#createProjectModal').modal('hide');
+                        cleanForm();
+                        break;
+                    case '204':
+                        showErrors(response.messages);
+                        break;
+                }
             },
             405: function (response) {
                 console.log(response);
@@ -32,3 +47,16 @@ function createProjectAjax() {
     });
 }
 ;
+
+function showErrors(errors) {
+    if (!$.isEmptyObject(errors)) {
+        $.each(errors, function (field, message) {
+            $('.form-error[path="' + field + '"]').first().text(message);
+        });
+    }
+}
+
+function cleanForm() {
+    $('#createProjectModal input').val('');
+    $('#createProjectModal .form-error').empty();
+}

@@ -2,13 +2,17 @@ package ua.ukma.nc.controller;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +37,7 @@ import ua.ukma.nc.query.ProjectSearch;
 import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.validator.ProjectFormValidator;
+import ua.ukma.nc.vo.AjaxResponse;
 import ua.ukma.nc.vo.ProjectVo;
 
 @Controller
@@ -44,6 +51,9 @@ public class ProjectsController {
 
 	@Autowired
 	private ProjectFormValidator projectFromValidator;
+        
+        @Autowired
+        private MessageSource messageSource;
 	
 	private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 	
@@ -70,52 +80,29 @@ public class ProjectsController {
 		return categoryService.getAll().stream().map(CategoryDto::new).collect(Collectors.toList());
 	}
 	
-	@InitBinder("projectForm")
-	public void initBinder(WebDataBinder binder) {
-		binder.setValidator(projectFromValidator);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                sdf.setLenient(true);
-                binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
-	}
-	
-	@RequestMapping(value = "/projects/create-project", method = RequestMethod.GET)
-	public String showCreateProjectForm(Model model) {
-		Project project = new ProjectImpl();
-		model.addAttribute("projectForm", project);
-		return "create-project";
-	}
-	
-	@RequestMapping(value = "/projects/create-project", method = RequestMethod.POST)
-	public String createProject(@ModelAttribute("projectForm") @Validated ProjectImpl project,
-            BindingResult result, final RedirectAttributes redirectAttributes) {
-            if (!result.hasErrors()) {
-                projectService.createProject(project);
-                redirectAttributes.addFlashAttribute("msg", "Project added successfully!");
-                return "redirect:/projects";
-            } else {
-                return "create-project";
-            }
-	}
-	
+	@RequestMapping(value = "/projects/add", method = RequestMethod.POST)
         @ResponseBody
-        @RequestMapping(value = "/projects/create-project.ajax", method = RequestMethod.POST)
-        public String createProject(@RequestBody ProjectVo projectVo) {
-            Project project = new ProjectImpl(projectVo.getName(), projectVo.getDescription(), projectVo.getStartDate(), projectVo.getFinishDate());
-            projectService.createProject(project);
-            return "";
-        }
-        
-	@RequestMapping(value = "/projects/create-project/is-name-free")
-	public @ResponseBody String isNameFree(@RequestBody String name){
-		String result = "";
-		String nname = new String(name);
-		Project project = projectService.getByName(nname.trim());
-		if (project == null){
-			result = "true";
-		}
-		else {
-			result = "false";
-		}
-		return result;
+	public AjaxResponse createProject(@RequestBody @Validated ProjectVo projectVo) throws InterruptedException {
+            DataBinder dataBinder = new WebDataBinder(projectVo);
+            dataBinder.setValidator(projectFromValidator);
+            dataBinder.validate();
+            BindingResult result = dataBinder.getBindingResult();
+            AjaxResponse response = new AjaxResponse();
+            if (!result.hasErrors()) {
+                Project project = new ProjectImpl(
+                        projectVo.getName(), projectVo.getDescription(),
+                        projectVo.getStartDate(), projectVo.getFinishDate());
+                projectService.createProject(project);
+                response.setCode("200");
+            } else {
+                response.setCode("204");
+                result.getFieldErrors().stream().forEach((FieldError error) -> {
+                    response.addMessage(error.getField(),
+                            messageSource.getMessage(error.getCode(),
+                                    null, LocaleContextHolder.getLocale()));
+                });
+            }
+            return response;
 	}
+
 }

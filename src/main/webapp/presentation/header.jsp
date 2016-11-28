@@ -48,6 +48,8 @@
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/css/table.css"/>">
 <link rel="stylesheet" type="text/css"
+	href="<c:url value="/presentation/resources/css/modals.css"/>">
+<link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/css/charts.css"/>">
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/css/footer.css"/>">
