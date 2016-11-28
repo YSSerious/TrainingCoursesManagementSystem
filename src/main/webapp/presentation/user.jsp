@@ -45,7 +45,7 @@
                         <b><spring:message code="user.status"/>:</b> ${user.statusTitle} <br/>
 
                         <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
-                            <font color="blue" data-toggle="modal"
+                            <font class="clickable" color="blue" data-toggle="modal"
                                   data-target="#projects-report-modal"><b onclick="report(${user.id})"><spring:message
                                     code="user.generate.report"/></b></font>
                             <br/>
@@ -71,7 +71,7 @@
 
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 1}">
-                                <font color="blue" data-toggle="modal"
+                                <font class="clickable" color="blue" data-toggle="modal"
                                       data-target="#switchStatus"><b><spring:message
                                         code="user.switch.status"/></b></font>
 
@@ -110,7 +110,7 @@
                         <c:if test="${user.statusId eq 2}">
                             <sec:authorize access="hasRole('MENTOR')">
 
-                                <font color="blue" data-toggle="modal"
+                                <font class="clickable" color="blue" data-toggle="modal"
                                       data-target="#switchStatus"><b><spring:message
                                         code="user.switch.status"/></b></font>
 
@@ -146,7 +146,7 @@
 
                             </sec:authorize>
                             <sec:authorize access="hasRole('HR')">
-                                <font color="blue" data-toggle="modal"
+                                <font class="clickable" color="blue" data-toggle="modal"
                                       data-target="#switchStatus"><b><spring:message
                                         code="user.switch.status"/></b></font>
 
@@ -185,7 +185,7 @@
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 3}">
                                 <sec:authorize access="hasRole('HR')">
-                                    <font color="blue" data-toggle="modal"
+                                    <font class="clickable" color="blue" data-toggle="modal"
                                           data-target="#switchStatus"><b><spring:message code="user.switch.status"/></b></font>
 
                                     <div id="switchStatus" class="modal fade" role="dialog">
@@ -237,7 +237,7 @@
 
                 <sec:authorize access="hasRole('ADMIN')">
 
-					<font data-toggle="modal" data-target="#chooseRoles" color="blue"><b><spring:message code="user.choose.roles"/></b></font>
+					<font class="clickable" data-toggle="modal" data-target="#chooseRoles" color="blue"><b><spring:message code="user.choose.roles"/></b></font>
 
 					<div id="chooseRoles" class="modal fade" role="dialog">
 						<div class="modal-dialog modal-sm">
