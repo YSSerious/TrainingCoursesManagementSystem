@@ -10,13 +10,13 @@
                         </div>
                         <div class="panel-body">${meeting.name}</div>
                     </div>
-                    <div class="panel panel-default panel-horizontal bottom-panel">
+                    <div class="panel panel-default panel-horizontal top-panel">
                         <div class="panel-heading">
                             <h3 class="panel-title">Place</h3>
                         </div>
                         <div class="panel-body">${meeting.place}</div>
                     </div>
-                    <div class="panel panel-default panel-horizontal ">
+                    <div class="panel panel-default panel-horizontal bottom-panel">
                         <div class="panel-heading">
                             <h3 class="panel-title">Time</h3>
                         </div>
@@ -27,10 +27,7 @@
         </div>
     </div>
 </div>
-<br>
-<br>
-<br>
-<br>
+
 <div id="table-listing">
     <div class="panel panel-primary  table-responsive table-scrollable">
         <div class="panel-heading">
@@ -77,7 +74,7 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-primary col-xs-offset-1"
-                                        onclick="guf228(${user.id}, ${meeting.id})">
+                                        onclick="absent(${user.id},${meeting.id})">
                                     Absent
                                 </button>
                            </div>
@@ -106,7 +103,7 @@
                                 </ul>
                                 <label>General: </label>
                                 <textarea class="form-control" id="rev-com" rows="5"></textarea>
-									<span id="rev-err" class="text-danger hidden">Unknown
+									<span id="rev-err${user.id}" class="text-danger hidden">Unknown
 										error</span>
                             </div>
                             <div class="modal-footer">
@@ -325,80 +322,6 @@
         $(".modal-body #user").val(user);
     });
 </script>
-<script>
-    function app_handle_listing_horisontal_scroll(listing_obj) {
-        table_obj = $('.table', listing_obj);
-        count_fixed_collumns = table_obj.attr('data-count-fixed-columns')
 
-        if (count_fixed_collumns > 0) {
-            wrapper_obj = $('.meeting', listing_obj);
-
-            wrapper_left_margin = 0;
-
-            table_collumns_width = new Array();
-            table_collumns_margin = new Array();
-            $('th', table_obj).each(function (index) {
-                if (index < count_fixed_collumns) {
-                    wrapper_left_margin += $(this).outerWidth();
-                    table_collumns_width[index] = $(this).outerWidth();
-                }
-            })
-            $.each(table_collumns_width, function (key, value) {
-                if (key == 0) {
-                    table_collumns_margin[key] = wrapper_left_margin;
-                } else {
-                    next_margin = 0;
-                    $.each(table_collumns_width,
-                            function (key_next, value_next) {
-                                if (key_next < key) {
-                                    next_margin += value_next;
-                                }
-                            });
-
-                    table_collumns_margin[key] = wrapper_left_margin
-                            - next_margin;
-                }
-            });
-            if (wrapper_left_margin > 0) {
-                wrapper_obj.css('cssText', 'margin-left:' + wrapper_left_margin
-                        + 'px !important; width: auto')
-            }
-            $('tr', table_obj)
-                    .each(
-                            function () {
-                                current_row_height = $(this).outerHeight();
-
-                                $('th,td', $(this))
-                                        .each(
-                                                function (index) {
-                                                    $(this).css('height',
-                                                            current_row_height)
-                                                    if (index < count_fixed_collumns) {
-                                                        $(this)
-                                                                .css(
-                                                                        'position',
-                                                                        'absolute')
-                                                                .css(
-                                                                        'margin-left',
-                                                                        '-'
-                                                                        + table_collumns_margin[index]
-                                                                        + 'px')
-                                                                .css(
-                                                                        'width',
-                                                                        table_collumns_width[index])
-
-                                                        $(this)
-                                                                .addClass(
-                                                                        'table-fixed-cell')
-                                                    }
-                                                })
-                            })
-        }
-    }
-
-    $(function () {
-        app_handle_listing_horisontal_scroll($('#table-listing'))
-    })
-</script>
 
 <%@include file="footer.jsp" %>
