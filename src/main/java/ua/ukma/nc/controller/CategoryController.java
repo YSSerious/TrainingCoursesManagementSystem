@@ -1,6 +1,8 @@
 package ua.ukma.nc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,19 +44,25 @@ public class CategoryController {
 
     @RequestMapping(value = "/addCategory", method = RequestMethod.POST)
     @ResponseBody
-    public CategoryDto addCategory(@RequestParam String name, @RequestParam String description) {
+    public ResponseEntity addCategory(@RequestParam String name, @RequestParam String description) {
+        if(categoryService.isExist(name)){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Category with this name already exist");
+        }
         categoryService.createCategory(new CategoryImpl(name, description));
         Category created = categoryService.getByName(name);
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setId(created.getId());
         categoryDto.setName(created.getName());
         categoryDto.setDescription(created.getDescription());
-        return categoryDto;
+        return ResponseEntity.ok().body(categoryDto);
     }
 
     @RequestMapping(value = "/saveCriteria", method = RequestMethod.POST)
     @ResponseBody
-    public CriterionDto saveCriteria(@RequestParam Long categoryId, @RequestParam String name) {
+    public ResponseEntity saveCriteria(@RequestParam Long categoryId, @RequestParam String name) {
+        if(criterionService.isExist(name)){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Criteria with this name already exist");
+        }
         Criterion criterion = new CriterionImpl(name);
         criterion.setCategory(categoryService.getById(categoryId));
         criterionService.createCriterion(criterion);
@@ -63,29 +71,29 @@ public class CategoryController {
         criterionDto.setId(created.getId());
         criterionDto.setTitle(created.getTitle());
         criterionDto.setCategoryId(created.getCategory().getId());
-        return criterionDto;
+        return ResponseEntity.ok().body(criterionDto);
     }
 
 
     @RequestMapping(value = "/deleteCriteria", method = RequestMethod.POST)
     @ResponseBody
-    public String deleteCriteria(@RequestParam Long criteriaId) throws CriteriaDeleteException {
+    public ResponseEntity deleteCriteria(@RequestParam Long criteriaId){
         if(criterionService.isExistInProjects(criteriaId))
-            throw new CriteriaDeleteException("Criteria is used in some projects, and cannot be deleted");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Criteria is used in some projects, and cannot be deleted");
         int check = criterionService.deleteCriterion(criteriaId);
         if(check==1)
-        return "Criteria was deleted successfully";
-        return "fail";
+        return ResponseEntity.ok().body("Criteria was deleted successfully");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Fail during deleting criteria");
     }
 
     @RequestMapping(value = "/deleteCategory", method = RequestMethod.POST)
     @ResponseBody
-    public String deleteCategory(@RequestParam Long categoryId) throws CriteriaDeleteException {
+    public ResponseEntity deleteCategory(@RequestParam Long categoryId){
         Category category= categoryService.getById(categoryId);
         if(isCriteriaUsing(category))
-            throw new CriteriaDeleteException("Criteria from this category used in some projects, so this category cannot be deleted");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Several criteria from this category used in some projects, so this category cannot be deleted");
         categoryService.deleteCategory(categoryId);
-        return "Category was deleted successfully";
+        return ResponseEntity.ok().body("Success");
     }
 
     @RequestMapping(value = "/editCategory", method = RequestMethod.POST)

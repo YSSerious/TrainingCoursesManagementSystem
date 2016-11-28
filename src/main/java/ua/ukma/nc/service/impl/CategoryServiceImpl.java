@@ -65,7 +65,12 @@ public class CategoryServiceImpl implements CategoryService{
         return categoryDao.createCategory(category);
     }
 
-	@Override
+    @Override
+    public boolean isExist(String name) {
+        return categoryDao.isExist(name);
+    }
+
+    @Override
 	public List<Category> getByProjectId(Long projectId) {
 		return categoryDao.getByProjectId(projectId);
 	}

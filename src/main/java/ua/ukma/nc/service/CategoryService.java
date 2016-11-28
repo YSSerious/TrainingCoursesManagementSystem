@@ -28,4 +28,6 @@ public interface CategoryService {
     List<Category> getByProjectId(Long projectId);
 
     int createCategory(Category category);
+
+    boolean isExist(String name);
 }
