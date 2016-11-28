@@ -145,15 +145,17 @@ $(document).ready(function () {
 	
 });
 
-function changeSpan() {
-	if ($("#spanId").hasClass("glyphicon-chevron-down")) {
-		$("#spanId").removeClass('glyphicon-chevron-down');
-		$("#spanId").addClass('glyphicon-chevron-up');
+function changeSpan(el) {
+	var chevron = jQuery(el);
+	if(chevron.find('span').hasClass("glyphicon-chevron-down")){
+		chevron.find('span').removeClass('glyphicon-chevron-down');
+		chevron.find('span').addClass('glyphicon-chevron-up');
 	} else {
-		$("#spanId").removeClass('glyphicon-chevron-up');
-		$("#spanId").addClass('glyphicon-chevron-down');
+		chevron.find('span').removeClass('glyphicon-chevron-up');
+		chevron.find('span').addClass('glyphicon-chevron-down');
 	}
 }
+
 var chosenMeetingId;
 
 function setMeeting(id) {

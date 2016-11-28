@@ -148,3 +148,14 @@ function buildResponseCriteria(data) {
         "</div>";
 }
 ;
+
+function changeSpan(el) {
+    var chevron = jQuery(el);
+    if(chevron.children('.glyphicon').hasClass("glyphicon-chevron-down")){
+        chevron.children('.glyphicon').removeClass('glyphicon-chevron-down');
+        chevron.children('.glyphicon').addClass('glyphicon-chevron-up');
+    } else {
+        chevron.children('.glyphicon').removeClass('glyphicon-chevron-up');
+        chevron.children('.glyphicon').addClass('glyphicon-chevron-down');
+    }
+}

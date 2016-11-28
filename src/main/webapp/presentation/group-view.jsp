@@ -1,6 +1,6 @@
 <%@include file="header.jsp"%>
 <script src="<c:url value="/presentation/resources/js/group.js"/>"
-	type="text/javascript">
+	type="text/javascript" defer="defer">
 	
 </script>
 <jsp:useBean id="type" class="java.lang.String" />
@@ -47,7 +47,7 @@
 				style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
 				<div class="panel-heading clearfix">
 					<div data-toggle="collapse" data-target="#collapseMeetings"
-						class="arrow col-md-1" style="color: black" onclick="changeSpan()">
+						class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
 						<span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
 					</div>
 				</div>
@@ -55,8 +55,8 @@
 					<ul class="list-group">
 						<c:forEach items="${meetings}" var="meeting">
 							<li class="list-group-item  clearfix"
-								id="meetingId-${meeting.id}"><a
-								href="/meeting/${meeting.id}" class="col-md-2"
+								id="meetingId-${meeting.id}">
+								<a href="/meeting/${meeting.id}" class="col-md-2"
 								id="editMeetingNameId-${meeting.id}">${meeting.name}</a>
 								<div class="col-md-2" id="editMeetingDateId-${meeting.id}">${meeting.time}</div>
 								<div class="col-md-4" id="editMeetingPlaceId-${meeting.id}">${meeting.place}</div>
@@ -94,7 +94,7 @@
 				<spring:message code="group.button.add" />
 			</button>
 			<div data-toggle="collapse" data-target="#collapseStudents"
-				class="arrow col-md-1" style="color: black">
+				class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
 				<span class="glyphicon glyphicon-chevron-down"></span>
 			</div>
 		</div>
@@ -165,7 +165,7 @@
 				<spring:message code="group.button.add" />
 			</button>
 			<div data-toggle="collapse" data-target="#collapseMentors"
-				class="arrow col-md-1" style="color: black">
+				class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
 				<span class="glyphicon glyphicon-chevron-down"></span>
 			</div>
 		</div>
@@ -254,7 +254,7 @@
 			<spring:message code="group.button.add" />
 		</button>
 		<div data-toggle="collapse" data-target="#collapseAttachment"
-			class="arrow col-md-1" style="color: black">
+			class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
 			<span class="glyphicon glyphicon-chevron-down"></span>
 		</div>
 	</div>
