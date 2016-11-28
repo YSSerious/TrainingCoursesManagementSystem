@@ -12,7 +12,7 @@ public interface CategoryDao {
 
     Category getByName(String name);
 
-    boolean isExist(Category category);
+    boolean isExist(String name);
 
     int deleteCategory(Category category);
 

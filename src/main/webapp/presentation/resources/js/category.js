@@ -5,13 +5,17 @@ $(document).ready(function () {
             url: "/addCategory",
             type: "POST",
             data: {name: $("#categoryName").val(), "description": $("#categoryDescription").val()},
-            success: function (data) {
-                console.log(data);
-                buildCategory(data.id, data.name, data.description);
-                $('#panelGroupId').append(newCategory);
-            },
-            error: function (textStatus) {
-                console.log(textStatus);
+            statusCode: {
+                200: function (data) {
+                    console.log(data);
+                        buildCategory(data.id, data.name, data.description);
+                        $('#panelGroupId').append(newCategory);
+                },
+                409: function (textStatus) {
+                    console.log(textStatus);
+                    $('#responseErrorModal').html(textStatus.responseText);
+                    $('#errorModal').modal('show');
+                }
             }
         });
     });
@@ -21,13 +25,17 @@ $(document).ready(function () {
             url: "/saveCriteria",
             type: "POST",
             data: {categoryId: categoryId, name: $("#criteriaName").val()},
-            success: function (data) {
-                console.log(data);
-                buildCriteria(data.id, data.title);
-                $('#collapseIn-'+data.categoryId).append(newCriteria);
-            },
-            error: function (textStatus) {
-                console.log(textStatus);
+            statusCode: {
+                200: function (data) {
+                    console.log(data);
+                        buildCriteria(data.id, data.title);
+                        $('#collapseIn-' + data.categoryId).append(newCriteria);
+                },
+                409: function (textStatus) {
+                    console.log(textStatus);
+                    $('#responseErrorModal').html(textStatus.responseText);
+                    $('#errorModal').modal('show');
+                }
             }
         });
     });
@@ -37,15 +45,19 @@ $(document).ready(function () {
             url: "/deleteCategory",
             type: "POST",
             data: {categoryId: categoryId},
-            success: function (data) {
-                console.log(data);
-                $('#categoryPanelId-'+categoryId).remove();
-            },
-            error: function (textStatus) {
-                console.log(textStatus);
-                $('#categoryDeleteError').modal('show');
-
+            statusCode: {
+                200: function (data) {
+                    console.log(data);
+                    $('#categoryPanelId-' + categoryId).remove();
+                },
+                409: function (textStatus) {
+                        console.log(textStatus);
+                        $('#responseErrorModal').html(textStatus.responseText);
+                        $('#errorModal').modal('show');
+                }
             }
+            // , success: function () {
+            // }
         });
     });
 
@@ -53,11 +65,15 @@ $(document).ready(function () {
         $.ajax({
             url: "/editCategory",
             type: "POST",
-            data: {id: categoryId, name: $("#editCategoryName").val(), description: $("#editCategoryDescription").val()},
+            data: {
+                id: categoryId,
+                name: $("#editCategoryName").val(),
+                description: $("#editCategoryDescription").val()
+            },
             success: function (data) {
                 console.log(data);
-                $('#aEditId-'+categoryId).html("<b>"+data.name+"</b>");
-                $('#divEditId-'+categoryId).html(data.description);
+                $('#aEditId-' + categoryId).html("<b>" + data.name + "</b>");
+                $('#divEditId-' + categoryId).html(data.description);
             },
             error: function (textStatus) {
                 console.log(textStatus);
@@ -70,23 +86,26 @@ $(document).ready(function () {
             url: "/deleteCriteria",
             type: "POST",
             data: {criteriaId: criteriaId},
-            success: function (data) {
-                console.log(data);
-                $('#criteriaId-'+criteriaId).remove();
-            },
-            error: function (textStatus) {
-                console.log(textStatus);
-                $('#criteriaDeleteError').modal('show');
+            statusCode: {
+                200: function (data) {
+                    console.log(data);
+                    $('#criteriaId-' + criteriaId).remove();
+                },
+                409: function (textStatus) {
+                    console.log(textStatus);
+                    $('#responseErrorModal').html(textStatus.responseText);
+                    $('#errorModal').modal('show');
+                }
             }
         });
     });
 
-    $('#saveCategory').attr('disabled', true);
-    var namePattern = new RegExp('^[a-z0-9_-]{3,15}$');
-    var descriptionPattern = new RegExp('^[a-z0-9_-]{3,25}$');
+    var namePattern = new RegExp('^[a-zA-Z0-9_-\\s]{3,15}$');
+    var descriptionPattern = new RegExp('^[a-zA-Z0-9_-\\s]{3,25}$');
 
+    $('#saveCategory').attr('disabled', true);
     $('#categoryName, #categoryDescription').on('keyup', function () {
-        if (namePattern.test($("#categoryName").val()) && descriptionPattern.test($("#categoryDescription").val())){
+        if (namePattern.test($("#categoryName").val()) && descriptionPattern.test($("#categoryDescription").val())) {
             $('#saveCategory').attr('disabled', false);
         } else {
             $('#saveCategory').attr('disabled', true);
@@ -95,12 +114,22 @@ $(document).ready(function () {
 
     $('#saveCriteria').attr('disabled', true);
     $('#criteriaName').on('keyup', function () {
-        if (namePattern.test($("#criteriaName").val())){
+        if (namePattern.test($("#criteriaName").val())) {
             $('#saveCriteria').attr('disabled', false);
         } else {
             $('#saveCriteria').attr('disabled', true);
         }
     });
+
+    $('#editCategoryModal').attr('disabled', true);
+    $('#editCategoryName, #editCategoryDescription').on('keyup', function () {
+        if (namePattern.test($("#editCategoryName").val()) && descriptionPattern.test($("#editCategoryDescription").val())) {
+            $('#editCategoryModal').attr('disabled', false);
+        } else {
+            $('#editCategoryModal').attr('disabled', true);
+        }
+    });
+
 
 });
 
@@ -117,49 +146,49 @@ function setCategory(id) {
     categoryId = id;
 }
 
-function buildCriteria(criteriaId, criteriaTitle){
-    newCriteria="<div class='panel-body' id='criteriaId-"+criteriaId+"'>" +
-                "<div class='col-md-2'>"+criteriaTitle+"</div>" +
-                "<button  class='btn btn-collapse'" +
-                " data-toggle='modal'" +
-                " data-target='#deleteCriteria'" +
-                " onclick='setCriteria("+criteriaId+")'>" +
-                "<span class='glyphicon glyphicon-remove'></span>" +
-                "</button>" +
-                "</div>";
+function buildCriteria(criteriaId, criteriaTitle) {
+    newCriteria = "<div class='panel-body' id='criteriaId-" + criteriaId + "'>" +
+        "<div class='col-md-2'>" + criteriaTitle + "</div>" +
+        "<button  class='btn btn-collapse'" +
+        " data-toggle='modal'" +
+        " data-target='#deleteCriteria'" +
+        " onclick='setCriteria(" + criteriaId + ")'>" +
+        "<span class='glyphicon glyphicon-remove'></span>" +
+        "</button>" +
+        "</div>";
 }
 
-function buildCategory(categoryId, categoryTitle, categoryDescription){
-    newCategory="<div class='panel panel-default' id='categoryPanelId-"+categoryId+"'>" +
-                "<div class='panel-heading'>" +
-                "<h4 class='panel-title row'>" +
-                "<div data-toggle='collapse' class='diver col-md-3 text-primary' id='aEditId-"+categoryId+"' " +
-                "data-target='#collapseIn-"+categoryId+"'><b>"+categoryTitle+"</b>" +
-                "</div>" +
-                "<div id='divEditId-"+categoryId+"' class='col-md-3'>"+categoryDescription+"</div>" +
-                "<button class='btn btn-lg pull-right-btn'" +
-                " type='button'" +
-                " data-toggle='modal'" +
-                " data-target='#deleteCategory'" +
-                " onclick='setCategory("+categoryId+")'>" +
-                "<span class='glyphicon glyphicon-remove'></span>" +
-                "</button>" +
-                "<button class='btn btn-lg pull-right-btn'" +
-                " type='button'" +
-                " data-toggle='modal'" +
-                " data-target='#editCategory'" +
-                " onclick='setCategory("+categoryId+")'>" +
-                "<span class='glyphicon glyphicon-edit'></span>" +
-                "</button>" +
-                "<button class='btn btn-lg pull-right-btn'" +
-                " type='button'" +
-                " data-toggle='modal'" +
-                " data-target='#addCriteria'" +
-                " onclick='setCategory("+categoryId+")'>" +
-                "<span class='glyphicon glyphicon-plus'></span>" +
-                "</button>" +
-                "</h4>" +
-                "</div>" +
-                "<div id='collapseIn-"+categoryId+"' class='panel-collapse collapse'>" +
-                "</div></div>";
+function buildCategory(categoryId, categoryTitle, categoryDescription) {
+    newCategory = "<div class='panel panel-default' id='categoryPanelId-" + categoryId + "'>" +
+        "<div class='panel-heading'>" +
+        "<h4 class='panel-title row'>" +
+        "<div data-toggle='collapse' class='diver col-md-3 text-primary' id='aEditId-" + categoryId + "' " +
+        "data-target='#collapseIn-" + categoryId + "'><b>" + categoryTitle + "</b>" +
+        "</div>" +
+        "<div id='divEditId-" + categoryId + "' class='col-md-3'>" + categoryDescription + "</div>" +
+        "<button class='btn btn-lg pull-right-btn'" +
+        " type='button'" +
+        " data-toggle='modal'" +
+        " data-target='#deleteCategory'" +
+        " onclick='setCategory(" + categoryId + ")'>" +
+        "<span class='glyphicon glyphicon-remove'></span>" +
+        "</button>" +
+        "<button class='btn btn-lg pull-right-btn'" +
+        " type='button'" +
+        " data-toggle='modal'" +
+        " data-target='#editCategory'" +
+        " onclick='setCategory(" + categoryId + ")'>" +
+        "<span class='glyphicon glyphicon-edit'></span>" +
+        "</button>" +
+        "<button class='btn btn-lg pull-right-btn'" +
+        " type='button'" +
+        " data-toggle='modal'" +
+        " data-target='#addCriteria'" +
+        " onclick='setCategory(" + categoryId + ")'>" +
+        "<span class='glyphicon glyphicon-plus'></span>" +
+        "</button>" +
+        "</h4>" +
+        "</div>" +
+        "<div id='collapseIn-" + categoryId + "' class='panel-collapse collapse'>" +
+        "</div></div>";
 }

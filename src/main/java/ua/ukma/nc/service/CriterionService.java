@@ -42,4 +42,6 @@ public interface CriterionService {
     boolean isRatedInProject(Long projectId, Criterion criterion);
 
     boolean isRatedInMeeting(Long meetingId, Criterion criterion);
+
+    boolean isExist(String title);
 }

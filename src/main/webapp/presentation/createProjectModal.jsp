@@ -4,14 +4,14 @@
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal"><span
                         class="glyphicon glyphicon-remove"></span></button>
-                <h4 class="modal-title">Create project</h4>
+                <h4 class="modal-title"><spring:message code="projects.createProject.title"/></h4>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
                     <form class="default-form" id='create-project-form' method="post">
                         <div class="form-group col-sm-12 required">
                             <div class="col-sm-12">
-                                <label for="project-name" path="name">Name</label>
+                                <label for="project-name" path="name"><spring:message code="projects.createProject.name"/></label>
                                 <label path="name" class="form-error"></label>
                             </div>
                             <div class="col-sm-12">
@@ -21,7 +21,7 @@
                         </div>
                         <div class="form-group col-sm-12 required">
                             <div class="col-sm-12">
-                                <label for="start-date" path="startDate">Start date</label>
+                                <label for="start-date" path="startDate"><spring:message code="projects.createProject.startDate"/></label>
                                 <label path="startDate" class="form-error"></label>
                             </div>
                             <div class="col-sm-6">
@@ -31,7 +31,7 @@
                         </div>
                         <div class="form-group col-sm-12 required">
                             <div class="col-sm-12">
-                                <label for="finish-date" path="finishDate">Finish date</label>
+                                <label for="finish-date" path="finishDate"><spring:message code="projects.createProject.finishDate"/></label>
                                 <label path="finishDate" class="form-error"></label>
                             </div>
                             <div class="col-sm-6">
@@ -41,7 +41,7 @@
                         </div>
                         <div class="form-group col-sm-12 required">
                             <div class="col-sm-12">
-                                <label for="description" path="description">Description</label>
+                                <label for="description" path="description"><spring:message code="projects.createProject.description"/></label>
                                 <label path="description" class="form-error"></label>
                             </div>
                             <div class="col-sm-12">
@@ -50,12 +50,8 @@
                             </div>
                         </div>
                         <div class="col-sm-12 bottom-controls">
-                            <button type="submit" class="btn btn-primary pull-right">
-                                Save
-                            </button>
-                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">
-                                Cancel
-                            </button>
+                            <button type="submit" class="btn btn-primary pull-right"><spring:message code="btn.save"/></button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal"><spring:message code="btn.cancel"/></button>
                             <!--<div class="loading pull-right"></div>-->
                             <div class="loading pull-right">
                                 <img src="<c:url value="/presentation/resources/imgs/ajax-loader.gif"/>"/>

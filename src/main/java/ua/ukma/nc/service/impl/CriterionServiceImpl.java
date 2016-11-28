@@ -97,6 +97,11 @@ public class CriterionServiceImpl implements CriterionService {
 	}
 
 	@Override
+	public boolean isExist(String title) {
+		return criterionDao.isExist(title);
+	}
+
+	@Override
 	public List<Criterion> getByMeeting(Long meetingId) {
 		return criterionDao.getByMeeting(meetingId);
 	}

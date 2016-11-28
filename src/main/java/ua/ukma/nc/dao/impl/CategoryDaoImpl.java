@@ -58,6 +58,8 @@ public class CategoryDaoImpl implements CategoryDao {
 
 	private static final String UPDATE_CATEGORY = "UPDATE tcms.category SET name = ?, description = ? WHERE id = ?";
 
+	private static final String IS_EXIST = "select exists (select * from tcms.category where name=?)";
+
 	@Override
 	public Category getById(Long id) {
 		log.info("Getting category with id = {}", id);
@@ -99,8 +101,8 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	@Override
-	public boolean isExist(Category category) {
-		return false;
+	public boolean isExist(String name) {
+		return jdbcTemplate.queryForObject(IS_EXIST, Boolean.class, name);
 	}
 
 	private List<Criterion> getCriteria(Long categoryId) {

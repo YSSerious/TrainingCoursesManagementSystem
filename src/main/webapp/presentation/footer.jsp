@@ -11,7 +11,7 @@
                     <a><spring:message code="language.en"/></a>
                 </div>
                 <h5>&nbsp;&nbsp;&nbsp;</h5>
-                <h5>Copyright (really? a u kidding?) © 2016 TCMS</h5>
+                <h5><spring:message code="footer.copyright"/> &#169; 2016 TCMS</h5>
             </div>
         </div>
 

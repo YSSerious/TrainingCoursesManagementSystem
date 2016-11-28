@@ -82,6 +82,8 @@ public class CriterionDaoImpl implements CriterionDao{
     private static final String IS_RATED_IN_MEETING = "select exists (select * from tcms.meeting_result where id_criterion = ? and id_meeting_review in " +
                                                         "(select id from tcms.meeting_review where id_meeting =?))";
 
+    private static final String IS_EXIST = "select exists (select * from tcms.criterion where name=?)";
+
     @Override
     public Criterion getById(Long id) {
         log.info("Getting criterion with id = {}", id);
@@ -169,6 +171,11 @@ public class CriterionDaoImpl implements CriterionDao{
     public int createCriterion(String title, Long categoryId) {
         log.info("Create new criterion with title = {}", title);
         return jdbcTemplate.update(CREATE_CRITERION, title, categoryId);
+    }
+
+    @Override
+    public boolean isExist(String title) {
+        return jdbcTemplate.queryForObject(IS_EXIST, Boolean.class, title);
     }
 
     @Override

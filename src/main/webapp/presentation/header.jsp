@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,36 +106,47 @@ else
             <sec:authorize access="hasAnyRole('ADMIN', 'MENTOR', 'HR')">
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/profile" class="btn btn-link" role="button">
-                            My profile
-                        </a>
+                    <li class="user-role">
+                        <c:set var="dirtyRole"><sec:authentication property="principal.authorities"/></c:set></h5>
+                        <c:set var="role" value='${
+                               fn:toLowerCase(fn:replace(fn:replace(dirtyRole, 
+                                   "&#91;ROLE&#95;", ""),"&#93;", ""))
+                               }'
+                               ></c:set>
+                        <h5><spring:message code='roles.${role}.msg'/></h5>
                     </li>
+<!--                    <li>
+                        <a href="/profile" class="btn btn-link" role="button">
+                            <spring:message code="navbar.myprofile"/>
+                        </a>
+                    </li>-->
                     <li>
                         <div class="dropdown">
                             <button type="button" class="btn btn-link"
                                     data-toggle="dropdown">
-                                Navigate <span class="caret"></span>
+                                <spring:message code="navbar.navigate"/>&nbsp;<span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-left" role="menu">
-                                <li><a href="/projects">Projects</a></li>
+                                <li><a href="/projects"><spring:message code="navbar.navigate.projects"/></a></li>
                                 <sec:authorize access="hasRole('ADMIN')">
-                                    <li><a href="/allUsers">Users</a></li>
-                                    <li><a href="/category">Categories</a></li>
+                                    <li><a href="/allUsers"><spring:message code="navbar.navigate.users"/></a></li>
+                                    <li><a href="/category"><spring:message code="navbar.navigate.categories"/></a></li>
                                 </sec:authorize>
                                 <sec:authorize access="hasAnyRole('MENTOR', 'HR')">
-                                    <li><a href="/students">Students</a></li>
+                                    <li><a href="/students"><spring:message code="navbar.navigate.students"/></a></li>
                                 </sec:authorize>
                                 <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
-                                    <li><a href="/reports">Reports</a></li>
+                                    <li><a href="/reports"><spring:message code="navbar.navigate.reports"/></a></li>
                                 </sec:authorize>
                                 <li class="divider"></li>
-                                <li><a href="/roles">Change my role</a></li>
+                                <li><a href="/roles"><spring:message code="navbar.navigate.changeMyRole"/></a></li>
                             </ul>
                         </div>
                     </li>
                     <li><form:form method="POST" action="/logout">
-                        <button type="submit" class="btn btn-link">Log out</button>
+                        <button type="submit" class="btn btn-link">
+                            <spring:message code="navbar.logOut"/>
+                        </button>
                     </form:form></li>
                 </ul>
                 </sec:authorize>
