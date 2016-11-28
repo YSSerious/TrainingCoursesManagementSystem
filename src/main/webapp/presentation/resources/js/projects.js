@@ -22,6 +22,7 @@ function createProjectAjax() {
         dataType: 'json',
         timeout: 100000,
         beforeSend: function () {
+            $('#createProjectModal .form-error').empty();
             $('#createProjectModal').find('.loading').
                     css('display', 'inline-block');
         },
