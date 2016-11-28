@@ -107,12 +107,8 @@ else
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="user-role">
-                        <c:set var="dirtyRole"><sec:authentication property="principal.authorities"/></c:set></h5>
-                        <c:set var="role" value='${
-                               fn:toLowerCase(fn:replace(fn:replace(dirtyRole, 
-                                   "&#91;ROLE&#95;", ""),"&#93;", ""))
-                               }'
-                               ></c:set>
+                        <c:set var="dirtyRole"><sec:authentication property="authorities"/></c:set>
+                        <c:set var="role" value='${fn:toLowerCase(fn:replace(fn:replace(dirtyRole, "&#91;ROLE&#95;", ""),"&#93;", ""))}'/>
                         <h5><spring:message code='roles.${role}.msg'/></h5>
                     </li>
 <!--                    <li>
