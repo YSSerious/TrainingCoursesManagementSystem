@@ -14,6 +14,7 @@ import ua.ukma.nc.entity.Status;
 import ua.ukma.nc.entity.StatusLog;
 import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
+import ua.ukma.nc.exception.StatusSwitchException;
 import ua.ukma.nc.service.FinalReviewService;
 import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.StatusLogService;
@@ -156,13 +157,20 @@ public class UserServiceImpl implements UserService {
 		boolean isHR = authorities.contains(new SimpleGrantedAuthority("ROLE_HR"));
 		String name = authentication.getName();
 
-		if (oldStatus == 0)
-			throw new IllegalArgumentException("Wrong student was selected!");
-		else if (oldStatus == 1 && statusId == 3 && isHR) {
-			Long groupId = statusLogService.getNewestGroup(id);
+		Long groupId = null;
+		
+		if(statusLogService.exists(id))
+			groupId = statusLogService.getNewestGroup(id);
+		else
+			throw new StatusSwitchException(id, "Student has no projects!");
+		
+		if (oldStatus == 0){
+			throw new StatusSwitchException(id, "Wrong user was selected!");
+		}else if (oldStatus == 1 && statusId == 3 && isHR) {
+			
 
 			if (!finalReviewService.exists(id, groupId, "F"))
-				throw new IllegalArgumentException("Student hasn't final review!");
+				throw new StatusSwitchException(id, "Student hasn't final review!");
 			else
 				changeStatus(id, statusId, oldStatus, name, commentary);
 
@@ -170,29 +178,24 @@ public class UserServiceImpl implements UserService {
 			changeStatus(id, statusId, oldStatus, name, commentary);
 
 		} else if (oldStatus == 2 && statusId == 3 && isHR) {
-			Long groupId = statusLogService.getNewestGroup(id);
 
 			if (!finalReviewService.exists(id, groupId, "F"))
-				throw new IllegalArgumentException("Student hasn't final review!");
+				throw new StatusSwitchException(id, "Student hasn't final review!");
 			else
 				changeStatus(id, statusId, oldStatus, name, commentary);
 
 		} else if (oldStatus == 3 && statusId == 4 && isHR) {
-			Long groupId = statusLogService.getNewestGroup(id);
-
 			if (!finalReviewService.exists(id, groupId, "T") || !finalReviewService.exists(id, groupId, "G"))
-				throw new IllegalArgumentException("Student hasn't final review!");
+				throw new StatusSwitchException(id, "Student hasn't general or technical review!");
 			else
 				changeStatus(id, statusId, oldStatus, name, commentary);
 		} else if (oldStatus == 3 && statusId == 1 && isHR) {
-			Long groupId = statusLogService.getNewestGroup(id);
-
 			if (!finalReviewService.exists(id, groupId, "T") || !finalReviewService.exists(id, groupId, "G"))
-				throw new IllegalArgumentException("Student hasn't final review!");
+				throw new StatusSwitchException(id, "Student hasn't general or technical review!");
 			else
 				changeStatus(id, statusId, oldStatus, name, commentary);
 		} else
-			throw new IllegalArgumentException("Incorrect data!");
+			throw new StatusSwitchException(id, "Incorrect statuses!");
 	}
 
 	private void changeStatus(Long id, Long statusId, Long oldStatus, String name, String commentary) {

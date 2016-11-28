@@ -1,6 +1,7 @@
 package ua.ukma.nc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.ukma.nc.dto.*;
 import ua.ukma.nc.entity.*;
 import ua.ukma.nc.entity.impl.real.FinalReviewImpl;
+import ua.ukma.nc.exception.StatusSwitchException;
 import ua.ukma.nc.service.*;
 
 import java.security.Principal;
@@ -76,33 +78,6 @@ public class CertainUserController {
 		return new ModelAndView("redirect:" + "users/"+student);
 	}
 	
-
-	@RequestMapping(value = "/users/{id}", method = RequestMethod.POST)
-	public ModelAndView changeStatus(@PathVariable("id") Long id, @RequestParam("commentary") String commentary,
-			@RequestParam("status") Long statusId) {
-
-		ModelAndView model = new ModelAndView();
-		
-		try {
-			userService.changeStatus(id, statusId, commentary);
-			model.addObject("success", "Successfully changed!");
-		} catch (IllegalArgumentException e) {
-			model.addObject("error", e.getMessage());
-		} catch (Exception e) {
-			model.addObject("error", "Check your permission and student information!");
-		}
-
-		UserDto userDto = new UserDto(userService.getById(id));
-
-		model.addObject("user", userDto);
-		model.setViewName("user");
-		
-		List<RoleDto> roles = roleService.getAll().stream().map(RoleDto::new).collect(Collectors.toList());
-		model.addObject("roles", roles);
-		
-		return model;
-	}
-
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public ModelAndView viewUser(@PathVariable("id") Long id) {
 		ModelAndView model = new ModelAndView();
@@ -267,5 +242,14 @@ public class CertainUserController {
 		finalHRreview.setProject(projectService.getById((long) 3));
 		finalHRreview.setStudent(userService.getById((long) 20));
 		finalReviewService.createFinalReview(finalHRreview);
+	}
+	
+	@ExceptionHandler(EmptyResultDataAccessException.class)
+	public ModelAndView handleEmpyResultDataAccessException(EmptyResultDataAccessException ex) {
+
+		ModelAndView model = new ModelAndView("error/userEmptyData");
+
+		return model;
+
 	}
 }

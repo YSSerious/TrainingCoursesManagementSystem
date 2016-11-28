@@ -66,4 +66,9 @@ public class StatusLogServiceImpl implements StatusLogService{
 	public Long getNewestGroup(Long userId) {
 		return statusLogDao.getNewestGroup(userId);
 	}
+
+	@Override
+	public boolean exists(Long userId) {
+		return statusLogDao.exists(userId);
+	}
 }

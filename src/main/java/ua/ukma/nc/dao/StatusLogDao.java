@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface StatusLogDao {
 	
+	boolean exists(Long userId);
+	
 	Long getNewestGroup(Long userId);
 	
     StatusLog getById(Long id);

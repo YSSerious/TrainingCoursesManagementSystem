@@ -3,13 +3,6 @@
 <div class="col-sm-11 col-sm-offset-1">
     <div class="col-sm-11">
 
-        <c:if test="${not empty error}">
-            <div class="alert alert-danger">
-                <strong>Danger!</strong> ${error}
-            </div>
-            <br/>
-        </c:if>
-
         <c:if test="${not empty success}">
             <div class="alert alert-success">
                 <strong>Success!</strong> ${success}
