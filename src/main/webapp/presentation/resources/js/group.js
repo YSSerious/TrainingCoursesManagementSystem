@@ -26,6 +26,32 @@ $(document).ready(function () {
 		});
 		
 	});
+	
+$("#addNoteSubmitButton").click(function(event) {
+		
+		if($("#noteAttachmentName").val().length==0 ||$("#noteAttachment").val().length==0)
+			return
+	 
+	 
+		$.ajax({
+			url: "/groups/addAttachment",
+			type: "POST",
+			data: {"id_group" : $("#groupId").val(), 
+			"name" : ("meeting_note_"+$("#noteAttachmentName").val()),
+			"attachment_scope": $("#noteAttachment").val()},
+		
+			success: function (data) {
+	               // console.log(data);
+	                $("#noteList").prepend(buildAttachment("meeting_note_"+$("#noteAttachmentName").val(),
+	                		$("#noteAttachment").val()));
+	                $('#addMeetingNoteModal').modal("hide");
+	            },
+	            error: function (textStatus) {
+	                console.log(textStatus);
+	            }
+		});
+		
+	});
 
 	function buildAttachment(name,scope) {
 		 

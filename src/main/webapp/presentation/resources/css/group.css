@@ -12,6 +12,12 @@
     width: 350px;
    
 }
+
+
+
+.tooltip {
+	position: fixed;
+}
 .group-header .panel.panel-horizontal > .panel-title .h3{
 	padding-left: inherit;
 }
