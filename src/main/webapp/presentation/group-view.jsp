@@ -88,7 +88,7 @@
 					<ul class="list-group noteList">
 					<c:forEach items="${meetingNotes}" var="note">
 					
-					<li  id="attachment-${note.id}" class="list-group-item group-attachment clearfix">
+					<li  id="attachment-${note.id}" class="list-group-item clearfix">
 						 <!-- 	${attachment.name} <span style='padding-left: 10px;'> </span> -->
 						 <a href="${note.attachmentScope}">${note.name } </a>
 					 

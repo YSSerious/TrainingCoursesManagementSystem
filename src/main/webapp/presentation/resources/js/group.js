@@ -41,8 +41,8 @@ $("#addNoteSubmitButton").click(function(event) {
 			"attachment_scope": $("#noteAttachment").val()},
 		
 			success: function (data) {
-	                console.log(data);
-	                $('#noteList').prepend(buildAttachment("meeting_note_"+$("#noteAttachmentName").val(),
+	               // console.log(data);
+	                $("#noteList").prepend(buildAttachment("meeting_note_"+$("#noteAttachmentName").val(),
 	                		$("#noteAttachment").val()));
 	                $('#addMeetingNoteModal').modal("hide");
 	            },
