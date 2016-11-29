@@ -205,7 +205,6 @@ public class CertainProjectController {
     @RequestMapping(value = "/saveMeeting", method = RequestMethod.POST)
     @ResponseBody
     public int saveMeeting(@RequestBody AddCriteriaDto dto) {
-        System.out.println(dto);
         return meetingService.addMeetings(dto);
     }
 
