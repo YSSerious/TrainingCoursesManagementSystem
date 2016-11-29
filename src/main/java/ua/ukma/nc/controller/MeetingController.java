@@ -191,7 +191,7 @@ public class MeetingController {
 		MeetingReview review = null;
 		System.out.println(meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId) == null);
 		if (meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId) == null) {
-			review = new MeetingReviewImpl((long) 0, "1");
+			review = new MeetingReviewImpl((long) 0, "E");
 			review.setStudent(userService.getById(userId));
 			review.setMeeting(meetingService.getById(data.getMeetingId()));
 			review.setMentor(mentor);
