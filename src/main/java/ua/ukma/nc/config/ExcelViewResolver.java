@@ -5,7 +5,7 @@ import java.util.Locale;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 
-import ua.ukma.nc.service.impl.ReportsExcel;
+import ua.ukma.nc.view.excel.ReportsExcel;
 import ua.ukma.nc.view.excel.GroupExcelBuilder;
 import ua.ukma.nc.view.excel.ProjectExcelBuilder;
 import ua.ukma.nc.view.excel.StudentExcelBuilder;

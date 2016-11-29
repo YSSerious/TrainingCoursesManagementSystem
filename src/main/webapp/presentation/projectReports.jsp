@@ -8,7 +8,7 @@
 <%@include file="header.jsp"%>
 
 <br/><br/>
-<h3>Select projects to form the report</h3>
+<p><h3><spring:message code="reports.label.select_projects"/></h3></p>
 <br/>
 <div class="container-fluid text-center">
     <form method="get" action="/reports/get.xls">
@@ -18,11 +18,15 @@
         </c:forEach>
     </select>
     <br/><br/>
-    <button class="btn btn-primary btn-lg" type="submit">Generate report</button>
+    <button class="btn btn-primary btn-lg" type="submit"><spring:message code="reports.btn.generate"/> </button>
     </form>
 </div>
 
+<spring:message code="reports.select.placeholder" var="placeholder"/>
 <script type="text/javascript">
-    $('select').select2();
+    $('select').select2({
+        placeholder: '${placeholder}',
+        width: 'resolve'
+    });
 </script>
 <%@include file="footer.jsp"%>
