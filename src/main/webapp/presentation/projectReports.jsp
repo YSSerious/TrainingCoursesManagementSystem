@@ -12,7 +12,7 @@
 <br/>
 <div class="container-fluid text-center">
     <form method="get" action="/reports/get.xls">
-    <select name="projectIds" multiple name="projects" style="min-width: 88%">
+    <select name="projectIds" multiple name="projects" style="min-width: 88%" required>
         <c:forEach items="${projects}" var="proj">
             <option value="${proj.id}">${proj.name}</option>
         </c:forEach>
