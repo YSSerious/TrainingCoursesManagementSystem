@@ -289,39 +289,7 @@
 				</div>
 </div>
 
-<!--  -->
-	<div id="addGroupAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" type="button" data-dismiss="modal"><span
-                        class="glyphicon glyphicon-remove"></span></button>
-                <h4 class="modal-title">New Attachment</h4>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="usr">Name:</label>
-                        <input type="text" class="form-control" id="groupAttachmentName">
-                    </div>
-                    <div class="form-group">
-                        <label for="usr">Link:</label>
-                        <input type="text" class="form-control" id="groupAttachment	">
-                    </div>
-                    <input
-								type=text   id="groupId" style="display:none"
-								value="${groupId }">
-                    <br>
-                    <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
-                        Save
-                    </div>
-                    <button id="addAttachmentSubmitButton" type="button" class="btn btn-primary">Save</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>	 
- 
+
 		 
  
 
@@ -438,6 +406,39 @@
 		</div>
 	</div>
 	<!-- finish meetingDeleteError modal -->
+	<!-- start add attachment modal -->
+	<div id="addGroupAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title">New Attachment</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="usr"><spring:message code="group.attachment.name"/></label>
+                        <input type="text" class="form-control" id="groupAttachmentName">
+                    </div>
+                    <div class="form-group">
+                        <label for="usr"><spring:message code="group.attachment"/></label>
+                        <input type="url" class="form-control" id="groupAttachment">
+                    </div>
+                    <input
+								type=text   id="groupId" style="display:none"
+								value="${groupId }">
+                    <br>
+                    <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
+                        Save
+                    </div>
+                    <button id="addAttachmentSubmitButton" type="button" class="btn btn-primary"  >Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>	 
+ <!-- finish add attachment -->
 	<script type="text/javascript">
 	function getGroupReport(){
 		$('#group-report-modal').modal('hide');

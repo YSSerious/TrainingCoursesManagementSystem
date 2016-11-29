@@ -330,8 +330,8 @@
             var name = $("#att-name").val();
             var link = $("#att-link").val();
             if (name && link) {
-                $("#attachment-group").prepend('<li class="list-group-item" style="color:#d9534f;">Attachment "' + name + '" is added</a></li>');
-
+              //  $("#attachment-group").prepend('<li class="list-group-item" style="color:#d9534f;">Attachment "' + name + '" is added</a></li>');
+			$("#attachment-group").prepend('<li class="list-group-item"><a href='+link+'>'+name+'</a>'+ '</li>');
                 $("#add-att-btn").click();
                 $("#att-name").val('');
                 $("#att-link").val('');

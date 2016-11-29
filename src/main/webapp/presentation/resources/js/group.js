@@ -1,17 +1,18 @@
 $(document).ready(function () {
- 
+ //Modal window and adding attachment
 	$("#addAttachmentSubmitButton").click(function(event) {
-		
-		if($("#groupAttachmentName").val().length==0 ||$("#groupAttachment").val().length==0)
+		var name=$("#groupAttachmentName").val();
+		var value=$("#groupAttachment").val();
+		// var regexp=new RegExp('/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/');
+		if(name.length==0  || value.length==0)
 			return
-	 
-	 
+			 
 		$.ajax({
 			url: "/groups/addAttachment",
 			type: "POST",
 			data: {"id_group" : $("#groupId").val(), 
-			"name" : $("#groupAttachmentName").val(),
-			"attachment_scope": $("#groupAttachment").val()},
+			"name" : name,
+			"attachment_scope": value},
 		
 			success: function (data) {
 	                console.log(data);
