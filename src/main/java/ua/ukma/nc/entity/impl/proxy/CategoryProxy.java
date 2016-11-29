@@ -59,6 +59,7 @@ public class CategoryProxy implements Category{
 
     @Override
     public String getDescription() {
+    	downloadCategory();
         return category.getDescription();
     }
 

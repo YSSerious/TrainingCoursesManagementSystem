@@ -30,7 +30,7 @@ import ua.ukma.nc.entity.Mark;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.MeetingResult;
 import ua.ukma.nc.entity.MeetingReview;
-import ua.ukma.nc.service.CategoryService;
+import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.service.FinalReviewCriterionService;
 import ua.ukma.nc.service.FinalReviewService;
 import ua.ukma.nc.service.MarkService;
@@ -53,15 +53,15 @@ public class MarkTableServiceImpl implements MarkTableService {
 
 	@Autowired
 	private MeetingResultService meetingResultService;
-	
-	@Autowired
-	private CategoryService categoryService;
 
 	@Autowired
 	private MeetingReviewService meetingReviewService;
 	
 	@Autowired
 	private MarkService markService;
+	
+	@Autowired
+	private CriterionService criterionService;
 
 	@Override
 	public MarkTableDto getMarkTableDto(Long studentId, Long projectId) {
@@ -71,8 +71,7 @@ public class MarkTableServiceImpl implements MarkTableService {
 		List<Mark> marks = markService.getAll();
 		List<MarkInformation> marksInformation = meetingResultService.generateMarkInformation(studentId, projectId);
 		List<Meeting> meetings = meetingService.getByStudentProject(studentId, projectId);
-		List<Criterion> criteria = new ArrayList<Criterion>();
-		List<Category> categoriesEntity = categoryService.getByProjectId(projectId);
+		List<Criterion> criteria = criterionService.getByProject(projectId);
 
 		List<CategoryDto> categoriesDto = new ArrayList<CategoryDto>();
 		
@@ -81,17 +80,25 @@ public class MarkTableServiceImpl implements MarkTableService {
 		
 		Map<CategoryDto, List<Criterion>> categories = new TreeMap<CategoryDto, List<Criterion>>();
 		
-		for(Category categoryEntity: categoriesEntity){
+		for(Criterion criterion: criteria){
+			Category categoryEntity = criterion.getCategory();
+			
 			CategoryDto category = new CategoryDto();
 			category.setId(categoryEntity.getId());
 			category.setDescription(categoryEntity.getDescription());
 			category.setName(categoryEntity.getName());
+
+			List<Criterion> criteriaMap = categories.get(category);
 			
-			List<Criterion> criteriaList = categoryEntity.getCriteria();
-			categories.put(category, criteriaList);
-			criteria.addAll(criteriaList);
-			
-			categoriesDto.add(category);
+			if(criteriaMap == null){
+				List<Criterion> newCriteria = new ArrayList<Criterion>();
+				newCriteria.add(criterion);
+				categories.put(category, newCriteria);
+				
+				categoriesDto.add(category);
+			}else{
+				criteriaMap.add(criterion);
+			}
 		}
 		
 		List<CriterionDto> criteriaDto = criteria.stream().map(CriterionDto::new)
