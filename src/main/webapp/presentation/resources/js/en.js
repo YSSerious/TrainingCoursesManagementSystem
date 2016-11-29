@@ -25,5 +25,8 @@ lang = {
 	user_criterion_name: 'Criterion name',
 	user_mark: 'Mark',
 	user_commentary: 'Commentary',
-	user_date: 'Date'
+	user_date: 'Date',
+	final_review_comment_general: 'General comment',
+	final_review_error_no_criteria: 'No criteria found for this project!',
+	final_review_error_input_required: 'All comments are required!'
 };

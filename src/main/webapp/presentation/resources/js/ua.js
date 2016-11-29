@@ -25,5 +25,8 @@ lang = {
 	user_criterion_name: 'Критерія',
 	user_mark: 'Оцінка',
 	user_commentary: 'Коментар',
-	user_date: 'Дата'
+	user_date: 'Дата',
+	final_review_comment_general: 'Загальний коментар',
+	final_review_error_no_criteria: 'Не знайдено критеріїв для даного проекту!',
+	final_review_error_input_required: 'Потрібно вказати всі коментарі!'
 };

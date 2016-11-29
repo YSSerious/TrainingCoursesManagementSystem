@@ -286,7 +286,7 @@
                     <%--<c:if test="${user.statusId eq 2}">--%>
                     <br/><br/>
                     <div class="clickable" data-toggle="modal"
-                         data-target="#finReviewProject" onClick="getMentorStudentProjects(${user.id});"><b>Create final review</b>
+                         data-target="#finReviewProject" onClick="getMentorStudentProjects(${user.id});"><b><spring:message code="final_Review.label.clckable"/></b>
                     </div>
                     <%--</c:if>--%>
                 </sec:authorize>
@@ -330,7 +330,7 @@
                 <button class="close" type="button" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
-                <h4 class="modal-title">Final Review</h4>
+                <h4 class="modal-title"><spring:message code="final_review.label"/> </h4>
                 <div>
                     <form>
                         <table class="table" id="final-review-form-list">
@@ -360,7 +360,7 @@
                 <button class="close" type="button" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
-                <h4 class="modal-title">Choose project...</h4>
+                <h4 class="modal-title"><spring:message code="final_review.label.project"/> </h4>
                 <div>
                     <form>
                         <table class="table" id="final-review-project-list">

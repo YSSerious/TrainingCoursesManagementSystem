@@ -381,15 +381,15 @@ function getReviewForm(userId, projectId) {
 					s+=' value="'+value.commentary+'"';
 				s+='></td></tr>';
 			});
-			s+='<tr><td colspan="3"><label>General: </label><textarea class="form-control" id="fin-rev-com" rows="5">';
+			s+='<tr><td colspan="3"><label>'+lang.final_review_comment_general+'</label><textarea class="form-control" id="fin-rev-com" rows="5">';
 			if(resp.comment)
 				s+=resp.comment;
 			s+='</textarea></td></tr>';
 			if(jQuery.isEmptyObject(resp.data))
-				s= '<br/><h4>No criteria for this project!</h4>';
-
+				s= '<br/><h4>'+lang.final_review_error_no_criteria+'</h4>';
+			else
+				$('#addFinReview').find('.btn').removeClass('hidden');
 			$('#final-review-form-list').html(s);
-			$('#addFinReview').find('.btn').removeClass('hidden');
 		},
 		'error': function (data) {
 			console.warn(data);
@@ -442,7 +442,7 @@ function doFinalReview(userId) {
 	$('#final-review-form-list').find($('.fin-rev-res-item')).each(function () {
 		var finReview = {"mark": {"value": $(this).find('select').val()}, "criterion": {"id": $(this).find('input').attr('id')}, "commentary": $(this).find('input').val()};
 		if(!$(this).find('input').val()) {
-			error = 'All comments are required!';
+			error = lang.final_review_error_input_required;
 			$(this).addClass('error');
 		}
 		else if($(this).hasClass('error'))
