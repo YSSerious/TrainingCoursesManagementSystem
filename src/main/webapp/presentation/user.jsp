@@ -220,11 +220,13 @@
 
                 <sec:authorize access="hasRole('HR')">
 
-                    <br/><br/>
-                    <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#addHRreview"
-                            id="createHRreviewBtn" onclick="createHRreviewForm(${user.id})"><spring:message
-                            code="create.review"/>
-                    </button>
+                    <br/>
+                    <font id="createHRreviewBtn" class="clickable" color="blue" data-toggle="modal" data-target="#addHRreview">
+                    	<b onclick="createHRreviewForm(${user.id})">
+                    		<spring:message code="create.review"/>
+                    	</b>
+                    </font>
+
                     <%@include file="reviewHR.jsp" %>
                 </sec:authorize>
 

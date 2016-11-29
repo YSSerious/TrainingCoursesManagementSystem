@@ -1,13 +1,15 @@
 package ua.ukma.nc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 import ua.ukma.nc.dao.RoleDao;
-import ua.ukma.nc.dao.impl.RoleDaoImpl.RoleMapper;
+import ua.ukma.nc.dto.RoleDto;
 import ua.ukma.nc.entity.Role;
+import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.RoleService;
+import ua.ukma.nc.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +20,9 @@ public class RoleServiceImpl implements RoleService{
 
     @Autowired
     private RoleDao roleDao;
+    
+    @Autowired
+    private UserService userService;
 
     @Override
     public Role getById(Long id) {
@@ -58,4 +63,44 @@ public class RoleServiceImpl implements RoleService{
     public Role getByRole(String role) {
         return roleDao.getByRole(role);
     }
+
+	@Override
+	public List<RoleDto> getRolesDto(User user) {
+		List<Role> allRoles = getAll();
+		List<Role> userRoles = user.getRoles();
+		
+		List<RoleDto> rolesDto = new ArrayList<RoleDto>();
+		
+		for(Role role: allRoles){
+			RoleDto roleDto = new RoleDto(role);
+			
+			for(Role userRole: userRoles)
+				if(role.getId() == userRole.getId()){
+					roleDto.setHave(true);
+					roleDto.setActive(userService.isUsingRole(user.getId(), role.getId()));
+					break;
+				}
+			
+			rolesDto.add(roleDto);
+		}
+		
+		return rolesDto;
+	}
+
+	@Override
+	public void changeRoles(List<Long> chRoles, User user) {
+		List<Role> roles = user.getRoles();
+		List<Long> rolesId = new ArrayList<Long>();
+		
+		for(Role role: roles)
+			rolesId.add(role.getId());
+		
+		for(Long roleId: rolesId)
+			if(!chRoles.contains(roleId))
+				userService.deleteRole(user, roleId);
+		
+		for(Long roleId: chRoles)
+			if(!rolesId.contains(roleId))
+				userService.addRole(user, getById(roleId));
+	}
 }

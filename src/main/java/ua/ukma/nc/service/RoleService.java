@@ -1,6 +1,8 @@
 package ua.ukma.nc.service;
 
+import ua.ukma.nc.dto.RoleDto;
 import ua.ukma.nc.entity.Role;
+import ua.ukma.nc.entity.User;
 
 import java.util.List;
 
@@ -24,4 +26,8 @@ public interface RoleService {
     int createRole(Role role);
 
 	Role getByRole(String role);
+	
+	List<RoleDto> getRolesDto(User user);
+	
+	void changeRoles(List<Long> chRoles, User user);
 }

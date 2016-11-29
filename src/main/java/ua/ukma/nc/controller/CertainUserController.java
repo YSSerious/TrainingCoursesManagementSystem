@@ -1,5 +1,7 @@
 package ua.ukma.nc.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
@@ -9,13 +11,11 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.ukma.nc.dto.*;
 import ua.ukma.nc.entity.*;
 import ua.ukma.nc.entity.impl.real.FinalReviewImpl;
-import ua.ukma.nc.exception.StatusSwitchException;
 import ua.ukma.nc.service.*;
 
 import java.security.Principal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,6 +49,8 @@ public class CertainUserController {
 
 	@Autowired
 	private CriterionService criterionService;
+	
+	private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
 	@RequestMapping(value = "/certainUser/{id}", method = RequestMethod.GET)
 	public String getCertainUser(Model model, Principal principal, @PathVariable("id") Long id) {
@@ -60,54 +62,21 @@ public class CertainUserController {
 	@RequestMapping(value = "/manageRoles", method = RequestMethod.POST)
 	public ModelAndView changeRole(@RequestParam("student") Long student, @RequestParam("roles") List<Long> chRoles){
 		User user = userService.getById(student);
-		
-		List<Role> roles = user.getRoles();
-		List<Long> rolesId = new ArrayList<Long>();
-		
-		for(Role role: roles)
-			rolesId.add(role.getId());
-		
-		for(Long roleId: rolesId)
-			if(!chRoles.contains(roleId))
-				userService.deleteRole(user, roleId);
-		
-		for(Long roleId: chRoles)
-			if(!rolesId.contains(roleId))
-				userService.addRole(user, roleService.getById(roleId));
+		roleService.changeRoles(chRoles, user);
 		
 		return new ModelAndView("redirect:" + "users/"+student);
 	}
 	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public ModelAndView viewUser(@PathVariable("id") Long id) {
-		ModelAndView model = new ModelAndView();
+		ModelAndView model = new ModelAndView("user");
 		
 		User user = userService.getById(id);
 		UserDto userDto = new UserDto(user);
 		
 		model.addObject("user", userDto);
-		model.setViewName("user");
 		model.addObject("title", userDto.getLastName()+" "+userDto.getFirstName());
-
-		List<Role> allRoles = roleService.getAll();
-		List<Role> userRoles = user.getRoles();
-		
-		List<RoleDto> rolesDto = new ArrayList<RoleDto>();
-		
-		for(Role role: allRoles){
-			RoleDto roleDto = new RoleDto(role);
-			
-			for(Role userRole: userRoles)
-				if(role.getId() == userRole.getId()){
-					roleDto.setHave(true);
-					roleDto.setActive(userService.isUsingRole(id, role.getId()));
-					break;
-				}
-			
-			rolesDto.add(roleDto);
-		}
-		
-		model.addObject("roles", rolesDto);
+		model.addObject("roles", roleService.getRolesDto(user));
 		return model;
 	}
 
@@ -246,10 +215,7 @@ public class CertainUserController {
 	
 	@ExceptionHandler(EmptyResultDataAccessException.class)
 	public ModelAndView handleEmpyResultDataAccessException(EmptyResultDataAccessException ex) {
-
-		ModelAndView model = new ModelAndView("error/userEmptyData");
-
-		return model;
-
+		log.error(ex.getMessage());
+		return new ModelAndView("error/userEmptyData");
 	}
 }

@@ -1,25 +1,18 @@
 package ua.ukma.nc.controller;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.FieldError;
@@ -27,8 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import ua.ukma.nc.dto.CategoryDto;
 import ua.ukma.nc.dto.ProjectDto;
 import ua.ukma.nc.entity.Project;
@@ -52,8 +43,8 @@ public class ProjectsController {
 	@Autowired
 	private ProjectFormValidator projectFromValidator;
         
-        @Autowired
-        private MessageSource messageSource;
+    @Autowired
+    private MessageSource messageSource;
 	
 	private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 	
@@ -76,7 +67,7 @@ public class ProjectsController {
 	@RequestMapping("/ajaxcategories")
 	@ResponseBody
 	public List<CategoryDto> ajaxCategories() {
-		log.info("Categories information sent (AJAX)");
+		log.info("Categories information sent");
 		return categoryService.getAll().stream().map(CategoryDto::new).collect(Collectors.toList());
 	}
 	
@@ -104,5 +95,4 @@ public class ProjectsController {
             }
             return response;
 	}
-
 }
