@@ -73,7 +73,7 @@ $(function(){
    	    }
    	},
    	succes: function(){
-   		alert("succes");
+   		alert("success");
    	}
 	   });
  });

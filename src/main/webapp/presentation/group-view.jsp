@@ -48,9 +48,14 @@
 			<div class="panel panel-primary"
 				style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
 				<div class="panel-heading clearfix">
+						<button type="button" class="btn btn-default btn-xs pull-right"
+							data-target="#addMeetingNoteModal" data-toggle="modal">
+							Add note
+						</button>
 					<div data-toggle="collapse" data-target="#collapseMeetings"
 						class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
 						<span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
+						
 					</div>
 				</div>
 				<div id="collapseMeetings" class="panel-collapse collapse clearfix">
@@ -62,9 +67,10 @@
 								id="editMeetingNameId-${meeting.id}">${meeting.name}</a>
 								<div class="col-md-2" id="editMeetingDateId-${meeting.id}">${meeting.time}</div>
 								<div class="col-md-4" id="editMeetingPlaceId-${meeting.id}">${meeting.place}</div>
+								
 								<sec:authorize access="hasRole('ADMIN')">
 									<c:if test="${!meeting.reviewed}">
-										<div class="btn rmv-cr-btn col-md-1 pull-right " type='button'
+										<div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
 											data-toggle="modal" data-target="#deleteMeetingModal"
 											onclick="setMeeting(${meeting.id})">
 											<span class="glyphicon glyphicon-remove"></span>
@@ -79,11 +85,61 @@
 								</div></li>
 						</c:forEach>
 					</ul>
+					<ul class="list-group noteList">
+					<c:forEach items="${meetingNotes}" var="note">
+					
+					<li  id="attachment-${note.id}" class="list-group-item group-attachment clearfix">
+						 <!-- 	${attachment.name} <span style='padding-left: 10px;'> </span> -->
+						 <a href="${note.attachmentScope}">${note.name } </a>
+					 
+						<div id="${note.id}" class="btn rmv-cr-btn col-md-1 pull-right delete"
+							type='button'>
+							<span class="glyphicon glyphicon-remove "></span>
+						</div> 
+						
+					</li>
+					</c:forEach>
+					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+
+	<div id="addMeetingNoteModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title">New Attachment</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        
+                        <label for="usr">Name:</label>
+                        <input type="text" class="form-control" id="noteAttachmentName" placeholder="attachment will have prefix 'meeting_note_'">
+                    </div>
+                    <div class="form-group">
+                        <label for="usr">Link:</label>
+                        <input type="text" class="form-control" id="noteAttachment" placeholder="paste link here...">
+                    </div>
+                    <input
+								type=text   id="groupId" style="display:none"
+								value="${groupId }">
+                    <br>
+                    <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
+                        Save
+                    </div>
+                    <button id="addNoteSubmitButton" type="button" class="btn btn-primary"  >Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>	
+
 
 <div class="students_template">
 	<h2>
@@ -114,17 +170,16 @@
 						${studentMap.key.student.lastName} <span
 						style='padding-left: 10px;'> </span>
 						 <c:forEach items="${studentMap.value}" var="review">
-							<span style='padding-left: 10px;' class="label label-info">${review.meeting.name}</span>
+							<span style='padding-left: 10px;'></span>
 							<c:choose>
 								<c:when test="${review.type == 'A'}">
-									<span style='padding-left: 5px;' class="label label-danger">A</span>
+									<span style='padding-left: 5px;' class="label label-danger" data-toggle="tooltip" title="Absent">${review.meeting.name}</span>
 								</c:when>
 								<c:when test="${review.type == 'E'}">
-									<span style='padding-left: 5px;' class="label label-success">E</span>
+									<span style='padding-left: 5px;' class="label label-success" data-toggle="tooltip" title="Evaluated">${review.meeting.name}</span>
 								</c:when>
 								<c:otherwise>
-									<span style='padding-left: 5px;' class="label label-primary">Not
-										reviewed</span>
+									<span style='padding-left: 5px;' class="label label-primary" data-toggle="tooltip" title="Not reviewed">${review.meeting.name}</span>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -194,57 +249,7 @@
 	<br />
 </div>
 
-<!--   <div id="attachment-title"><h2>Attachments</h2></div>-->
 
-
-
-
-
-<!--  <div class="modal fade" id="addGroupAttachmentModal" role="dialog">
-	<div class="modal-dialog">
-
-		<div class="modal-content">
-			<div class="modal-body" style="padding: 40px 50px;">
-				<form role="form">
-					<div class="form-group">
-						<label for="groupAttachmentName"> <spring:message
-								code="group.attachment.name" />
-						</label><br /> <input type=text class="form-control"
-							name="attachmentName" id="groupAttachmentName"
-							placeholder=" <spring:message code="group.attachment.name.placeholder"/>"
-							required="required"> <label for="groupAttachment">
-							<spring:message code="group.attachment" />
-						</label><br /> <input type=text class="form-control" id="groupAttachment"
-							placeholder="<spring:message code="group.attachment.placeholder"/>"
-							required="required"> <input type=text id="groupId"
-							style="display: none" value="${groupId }">
-
-					</div>
-					<button type="button"
-						class="btn btn-default btn-success pull-center"
-						id="addAttachmentSubmitButton">
-						<span class="glyphicon glyphicon-off"></span>
-						<spring:message code="group.send" />
-					</button>
-				</form>
-			</div>
-			<div class="modal-footer">
-
-				<button type="button" class="btn btn-default btn-lg"
-					data-dismiss="modal" id="cancelButton">
-					<span class="glyphicon glyphicon-remove"></span>
-					<spring:message code="group.cancel" />
-				</button>
-			</div>
-		</div>
-
-	</div>
-</div>
--->
-<!--  -->
-
-
-<!--  	<div class="col-md-12"> -->
 <h2>
 	<spring:message code="group.attachments" />
 </h2>
@@ -310,7 +315,7 @@
                     <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
                         Save
                     </div>
-                    <button id="addAttachmentSubmitButton" type="button" class="btn btn-primary"  >Save</button>
+                    <button id="addAttachmentSubmitButton" type="button" class="btn btn-primary">Save</button>
                 </form>
             </div>
         </div>

@@ -148,7 +148,12 @@ public class GroupController {
         List<User> mentors = groupService.getMentors(id);
 
         List<GroupAttachment> groupAttachments = groupAttachmentService.getByGroup(id);
-
+        List<GroupAttachment> meetingNotes = new ArrayList<>();
+        for(GroupAttachment ga : groupAttachments){
+        	if(ga.getName().startsWith("meeting_note"))
+        		meetingNotes.add(ga);
+        }
+        groupAttachments.removeAll(meetingNotes);
         List<MeetingDto> meetingDtos = new ArrayList<>();
         for(Meeting meeting: meetingService.getByGroup(id)){
             meetingDtos.add(new MeetingDto(meeting.getId(), meeting.getName(), meeting.getTime(), meeting.getPlace(), meetingService.isReviewed(meeting.getId())));
@@ -165,7 +170,7 @@ public class GroupController {
         model.addObject("mentors", mentors);
         model.addObject("meetings", meetingDtos);
         model.addObject("group-id", group.getId());
-
+        model.addObject("meetingNotes",meetingNotes);
         model.addObject("attachments", groupAttachments);
         model.addObject("groupId", group.getId());
 
