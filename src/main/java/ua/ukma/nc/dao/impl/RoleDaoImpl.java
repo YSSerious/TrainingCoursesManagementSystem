@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -113,6 +114,11 @@ public class RoleDaoImpl implements RoleDao {
 	@Override
     public Role getByRole(String role) {
         log.info("Getting role with name = {}", role);
+        try{
         return jdbcTemplate.queryForObject(GET_BY_ROLE+role+"%'", new RoleMapper());
+        }
+        catch(EmptyResultDataAccessException e){
+        	return new RoleImpl();
+        }
     }
 }

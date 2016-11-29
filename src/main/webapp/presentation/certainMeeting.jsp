@@ -53,8 +53,11 @@
                 <tr>
                     <td><font size="3"><b> <a href="javascript:;"
                                               data-toggle="modal" class="open-Evaluate"
+                                               <sec:authorize access="hasRole('MENTOR')">
                                               data-target="#evaluateModal${user.id}"
-                                              data-user="${user.firstName}"> ${user.firstName}
+                                              data-user="${user.firstName}"
+                                              </sec:authorize>
+                                              > ${user.firstName}
                             ${user.secondName} ${user.lastName} </a></b> </font></td>
                     <c:forEach items="${criteria}" var="criterion">
                         <td><font size="3">
@@ -131,8 +134,11 @@
                                                  class="text-danger hidden">Unknown error</span> <a href="javascript:;"
                                                                                                     data-toggle="modal"
                                                                                                     class="open-Evaluate"
+                                                                                                    <sec:authorize access="hasRole('MENTOR')">
                                                                                                     data-target="#evaluateModal${entry.key.id}"
-                                                                                                    data-user="${entry.key.firstName}">${entry.key.firstName}
+                                                                                                    data-user="${entry.key.firstName}"
+                                                                                                    </sec:authorize>
+                                                                                                    >${entry.key.firstName}
                             ${entry.key.secondName} ${entry.key.lastName}</a></b></font></td>
 
                     <c:forEach items="${entry.value}" var="mark">

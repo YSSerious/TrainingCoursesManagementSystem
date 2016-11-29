@@ -3,9 +3,14 @@ package ua.ukma.nc.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +47,11 @@ public class UsersController {
 		if (page == null)
 			page = 1;
 		int count = 0;
-		int noOfPages;
+		int noOfPages = 0;
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		boolean isMentor = authorities.contains(new SimpleGrantedAuthority("ROLE_MENTOR"));
 
 		if (value != null && type.equals("name")) {
 			String[] v = value.split("\\s");
@@ -75,9 +84,21 @@ public class UsersController {
 		} else if (value != null && type.equals("group")) {
 			users = userService.studentsByGroupName(value, limit, limit * (page - 1));
 			count = userService.countGroup(value);
-		} else {
+		} else if (!isMentor) {
 			users = userService.getSome(limit, limit * (page - 1));
 			count = userService.count();
+		}
+
+		else {
+
+			count = userService.count();
+			users = userService.getAll();
+			checkUsers(users);
+			count = users.size();
+			if (limit * page < users.size())
+				users = users.subList(limit * (page - 1), limit * page);
+			else
+				users = users.subList(limit * (page - 1), users.size());
 		}
 
 		if (count % limit > 0)
@@ -90,6 +111,16 @@ public class UsersController {
 		model.addAttribute("noOfPages", noOfPages);
 		return "allUsers";
 	}
+
+	private boolean checkUsers(List<User> users) {
+		List<User> temp = new ArrayList<>();
+		for (User user : users) {
+			if (!userService.canView(user.getId()))
+				temp.add(user);
+		}
+		return users.removeAll(temp);
+	}
+
 	/*
 	 * @RequestMapping(value = "/allUsers", method = RequestMethod.POST) public
 	 * String getAllUsersPagePost(Model model, Principal principal,

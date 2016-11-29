@@ -270,7 +270,7 @@ public class UserDaoImpl implements UserDao {
 	
 	@Override
 	public int countProject(String name) {
-		return jdbcTemplate.queryForObject(COUNT_PROJECT+name+"%'))", int.class);
+		return jdbcTemplate.queryForObject(COUNT_PROJECT+name+"%')))", int.class);
 	}
 	
 	@Override
