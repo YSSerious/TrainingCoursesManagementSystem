@@ -18,8 +18,11 @@
                     <!--                    <h3><b>Project:</b></h3>-->
                     <div class="editable-label editable">
                         <h3 style="font-size: 3rem">${project.name}</h3>
-                    </div>
+                    </div>    
                 </div>
+                <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
+                 		<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#project-report-modal"><b><spring:message code="project.generate.report"/></b></button>
+            	</sec:authorize>
                 <div class="row">
                     <div class="col-md-6 editable-group">
                         <div class="panel panel-default panel-horizontal top-panel editable-wrapper" id="project-startdate">
@@ -48,8 +51,6 @@
                         </div>
                     </div>
                 </div>
-                 <sec:authorize access="hasAnyRole('ADMIN', 'HR')"><font color="blue" data-toggle="modal" data-target="#project-report-modal"><b><spring:message code="project.generate.report"/></b></font>
-            	</sec:authorize>
             </div>
         </div>
     </div>

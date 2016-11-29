@@ -27,10 +27,12 @@
 			</div>
 			<div class="panel-body">${group.name}</div>
 		</div>
+	</div>
+	<div class="col-md-6">
 		<sec:authorize access="hasAnyRole('ADMIN', 'HR')">
-			<font color="blue" data-toggle="modal"
+			<button class="btn btn-primary pull-right" data-toggle="modal"
 				data-target="#group-report-modal"><b><spring:message
-						code="group.generate.report" /></b></font>
+						code="group.generate.report" /></b></button>
 		</sec:authorize>
 	</div>
 </div>

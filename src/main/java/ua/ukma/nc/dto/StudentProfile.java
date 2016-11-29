@@ -7,6 +7,7 @@ public class StudentProfile {
 	private String firstName;
 	private String lastName;
 	private String secondName;
+	private String email;
 	
 	private String projectName;
 
@@ -107,6 +108,14 @@ public class StudentProfile {
 
 	public void setTechnicalReview(FinalReviewDto technicalReview) {
 		this.technicalReview = technicalReview;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

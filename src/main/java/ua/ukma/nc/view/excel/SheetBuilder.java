@@ -29,6 +29,7 @@ public class SheetBuilder {
 		MarkTableDto markTableDto = studentProfile.getMarkTableDto();
 
 		Sheet sheet = workbook.createSheet(name);
+		
 		CellStyle style = workbook.createCellStyle();
 		Font font = workbook.createFont();
 		font.setColor(IndexedColors.GREY_50_PERCENT.index);
@@ -54,10 +55,34 @@ public class SheetBuilder {
 		font = workbook.createFont();
 		font.setBold(true);
 		headerStyle.setFont(font);
+		Row projectNameRow = sheet.createRow(0);
+		projectNameRow.createCell(0).setCellValue("Project name");
+		sheet.addMergedRegion(new CellRangeAddress(0, 0, 1, 4));
+		projectNameRow.createCell(1).setCellValue(studentProfile.getProjectName());
+		
+		Row studentLastNameRow = sheet.createRow(1);
+		studentLastNameRow.createCell(0).setCellValue("Last name");
+		sheet.addMergedRegion(new CellRangeAddress(1, 1, 1, 4));
+		studentLastNameRow.createCell(1).setCellValue(studentProfile.getLastName());
 
-		Row header = sheet.createRow(0);
-		header.createCell(0).setCellValue("#");
-		header.getCell(0).setCellStyle(headerStyle);
+		Row studentFirstNameRow = sheet.createRow(2);
+		studentFirstNameRow.createCell(0).setCellValue("First name");
+		sheet.addMergedRegion(new CellRangeAddress(2, 2, 1, 4));
+		studentFirstNameRow.createCell(1).setCellValue(studentProfile.getFirstName());
+		
+		Row studentSecondNameRow = sheet.createRow(3);
+		studentSecondNameRow.createCell(0).setCellValue("Second name");
+		sheet.addMergedRegion(new CellRangeAddress(3, 3, 1, 4));
+		studentSecondNameRow.createCell(1).setCellValue(studentProfile.getSecondName());
+		
+		Row studentEmailRow = sheet.createRow(4);
+		studentEmailRow.createCell(0).setCellValue("Email");
+		sheet.addMergedRegion(new CellRangeAddress(4, 4, 1, 4));
+		studentEmailRow.createCell(1).setCellValue(studentProfile.getEmail());
+		
+		Row meetingHeader = sheet.createRow(6);
+		meetingHeader.createCell(0).setCellValue("#");
+		meetingHeader.getCell(0).setCellStyle(headerStyle);
 		sheet.setColumnWidth(0, WIDTH * 2);
 
 		List<MeetingReviewDto> meetings = markTableDto.getMeetings();
@@ -65,21 +90,21 @@ public class SheetBuilder {
 			sheet.setColumnWidth(i, WIDTH);
 			sheet.setColumnWidth(i + 1, WIDTH);
 
-			header.createCell(i).setCellValue(meetings.get(i / 2).getDate());
-			header.createCell(i + 1).setCellValue("Commentary");
+			meetingHeader.createCell(i).setCellValue(meetings.get(i / 2).getDate());
+			meetingHeader.createCell(i + 1).setCellValue("Commentary");
 
-			header.getCell(i).setCellStyle(headerStyle);
-			header.getCell(i + 1).setCellStyle(headerStyle);
+			meetingHeader.getCell(i).setCellStyle(headerStyle);
+			meetingHeader.getCell(i + 1).setCellStyle(headerStyle);
 		}
 
-		header.createCell(meetings.size() * 2 + 1).setCellValue("Final Review");
-		header.createCell(meetings.size() * 2 + 2).setCellValue("Commentary");
-		header.getCell(meetings.size() * 2 + 1).setCellStyle(headerStyle);
-		header.getCell(meetings.size() * 2 + 2).setCellStyle(headerStyle);
+		meetingHeader.createCell(meetings.size() * 2 + 1).setCellValue("Final Review");
+		meetingHeader.createCell(meetings.size() * 2 + 2).setCellValue("Commentary");
+		meetingHeader.getCell(meetings.size() * 2 + 1).setCellStyle(headerStyle);
+		meetingHeader.getCell(meetings.size() * 2 + 2).setCellStyle(headerStyle);
 		sheet.setColumnWidth(meetings.size() * 2 + 1, WIDTH);
 		sheet.setColumnWidth(meetings.size() * 2 + 2, WIDTH);
 
-		int rowCount = 1;
+		int rowCount = 7;
 		List<CategoryResult> marks = markTableDto.getTableData();
 		for (CategoryResult key : marks) {
 

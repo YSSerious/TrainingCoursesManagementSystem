@@ -3,14 +3,10 @@ package ua.ukma.nc.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ua.ukma.nc.dto.CategoryChartDto;
-import ua.ukma.nc.dto.CategoryDto;
-import ua.ukma.nc.dto.CriterionDto;
 import ua.ukma.nc.dto.FinalReviewDto;
 import ua.ukma.nc.dto.StudentMeetingReview;
 import ua.ukma.nc.dto.StudentProfile;
@@ -19,9 +15,7 @@ import ua.ukma.nc.dto.StudyResultDto;
 import ua.ukma.nc.entity.MeetingReview;
 import ua.ukma.nc.entity.StatusLog;
 import ua.ukma.nc.entity.User;
-import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.ChartService;
-import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.service.FinalReviewService;
 import ua.ukma.nc.service.MarkTableService;
 import ua.ukma.nc.service.MeetingReviewService;
@@ -32,12 +26,6 @@ import ua.ukma.nc.service.UserService;
 
 @Service
 public class StudentServiceImpl implements StudentService {
-
-	@Autowired
-	private CriterionService criterionService;
-
-	@Autowired
-	private CategoryService categoryService;
 
 	@Autowired
 	private ChartService chartService;
@@ -99,6 +87,7 @@ public class StudentServiceImpl implements StudentService {
 		studentProfile.setLastName(user.getLastName());
 		studentProfile.setFirstName(user.getFirstName());
 		studentProfile.setSecondName(user.getSecondName());
+		studentProfile.setEmail(user.getEmail());
 
 		studentProfile.setProjectName(projectService.getById(projectId).getName());
 
