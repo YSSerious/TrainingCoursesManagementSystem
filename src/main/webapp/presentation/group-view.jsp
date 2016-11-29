@@ -48,10 +48,10 @@
 			<div class="panel panel-primary"
 				style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
 				<div class="panel-heading clearfix">
-						<button type="button" class="btn btn-default btn-xs pull-right"
-							data-target="#addMeetingNoteModal" data-toggle="modal">
-							Add note
-						</button>
+						<%--<button type="button" class="btn btn-default btn-xs pull-right"--%>
+							<%--data-target="#addMeetingNoteModal" data-toggle="modal">--%>
+							<%--Add note--%>
+						<%--</button>--%>
 					<div data-toggle="collapse" data-target="#collapseMeetings"
 						class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
 						<span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
@@ -85,21 +85,21 @@
 								</div></li>
 						</c:forEach>
 					</ul>
-					<ul class="list-group noteList">
-					<c:forEach items="${meetingNotes}" var="note">
-					
-					<li  id="attachment-${note.id}" class="list-group-item clearfix">
-						 <!-- 	${attachment.name} <span style='padding-left: 10px;'> </span> -->
-						 <a href="${note.attachmentScope}">${note.name } </a>
-					 
-						<div id="${note.id}" class="btn rmv-cr-btn col-md-1 pull-right delete"
-							type='button'>
-							<span class="glyphicon glyphicon-remove "></span>
-						</div> 
-						
-					</li>
-					</c:forEach>
-					</ul>
+					<%--<ul class="list-group noteList">--%>
+					<%--<c:forEach items="${meetingNotes}" var="note">--%>
+					<%----%>
+					<%--<li  id="attachment-${note.id}" class="list-group-item clearfix">--%>
+						 <%--<!-- 	${attachment.name} <span style='padding-left: 10px;'> </span> -->--%>
+						 <%--<a href="${note.attachmentScope}">${note.name } </a>--%>
+					 <%----%>
+						<%--<div id="${note.id}" class="btn rmv-cr-btn col-md-1 pull-right delete"--%>
+							<%--type='button'>--%>
+							<%--<span class="glyphicon glyphicon-remove "></span>--%>
+						<%--</div> --%>
+						<%----%>
+					<%--</li>--%>
+					<%--</c:forEach>--%>
+					<%--</ul>--%>
 				</div>
 			</div>
 		</div>
