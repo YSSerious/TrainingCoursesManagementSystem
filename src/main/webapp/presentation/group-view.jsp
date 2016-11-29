@@ -194,57 +194,7 @@
 	<br />
 </div>
 
-<!--   <div id="attachment-title"><h2>Attachments</h2></div>-->
-
-
-
-
-
-<!--  <div class="modal fade" id="addGroupAttachmentModal" role="dialog">
-	<div class="modal-dialog">
-
-		<div class="modal-content">
-			<div class="modal-body" style="padding: 40px 50px;">
-				<form role="form">
-					<div class="form-group">
-						<label for="groupAttachmentName"> <spring:message
-								code="group.attachment.name" />
-						</label><br /> <input type=text class="form-control"
-							name="attachmentName" id="groupAttachmentName"
-							placeholder=" <spring:message code="group.attachment.name.placeholder"/>"
-							required="required"> <label for="groupAttachment">
-							<spring:message code="group.attachment" />
-						</label><br /> <input type=text class="form-control" id="groupAttachment"
-							placeholder="<spring:message code="group.attachment.placeholder"/>"
-							required="required"> <input type=text id="groupId"
-							style="display: none" value="${groupId }">
-
-					</div>
-					<button type="button"
-						class="btn btn-default btn-success pull-center"
-						id="addAttachmentSubmitButton">
-						<span class="glyphicon glyphicon-off"></span>
-						<spring:message code="group.send" />
-					</button>
-				</form>
-			</div>
-			<div class="modal-footer">
-
-				<button type="button" class="btn btn-default btn-lg"
-					data-dismiss="modal" id="cancelButton">
-					<span class="glyphicon glyphicon-remove"></span>
-					<spring:message code="group.cancel" />
-				</button>
-			</div>
-		</div>
-
-	</div>
-</div>
--->
 <!--  -->
-
-
-<!--  	<div class="col-md-12"> -->
 <h2>
 	<spring:message code="group.attachments" />
 </h2>
@@ -285,38 +235,7 @@
 </div>
 
 <!--  -->
-	<div id="addGroupAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" type="button" data-dismiss="modal"><span
-                        class="glyphicon glyphicon-remove"></span></button>
-                <h4 class="modal-title">New Attachment</h4>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="usr">Name:</label>
-                        <input type="text" class="form-control" id="groupAttachmentName">
-                    </div>
-                    <div class="form-group">
-                        <label for="usr">Link:</label>
-                        <input type="text" class="form-control" id="groupAttachment	">
-                    </div>
-                    <input
-								type=text   id="groupId" style="display:none"
-								value="${groupId }">
-                    <br>
-                    <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
-                        Save
-                    </div>
-                    <button id="addAttachmentSubmitButton" type="button" class="btn btn-primary"  >Save</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>	 
- 
+	
 		 
  
 
@@ -433,6 +352,39 @@
 		</div>
 	</div>
 	<!-- finish meetingDeleteError modal -->
+	<!-- start add attachment modal -->
+	<div id="addGroupAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove"></span></button>
+                <h4 class="modal-title">New Attachment</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="usr"><spring:message code="group.attachment.name"/></label>
+                        <input type="text" class="form-control" id="groupAttachmentName">
+                    </div>
+                    <div class="form-group">
+                        <label for="usr"><spring:message code="group.attachment"/></label>
+                        <input type="url" class="form-control" id="groupAttachment">
+                    </div>
+                    <input
+								type=text   id="groupId" style="display:none"
+								value="${groupId }">
+                    <br>
+                    <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
+                        Save
+                    </div>
+                    <button id="addAttachmentSubmitButton" type="button" class="btn btn-primary"  >Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>	 
+ <!-- finish add attachment -->
 	<script type="text/javascript">
 	function getGroupReport(){
 		$('#group-report-modal').modal('hide');
