@@ -381,9 +381,9 @@ function radarChart(chartData, wrappingDivId) {
         data: preparedData,
         options: {
             scale: {
-                reverse: true,
                 ticks: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    max: 7
                 }
             }
         }

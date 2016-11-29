@@ -10,7 +10,14 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +45,9 @@ import ua.ukma.nc.service.StudentStatusService;
 import ua.ukma.nc.service.UserService;
 import ua.ukma.nc.util.exception.MeetingDeleteException;
 import ua.ukma.nc.util.exception.RemoveStudentFromGroupException;
+import ua.ukma.nc.validator.GroupFormValidator;
+import ua.ukma.nc.vo.AjaxResponse;
+import ua.ukma.nc.vo.GroupVo;
 
 /**
  * Created by Nastasia on 05.11.2016.
@@ -68,19 +78,42 @@ public class GroupController {
     
     @Autowired
     private MeetingReviewService meetingReviewService;
+    
+    @Autowired
+    private GroupFormValidator groupFormValidator;
+    
+    @Autowired
+    private MessageSource messageSource;
 
     private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
     @RequestMapping(value = "/add.ajax", method = RequestMethod.POST)
     @ResponseBody
-    public String addGroup(@RequestParam("groupName") String groupName, @RequestParam("projectId") Long projectId) {
-        Project project = new ProjectImpl();
-        project.setId(projectId);
-        Group group = new GroupImpl();
-        group.setProject(project);
-        group.setName(groupName);
-        groupService.createGroup(group);
-        return Long.toString(groupService.getByName(groupName).getId());
+    public AjaxResponse addGroup(@RequestBody GroupVo groupVo) {
+        DataBinder dataBinder = new WebDataBinder(groupVo);
+        dataBinder.setValidator(groupFormValidator);
+        dataBinder.validate();
+        BindingResult result = dataBinder.getBindingResult();
+        AjaxResponse response = new AjaxResponse();
+        if (!result.hasErrors()){
+            Project project = new ProjectImpl();
+            project.setId(groupVo.getProjectId());
+            Group group = new GroupImpl();
+            group.setProject(project);
+            group.setName(groupVo.getName());
+            groupService.createGroup(group);
+            response.setCode("200");
+            response.addMessage("groupId", Long.toString(groupService.getByName(groupVo.getName()).getId()));
+        }
+        else {
+            response.setCode("204");
+            result.getFieldErrors().stream().forEach((FieldError error) -> {
+                    response.addMessage(error.getField(),
+                            messageSource.getMessage(error.getCode(),
+                                    null, LocaleContextHolder.getLocale()));
+                });
+        }
+        return response;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)

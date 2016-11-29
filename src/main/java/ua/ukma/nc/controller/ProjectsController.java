@@ -73,7 +73,7 @@ public class ProjectsController {
 	
 	@RequestMapping(value = "/projects/add", method = RequestMethod.POST)
         @ResponseBody
-	public AjaxResponse createProject(@RequestBody @Validated ProjectVo projectVo) throws InterruptedException {
+	public AjaxResponse createProject(@RequestBody ProjectVo projectVo) {
             DataBinder dataBinder = new WebDataBinder(projectVo);
             dataBinder.setValidator(projectFromValidator);
             dataBinder.validate();

@@ -62,6 +62,9 @@
             </h2>
             <div class="panel panel-default" id="project-groups">
                 <div class="panel-heading collapsed">
+                    <div class="col-md-1">
+                        <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
+                    </div>
                     <sec:authorize access="hasRole('ADMIN')">
                     <button type="button" class="btn btn-default btn-sm pull-right" id="showGroupsAndCriteria"
                             data-toggle="modal"

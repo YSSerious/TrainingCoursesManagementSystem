@@ -129,7 +129,7 @@ else
                                     <li><a href="/category"><spring:message code="navbar.navigate.categories"/></a></li>
                                 </sec:authorize>
                                 <sec:authorize access="hasAnyRole('MENTOR', 'HR')">
-                                    <li><a href="/students"><spring:message code="navbar.navigate.students"/></a></li>
+                                    <li><a href="/allUsers"><spring:message code="navbar.navigate.students"/></a></li>
                                 </sec:authorize>
                                 <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
                                     <li><a href="/reports"><spring:message code="navbar.navigate.reports"/></a></li>

@@ -171,6 +171,12 @@ div#project-name > *{
     cursor: pointer;
 }
 
+.panel#project-groups .panel-heading div:first-child {
+    display: inline-block;
+    vertical-align: middle;
+    padding-top: 15px;
+}
+
 .panel#project-groups .panel-collapse{
     overflow: hidden;
     padding: 0;

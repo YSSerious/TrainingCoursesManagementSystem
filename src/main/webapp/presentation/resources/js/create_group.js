@@ -9,18 +9,25 @@ $("#create-group").click(function () {
 
 $("#createGroupModal form").on('submit', function (event) {
     event.preventDefault();
-    var groupName = $('#createGroupModal form #group-name').val();
-    var projectId = $('.certain-project').first().attr('data-project-id');
+    var group = {};
+    group['name'] = $('#createGroupModal form #group-name').val();
+    group['projectId'] = $('.certain-project').first().attr('data-project-id');
+    console.log('group: ', group);
     $.ajax({
         type: "POST",
+        contentType: "application/json",
         url: "/groups/add.ajax",
-        data: {"groupName": groupName, "projectId": projectId},
+        data: JSON.stringify(group),
         dataType: 'json',
         timeout: 100000,
         statusCode: {
-            200: function (data) {
-                console.log('data: ', data);
-                afterGroupCreate(data, groupName);
+            200: function (response) {
+                console.log(response);
+                switch (response.code) {
+                    case '200':
+                        afterGroupCreate(response.groupId, group.groupName);
+                        break;
+                }
             }
         }
     });
@@ -37,10 +44,10 @@ function afterGroupCreate(groupId, groupName) {
     tr.append('<td>0</td>');
     tr.append('<td>No upcoming meetings</td>');
     var buttons = $("<td></td>").appendTo(tr);
-    buttons.append('<button class="btn btn-collapse edit-group" class="edit-group">'
+    buttons.append('<button class="btn btn-collapse edit-group glyphicon-button" class="edit-group">'
             + '<span class="glyphicon glyphicon-edit"></span>'
             + '</button>');
-    buttons.append('<button class="btn btn-collapse delete-group" class="edit-group">'
+    buttons.append('<button class="btn btn-collapse delete-group glyphicon-button" class="edit-group">'
             + '<span class="glyphicon glyphicon-remove"></span>'
             + '</button>');
 }

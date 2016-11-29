@@ -125,7 +125,7 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	$('#chart'+value.id).html('');
     	 	    	    	
     	 	    	    	$('#stinf-'+value.id).html('<h4><b>'+lang.user_status_title+'</b>'+data.studentStatuses[data.studentStatuses.length - 1].statusTitle+'</h4>');
-                            createCharts(data.chartInfo, value.id);
+//                            createCharts(data.chartInfo, value.id);
                             radarChart(data.chartInfo, value.id);
     	 	    	    	
                             var reviews = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
