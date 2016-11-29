@@ -54,8 +54,8 @@
 							</div>
 
 							<div class="col-md-4">
-								<font color="blue"><spring:message code="projects.start"/>:</font> <fmt:formatDate pattern="MM/dd/yyyy" value="${value.startDate}" /><br />
-								<font color="blue"><spring:message code="projects.finish"/>:</font> <fmt:formatDate pattern="MM/dd/yyyy" value="${value.finishDate}" />
+								<font color="blue"><spring:message code="projects.start"/>:</font> <fmt:formatDate pattern="yyyy-MM-dd" value="${value.startDate}" /><br />
+								<font color="blue"><spring:message code="projects.finish"/>:</font> <fmt:formatDate pattern="yyyy-MM-dd" value="${value.finishDate}" />
 							</div>
 						</div>
 					</div>

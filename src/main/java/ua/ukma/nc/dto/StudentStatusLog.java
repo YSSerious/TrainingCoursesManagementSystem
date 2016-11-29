@@ -72,7 +72,7 @@ public class StudentStatusLog {
 	}
 
 	public void setDate(Timestamp time) {
-		this.date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(time);
+		this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time);
 	}
 
 	public String getStatusTitle() {

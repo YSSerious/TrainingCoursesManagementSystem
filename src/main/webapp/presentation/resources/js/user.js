@@ -15,9 +15,7 @@ function getStringDate(date){
 	if(day < 10)
 		day = '0'+day;
 	
-    return month + 
-    "/" +  day +
-    "/" +  date.getFullYear();
+    return date.getFullYear() + '-' + month + '-' + day;
 }
 
 function createMentorProjectsInfo(userId, divInside){
@@ -242,9 +240,9 @@ function getMarksTable(markTableDto, projectId){
  			table+= '<tr class="active" id="row-'+projectId+'-'+categoryResult.categoryDto.id+'-'+criterionResult.criterionId+'"><td style="padding-left:30px;">' + criterionResult.criterionName + '</td>';
  			$.each(criterionResult.marks, function(index, mark) {
  					if(mark.commentary == '')
- 						table+= '<td align="center"><span title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
+ 						table+= '<td align="center"><span class="clickable" title="'+mark.description+''+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
  					else
- 						table+= '<td align="center"><span title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
+ 						table+= '<td align="center"><span class="clickable" title="'+mark.description+': '+mark.commentary+'">' + getMark(mark.value) + '</span></td>';
 	    		});
  			table+= '</tr>';
  		});
@@ -623,9 +621,14 @@ function getModal(modalId, modalName, modalTitle, reviewDto){
 	
 	if(reviewDto.type === '-')
 		modal += '<br/>'+lang.user_no_meeting_info;
-	else if(reviewDto.commentary != null){
-		modal += '<br/><b>'+lang.user_general_comment+'</b> '+reviewDto.commentary + '<br/><hr/>';
-	
+	else {
+		
+		if(reviewDto.commentary){
+			modal += '<br/><b>'+lang.user_general_comment+'</b> '+reviewDto.commentary + '<br/><hr/>';
+		}else{
+			modal += '<br/><hr/>';
+		}
+		
     	$.each(reviewDto.marks, function(key, value ) {
     		modal += '<b>'+lang.user_criterion_name+':</b> ' + value.criterionName + '<br/>';
     		modal += '<b>'+lang.user_mark+':</b> ' + value.value + ' ('+value.description+')<br/>';

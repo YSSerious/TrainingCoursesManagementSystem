@@ -79,7 +79,7 @@ public class FinalReviewDto {
 	}
 
 	public void setDate(Timestamp date) {
-		this.date = new SimpleDateFormat("MM/dd/yyyy").format(date);
+		this.date = new SimpleDateFormat("yyyy-MM-dd").format(date);
 	}
 
 	public List<FinalReviewCriterionDto> getMarks() {

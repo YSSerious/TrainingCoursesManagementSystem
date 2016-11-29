@@ -71,6 +71,8 @@ public class MarkTableServiceImpl implements MarkTableService {
 		List<Mark> marks = markService.getAll();
 		List<MarkInformation> marksInformation = meetingResultService.generateMarkInformation(studentId, projectId);
 		List<Meeting> meetings = meetingService.getByStudentProject(studentId, projectId);
+		List<Meeting> absentMeetings = meetingService.getByStudentProjectType(studentId, projectId, 'A');
+		
 		List<Criterion> criteria = criterionService.getByProject(projectId);
 
 		List<CategoryDto> categoriesDto = new ArrayList<CategoryDto>();
@@ -103,6 +105,7 @@ public class MarkTableServiceImpl implements MarkTableService {
 		
 		List<CriterionDto> criteriaDto = criteria.stream().map(CriterionDto::new)
 				.collect(Collectors.toList());
+		
 		
 		List<MeetingReviewDto> meetingReviewsDto = new ArrayList<MeetingReviewDto>();
 		for (Meeting meeting : meetings) {
@@ -146,6 +149,9 @@ public class MarkTableServiceImpl implements MarkTableService {
 
 		meetingNames.add("Final");
 		markTableDto.setMeetings(meetingReviewsDto);
+		
+		Collections.sort(criteriaDto);
+		Collections.sort(categoriesDto);
 		
 		markTableDto.setProjectCriteria(criteriaDto);
 		markTableDto.setProjectCategories(categoriesDto);
@@ -224,6 +230,8 @@ public class MarkTableServiceImpl implements MarkTableService {
 		markTableDto.setTableData(dataTableDto);
 
 		putMarks(meetings, categories, meetingId, dataTable, "-", "No review.");
+		putMarks(absentMeetings, categories, meetingId, dataTable, "-", "Was absent.");
+		
 		for (MarkInformation markInformation : marksInformation) {
 
 			CategoryDto category = new CategoryDto();

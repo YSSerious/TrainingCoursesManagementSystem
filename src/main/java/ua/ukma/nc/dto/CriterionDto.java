@@ -2,7 +2,7 @@ package ua.ukma.nc.dto;
 
 import ua.ukma.nc.entity.Criterion;
 
-public class CriterionDto {
+public class CriterionDto implements Comparable<CriterionDto>{
 	private Long id;
 	private String title;
 	private Long categoryId;
@@ -53,5 +53,10 @@ public class CriterionDto {
 
 	public void setRated(boolean rated) {
 		this.rated = rated;
+	}
+
+	@Override
+	public int compareTo(CriterionDto o) {
+		return getTitle().compareToIgnoreCase(o.getTitle());
 	}
 }

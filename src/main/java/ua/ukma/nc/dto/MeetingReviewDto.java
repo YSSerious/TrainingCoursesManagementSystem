@@ -27,7 +27,7 @@ public class MeetingReviewDto implements Comparable<MeetingReviewDto>{
 		Meeting meeting = meetingReview.getMeeting();
 		type = meetingReview.getType();
 		commentary = meetingReview.getCommentary();
-		date = new SimpleDateFormat("MM/dd/yyyy").format(meeting.getTime());
+		date = new SimpleDateFormat("yyyy-MM-dd").format(meeting.getTime());
 		setName(meeting.getName());
 		setId(meeting.getId());
 		setTimestamp(meeting.getTime());
@@ -86,7 +86,7 @@ public class MeetingReviewDto implements Comparable<MeetingReviewDto>{
 	}
 
 	public void setTimestamp(Timestamp timestamp) {
-		date = new SimpleDateFormat("MM/dd/yyyy").format(timestamp);
+		date = new SimpleDateFormat("yyyy-MM-dd").format(timestamp);
 		this.timestamp = timestamp;
 	}
 
