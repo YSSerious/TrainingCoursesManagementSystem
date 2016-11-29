@@ -93,7 +93,7 @@ public class AuthController {
         User user = userService.getByEmail(principal.getName());
         List<String> available = new LinkedList<>();
         for (Role role : user.getRoles())
-//            if (!role.getTitle().equals("ROLE_STUDENT"))    //no students in system now
+            if (!role.getTitle().equals("ROLE_STUDENT"))    //no students in system now
                 available.add(role.getTitle());
         //no chance to choose for users with one role
         if (available.size() == 1) {
