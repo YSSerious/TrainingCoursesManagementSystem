@@ -109,6 +109,7 @@ public class UsersController {
 		model.addAttribute("users", users);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("noOfPages", noOfPages);
+		model.addAttribute("title", "All users");
 		return "allUsers";
 	}
 

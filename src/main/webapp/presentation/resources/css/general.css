@@ -76,6 +76,12 @@ tr.error input{
     border: 1px solid #A94442;
     box-shadow: 0 0 10px #A94442;
 }
+
+.btn-danger{
+	min-width: 150px;
+}
+
+
 /* Prevents modal shifting on hide, but scroll lefts on modal show*/
 /*.modal {
  overflow-y: auto;
