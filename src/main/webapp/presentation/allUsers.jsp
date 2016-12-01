@@ -2,140 +2,123 @@
 	pageEncoding="UTF-8"%>
 <%@include file="header.jsp"%>
 <div class="col-sm-12">
-
-<div class="row">
-			<div class="col-md-9">
+	<div class="row">
+		<div class="col-md-11" id="table">
 			<c:if test="${!users.isEmpty()}">
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">Users</h3>
-	</div>
-	<table class="table table-striped table-bordered users" id="pagination">
-		<tr>
-			<th>User</th>
-			<th>User role</th>
-		</tr>
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Users</h3>
+					</div>
+					<table class="table table-striped table-bordered users"
+						id="pagination">
+						<tr>
+							<th>User</th>
+							<th>User role</th>
+						</tr>
 
-		<c:forEach items="${users}" var="user">
-			<tr>
-				<td><font size="3"><b> <a href="/users/${user.id}">
-								${user.firstName} ${user.secondName} ${user.lastName} </a></b></font></td>
-				<td><font size="3"> <c:forEach items="${user.roles}"
-							var="role" varStatus="loop">
-							<b>${role.getTitle().substring(5)}
-							<c:if test="${!loop.last}">,</c:if>
-							</b>
-							
+						<c:forEach items="${users}" var="user">
+							<tr>
+								<td><font size="3"><b> <a
+											href="/users/${user.id}"> ${user.firstName}
+												${user.secondName} ${user.lastName} </a></b></font></td>
+								<td><font size="3"> <c:forEach items="${user.roles}"
+											var="role" varStatus="loop">
+											<b>${role.getTitle().substring(5)} <c:if
+													test="${!loop.last}">,</c:if>
+											</b>
+
+										</c:forEach>
+								</font></td>
+							</tr>
 						</c:forEach>
-				</font></td>
-			</tr>
-		</c:forEach>
-	</table>
-</div>
-</c:if>
-<c:if test="${users.isEmpty()}">
-	<h1>No such users</h1>
-	</c:if>
-</div>
- 
-<div class="col-md-3">
- <button type="button" class="btn btn-primary pull-right " data-toggle="collapse" data-target="#filter-panel">
-            <span class="glyphicon glyphicon-cog"></span>
-        </button>
-        <br/>
-        <br/>
-<div id="filter-panel" class="collapse filter-panel">
-<form action="" method="get">
+					</table>
+				</div>
+			</c:if>
+			<c:if test="${users.isEmpty()}">
+				<h1>No such users</h1>
+			</c:if>
+		</div>
 
-  
-<div class="form-group">
-<label class="filter-col"  for="value"> Search by:</label>
-<br/>
-  <input type="radio" name="type" value="name" onclick="yesnoCheck();"
-  <c:if test="${param.type == 'name' || param.type == null}">
-  checked
-  </c:if>
-  > Name
-  <input type="radio" name="type" value="role" id="roles" onclick="yesnoCheck();"
-  <c:if test="${param.type == 'role'}">
-  checked
-  </c:if>
-  > Role
-  <input type="radio" name="type" value="project" onclick="yesnoCheck();"
-  <c:if test="${param.type == 'project'}">
-  checked
-  </c:if>
-  > Project
-  <input type="radio" name="type" value="group" onclick="yesnoCheck();"
-  <c:if test="${param.type == 'group'}">
-  checked
-  </c:if>
-  > Group
-    <input type="submit" value="Search!" class="btn btn-default filter-col pull-right">
-  <span id="rev-err" class="text-danger hidden">Unknown	error</span>
-</div>
-<div class="form-group">
-<label class="filter-col"  for="value"> Search for:</label>
+		<div class="col-md-1" id="search">
+			<button type="button" id="button" class="btn btn-primary pull-right "
+				data-toggle="collapse" data-target="#filter-panel">
+				<span class="glyphicon glyphicon-cog"></span>
+			</button>
+			<br /> <br />
+			<div id="filter-panel" class="collapse filter-panel">
+				<form action="" method="get">
 
 
-  <input type="text" name="value" class="form-control input-sm" id="submitted"
-  <c:if test="${param.value != null && !param.type.equals('role')}">
-   value="${param.value}"
-   </c:if>
-   >
+					<div class="form-group">
+						<label class="filter-col" for="value"> Search by:</label> <br />
+						<input type="radio" name="type" value="name"
+							onclick="yesnoCheck();"
+							<c:if test="${param.type == 'name' || param.type == null}">
+  								checked
+  							</c:if>>
+						Name <input type="radio" name="type" value="role" id="roles"
+							onclick="yesnoCheck();"
+							<c:if test="${param.type == 'role'}">
+  								checked
+  							</c:if>>
+						Role <input type="radio" name="type" value="project"
+							onclick="yesnoCheck();"
+							<c:if test="${param.type == 'project'}">
+  								checked
+  							</c:if>>
+						Project <input type="radio" name="type" value="group"
+							onclick="yesnoCheck();"
+							<c:if test="${param.type == 'group'}">
+  								checked
+  							</c:if>>
+						Group <input type="submit" value="Search!"
+							class="btn btn-default filter-col pull-right"> <span
+							id="rev-err" class="text-danger hidden">Unknown error</span>
+					</div>
+					<div class="form-group">
+						<label class="filter-col" for="value"> Search for:</label> <input
+							type="text" name="value" class="form-control input-sm"
+							id="submitted"
+							<c:if test="${param.value != null && !param.type.equals('role')}">
+   								value="${param.value}"
+   							</c:if>>
 
-   <div id="check">
-   <input type="checkbox" name="value" value="Admin"
-  <c:if test="${param.value == 'Admin' && param.type == 'role'}">
-  checked
-  </c:if>
-  > Admin
-  <br/>
-  <input type="checkbox" name="value" value="HR"
-  <c:if test="${param.value == 'HR' && param.type == 'role'}">
-  checked
-  </c:if>
-  > HR
-  <br/>
-  <input type="checkbox" name="value" value="Mentor"
-  <c:if test="${param.value == 'Mentor' && param.type == 'role'}">
-  checked
-  </c:if>
-  > Mentor
-  <br/>
-  <input type="checkbox" name="value" value="Student"
-  <c:if test="${param.value == 'Student' && param.type == 'role'}">
-  checked
-  </c:if>
-  > Student
-  <br/>
-  </div>
-   </div>
-</form>
-  </div> 
-   
-
-</div>
-<br>
-<br>
-</div>
+						<div id="check">
+							<input type="checkbox" name="value" value="Admin"
+								<c:if test="${param.value == 'Admin' && param.type == 'role'}">
+  									checked
+ 							    </c:if>>
+							Admin <br /> <input type="checkbox" name="value" value="HR"
+								<c:if test="${param.value == 'HR' && param.type == 'role'}">
+ 									checked
+  								</c:if>>
+							HR <br /> <input type="checkbox" name="value" value="Mentor"
+								<c:if test="${param.value == 'Mentor' && param.type == 'role'}">
+  									checked
+  								</c:if>>
+							Mentor <br /> <input type="checkbox" name="value"
+								value="Student"
+								<c:if test="${param.value == 'Student' && param.type == 'role'}">
+  									checked
+  								</c:if>>
+							Student <br />
+						</div>
+					</div>
+				</form>
+			</div>
 
 
-	
-      
-	
-
+		</div>
+		<br> <br>
+	</div>
 	<br />
-	<div class="col-md-9">
-<div class="text-center">
-	<div style="min-width:100%;" id="bootstrap-pagination">
+	<div class="col-md-11">
+		<div class="text-center">
+			<div style="min-width: 100%;" id="bootstrap-pagination"></div>
+		</div>
 	</div>
 </div>
-</div>
-</div>
-	
 <script>
-
 var max = ${noOfPages};
 var curr = ${currentPage};
 
@@ -165,7 +148,7 @@ $('#bootstrap-pagination').bootpag({
 		window.location.href = "?page="+num;
 	
 });
-}
+};
 
 function getParameterByName(name, url) {
     if (!url) {
@@ -177,7 +160,7 @@ function getParameterByName(name, url) {
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
+};
 
 $(document).on("click", ".btn-danger", function () {
 	window.location.href = "/allUsers";
@@ -201,8 +184,29 @@ function yesnoCheck() {
     	});
     	document.getElementById('check').disabled = true;
     }
-}
+};
 $( document ).ready(yesnoCheck()); 
-</script>
 
-	<%@include file="footer.jsp"%>
+
+var clicked = false;
+document.getElementById('button').onclick = function() {
+	if(!clicked){
+	 $('#table').removeClass('col-md-11');
+	 $('#search').removeClass('col-md-1');
+     $('#table').addClass('col-md-9');
+     $('#search').addClass('col-md-3');
+     clicked = true;
+	}
+	else{
+		setTimeout(function(){
+		$('#table').removeClass('col-md-9');
+		 $('#search').removeClass('col-md-3');
+	     $('#table').addClass('col-md-10');
+	     $('#search').addClass('col-md-1');
+	     $('#table').removeClass('col-md-10');
+	     $('#table').addClass('col-md-11');
+	     clicked = false;
+		}, 250);}
+};
+</script>
+<%@include file="footer.jsp"%>
