@@ -62,21 +62,21 @@
                                     type="button"
                                     data-toggle="modal"
                                     data-target="#deleteCategory"
-                                    onclick="setCategory(${category.id})">
+                                    onclick="setCategory('${category.id}','${category.name}','${category.description}')">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
                             <button class="btn btn-lg pull-right-btn"
                                     type="button"
                                     data-toggle="modal"
                                     data-target="#editCategory"
-                                    onclick="setCategory(${category.id})">
+                                    onclick="setCategory('${category.id}','${category.name}','${category.description}')">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </button>
                             <button class="btn btn-lg pull-right-btn"
                                     type="button"
                                     data-toggle="modal"
                                     data-target="#addCriteria"
-                                    onclick="setCategory(${category.id})">
+                                    onclick="setCategory('${category.id}','${category.name}','${category.description}')">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         </h4>

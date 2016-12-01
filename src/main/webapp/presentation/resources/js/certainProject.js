@@ -168,8 +168,7 @@ $(document).ready(function () {
         $.ajax({
             url: "/addCriteria",
             type: "POST",
-            data: {projectId: projectId, criteriaTitle: a.closest('tr').
-                        find('td:first').text()},
+            data: {projectId: projectId, criteriaTitle: a.closest('tr').find('td:first').text()},
             success: function (data) {
                 console.log(data);
                 $('#collapseUL').append(buildResponseCriteria(data));
@@ -205,7 +204,7 @@ $(document).ready(function () {
         $.each(data, function (key, value) {
             $('#criterionTable > tbody:last-child').append("<tr>" +
                     "<td>" + value.title + "</td>" +
-                    "<td><button class='addButton btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
+                    "<td><button class='addButton btn-primary btn-xs'><span class='glyphicon glyphicon-plus'></span></button></td>" +
                     "</tr>");
         });
     }
@@ -244,6 +243,7 @@ function changeSpan(el) {
 function buildResponseCriteria(data) {
     return "<li class='list-group-item  clearfix' id='criteriaId-" + data.id + "'>" +
             "<div class='col-md-11'>" + data.title + "</div>" +
+            "<sec:authorize access=\"hasRole(\" ADMIN \")\">" +
             "<c:if test='" + data.rated + "'>" +
             "<div class='btn rmv-cr-btn col-md-1' type='button'" +
             " data-button='{\"id\":\"" + data.id + "\", \"title\": \"" +
@@ -251,6 +251,7 @@ function buildResponseCriteria(data) {
             "<span class='glyphicon glyphicon-remove'></span>" +
             "</div>" +
             "</c:if>" +
+            "</sec:authorize>" +
             "</li>";
 };
 

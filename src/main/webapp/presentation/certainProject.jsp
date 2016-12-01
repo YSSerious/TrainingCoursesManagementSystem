@@ -63,7 +63,7 @@
             <div class="panel panel-default" id="project-groups">
                 <div class="panel-heading collapsed">
                     <div class="col-md-1">
-                        <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
+                        <span id="spanIdd" class="glyphicon glyphicon-chevron-down"></span>
                     </div>
                     <sec:authorize access="hasRole('ADMIN')">
                     <button type="button" class="btn btn-default btn-sm pull-right" id="showGroupsAndCriteria"
@@ -124,7 +124,8 @@
             <div class="panel-group" id="panelGroupId">
                 <div class="panel panel-default">
                     <div class="panel-heading clearfix">
-                        <div data-toggle="collapse" data-target="#collapseIn" class="arrow col-md-1" onclick="changeSpan(this)">
+                        <div data-toggle="collapse" data-target="#collapseIn"
+                             class="arrow col-md-1" onclick="changeSpan(this)">
                             <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
                         </div>
                         <sec:authorize access="hasRole('ADMIN')">

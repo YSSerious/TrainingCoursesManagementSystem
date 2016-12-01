@@ -26,7 +26,7 @@ $(document).ready(function () {
             data: {meetingId: meetingId, criteriaTitle: a.closest('tr').find('td:first').text()},
             success: function (data) {
                 console.log(data);
-                $('#collapseMIn').append(buildResponseCriteria(data));
+                $('#collapseUL').append(buildResponseCriteria(data));
                 a.parent().parent().remove();
             },
             error: function (textStatus) {
@@ -35,7 +35,7 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on('click', '.rmv-mt-btn', function () {
+    $(document).on('click', '.rmv-crt-btn', function () {
         var criteria = $.parseJSON($(this).attr('data-button'));
         $.ajax({
             url: "/deleteMeetingCriteria",
@@ -43,7 +43,7 @@ $(document).ready(function () {
             data: {meetingId: meetingId, criteriaTitle: criteria.title},
             success: function (data) {
                 console.log(data);
-                $('#criteriaMId-' + criteria.id).remove();
+                $('#criteriaaMId-' + criteria.id).remove();
             },
             error: function (textStatus) {
                 console.log(textStatus);
@@ -137,17 +137,20 @@ function changeSpan() {
 }
 
 function buildResponseCriteria(data) {
-    return "<div class='panel-body' id='criteriaMId-" + data.id + "'>" +
+    return "<li class='list-group-item clearfix' id='criteriaaMId-" + data.id + "'>" +
         "<div class='col-md-11'>" + data.title + "</div>" +
+        "<sec:authorize access=\"hasRole(\" ADMIN \")\">" +
         "<c:if test='" + data.rated + "'>" +
-        "<div class='btn rmv-mt-btn col-md-1' type='button'" +
+        "<div class='btn rmv-crt-btn col-md-1' type='button'" +
         " data-button='{\"id\":\"" + data.id + "\", \"title\": \"" + data.title + "\"}'>" +
         "<span class='glyphicon glyphicon-remove'></span>" +
         "</div>" +
         "</c:if>" +
-        "</div>";
+        "</sec:authorize>" +
+        "</li>";
 }
 ;
+
 
 function changeSpan(el) {
     var chevron = jQuery(el);

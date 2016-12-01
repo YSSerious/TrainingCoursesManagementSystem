@@ -1,8 +1,4 @@
 <%@include file="header.jsp" %>
-<script
-        src="<c:url value="/presentation/resources/js/meeting.js"/>"
-        type="text/javascript" defer="defer">
-</script>
 <div class="row container certain-project">
     <div class="col-md-12">
         <div class="page-header">
@@ -53,11 +49,11 @@
                 <tr>
                     <td><font size="3"><b> <a href="javascript:;"
                                               data-toggle="modal" class="open-Evaluate"
-                                               <sec:authorize access="hasRole('MENTOR')">
-                                              data-target="#evaluateModal${user.id}"
-                                              data-user="${user.firstName}"
-                                              </sec:authorize>
-                                              > ${user.firstName}
+                            <sec:authorize access="hasRole('MENTOR')">
+                                data-target="#evaluateModal${user.id}"
+                                data-user="${user.firstName}"
+                            </sec:authorize>
+                    > ${user.firstName}
                             ${user.secondName} ${user.lastName} </a></b> </font></td>
                     <c:forEach items="${criteria}" var="criterion">
                         <td><font size="3">
@@ -74,17 +70,17 @@
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">&times;</button>
-                                <h4 class="modal-title col-xs-offset-2 col-sm-6" 
-                                id="myModalLabel">Evaluate ${user.firstName} ${user.lastName}</h4>
-                                 
-                                
+                                <h4 class="modal-title col-xs-offset-2 col-sm-6"
+                                    id="myModalLabel">Evaluate ${user.firstName} ${user.lastName}</h4>
+
+
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-primary col-xs-offset-1"
+                                <button type="button" class="btn btn-primary col-xs-offset-1"
                                         onclick="absent(${user.id},${meeting.id})">
                                     Absent
                                 </button>
-                           </div>
+                            </div>
                             <div class="modal-body edit-content">
                                 <ul class="list-group">
                                     <c:forEach items="${criteria}" var="criterion">
@@ -134,11 +130,11 @@
                                                  class="text-danger hidden">Unknown error</span> <a href="javascript:;"
                                                                                                     data-toggle="modal"
                                                                                                     class="open-Evaluate"
-                                                                                                    <sec:authorize access="hasRole('MENTOR')">
-                                                                                                    data-target="#evaluateModal${entry.key.id}"
-                                                                                                    data-user="${entry.key.firstName}"
-                                                                                                    </sec:authorize>
-                                                                                                    >${entry.key.firstName}
+                            <sec:authorize access="hasRole('MENTOR')">
+                                data-target="#evaluateModal${entry.key.id}"
+                                data-user="${entry.key.firstName}"
+                            </sec:authorize>
+                    >${entry.key.firstName}
                             ${entry.key.secondName} ${entry.key.lastName}</a></b></font></td>
 
                     <c:forEach items="${entry.value}" var="mark">
@@ -245,8 +241,8 @@
         <div class="panel-group" id="panelGroupId">
             <div class="panel panel-primary">
                 <div class="panel-heading clearfix">
-                    <div data-toggle="collapse" data-target="#collapseMIn"
-                         class="arrow col-md-1" onclick="changeSpan(this)">
+                    <div data-toggle="collapse" data-target="#collapseMIn" style="color:black"
+                         class="arrow col-md-1 blc" onclick="changeSpan(this)">
                         <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
                     </div>
                     <sec:authorize access="hasRole('ADMIN')">
@@ -258,20 +254,22 @@
                         </button>
                     </sec:authorize>
                 </div>
-                <div id="collapseMIn" class="panel-collapse collapse">
-                    <c:forEach items="${criteria}" var="criterion">
-                        <div class="panel-body" id="criteriaMId-${criterion.id}">
-                            <div class="col-md-11">${criterion.title}</div>
-                            <sec:authorize access="hasRole('ADMIN')">
-                            <c:if test="${!criterion.rated}">
-                                <div class="btn rmv-mt-btn col-md-1" type='button'
-                                     data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
-                                    <span class="glyphicon glyphicon-remove"></span>
-                                </div>
-                            </c:if>
-                            </sec:authorize>
-                        </div>
-                    </c:forEach>
+                <div id="collapseMIn" class="panel-collapse collapse clearfix">
+                    <ul class="list-group" id="collapseUL">
+                        <c:forEach items="${criteria}" var="criterion">
+                            <li class="list-group-item  clearfix" id="criteriaaMId-${criterion.id}">
+                                <div class="col-md-11">${criterion.title}</div>
+                                <sec:authorize access="hasRole('ADMIN')">
+                                <c:if test="${!criterion.rated}">
+                                    <div class="btn rmv-crt-btn col-md-1" type='button'
+                                         data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </div>
+                                </c:if>
+                                </sec:authorize>
+                            </li>
+                        </c:forEach>
+                    </ul>
                 </div>
             </div>
         </div>

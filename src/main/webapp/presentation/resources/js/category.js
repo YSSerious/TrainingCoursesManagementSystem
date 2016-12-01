@@ -134,6 +134,8 @@ $(document).ready(function () {
 });
 
 var categoryId;
+var categoryName;
+var categoryDescription;
 var criteriaId;
 var newCriteria;
 var newCategory;
@@ -142,8 +144,14 @@ function setCriteria(id) {
     criteriaId = id;
 }
 
-function setCategory(id) {
+function setCategory(id, name, description) {
     categoryId = id;
+    categoryName = name;
+    categoryDescription = description;
+    
+        console.log(id, name, description);
+    $('#editCategoryName').val(categoryName);
+    $('#editCategoryDescription').val(categoryDescription);
 }
 
 function buildCriteria(criteriaId, criteriaTitle) {
@@ -158,37 +166,38 @@ function buildCriteria(criteriaId, criteriaTitle) {
         "</div>";
 }
 
-function buildCategory(categoryId, categoryTitle, categoryDescription) {
-    newCategory = "<div class='panel panel-default' id='categoryPanelId-" + categoryId + "'>" +
+
+function buildCategory(id, name, desc) {
+    newCategory = "<div class='panel panel-default' id='categoryPanelId-" + id + "'>" +
         "<div class='panel-heading'>" +
         "<h4 class='panel-title row'>" +
-        "<div data-toggle='collapse' class='diver col-md-3 text-primary' id='aEditId-" + categoryId + "' " +
-        "data-target='#collapseIn-" + categoryId + "'><b>" + categoryTitle + "</b>" +
+        "<div data-toggle='collapse' class='diver col-md-3 text-primary' id='aEditId-" + id + "' " +
+        "data-target='#collapseIn-" + id + "'><b>" + name + "</b>" +
         "</div>" +
-        "<div id='divEditId-" + categoryId + "' class='col-md-3'>" + categoryDescription + "</div>" +
+        "<div id='divEditId-" + id + "' class='col-md-3'>" + desc + "</div>" +
         "<button class='btn btn-lg pull-right-btn'" +
         " type='button'" +
         " data-toggle='modal'" +
         " data-target='#deleteCategory'" +
-        " onclick='setCategory(" + categoryId + ")'>" +
+        " onclick='setCategory(\""+id+"\", \""+name+"\", \""+desc+"\")'  >" +
         "<span class='glyphicon glyphicon-remove'></span>" +
         "</button>" +
         "<button class='btn btn-lg pull-right-btn'" +
         " type='button'" +
         " data-toggle='modal'" +
         " data-target='#editCategory'" +
-        " onclick='setCategory(" + categoryId + ")'>" +
+        " onclick='setCategory(\""+id+"\", \""+name+"\", \""+desc+"\")'>" +
         "<span class='glyphicon glyphicon-edit'></span>" +
         "</button>" +
         "<button class='btn btn-lg pull-right-btn'" +
         " type='button'" +
         " data-toggle='modal'" +
         " data-target='#addCriteria'" +
-        " onclick='setCategory(" + categoryId + ")'>" +
+        " onclick='setCategory(\""+id+"\", \""+name+"\", \""+desc+"\")'>" +
         "<span class='glyphicon glyphicon-plus'></span>" +
         "</button>" +
         "</h4>" +
         "</div>" +
-        "<div id='collapseIn-" + categoryId + "' class='panel-collapse collapse'>" +
+        "<div id='collapseIn-" + id + "' class='panel-collapse collapse'>" +
         "</div></div>";
 }
