@@ -39,35 +39,34 @@
 </div>
  
 <div class="col-md-3">
+ <button type="button" class="btn btn-primary pull-right " data-toggle="collapse" data-target="#filter-panel">
+            <span class="glyphicon glyphicon-cog"></span>
+        </button>
+        <br/>
+        <br/>
 <div id="filter-panel" class="collapse filter-panel">
-<form action="" onsubmit="return validate();" method="get">
-<div class="form-group">
- <label class="filter-col" style="margin-right:0;" for="value"> Search for:</label>
-  
-  <input type="text" name="value" id="submitted" class="form-control input-sm"
-  <c:if test="${param.value != null}">
-   value="${param.value}"
-   </c:if>
-   >
-   </div>
+<form action="" method="get">
+
   
 <div class="form-group">
-  <input type="radio" name="type" value="name" 
+<label class="filter-col"  for="value"> Search by:</label>
+<br/>
+  <input type="radio" name="type" value="name" onclick="yesnoCheck();"
   <c:if test="${param.type == 'name' || param.type == null}">
   checked
   </c:if>
   > Name
-  <input type="radio" name="type" value="role" 
+  <input type="radio" name="type" value="role" id="roles" onclick="yesnoCheck();"
   <c:if test="${param.type == 'role'}">
   checked
   </c:if>
   > Role
-  <input type="radio" name="type" value="project" 
+  <input type="radio" name="type" value="project" onclick="yesnoCheck();"
   <c:if test="${param.type == 'project'}">
   checked
   </c:if>
   > Project
-  <input type="radio" name="type" value="group" 
+  <input type="radio" name="type" value="group" onclick="yesnoCheck();"
   <c:if test="${param.type == 'group'}">
   checked
   </c:if>
@@ -75,13 +74,47 @@
     <input type="submit" value="Search!" class="btn btn-default filter-col pull-right">
   <span id="rev-err" class="text-danger hidden">Unknown	error</span>
 </div>
+<div class="form-group">
+<label class="filter-col"  for="value"> Search for:</label>
 
+
+  <input type="text" name="value" class="form-control input-sm" id="submitted"
+  <c:if test="${param.value != null && !param.type.equals('role')}">
+   value="${param.value}"
+   </c:if>
+   >
+
+   <div id="check">
+   <input type="checkbox" name="value" value="Admin"
+  <c:if test="${param.value == 'Admin' && param.type == 'role'}">
+  checked
+  </c:if>
+  > Admin
+  <br/>
+  <input type="checkbox" name="value" value="HR"
+  <c:if test="${param.value == 'HR' && param.type == 'role'}">
+  checked
+  </c:if>
+  > HR
+  <br/>
+  <input type="checkbox" name="value" value="Mentor"
+  <c:if test="${param.value == 'Mentor' && param.type == 'role'}">
+  checked
+  </c:if>
+  > Mentor
+  <br/>
+  <input type="checkbox" name="value" value="Student"
+  <c:if test="${param.value == 'Student' && param.type == 'role'}">
+  checked
+  </c:if>
+  > Student
+  <br/>
+  </div>
+   </div>
 </form>
   </div> 
-   <button type="button" class="btn btn-danger" >Reset</button>
- <button type="button" class="btn btn-primary pull-right" data-toggle="collapse" data-target="#filter-panel">
-            <span class="glyphicon glyphicon-cog"></span> Advanced Search
-        </button>
+   
+
 </div>
 <br>
 <br>
@@ -149,6 +182,27 @@ function getParameterByName(name, url) {
 $(document).on("click", ".btn-danger", function () {
 	window.location.href = "/allUsers";
 });
+
+function yesnoCheck() {
+    if (document.getElementById('roles').checked) {
+        $('#check').removeClass('hidden');
+        $('#submitted').addClass('hidden');
+        document.getElementById('submitted').disabled = true;
+        $('#check').children('input').each(function () {
+    	    this.disabled = false;
+    	});
+    }
+    else{ 
+		$('#check').addClass('hidden');
+    	$('#submitted').removeClass('hidden');
+    	document.getElementById('submitted').disabled = false;
+    	$('#check').children('input').each(function () {
+    	    this.disabled = true;
+    	});
+    	document.getElementById('check').disabled = true;
+    }
+}
+$( document ).ready(yesnoCheck()); 
 </script>
 
 	<%@include file="footer.jsp"%>
