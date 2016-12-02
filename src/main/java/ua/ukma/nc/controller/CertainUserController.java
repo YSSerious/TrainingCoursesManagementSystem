@@ -58,15 +58,7 @@ public class CertainUserController {
 		model.addAttribute("user", user);
 		return "certainUser";
 	}
-	
-	@RequestMapping(value = "/manageRoles", method = RequestMethod.POST)
-	public ModelAndView changeRole(@RequestParam("student") Long student, @RequestParam("roles") List<Long> chRoles){
-		User user = userService.getById(student);
-		roleService.changeRoles(chRoles, user);
 		
-		return new ModelAndView("redirect:" + "users/"+student);
-	}
-	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	public ModelAndView viewUser(@PathVariable("id") Long id) {
 		ModelAndView model = new ModelAndView("user");

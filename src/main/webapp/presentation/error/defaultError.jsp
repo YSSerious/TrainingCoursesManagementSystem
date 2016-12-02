@@ -4,7 +4,7 @@
 <div class = "row">
 	<div class = "col-sm-12">
 		<div class = "text-center">
-			<h2>Sorry, but service is currently unavailable.</h2>
+			<h2><spring:message code="error.default.description"/></h2>
 		</div>
 	</div>
 </div>
@@ -13,7 +13,7 @@
 <div class = "row">
 	<div class = "col-sm-12">
 		<div class="text-center">
-			<h2>Please, try again later.</h2>
+			<h2><spring:message code="error.default.action.description"/></h2>
 		</div>
 	</div>
 </div>

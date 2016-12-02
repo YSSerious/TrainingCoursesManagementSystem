@@ -12,8 +12,7 @@
 
         <div class="row">
             <div class="col-sm-4">
-                <img style="height:70%;width:70%;"
-                     src='<c:url value="/presentation/resources/imgs/profile_picture.png" />'>
+                <img style="height:70%;width:70%;" src='<c:url value="/presentation/resources/imgs/profile_picture.png" />'>
             </div>
 
             <div class="col-sm-4">
@@ -38,23 +37,22 @@
                         <b><spring:message code="user.status"/>:</b> ${user.statusTitle} <br/>
 
                         <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
-                            <font class="clickable" color="blue" data-toggle="modal"
-                                  data-target="#projects-report-modal"><b onclick="report(${user.id})"><spring:message
-                                    code="user.generate.report"/></b></font>
+                            <font class="clickable" color="blue" data-toggle="modal" data-target="#projects-report-modal">
+                            	<b onclick="report(${user.id})"><spring:message code="user.generate.report"/></b>
+                            </font>
                             <br/>
 
                             <div id="projects-report-modal" class="modal fade" role="dialog">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title"><spring:message code="user.generate.report"/></h4>
+                                        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+                            	            <h4 class="modal-title"><spring:message code="user.generate.report"/></h4>
                                         </div>
                                         <div id="project-report-back" class="modal-body">
 
                                         </div>
-                                        <div id="criteria-report-back"
-                                             style="display:none;padding-top:0px;margin-top:0px;" class="modal-body">
+                                        <div id="criteria-report-back" style="display:none;padding-top:0px;margin-top:0px;" class="modal-body">
 
                                         </div>
                                     </div>
@@ -64,33 +62,31 @@
 
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 1}">
-                                <font class="clickable" color="blue" data-toggle="modal"
-                                      data-target="#switchStatus"><b><spring:message
-                                        code="user.switch.status"/></b></font>
+                                <font class="clickable" color="blue" data-toggle="modal" data-target="#switchStatus">
+                                	<b><spring:message code="user.switch.status"/></b>
+                                </font>
 
                                 <div id="switchStatus" class="modal fade" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close"
-                                                        data-dismiss="modal">&times;</button>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                 <h4 class="modal-title"><spring:message code="user.switch.status"/></h4>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="showactions"></div>
                                                 <div class="actions">
                                                     <form method="post">
-                                                        <br/> <input type="radio" name="status" value="3"
-                                                                     checked><spring:message
-                                                            code="user.interview.offer"/>
-                                                        <button type="submit" style="margin-top: -5px;"
-                                                                class="btn btn-primary pull-right"><spring:message
-                                                                code="user.submit"/></button>
+                                                        <br/> 
+                                                        <input type="radio" name="status" value="3" checked>
+                                                        <spring:message code="user.interview.offer"/>
+                                                        <button type="submit" style="margin-top: -5px;" class="btn btn-primary pull-right">
+                                                        	<spring:message code="user.submit"/>
+                                                        </button>
                                                         <br/>
                                                         <br/>
                                                         <br/>
-                                                        <textarea name="commentary" class="form-control" rows="5"
-                                                                  id="comment" required></textarea>
+                                                        <textarea maxlength="500" name="commentary" class="form-control" rows="5" id="comment" required></textarea>
                                                     </form>
                                                 </div>
                                             </div>
@@ -103,32 +99,32 @@
                         <c:if test="${user.statusId eq 2}">
                             <sec:authorize access="hasRole('MENTOR')">
 
-                                <font class="clickable" color="blue" data-toggle="modal"
-                                      data-target="#switchStatus"><b><spring:message
-                                        code="user.switch.status"/></b></font>
+                                <font class="clickable" color="blue" data-toggle="modal" data-target="#switchStatus">
+                                	<b><spring:message code="user.switch.status"/></b>
+                                </font>
 
                                 <div id="switchStatus" class="modal fade" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close"
-                                                        data-dismiss="modal">&times;</button>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                 <h4 class="modal-title"><spring:message code="user.switch.status"/></h4>
                                             </div>
                                             <div class="modal-body">
-                                                <div class="showactions"></div>
+                                                <div class="showactions">
+                                                </div>
                                                 <div class="actions">
                                                     <form method="post">
-                                                        <br/> <input type="radio" name="status" value="1"
-                                                                     checked><spring:message code="user.inactive"/>
-                                                        <button type="submit" style="margin-top: -5px;"
-                                                                class="btn btn-primary pull-right"><spring:message
-                                                                code="user.submit"/></button>
+                                                        <br/> 
+                                                        <input type="radio" name="status" value="1" checked>
+                                                        <spring:message code="user.inactive"/>
+                                                        <button type="submit" style="margin-top: -5px;" class="btn btn-primary pull-right">
+                                                        	<spring:message code="user.submit"/>
+                                                        </button>
                                                         <br/>
                                                         <br/>
                                                         <br/>
-                                                        <textarea name="commentary" class="form-control" rows="5"
-                                                                  id="comment" required></textarea>
+                                                        <textarea maxlength="500" name="commentary" class="form-control" rows="5" id="comment" required></textarea>
                                                     </form>
                                                 </div>
                                             </div>
@@ -139,33 +135,38 @@
 
                             </sec:authorize>
                             <sec:authorize access="hasRole('HR')">
-                                <font class="clickable" color="blue" data-toggle="modal"
-                                      data-target="#switchStatus"><b><spring:message
-                                        code="user.switch.status"/></b></font>
+                                <font class="clickable" color="blue" data-toggle="modal" data-target="#switchStatus">
+                                	<b><spring:message code="user.switch.status"/></b>
+                                </font>
 
                                 <div id="switchStatus" class="modal fade" role="dialog">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close"
-                                                        data-dismiss="modal">&times;</button>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                 <h4 class="modal-title"><spring:message code="user.switch.status"/></h4>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="actions">
                                                     <div class="showactions"></div>
                                                     <form method="post">
-                                                        <br/> <input type="radio" name="status" value="1"
-                                                                     checked><spring:message code="user.inactive"/>
-                                                        <input type="radio" name="status" value="3"><spring:message
-                                                            code="user.interview.offer"/>
-                                                        <button type="submit" class="btn btn-primary pull-right">
-                                                            <spring:message code="user.submit"/></button>
+                                                        <br/> 
+                                                        <div class="row">
+                                                        	<div class="col-sm-6">
+                                                        		<input type="radio" name="status" value="1" checked>
+                                                        		<spring:message code="user.inactive"/>
+                                                        		<br/>
+                                                        		<input type="radio" name="status" value="3">
+                                                       			<spring:message code="user.interview.offer"/>
+                                                        		<br/>
+                                                        	</div>
+                                                        	<div class="col-sm-6">
+                                                        		<button type="submit" class="btn btn-primary pull-right">
+                                                            	<spring:message code="user.submit"/></button>
+                                                        	</div>
+                                                        </div>
                                                         <br/>
-                                                        <br/>
-                                                        <br/>
-                                                        <textarea name="commentary" class="form-control" rows="5"
-                                                                  id="comment" required></textarea>
+                                                        <textarea maxlength="500" name="commentary" class="form-control" rows="5" id="comment" required></textarea>
                                                     </form>
                                                 </div>
                                             </div>
@@ -178,34 +179,41 @@
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 3}">
                                 <sec:authorize access="hasRole('HR')">
-                                    <font class="clickable" color="blue" data-toggle="modal"
-                                          data-target="#switchStatus"><b><spring:message code="user.switch.status"/></b></font>
+                                    <font class="clickable" color="blue" data-toggle="modal" data-target="#switchStatus">
+                                    	<b><spring:message code="user.switch.status"/></b>
+                                    </font>
 
                                     <div id="switchStatus" class="modal fade" role="dialog">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <button type="button" class="close"
-                                                            data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title"><spring:message
-                                                            code="user.switch.status"/></h4>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">
+                                                    	<spring:message code="user.switch.status"/>
+                                                    </h4>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="showactions"></div>
                                                     <div class="actions">
                                                         <form method="post">
-                                                            <br/> <input type="radio" name="status" value="1"
-                                                                         checked><spring:message code="user.inactive"/>
-                                                            <input type="radio"
-                                                                   name="status" value="4"><spring:message
-                                                                code="user.job.offer"/>
-                                                            <button type="submit" class="btn btn-primary pull-right">
-                                                                <spring:message code="user.submit"/></button>
                                                             <br/>
+                                                            <div class="row">
+                                                        		<div class="col-sm-6">
+                                                            		<input type="radio" name="status" value="1" checked>
+                                                            		<spring:message code="user.inactive"/>
+                                                            		<br/>
+                                                           			<input type="radio" name="status" value="4">
+                                                            		<spring:message code="user.job.offer"/>
+                                                            	</div>
+                                                            	<div class="col-sm-6">
+                                                            		<button type="submit" class="btn btn-primary pull-right">
+                                                                		<spring:message code="user.submit"/>
+                                                                	</button>
+                                                            	</div>
+                                                            </div>
                                                             <br/>
-                                                            <br/>
-                                                            <textarea name="commentary" class="form-control" rows="5"
-                                                                      id="comment" required></textarea>
+                                                            
+                                                            <textarea maxlength="500" name="commentary" class="form-control" rows="5" id="comment" required></textarea>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -269,9 +277,9 @@
 											</div>
 											<br />
 											<input type="hidden" name="student" value="${user.id}">
-											<center>
+											<div class="text-center">
 												<button type="submit" class="btn btn-primary"><spring:message code="user.submit"/></button>
-											</center>
+											</div>
 										</form>
 									</div>
 								</div>
@@ -285,8 +293,7 @@
                 <sec:authorize access="hasRole('MENTOR')">
                     <%--<c:if test="${user.statusId eq 2}">--%>
                     <br/><br/>
-                    <div class="clickable" data-toggle="modal"
-                         data-target="#finReviewProject" onClick="getMentorStudentProjects(${user.id});"><b><spring:message code="final_Review.label.clckable"/></b>
+                    <div class="clickable" data-toggle="modal" data-target="#finReviewProject" onClick="getMentorStudentProjects(${user.id});"><b><spring:message code="final_Review.label.clckable"/></b>
                     </div>
                     <%--</c:if>--%>
                 </sec:authorize>
@@ -390,33 +397,30 @@
             </div>
             <div class="modal-body">
                 <div class="showactions"></div>
-                <br class="actions">
-                <br method="post">
-                <br><label class="col-md-4 control-label">Select type</label>
-                <br class="col-lg-6">
+                <br class="actions"/>
+                <form method="post">
+                <br/>
+                <label class="col-md-4 control-label">Select type</label>
+                <br class="col-lg-6"/>
                 <select class="form-control" name="reviewtype" id="reviewtype" onchange="">
                     <option selected disabled></option>
                     <option value="G">General</option>
                     <option value="T">Technical</option>
                 </select>
 
-                </br>
-                <br><label class="col-md-4 control-label">Write review</label>
-                <textarea name="commentary" class="form-control" rows="5"
-                          id="commentary" required></textarea>
-                </br>
-                <button type="submit" class="btn btn-primary pull-right" id="submitreviewBtn"><spring:message
-                        code="user.submit"/></button>
-                </br>
-                </br>
+                <br/>
+                <br/>
+                <label class="col-md-4 control-label">Write review</label>
+                <textarea maxlength="500" name="commentary" class="form-control" rows="5" id="commentary" required></textarea>
+                <br/>
+                <button type="submit" class="btn btn-primary pull-right" id="submitreviewBtn"><spring:message code="user.submit"/></button>
+                <br/>
+                <br/>
+                </form>
             </div>
-
-
-            </form>
         </div>
     </div>
 </div>
-</div>
-</div>
+
 
 <%@include file="footer.jsp" %>

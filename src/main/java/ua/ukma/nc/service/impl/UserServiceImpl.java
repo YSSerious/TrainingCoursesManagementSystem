@@ -1,6 +1,8 @@
 package ua.ukma.nc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,13 +16,14 @@ import ua.ukma.nc.entity.Status;
 import ua.ukma.nc.entity.StatusLog;
 import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
-import ua.ukma.nc.exception.StatusSwitchException;
 import ua.ukma.nc.service.FinalReviewService;
 import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.StatusLogService;
 import ua.ukma.nc.service.StatusService;
 import ua.ukma.nc.service.StudentStatusService;
 import ua.ukma.nc.service.UserService;
+import ua.ukma.nc.util.exception.RoleManageException;
+import ua.ukma.nc.util.exception.StatusSwitchException;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -31,6 +34,9 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
+	
+	@Autowired  
+    private MessageSource messageSource;
 
 	private static final Long INACTIVE_STATUS = 1l;
 
@@ -38,6 +44,12 @@ public class UserServiceImpl implements UserService {
 	private static final Long ROLE_MENTOR = 2L;
 	private static final Long ROLE_HR = 3L;
 	private static final Long ROLE_ADMIN = 1L;
+	
+	private static final String FINAL_REVIEW = "F";
+	private static final String TECHNICAL_REVIEW = "T";
+	private static final String GENERAL_REVIEW = "G";
+	
+	private static final int MAX_LENGTH_COMMENTARY = 500;
 
 	@Autowired
 	private UserDao userDao;
@@ -159,18 +171,21 @@ public class UserServiceImpl implements UserService {
 
 		Long groupId = null;
 		
+		if(commentary.length() > MAX_LENGTH_COMMENTARY)
+			throw new StatusSwitchException(id,  messageSource.getMessage("error.status.switch.max.length", null, LocaleContextHolder.getLocale()));
+		
 		if(statusLogService.exists(id))
 			groupId = statusLogService.getNewestGroup(id);
 		else
-			throw new StatusSwitchException(id, "Student has no projects!");
+			throw new StatusSwitchException(id,  messageSource.getMessage("error.status.switch.no.project", null, LocaleContextHolder.getLocale()));
 		
 		if (oldStatus == 0){
-			throw new StatusSwitchException(id, "Wrong user was selected!");
+			throw new StatusSwitchException(id,  messageSource.getMessage("error.status.switch.wrong.user", null, LocaleContextHolder.getLocale()));
 		}else if (oldStatus == 1 && statusId == 3 && isHR) {
 			
 
-			if (!finalReviewService.exists(id, groupId, "F"))
-				throw new StatusSwitchException(id, "Student hasn't final review!");
+			if (!finalReviewService.exists(id, groupId, FINAL_REVIEW))
+				throw new StatusSwitchException(id,  messageSource.getMessage("error.status.switch.no.final.review", null, LocaleContextHolder.getLocale()));
 			else
 				changeStatus(id, statusId, oldStatus, name, commentary);
 
@@ -179,23 +194,23 @@ public class UserServiceImpl implements UserService {
 
 		} else if (oldStatus == 2 && statusId == 3 && isHR) {
 
-			if (!finalReviewService.exists(id, groupId, "F"))
-				throw new StatusSwitchException(id, "Student hasn't final review!");
+			if (!finalReviewService.exists(id, groupId, FINAL_REVIEW))
+				throw new StatusSwitchException(id,  messageSource.getMessage("error.status.switch.no.final.review", null, LocaleContextHolder.getLocale()));
 			else
 				changeStatus(id, statusId, oldStatus, name, commentary);
 
 		} else if (oldStatus == 3 && statusId == 4 && isHR) {
-			if (!finalReviewService.exists(id, groupId, "T") || !finalReviewService.exists(id, groupId, "G"))
-				throw new StatusSwitchException(id, "Student hasn't general or technical review!");
+			if (!finalReviewService.exists(id, groupId, TECHNICAL_REVIEW) || !finalReviewService.exists(id, groupId, GENERAL_REVIEW))
+				throw new StatusSwitchException(id,  messageSource.getMessage("error.status.switch.no.hr.review", null, LocaleContextHolder.getLocale()));
 			else
 				changeStatus(id, statusId, oldStatus, name, commentary);
 		} else if (oldStatus == 3 && statusId == 1 && isHR) {
-			if (!finalReviewService.exists(id, groupId, "T") || !finalReviewService.exists(id, groupId, "G"))
-				throw new StatusSwitchException(id, "Student hasn't general or technical review!");
+			if (!finalReviewService.exists(id, groupId, TECHNICAL_REVIEW) || !finalReviewService.exists(id, groupId, GENERAL_REVIEW))
+				throw new StatusSwitchException(id,  messageSource.getMessage("error.status.switch.no.hr.review", null, LocaleContextHolder.getLocale()));
 			else
 				changeStatus(id, statusId, oldStatus, name, commentary);
 		} else
-			throw new StatusSwitchException(id, "Incorrect statuses!");
+			throw new StatusSwitchException(id, messageSource.getMessage("error.status.switch.incorrect.statuses", null, LocaleContextHolder.getLocale()));
 	}
 
 	private void changeStatus(Long id, Long statusId, Long oldStatus, String name, String commentary) {
@@ -240,7 +255,7 @@ public class UserServiceImpl implements UserService {
 
 		if (roleId == ROLE_STUDENT) {
 			if (hasStudentProjects(user.getId()))
-				throw new IllegalArgumentException();
+				throw new RoleManageException(user.getId(), messageSource.getMessage("error.role.student", null, LocaleContextHolder.getLocale()));
 			else if (studentStatusService.exists(user.getId())) {
 				StudentStatus studentStatus = new StudentStatus();
 				studentStatus.setStudent(user);
@@ -248,13 +263,15 @@ public class UserServiceImpl implements UserService {
 			}
 		} else if (roleId == ROLE_MENTOR) {
 			if (hasMentorProjects(user.getId()))
-				throw new IllegalArgumentException();
+				throw new RoleManageException(user.getId(), messageSource.getMessage("error.role.mentor", null, LocaleContextHolder.getLocale()));
 		} else if (roleId == ROLE_HR) {
 			if (hasHRReviews(user.getId()))
-				throw new IllegalArgumentException();
+				throw new RoleManageException(user.getId(), messageSource.getMessage("error.role.hr", null, LocaleContextHolder.getLocale()));
 		} else if (roleId == ROLE_ADMIN) {
 			if (isCurrentUser(user.getId()))
-				throw new IllegalArgumentException();
+				throw new RoleManageException(user.getId(), messageSource.getMessage("error.role.admin", null, LocaleContextHolder.getLocale()));
+		}else{
+			throw new RoleManageException(user.getId(), messageSource.getMessage("error.role.guest", null, LocaleContextHolder.getLocale()));
 		}
 		userDao.deleteRole(user, roleId);
 	}

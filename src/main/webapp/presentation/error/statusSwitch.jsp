@@ -4,7 +4,7 @@
 <div class = "row">
 	<div class = "col-sm-12">
 		<div class = "text-center">
-			<h2>Sorry, but operation isn't complete. The reason is: </h2>
+			<h2><spring:message code="error.status.switch.description"/></h2>
 		</div>
 	</div>
 </div>
@@ -20,7 +20,7 @@
 <div class = "row">
 	<div class = "col-sm-12">
 		<div class="text-center">
-			<h2>Go back to the previous <a href="/users/${userId}">page</a></h2>
+			<h2><a href="/users/${userId}"><spring:message code="error.status.switch.action.description"/></a></h2>
 		</div>
 	</div>
 </div>

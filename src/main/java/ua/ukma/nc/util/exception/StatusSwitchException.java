@@ -1,4 +1,4 @@
-package ua.ukma.nc.exception;
+package ua.ukma.nc.util.exception;
 
 public class StatusSwitchException extends RuntimeException {
 
