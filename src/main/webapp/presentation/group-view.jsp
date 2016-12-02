@@ -1,4 +1,5 @@
 <%@include file="header.jsp"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script src="<c:url value="/presentation/resources/js/group.js"/>"
 	type="text/javascript" defer="defer">
 	
@@ -65,14 +66,16 @@
 								id="meetingId-${meeting.id}">
 								<a href="/meeting/${meeting.id}" class="col-md-2"
 								id="editMeetingNameId-${meeting.id}">${meeting.name}</a>
-								<div class="col-md-2" id="editMeetingDateId-${meeting.id}">${meeting.time}</div>
+								<%--<div class="col-md-2" id="editMeetingDateId-${meeting.id}">${meeting.time}</div>--%>
+								<div class="col-md-2" id="editMeetingDateId-${meeting.id}"><fmt:formatDate pattern="yyyy-MM-dd, HH:mm"
+																										   value="${meeting.time}" /></div>
 								<div class="col-md-4" id="editMeetingPlaceId-${meeting.id}">${meeting.place}</div>
 								
 								<sec:authorize access="hasRole('ADMIN')">
 									<c:if test="${!meeting.reviewed}">
 										<div class="btn rmv-cr-btn col-md-1 pull-right" type='button'
 											data-toggle="modal" data-target="#deleteMeetingModal"
-											onclick="setMeeting(${meeting.id})">
+											onclick="setMeeting('${meeting.id}','${meeting.name}','${meeting.place}','${meeting.time}')">
 											<span class="glyphicon glyphicon-remove"></span>
 										</div>
 									</c:if>
@@ -80,7 +83,7 @@
 								<div class="btn rmv-cr-btn col-md-1 col-md-offset-2 "
 									type='button' data-toggle="modal"
 									data-target="#editMeetingModal"
-									onclick="setMeeting(${meeting.id})">
+									onclick="setMeeting('${meeting.id}','${meeting.name}','${meeting.place}','${meeting.time}')">
 									<span class="glyphicon glyphicon-edit"></span>
 								</div></li>
 						</c:forEach>
@@ -353,16 +356,16 @@
 					<h4 class="modal-title">Edit Meeting</h4>
 					<form id="editMeetingFormId">
 						<div class="form-group">
-							<label for="editMeetingName">Meeting Name</label> <input
-								type="text" class="form-control" id="editMeetingName">
+							<label for="editMeetingName">Meeting Name</label>
+							<input type="text" class="form-control" id="editMeetingName">
 						</div>
 						<div class="form-group">
-							<label for="editMeetingPlace">Place</label> <input type="text"
-								class="form-control" id="editMeetingPlace">
+							<label for="editMeetingPlace">Place</label>
+							<input type="text" class="form-control" id="editMeetingPlace">
 						</div>
 						<div class="form-group">
-							<label for="editMeetingDate">Date/Time</label> <input
-								type="datetime-local" class="form-control" id="editMeetingDate">
+							<label for="editMeetingDate">Date/Time</label>
+							<input type="datetime-local" class="form-control" id="editMeetingDate">
 						</div>
 						<br>
 						<button id="editMeetingButton" type="submit"

@@ -167,7 +167,7 @@ $("#addNoteSubmitButton").click(function(event) {
 
 	function convertTimestamp(timestamp) {
 		var d = new Date(timestamp);
-		return d.toLocaleDateString()+", "+d.getHours()+":"+d.getMinutes();
+		return d.getFullYear()+"-"+zeroPadded(d.getMonth() + 1)+"-"+zeroPadded(d.getDate())+", "+d.getHours()+":"+d.getMinutes();
 	}
 	
 });
@@ -184,7 +184,28 @@ function changeSpan(el) {
 }
 
 var chosenMeetingId;
+var chosenMeetingName;
+var chosenMeetingPlace;
+var chosenMeetingDate;
 
-function setMeeting(id) {
+function setMeeting(id, name, place, date) {
 	chosenMeetingId = id;
+	chosenMeetingName = name;
+	chosenMeetingPlace = place;
+	chosenMeetingDate = date;
+
+	$('#editMeetingName').val(chosenMeetingName);
+	$('#editMeetingPlace').val(chosenMeetingPlace);
+	$('#editMeetingDate').val(convertTimestampTwo(chosenMeetingDate));
+}
+
+function convertTimestampTwo(timestamp) {
+	var d = new Date(timestamp);
+	return d.getFullYear()+"-"+zeroPadded(d.getMonth() + 1)+"-"+zeroPadded(d.getDate())+"T"+zeroPadded(d.getHours())+":"+zeroPadded(d.getMinutes());
+}
+function zeroPadded(val) {
+	if (val >= 10)
+		return val;
+	else
+		return '0' + val;
 }
