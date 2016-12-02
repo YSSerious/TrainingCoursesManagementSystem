@@ -140,4 +140,9 @@ public class MeetingServiceImpl implements MeetingService {
         }
         return Timestamp.valueOf(dateTimeLocal.replace("T"," "));
     }
+
+	@Override
+	public List<Meeting> getMentorsUncheckedMeetings(Long mentorId) {
+		return meetingDao.getMentorsUncheckedMeetings(mentorId);
+	}
 }

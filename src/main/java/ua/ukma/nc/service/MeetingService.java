@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface MeetingService {
 	
+	List<Meeting> getMentorsUncheckedMeetings(Long mentorId);
+	
 	List<Meeting> getWithoutReview(Long groupId, Long studentId);
 	
 	List<Meeting> getByStudentProject(Long studentId, Long projectId);

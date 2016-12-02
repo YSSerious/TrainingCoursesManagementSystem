@@ -151,3 +151,33 @@ else
     </nav>
     <div class="panel panel-default">
         <div class="panel-body">
+
+
+			<c:if test="${not empty unmarkedMeetings}">
+				<div class="text-center">
+					<div data-toggle="modal" data-target="#projet-remind-modal"
+						class="alert alert-danger" style="display: inline-block;">
+						<strong>Warning!</strong> There are unmarked meetings!
+					</div>
+				</div>
+				<div id="projet-remind-modal" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Reminder</h4>
+							</div>
+							<div class="modal-body">
+								<c:forEach items="${unmarkedMeetings}" var="meet">
+									<b>Meeting name: </b>${meet.name} <br />
+									<b>Time: </b>${meet.time} <br />
+									<b>Place: </b>${meet.place} <br />
+									<b><a href="/meeting/${meet.id}">Visit meeting page</a></b>
+									<hr />
+								</c:forEach>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</c:if>

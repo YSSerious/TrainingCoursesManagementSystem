@@ -50,6 +50,8 @@ public class MeetingDaoImpl implements MeetingDao{
         }
     }
     
+    private static final String UNMARKED_MEETINGS = "SELECT DISTINCT * FROM tcms.meeting as meet WHERE now() > time AND id_group IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?) AND id_group NOT IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?) AND (SELECT COUNT (id_student) FROM tcms.meeting_review WHERE id_meeting = meet.id AND id_student IN (SELECT id_student FROM tcms.status_log as st1 WHERE id_group = meet.id_group AND date = (SELECT MAX(date) FROM tcms.status_log WHERE id_student = st1.id_student AND id_group = st1.id_group) AND id_new_status NOT IN (1))) != (SELECT COUNT(id_student) FROM tcms.status_log as st1 WHERE id_group = meet.id_group AND date = (SELECT MAX(date) FROM tcms.status_log WHERE id_student = st1.id_student AND id_group = st1.id_group) AND id_new_status NOT IN (1));";
+    
     private static final String GET_WITHOUT_MARKS = "SELECT * FROM tcms.meeting WHERE id_group = ? AND id NOT IN (SELECT id_meeting FROM tcms.meeting_review WHERE id_student = ?)";
     
     private static final String GET_BY_STUDENT_PROJECT_TYPE = "SELECT id, id_group, time, place, name FROM tcms.meeting WHERE (id_group IN (SELECT id FROM tcms.group WHERE id_project = ?)) AND (id_group IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?)) AND (id IN (SELECT id_meeting FROM tcms.meeting_review WHERE id_student = ? AND type = ?)) ORDER BY time asc";
@@ -240,5 +242,10 @@ public class MeetingDaoImpl implements MeetingDao{
     public int editMeeting(Long id, String name, Timestamp date, String place) {
         return jdbcTemplate.update(EDIT_MEETING, name, date, place, id);
     }
+
+	@Override
+	public List<Meeting> getMentorsUncheckedMeetings(Long mentorId) {
+		return jdbcTemplate.query(UNMARKED_MEETINGS, new MeetingMapper(),mentorId, mentorId);
+	}
 
 }
