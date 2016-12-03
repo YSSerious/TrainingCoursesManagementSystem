@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.util.WebUtils;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.SecurityUser;
 import ua.ukma.nc.entity.User;
@@ -37,15 +38,14 @@ public class SecurityUserDetailService implements UserDetailsService {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String role = "ROLE_TEMP";
         //trying to assign role from cookie (if it's remember-me logging in)
-        for (Cookie cookie : request.getCookies())
-            if (cookie.getName().equals("tcms-chosen-role"))
-                role = cookie.getValue();
+        if (WebUtils.getCookie(request, "tcms-remember-me") != null && WebUtils.getCookie(request, "tcms-chosen-role") != null)
+            role = WebUtils.getCookie(request, "tcms-chosen-role").getValue();
         grantedAuthorityList.add(new SimpleGrantedAuthority(role));
         //no students allowed in system; fail student-only authentication
         List<Role> availableRoles = user.getRoles();
-        availableRoles.removeIf(r -> (r.getId()==4));
-        if(availableRoles.isEmpty())
+        availableRoles.removeIf(r -> (r.getId() == 4));
+        if (availableRoles.isEmpty())
             return null;
-        return new SecurityUser(email, user.getPassword(), grantedAuthorityList, (availableRoles.size()==1)?true:false);
+        return new SecurityUser(email, user.getPassword(), grantedAuthorityList, (availableRoles.size() == 1) ? true : false);
     }
 }

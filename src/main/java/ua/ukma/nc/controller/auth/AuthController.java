@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.SecurityUser;
 import ua.ukma.nc.entity.User;
@@ -84,8 +85,7 @@ public class AuthController {
     @RequestMapping(value = "/roles_def", method = {RequestMethod.GET, RequestMethod.POST})
     public String rolesHandler(HttpServletRequest request) {
         //check if it's remember-me-token auth or not
-        for (Cookie cookie : request.getCookies())
-            if (cookie.getName().equals("tcms-chosen-role"))
+        if(WebUtils.getCookie(request, "tcms-remember-me")!=null)
                 return "redirect:/";
         return "redirect:/roles";
     }
