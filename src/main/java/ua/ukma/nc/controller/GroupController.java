@@ -259,15 +259,10 @@ public class GroupController {
 	}
 
 	@RequestMapping(value = "/groupAttachment/{attachmentId}", method = RequestMethod.GET)
+	@ResponseBody
 	public String downloadDocument(HttpServletResponse response, @PathVariable("attachmentId") Long attachmentId)
 			throws IOException {
 		GroupAttachment document = groupAttachmentService.getById(attachmentId);
-
-		int index = document.getAttachmentScope().lastIndexOf(".");
-
-		if (index != -1)
-			response.setContentType(
-					document.getAttachmentScope().substring(index, document.getAttachmentScope().length()));
 
 		response.setContentLength(document.getAttachment().length);
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + document.getAttachmentScope() + "\"");
