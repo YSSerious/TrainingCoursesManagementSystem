@@ -124,14 +124,16 @@ $("#addNoteSubmitButton").click(function(event) {
 			url: "/groups/deleteMeeting",
 			type: "POST",
 			data: {meetingId: chosenMeetingId},
-			success: function (data) {
-				console.log(data);
-				$('#meetingId-'+chosenMeetingId).remove();
-			},
-			error: function (textStatus) {
-				console.log(textStatus);
-				$('#meetingDeleteError').modal('show');
-
+			statusCode: {
+				200: function (data) {
+					console.log(data);
+					$('#meetingId-'+chosenMeetingId).remove();
+				},
+				409: function (textStatus) {
+					console.log(textStatus);
+					$('#meetingDeleteErrorModal').html(textStatus.responseText);
+					$('#meetingDeleteError').modal('show');
+				}
 			}
 		});
 	});
@@ -141,14 +143,16 @@ $("#addNoteSubmitButton").click(function(event) {
 			url: "/groups/editMeeting",
 			type: "POST",
 			data: {id: chosenMeetingId, name: $("#editMeetingName").val(), date: $("#editMeetingDate").val(), place: $("#editMeetingPlace").val()},
-			success: function (data) {
-				console.log(data);
-				$('#editMeetingNameId-'+data.id).html(data.name);
-				$('#editMeetingDateId-'+data.id).html(convertTimestamp(data.time));
-				$('#editMeetingPlaceId-'+data.id).html(data.place);
-			},
-			error: function (textStatus) {
-				console.log(textStatus);
+			statusCode: {
+				200: function (data) {
+					console.log(data);
+					$('#editMeetingNameId-'+data.id).html(data.name);
+					$('#editMeetingDateId-'+data.id).html(convertTimestamp(data.time));
+					$('#editMeetingPlaceId-'+data.id).html(data.place);
+				},
+				409: function (textStatus) {
+					console.log(textStatus.responseText);
+				}
 			}
 		});
 	});

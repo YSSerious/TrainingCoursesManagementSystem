@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
@@ -45,19 +48,19 @@ public class CertainProjectController {
 
     @Autowired
     private GroupService groupService;
-    
+
     @Autowired
     private CategoryService categoryService;
-    
+
     @Autowired
     private CriterionService criterionService;
-    
+
     @Autowired
     private MeetingService meetingService;
 
     @Autowired
     private ProjectAttachmentService attachmentService;
-    
+
     @Autowired
     private UserService userService;
 
@@ -99,8 +102,10 @@ public class CertainProjectController {
 
         //Group set
         List<Group> groupList = groupService.getByProjectId(id);
-        List<GroupProjectDto> groupDtos = new ArrayList<>();
-        for (Group group: groupList) {
+
+        List<GroupProjectDto> groupDtos = new ArrayList();
+        for (Group group : groupList) {
+
             Meeting upcomingMeeting = meetingService.getUpcomingByGroup(group.getId());
             Long studentsAmount = groupService.getStudentsAmount(group.getId());
             GroupProjectDto groupDto = new GroupProjectDto(group, upcomingMeeting, studentsAmount);
@@ -110,11 +115,11 @@ public class CertainProjectController {
 
         //Criteria set
         List<CriterionDto> criterionDtos = new ArrayList<>();
-        for(Criterion criterion: criterionService.getByProject(id)){
+        for (Criterion criterion : criterionService.getByProject(id)) {
             criterionDtos.add(new CriterionDto(criterion.getId(), criterion.getTitle(), criterionService.isRatedInProject(id, criterion)));
         }
         model.addObject("criterions", criterionDtos);
-        
+
         //Attachment set
         List<ProjectAttachment> attachmentList = attachmentService.getAllById(id);
         model.addObject("attachments", attachmentList);
@@ -133,7 +138,7 @@ public class CertainProjectController {
         projectService.updateProject(project);
         return "";
     }
-    
+
     @RequestMapping(value = "/updateProjectStartDate", method = RequestMethod.POST)
     @ResponseBody
     public String updateProjectStartDate(
@@ -144,7 +149,7 @@ public class CertainProjectController {
         projectService.updateProject(project);
         return "";
     }
-    
+
     @RequestMapping(value = "/updateProjectFinishDate", method = RequestMethod.POST)
     @ResponseBody
     public String updateProjectFinishDate(
@@ -155,7 +160,7 @@ public class CertainProjectController {
         projectService.updateProject(project);
         return "";
     }
-    
+
     @RequestMapping(value = "/updateProjectDescription", method = RequestMethod.POST)
     @ResponseBody
     public String updateProjectDescription(
@@ -166,7 +171,7 @@ public class CertainProjectController {
         projectService.updateProject(project);
         return "";
     }
-    
+
     @RequestMapping(value = "/addProjectAttachment", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxResponse addProjectAttachment(@Valid @ModelAttribute("projectAttachmentForm") ProjectAttachmentFormDto attachmentDto,
@@ -217,8 +222,7 @@ public class CertainProjectController {
         attachmentService.deleteProjectAttachment(attachmentService.getById(id));
     }
 
-    
-    
+
     @RequestMapping(value = "/getAvailableCriteria", method = RequestMethod.GET)
     @ResponseBody
     public List<CriterionDto> getAvailableCriteria(@RequestParam Long projectId) {
@@ -239,11 +243,11 @@ public class CertainProjectController {
 
     @RequestMapping(value = "/deleteProjectCriteria", method = RequestMethod.POST)
     @ResponseBody
-    public String deleteProjectCriteria(@RequestParam Long projectId, @RequestParam String criteriaTitle) throws CriteriaDeleteException {
-        if(criterionService.isRatedInProject(projectId, criterionService.getByName(criteriaTitle)))
-            throw new CriteriaDeleteException("This criteria was rated and cannot be deleted");
+    public ResponseEntity deleteProjectCriteria(@RequestParam Long projectId, @RequestParam String criteriaTitle) throws CriteriaDeleteException {
+        if (criterionService.isRatedInProject(projectId, criterionService.getByName(criteriaTitle)))
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("This criteria was rated and cannot be deleted");
         projectService.deleteProjectCriterion(projectId, criterionService.getByName(criteriaTitle));
-        return "success";
+        return ResponseEntity.ok().body("Success");
     }
 
     @RequestMapping(value = "/getCriteriaAndGroups", method = RequestMethod.GET)
@@ -254,8 +258,10 @@ public class CertainProjectController {
 
     @RequestMapping(value = "/saveMeeting", method = RequestMethod.POST)
     @ResponseBody
-    public int saveMeeting(@RequestBody AddCriteriaDto dto) {
-        return meetingService.addMeetings(dto);
+    public ResponseEntity saveMeeting(@RequestBody AddCriteriaDto dto) {
+        if(meetingService.addMeetings(dto) == 0)
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Meetings with this date already created.");
+        return ResponseEntity.ok().body("Success");
     }
 
 }

@@ -134,8 +134,10 @@ else
                                 <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
                                     <li><a href="/reports"><spring:message code="navbar.navigate.reports"/></a></li>
                                 </sec:authorize>
-                                <li class="divider"></li>
+                                <sec:authentication property="principal.monorole" var="monorole"/>
+                                <c:if test="${monorole eq false}">
                                 <li><a href="/roles"><spring:message code="navbar.navigate.changeMyRole"/></a></li>
+                                </c:if>
                             </ul>
                         </div>
                     </li>

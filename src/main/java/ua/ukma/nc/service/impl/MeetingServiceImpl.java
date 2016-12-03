@@ -101,7 +101,7 @@ public class MeetingServiceImpl implements MeetingService {
     public int addMeetings(AddCriteriaDto dto) {
         if(meetingDao.isExist(dateConverter(dto.getDate())))
             return 0;
-        meetingDao.butchInsert(dto.getName(), dto.getPlace(), dateConverter(dto.getDate()),groupService.getByNames(dto.getGroups()));
+        meetingDao.butchInsert(dto.getName(), dto.getPlace(), dateConverter(dto.getDate()), groupService.getByNames(dto.getGroups()));
         List<Meeting> createdMeetings = meetingDao.getByNamePlaceDate(dto.getName(), dto.getPlace(), dateConverter(dto.getDate()));
         for(Meeting meeting: createdMeetings){
             meetingDao.addMeetingCriterion(meeting, criterionService.getByNames(dto.getCriterions()));
