@@ -419,28 +419,43 @@
                 <h4 class="modal-title">New Attachment</h4>
             </div>
             <div class="modal-body">
-					<form:form method="POST" action="/groups/addAttachment" modelAttribute="fileBucket"
+			
+			
+			<form:form id="addAttachmentFormSend" method="POST" action="/groups/addAttachment" modelAttribute="groupAttachmentForm"
 						enctype="multipart/form-data" class="form-horizontal">
-						<input type=text name="id_group" style="display: none"
-							value="${groupId }">
-						<div class="row">
-							<div class="form-group col-md-12">
-								<label class="col-md-3 control-lable" for="file">Upload
-									a file</label>
-								<div class="col-md-7">
-									<form:input type="file" path="file" id="file"
-										class="form-control input-sm" />
-								</div>
-							</div>
-						</div>
-
-						<div class="row">
-							<div class="form-actions floatRight">
-								<input type="submit" value="Upload"
-									class="btn btn-primary btn-sm">
-							</div>
-						</div>
-					</form:form>
+			
+			<form:input type="hidden" path="groupId" value="${groupId }" />
+						
+            <div class="row">
+                <div class="form-group col-md-12">
+                <div class="col-md-12">
+                    <b>Upload a file:</b>
+                    <br/>
+                    <div style="color:red;" id="file-error">
+                            
+                    </div>
+                    <form:input type="file" path="file" name="file" id="file" class="form-control"/>
+                    
+                    <br/>
+                    <b>Name:</b>
+                    <div style="color:red;" id="name-error">
+                            
+                    </div>
+                    <form:input type="text" path="name" id="name" class="form-control"/>
+  
+                    <div style="color:red;" id="group-error">
+                            
+                    </div>
+                    </div>
+                </div>
+            </div>
+     
+            <div class="row">
+                <div class="text-center">
+                    <button type=button onclick="uploadGroupAttachment()" class="btn btn-primary">Upload</button>
+                </div>
+            </div>
+        </form:form>
 				</div>
         </div>
     </div>
@@ -454,4 +469,46 @@
 		$('select').select2();
 	</script>
 </sec:authorize>
+
+<script>
+function uploadGroupAttachment(){
+		
+	var formData = new FormData($("#addAttachmentFormSend")[0]);
+
+	$.ajax({
+    	type:"post",
+    	data:formData,
+    	url:"/groups/addAttachment",
+    	contentType: false,
+    	processData: false,
+    	async: false,
+    	statusCode: {
+            200: function (response) {
+                console.log(response);
+                switch (response.code) {
+                    case '200':
+                    	location.reload();
+                        break;
+                    case '204':
+                    	$('#file-error').html('');
+                    	$('#name-error').html('');
+                    	$('#group-error').html('');
+                    	$.each(response.messages, function( index, value ) {
+                    		  if(index=='file'){
+                    			  $('#file-error').html(value);
+                    		  }else if(index='name'){
+                    			  $('#name-error').html(value);
+                    		  }else if(index='group'){
+                    			  $('#group-error').html(value);
+                    		  }
+                    		});
+                    	break;
+                }
+            }
+        }
+
+	});
+
+}
+</script>
 <%@include file="footer.jsp"%>
