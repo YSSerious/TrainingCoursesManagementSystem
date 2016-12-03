@@ -105,14 +105,15 @@ $(document).ready(function () {
                 crit: dto.criterions,
                 gr: dto.groups
             }),
-            success: function (data) {
-                if (data == 1)
-                    console.log("success");
-                if (data == 0)
-                    $('#meetingAddError').modal('show');
-            },
-            error: function (textStatus) {
-                console.log(textStatus);
+            statusCode: {
+                200: function (data) {
+                    console.log(data);
+                },
+                409: function (textStatus) {
+                    console.log(textStatus);
+                    $('#projectErrorModal').html(textStatus.responseText);
+                    $('#ErrorModal').modal('show');
+                }
             }
         });
     });
@@ -187,14 +188,16 @@ $(document).ready(function () {
             url: "/deleteProjectCriteria",
             type: "POST",
             data: {projectId: projectId, criteriaTitle: criteria.title},
-            success: function (data) {
-                console.log(data);
-                $('#criteriaId-' + criteria.id).remove();
-            },
-            error: function (textStatus) {
-                console.log(textStatus);
-                $('#criteriaDeleteErrorModal').modal('show');
-
+            statusCode: {
+                200: function (data) {
+                    console.log(data);
+                    $('#criteriaId-' + criteria.id).remove();
+                },
+                409: function (textStatus) {
+                    console.log(textStatus);
+                    $('#projectErrorModal').html(textStatus.responseText);
+                    $('#ErrorModal').modal('show');
+                }
             }
         });
     });
