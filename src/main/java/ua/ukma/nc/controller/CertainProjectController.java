@@ -1,14 +1,22 @@
 package ua.ukma.nc.controller;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,6 +34,8 @@ import ua.ukma.nc.service.ProjectAttachmentService;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.service.UserService;
 import ua.ukma.nc.util.exception.CriteriaDeleteException;
+import ua.ukma.nc.validator.ProjectAttachmentFormValidator;
+import ua.ukma.nc.vo.AjaxResponse;
 
 @Controller
 public class CertainProjectController {
@@ -53,6 +63,17 @@ public class CertainProjectController {
 
     private Long project_id;
 
+	@Autowired
+    private ProjectAttachmentFormValidator projectAttachmentFormValidator;
+
+	@Autowired
+	private MessageSource messageSource;
+     
+    @InitBinder("projectAttachmentForm")
+    protected void initBinderFileBucket(WebDataBinder binder) {
+       binder.setValidator(projectAttachmentFormValidator);
+    }
+
     @RequestMapping(value = "/certainProject/{id}", method = RequestMethod.GET)
     public ModelAndView viewProject(@PathVariable("id") Long id) {
         ModelAndView model = new ModelAndView();
@@ -66,6 +87,7 @@ public class CertainProjectController {
 		List<UserDto> students = userService.studentsByProjectId(id).stream().map(UserDto::new)
 				.collect(Collectors.toList());
 		
+		model.addObject("projectAttachmentForm", new ProjectAttachmentFormDto());
 		model.addObject("categories", categories);
 		model.addObject("criteria", criteria);
 		model.addObject("students", students);
@@ -77,7 +99,7 @@ public class CertainProjectController {
 
         //Group set
         List<Group> groupList = groupService.getByProjectId(id);
-        List<GroupProjectDto> groupDtos = new ArrayList();
+        List<GroupProjectDto> groupDtos = new ArrayList<>();
         for (Group group: groupList) {
             Meeting upcomingMeeting = meetingService.getUpcomingByGroup(group.getId());
             Long studentsAmount = groupService.getStudentsAmount(group.getId());
@@ -146,17 +168,49 @@ public class CertainProjectController {
     }
     
     @RequestMapping(value = "/addProjectAttachment", method = RequestMethod.POST)
-    public void addGroupAttachment
-            (@RequestParam("attachmentName") String attachmentName,
-             @RequestParam("attachmentLink") String attachmentLink) {
+	@ResponseBody
+	public AjaxResponse addProjectAttachment(@Valid @ModelAttribute("projectAttachmentForm") ProjectAttachmentFormDto attachmentDto,
+			BindingResult result) throws IOException {
+		AjaxResponse response = new AjaxResponse();
+		
+		if (result.hasErrors()) {
+			
+			result.getFieldErrors().stream().forEach((FieldError error) -> {
+                response.addMessage(error.getField(),
+                        messageSource.getMessage(error.getCode(),
+                                null, LocaleContextHolder.getLocale()));
+            });
+			
+			response.setCode("204");
+			
+			return response;
+		} else {
+			response.setCode("200");
+			
+			ProjectAttachment attachment = new ProjectAttachment();
+			
+			attachment.setAttachmentScope(attachmentDto.getFile().getOriginalFilename());
+			attachment.setProject(projectService.getById(attachmentDto.getProjectId()));
+			attachment.setName(attachmentDto.getName());
+			attachment.setAttachment(attachmentDto.getFile().getBytes());
+			attachmentService.createProjectAttachment(attachment);
 
-        ProjectAttachment att = new ProjectAttachment();
-        att.setName(attachmentName);
-        att.setAttachmentScope(attachmentLink);
-        att.setProject(projectService.getById(project_id));
-        attachmentService.createProjectAttachment(att);
+			return response;
+		}
+	}
 
-    }
+	@RequestMapping(value = "/projectAttachment/{attachmentId}", method = RequestMethod.GET)
+	@ResponseBody
+	public String downloadDocument(HttpServletResponse response, @PathVariable("attachmentId") Long attachmentId)
+			throws IOException {
+		ProjectAttachment document = attachmentService.getById(attachmentId);
+
+		response.setContentLength(document.getAttachment().length);
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + document.getAttachmentScope() + "\"");
+
+		FileCopyUtils.copy(document.getAttachment(), response.getOutputStream());
+		return "";
+	}
 
     @RequestMapping(value = "/removeProjectAttachment", method = RequestMethod.POST)
     public void removeGroupAttachment(@RequestParam("id_attachment") Long id) {

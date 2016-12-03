@@ -36,21 +36,22 @@ public class ProjectAttachmentDaoImpl implements ProjectAttachmentDao{
             projectAttachment.setName(resultSet.getString("name"));
             projectAttachment.setProject(appContext.getBean(ProjectProxy.class, resultSet.getLong("id_project")));
             projectAttachment.setAttachmentScope(resultSet.getString("attachment_scope"));
+            projectAttachment.setAttachment(resultSet.getBytes("attachment"));
             return projectAttachment;
         }
     }
 
-    private static final String GET_ALL = "SELECT id, name, id_project, attachment_scope FROM tcms.project_attachment";
+    private static final String GET_ALL = "SELECT id, name, id_project, attachment_scope, attachment FROM tcms.project_attachment";
 
-    private static final String GET_BY_ID = "SELECT id, name, id_project, attachment_scope FROM tcms.project_attachment WHERE id = ?";
+    private static final String GET_BY_ID = "SELECT id, name, id_project, attachment_scope, attachment FROM tcms.project_attachment WHERE id = ?";
     
-    private static final String GET_ALL_BY_ID = "SELECT id, name, id_project, attachment_scope FROM tcms.project_attachment WHERE id_project = ?";
+    private static final String GET_ALL_BY_ID = "SELECT id, name, id_project, attachment_scope, attachment FROM tcms.project_attachment WHERE id_project = ?";
 
     private static final String DELETE_PROJECT_ATTACHMENT = "DELETE FROM tcms.project_attachment WHERE id = ?";
 
-    private static final String CREATE_PROJECT_ATTACHMENT = "INSERT INTO tcms.project_attachment (name, id_project, attachment_scope) VALUES (?,?,?)";
+    private static final String CREATE_PROJECT_ATTACHMENT = "INSERT INTO tcms.project_attachment (name, id_project, attachment_scope, attachment) VALUES (?,?,?,?)";
 
-    private static final String UPDATE_PROJECT_ATTACHMENT = "UPDATE tcms.project_attachment SET name = ?, id_project = ?, attachment_scope = ? WHERE id = ?";
+    private static final String UPDATE_PROJECT_ATTACHMENT = "UPDATE tcms.project_attachment SET name = ?, id_project = ?, attachment_scope = ?, attachment = ? WHERE id = ?";
 
     @Override
     public ProjectAttachment getById(Long id) {
@@ -67,7 +68,7 @@ public class ProjectAttachmentDaoImpl implements ProjectAttachmentDao{
     @Override
     public int updateProjectAttachment(ProjectAttachment projectAttachment) {
         log.info("Updating project attachment with id = {}", projectAttachment.getId());
-        return jdbcTemplate.update(UPDATE_PROJECT_ATTACHMENT, projectAttachment.getName(), projectAttachment.getProject().getId(), projectAttachment.getAttachmentScope(), projectAttachment.getId());
+        return jdbcTemplate.update(UPDATE_PROJECT_ATTACHMENT, projectAttachment.getName(), projectAttachment.getProject().getId(), projectAttachment.getAttachmentScope(), projectAttachment.getAttachment(), projectAttachment.getId());
     }
 
     @Override
@@ -79,7 +80,7 @@ public class ProjectAttachmentDaoImpl implements ProjectAttachmentDao{
     @Override
     public int createProjectAttachment(ProjectAttachment projectAttachment) {
         log.info("Create new project attachment with name = {}", projectAttachment.getName());
-        return jdbcTemplate.update(CREATE_PROJECT_ATTACHMENT, projectAttachment.getName(), projectAttachment.getProject().getId(), projectAttachment.getAttachmentScope());
+        return jdbcTemplate.update(CREATE_PROJECT_ATTACHMENT, projectAttachment.getName(), projectAttachment.getProject().getId(), projectAttachment.getAttachmentScope(), projectAttachment.getAttachment());
     }
     
     @Override

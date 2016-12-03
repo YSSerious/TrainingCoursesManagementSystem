@@ -7,7 +7,7 @@ import org.springframework.validation.Validator;
 import ua.ukma.nc.dto.GroupAttachmentFormDto;
 
 @Component
-public class AttachmentFormValidator implements Validator {
+public class GroupAttachmentFormValidator implements Validator {
 
 	public boolean supports(Class<?> clazz) {
 		return GroupAttachmentFormDto.class.isAssignableFrom(clazz);

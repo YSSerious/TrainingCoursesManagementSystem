@@ -169,14 +169,14 @@
                                 <span id="spanIId" class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
                 </div>
                 <div role="button" class="btn btn-default btn-sm pull-right" id="add-att-btn" 
-                	data-toggle="modal" data-target="#addAttachmentModal"><b>Add Attach</b>
+                	data-toggle="modal" data-target="#addProjectAttachmentModal"><b>Add Attach</b>
                 </div>
             </div>
 	        <div class="panel-collapse collapse" id="att-collapse">
 		        <ul class="list-group " id="attachment-group">
 		            <c:forEach items="${attachments}" var="attachment">
 		                <li class="list-group-item">
-		                    <a href="${attachment.attachmentScope}">${attachment.name}</a>
+		                    <a href="/projectAttachment/${ attachment.id}">${attachment.name } </a>
 		                    <div class="btn rmv-btn col-md-1" role='button' data-button='{"id_attachment": "${attachment.id}"}'>
 		                        <span class="glyphicon glyphicon-remove"></span>
 		                    </div>
@@ -296,8 +296,7 @@
     </div>
 </div>
 <!-- finish create Meeting modal -->
-<!-- start create Attachment modal -->
-<div id="addAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+<div id="addProjectAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -306,51 +305,51 @@
                 <h4 class="modal-title">New Attachment</h4>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="usr">Name:</label>
-                        <input type="text" class="form-control" id="att-name">
+			
+			
+			<form:form id="addAttachmentFormSend" method="POST" action="/addProjectAttachment" modelAttribute="projectAttachmentForm"
+						enctype="multipart/form-data" class="form-horizontal">
+			
+			<form:input type="hidden" path="projectId" value="${project.id }" />
+						
+            <div class="row">
+                <div class="form-project col-md-12">
+                <div class="col-md-12">
+                    <b>Upload a file:</b>
+                    <br/>
+                    <div style="color:red;" id="file-error">
+                            
                     </div>
-                    <div class="form-group">
-                        <label for="usr">Link:</label>
-                        <input type="text" class="form-control" id="att-link">
+                    <form:input type="file" path="file" name="file" id="file" class="form-control"/>
+                    
+                    <br/>
+                    <b>Name:</b>
+                    <div style="color:red;" id="name-error">
+                            
                     </div>
-                    <br>
-                    <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
-                        Save
+                    <form:input type="text" path="name" id="name" class="form-control"/>
+  
+                    <div style="color:red;" id="project-error">
+                            
                     </div>
-                    <button id="saveAttachment" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
-                </form>
+                    </div>
+                </div>
             </div>
+     
+            <div class="row">
+                <div class="text-center">
+                	<br/>
+                    <button type=button onclick="uploadProjectAttachment()" class="btn btn-primary">Upload</button>
+                </div>
+            </div>
+        </form:form>
+				</div>
         </div>
     </div>
-</div>
-</div>
+</div>	
 
 <script>
     $(document).ready(function () {
-
-        $("#saveAttachment").click(function (event) {
-            var name = $("#att-name").val();
-            var link = $("#att-link").val();
-            if (name && link) {
-              //  $("#attachment-group").prepend('<li class="list-group-item" style="color:#d9534f;">Attachment "' + name + '" is added</a></li>');
-			$("#attachment-group").prepend('<li class="list-group-item"><a href='+link+'>'+name+'</a>'+ '</li>');
-                $("#add-att-btn").click();
-                $("#att-name").val('');
-                $("#att-link").val('');
-
-                $.ajax({
-                    url: "/addProjectAttachment",
-                    type: "POST",
-                    data: {
-                        "attachmentName": name,
-                        "attachmentLink": link
-                    }
-				 });
-            }
-        });
-
 
         $('.rmv-btn').click(function () {
             $(this).parent().remove();
@@ -414,6 +413,48 @@
 		</div>
 	</div>
 </div>
+
+<script>
+function uploadProjectAttachment(){
+		
+	var formData = new FormData($("#addAttachmentFormSend")[0]);
+
+	$.ajax({
+    	type:"post",
+    	data:formData,
+    	url:"/addProjectAttachment",
+    	contentType: false,
+    	processData: false,
+    	async: false,
+    	statusCode: {
+            200: function (response) {
+                console.log(response);
+                switch (response.code) {
+                    case '200':
+                    	location.reload();
+                        break;
+                    case '204':
+                    	$('#file-error').html('');
+                    	$('#name-error').html('');
+                    	$('#project-error').html('');
+                    	$.each(response.messages, function( index, value ) {
+                    		  if(index=='file'){
+                    			  $('#file-error').html(value);
+                    		  }else if(index='name'){
+                    			  $('#name-error').html(value);
+                    		  }else if(index='project'){
+                    			  $('#project-error').html(value);
+                    		  }
+                    		});
+                    	break;
+                }
+            }
+        }
+
+	});
+
+}
+</script>
 
 <script type="text/javascript">
 	function getProjectReport(){

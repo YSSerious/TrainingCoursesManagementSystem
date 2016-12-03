@@ -52,7 +52,7 @@ import ua.ukma.nc.service.StudentStatusService;
 import ua.ukma.nc.service.UserService;
 import ua.ukma.nc.util.exception.MeetingDeleteException;
 import ua.ukma.nc.util.exception.RemoveStudentFromGroupException;
-import ua.ukma.nc.validator.AttachmentFormValidator;
+import ua.ukma.nc.validator.GroupAttachmentFormValidator;
 import ua.ukma.nc.validator.GroupFormValidator;
 import ua.ukma.nc.vo.AjaxResponse;
 import ua.ukma.nc.vo.GroupVo;
@@ -96,11 +96,11 @@ public class GroupController {
 	private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
 	@Autowired
-    AttachmentFormValidator attachmentFormValidator;
+    private GroupAttachmentFormValidator groupAttachmentFormValidator;
      
     @InitBinder("groupAttachmentForm")
     protected void initBinderFileBucket(WebDataBinder binder) {
-       binder.setValidator(attachmentFormValidator);
+       binder.setValidator(groupAttachmentFormValidator);
     }
 	
 	@RequestMapping(value = "/add.ajax", method = RequestMethod.POST)
