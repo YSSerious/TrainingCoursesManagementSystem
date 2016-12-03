@@ -1,6 +1,8 @@
 package ua.ukma.nc.controller;
 
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -151,8 +153,11 @@ public class ExcelController {
 	@RequestMapping(value = "/reports")
     public ModelAndView getReport(){
         ModelAndView mv = new ModelAndView("projectReports");
-        mv.addObject("projects", projectService.getAll());
-        return mv;
+		List<Project> projects = projectService.getAll();
+		java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+		projects.removeIf(proj -> proj.getFinishDate().compareTo(date)>0);
+        mv.addObject("projects", projects);
+		return mv;
     }
 
     @RequestMapping (value = "/reports/get")
