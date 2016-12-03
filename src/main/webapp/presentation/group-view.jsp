@@ -276,7 +276,7 @@
 						<c:forEach items="${attachments}" var="attachment">
 						<li  id="attachment-${attachment.id}" class="list-group-item group-attachment clearfix">
 						 <!-- 	${attachment.name} <span style='padding-left: 10px;'> </span> -->
-						 <a href="${ attachment.attachmentScope}">${attachment.name } </a>
+						 <a href="/groups/groupAttachment/${ attachment.id}">${attachment.name } </a>
 					 
 						<div id="${attachment.id}" class="btn rmv-cr-btn col-md-1 pull-right delete"
 							type='button'>
@@ -419,35 +419,39 @@
                 <h4 class="modal-title">New Attachment</h4>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="usr"><spring:message code="group.attachment.name"/></label>
-                        <input type="text" class="form-control" id="groupAttachmentName">
-                    </div>
-                    <div class="form-group">
-                        <label for="usr"><spring:message code="group.attachment"/></label>
-                        <input type="url" class="form-control" id="groupAttachment">
-                    </div>
-                    <input
-								type=text   id="groupId" style="display:none"
-								value="${groupId }">
-                    <br>
-                    <div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse" id="save-att-btn">
-                        Save
-                    </div>
-                    <button id="addAttachmentSubmitButton" type="button" class="btn btn-primary"  >Save</button>
-                </form>
-            </div>
+					<form:form method="POST" action="/groups/addAttachment" modelAttribute="fileBucket"
+						enctype="multipart/form-data" class="form-horizontal">
+						<input type=text name="id_group" style="display: none"
+							value="${groupId }">
+						<div class="row">
+							<div class="form-group col-md-12">
+								<label class="col-md-3 control-lable" for="file">Upload
+									a file</label>
+								<div class="col-md-7">
+									<form:input type="file" path="file" id="file"
+										class="form-control input-sm" />
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-actions floatRight">
+								<input type="submit" value="Upload"
+									class="btn btn-primary btn-sm">
+							</div>
+						</div>
+					</form:form>
+				</div>
         </div>
     </div>
 </div>	 
  <!-- finish add attachment -->
 	<script type="text/javascript">
-	function getGroupReport(){
-		$('#group-report-modal').modal('hide');
-		$('#group-form-report').submit();
-	}
-   	$('select').select2();
-</script>
+		function getGroupReport() {
+			$('#group-report-modal').modal('hide');
+			$('#group-form-report').submit();
+		}
+		$('select').select2();
+	</script>
 </sec:authorize>
 <%@include file="footer.jsp"%>

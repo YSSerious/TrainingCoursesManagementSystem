@@ -34,21 +34,22 @@ public class GroupAttachmentDaoImpl implements GroupAttachmentDao{
             GroupAttachment groupAttachment = new GroupAttachment();
             groupAttachment.setId(resultSet.getLong("id"));
             groupAttachment.setName(resultSet.getString("name"));
+            groupAttachment.setAttachment(resultSet.getBytes("attachment"));
             groupAttachment.setGroup(context.getBean(GroupProxy.class,resultSet.getLong("id_group")));
             groupAttachment.setAttachmentScope(resultSet.getString("attachment_scope"));
             return groupAttachment;
         }
     }
 
-    private static final String GET_ALL = "SELECT id, name, id_group, attachment_scope FROM tcms.group_attachment";
+    private static final String GET_ALL = "SELECT id, name, id_group, attachment_scope, attachment FROM tcms.group_attachment";
 
-    private static final String GET_BY_ID = "SELECT id, name, id_group, attachment_scope FROM tcms.group_attachment WHERE id = ?";
+    private static final String GET_BY_ID = "SELECT id, name, id_group, attachment_scope, attachment FROM tcms.group_attachment WHERE id = ?";
 
     private static final String DELETE_GROUP_ATTACHMENT = "DELETE FROM tcms.group_attachment WHERE id = ?";
 
-    private static final String CREATE_GROUP_ATTACHMENT = "INSERT INTO tcms.group_attachment (name, id_group, attachment_scope) VALUES (?,?,?)";
+    private static final String CREATE_GROUP_ATTACHMENT = "INSERT INTO tcms.group_attachment (name, id_group, attachment_scope, attachment) VALUES (?,?,?,?)";
 
-    private static final String UPDATE_GROUP_ATTACHMENT = "UPDATE tcms.group_attachment SET name = ?, id_group = ?, attachment_scope = ? WHERE id = ?";
+    private static final String UPDATE_GROUP_ATTACHMENT = "UPDATE tcms.group_attachment SET name = ?, id_group = ?, attachment_scope = ?, attachment = ? WHERE id = ?";
     
     private static final String GET_BY_GROUP_ID = "SELECT * FROM tcms.group_attachment WHERE id_group = ?"; 
     @Override
@@ -66,7 +67,7 @@ public class GroupAttachmentDaoImpl implements GroupAttachmentDao{
     @Override
     public int updateGroupAttachment(GroupAttachment groupAttachment) {
         log.info("Updating group attachment with id = {}", groupAttachment.getId());
-        return jdbcTemplate.update(UPDATE_GROUP_ATTACHMENT, groupAttachment.getName(), groupAttachment.getGroup().getId(), groupAttachment.getAttachmentScope(), groupAttachment.getId());
+        return jdbcTemplate.update(UPDATE_GROUP_ATTACHMENT, groupAttachment.getName(), groupAttachment.getGroup().getId(), groupAttachment.getAttachmentScope(), groupAttachment.getAttachment(), groupAttachment.getId());
     }
 
     @Override
@@ -78,7 +79,7 @@ public class GroupAttachmentDaoImpl implements GroupAttachmentDao{
     @Override
     public int createGroupAttachment(GroupAttachment groupAttachment) {
         log.info("Create new group attachment with name = {}", groupAttachment.getName());
-        return jdbcTemplate.update(CREATE_GROUP_ATTACHMENT,groupAttachment.getName(), groupAttachment.getGroup().getId(), groupAttachment.getAttachmentScope());
+        return jdbcTemplate.update(CREATE_GROUP_ATTACHMENT,groupAttachment.getName(), groupAttachment.getGroup().getId(), groupAttachment.getAttachmentScope(), groupAttachment.getAttachment());
     }
 
 	@Override

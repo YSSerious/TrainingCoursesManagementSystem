@@ -12,6 +12,7 @@ public class GroupAttachment implements Serializable{
     private Group group;
     private String name;
     private String attachmentScope;
+    private byte[] attachment;
 
     public Long getId() {
         return id;
@@ -77,4 +78,12 @@ public class GroupAttachment implements Serializable{
                 ", attachmentScope='" + attachmentScope + '\'' +
                 '}';
     }
+
+	public byte[] getAttachment() {
+		return attachment;
+	}
+
+	public void setAttachment(byte[] attachment) {
+		this.attachment = attachment;
+	}
 }

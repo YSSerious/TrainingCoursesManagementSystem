@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -47,7 +46,7 @@ public class ProjectsController {
     private MessageSource messageSource;
 	
 	private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
-	
+	    
 	@RequestMapping("/projects")
 	public ModelAndView getProjects(@ModelAttribute("projectSearch") ProjectSearch projectSearch) {
 

@@ -1,11 +1,14 @@
 
 package ua.ukma.nc.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,7 +45,6 @@ import ua.ukma.nc.service.GroupAttachmentService;
 import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.MeetingReviewService;
 import ua.ukma.nc.service.MeetingService;
-import ua.ukma.nc.service.RoleService;
 import ua.ukma.nc.service.StudentStatusService;
 import ua.ukma.nc.service.UserService;
 import ua.ukma.nc.util.exception.MeetingDeleteException;
@@ -148,6 +152,8 @@ public class GroupController {
     public ModelAndView getGroup(@RequestParam Long id) {
 
         ModelAndView model = new ModelAndView();
+        FileBucket fileModel = new FileBucket();
+        model.addObject("fileBucket", fileModel);
         GroupDto group = new GroupDto(groupService.getById(id));
 
         List<CategoryDto> categories = categoryService.getByProjectId(group.getProject().getId()).stream().map(CategoryDto::new)
@@ -216,17 +222,33 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/addAttachment", method = RequestMethod.POST)
-    @ResponseBody
-    public void addGroupAttachment(@RequestParam("id_group") Long idGroup, @RequestParam("name") String name,
-                                   @RequestParam("attachment_scope") String attachmentScope) {
+    public ModelAndView addGroupAttachment(@RequestParam("id_group") Long idGroup, FileBucket fileBucket) throws IOException {
 
         GroupAttachment attachment = new GroupAttachment();
 
-        attachment.setAttachmentScope(attachmentScope);
+        attachment.setAttachmentScope(fileBucket.getFile().getOriginalFilename());
         attachment.setGroup(groupService.getById(idGroup));
-        attachment.setName(name);
+        attachment.setName(fileBucket.getFile().getOriginalFilename());
+        attachment.setAttachment(fileBucket.getFile().getBytes());
         groupAttachmentService.createGroupAttachment(attachment);
 
+        return new ModelAndView("redirect:" + "/groups/group?id="+idGroup);
+    }
+    
+    @RequestMapping(value = "/groupAttachment/{attachmentId}", method = RequestMethod.GET)
+    public String downloadDocument(HttpServletResponse response, @PathVariable("attachmentId") Long attachmentId) throws IOException {
+        GroupAttachment document = groupAttachmentService.getById(attachmentId);
+        
+        int index = document.getAttachmentScope().lastIndexOf(".");
+        
+        if(index != -1)
+        	response.setContentType(document.getAttachmentScope().substring(index, document.getAttachmentScope().length()));
+        
+        response.setContentLength(document.getAttachment().length);
+        response.setHeader("Content-Disposition","attachment; filename=\"" + document.getName() +"\"");
+  
+        FileCopyUtils.copy(document.getAttachment(), response.getOutputStream());
+        return "";
     }
 
     @RequestMapping(value = "/removeMentor", method = RequestMethod.POST)
