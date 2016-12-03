@@ -81,13 +81,14 @@
                     <div class="clearfix"></div>
                 </div>
                 <%--<%@include file="createGroup.jsp"%>--%>
-                <div id="collapse-group" class="panel-collapse collapse col-sm-12">
+                <div id="collapse-group" class="panel-collapse col-sm-12">
                     <div class="panel-body">
                         <table class="table table-hover">
                             <tr>
                                 <th>Name</th>
                                 <th>Students amount</th>
                                 <th>Upcoming meeting</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                             <c:forEach items="${groups}" var="group">
@@ -108,6 +109,8 @@
                                         <button class="btn btn-collapse edit-group glyphicon-button">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </button>
+                                    </td>
+                                    <td>
                                         <button class="btn btn-collapse delete-group glyphicon-button">
                                             <span class="glyphicon glyphicon-remove"></span>
                                         </button>

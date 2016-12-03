@@ -1,4 +1,4 @@
-<div id="createGroupModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="createGroupModal" class="modal fade custom-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,21 +9,23 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <form class="default-form" id='create-group-form' method="post">
+                        <label path="general" class="form-error"></label>
                         <div class="form-group col-sm-12 required">
                             <div class="col-sm-12">
                                 <label for="group-name" path="name">Name</label>
-                                <!--<errors path="name" class="form-error"/>-->
+                                <label path="name" class="form-error"></label>
                             </div>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="group-name"
                                        path="name" />
-                                <label id="name-message"></label>
                             </div>
                         </div>
                         <div class="col-sm-12 bottom-controls">
-                            <button type="submit" class="btn btn-primary">
-                                Create
-                            </button>
+                            <button type="submit" class="btn btn-primary pull-right"><spring:message code="btn.save"/></button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal"><spring:message code="btn.cancel"/></button>
+                            <div class="loading pull-right">
+                                <img src="<c:url value="/presentation/resources/imgs/ajax-loader.gif"/>"/>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -32,7 +34,7 @@
     </div>
 </div>
 
-<div id="editGroupModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="editGroupModal" class="modal fade custom-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -43,6 +45,7 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <form class="default-form" id='edit-group-form' method="post">
+                        <label path="general" class="form-error"></label>
                         <div class="form-group col-sm-12 required">
                             <div class="col-sm-12">
                                 <label for="group-name" path="name">Name</label>
@@ -54,13 +57,12 @@
                                 <label id="name-message"></label>
                             </div>
                         </div> 
-                        <div class="col-sm-12">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">
-                                Cancel
-                            </button>
-                            <button type="submit" class="btn btn-primary pull-right">
-                                Submit
-                            </button>
+                        <div class="col-sm-12 bottom-controls">
+                            <button type="submit" class="btn btn-primary pull-right"><spring:message code="btn.save"/></button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal"><spring:message code="btn.cancel"/></button>
+                            <div class="loading pull-right">
+                                <img src="<c:url value="/presentation/resources/imgs/ajax-loader.gif"/>"/>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -69,7 +71,7 @@
     </div>
 </div>                 
 
-<div id="deleteGroupModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="deleteGroupModal" class="modal fade custom-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -80,21 +82,25 @@
             <div class="modal-body">
                 <div class="container-fluid">  
                     <div class="col-sm-12">
-                    <h4>Are you sure? You can not undo this action.</h4>
+                        <h4>Are you sure? You can not undo this action.</h4>
                     </div>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        Cancel
-                    </button>
-                    <button type="button" id="delete-group" class="btn btn-primary pull-right">
-                        Delete
-                    </button>
+                    <form>
+                        <label path="general" class="form-error"></label>
+                        <div class="col-sm-12 bottom-controls">
+                            <button type="submit" class="btn btn-primary pull-right"><spring:message code="btn.delete"/></button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal"><spring:message code="btn.cancel"/></button>
+                            <div class="loading pull-right">
+                                <img src="<c:url value="/presentation/resources/imgs/ajax-loader.gif"/>"/>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="cannotDeleteGroupModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="cannotDeleteGroupModal" class="modal fade custom-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

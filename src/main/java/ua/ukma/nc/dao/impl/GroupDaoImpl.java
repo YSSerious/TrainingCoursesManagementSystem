@@ -74,12 +74,20 @@ public class GroupDaoImpl implements GroupDao{
     @Override
     public Group getById(Long id) {
         log.info("Getting group with id = {}", id);
-        return jdbcTemplate.queryForObject(GET_BY_ID, new GroupMapper(), id);
+        List<Group> resultSet = jdbcTemplate.query(GET_BY_ID, new Object[] { id }, new GroupMapper());
+        if (resultSet.isEmpty()) {
+            return null;
+        }
+        return resultSet.get(0);
     }
 
     @Override
     public Group getByName(String name) {
-        return jdbcTemplate.queryForObject(GET_BY_NAME, new GroupMapper(), name);
+        List<Group> resultSet = jdbcTemplate.query(GET_BY_NAME, new Object[] { name }, new GroupMapper());
+        if (resultSet.isEmpty()) {
+            return null;
+        }
+        return resultSet.get(0);
     }
 
     @Override

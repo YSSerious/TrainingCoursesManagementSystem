@@ -21,6 +21,10 @@ public class GroupDto {
 		setProject(new ProjectDto(gr.getProject()));
 	
 	}
+        
+        public GroupDto(long id) {
+            this.id = id;
+        }
 	
 	public long getId() {
 		return id;

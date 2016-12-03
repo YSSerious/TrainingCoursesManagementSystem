@@ -4,6 +4,7 @@ package ua.ukma.nc.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -55,6 +57,7 @@ import ua.ukma.nc.service.UserService;
 import ua.ukma.nc.util.exception.MeetingDeleteException;
 import ua.ukma.nc.util.exception.RemoveStudentFromGroupException;
 import ua.ukma.nc.validator.GroupAttachmentFormValidator;
+import ua.ukma.nc.validator.GroupDeleteValidator;
 import ua.ukma.nc.validator.GroupFormValidator;
 import ua.ukma.nc.vo.AjaxResponse;
 import ua.ukma.nc.vo.GroupVo;
@@ -93,6 +96,9 @@ public class GroupController {
     private GroupFormValidator groupFormValidator;
 
     @Autowired
+    private GroupDeleteValidator groupDeleteValidator;
+    
+    @Autowired
     private MessageSource messageSource;
 
     private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
@@ -105,7 +111,7 @@ public class GroupController {
        binder.setValidator(groupAttachmentFormValidator);
     }
 
-    @RequestMapping(value = "/add.ajax", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResponse addGroup(@RequestBody GroupVo groupVo) {
         DataBinder dataBinder = new WebDataBinder(groupVo);
@@ -132,12 +138,7 @@ public class GroupController {
         return response;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public String addGroup() {
-        return "group";
-    }
-
-    @RequestMapping(value = "/edit.ajax", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editGroup(@RequestParam Long groupId, @RequestParam String groupName) {
         Group group = groupService.getById(groupId);
@@ -146,16 +147,32 @@ public class GroupController {
         return "";
     }
 
-    @RequestMapping(value = "/delete.ajax")
+    @RequestMapping(value = "/delete")
     @ResponseBody
-    public String deleteGroup(@RequestParam Long groupId) {
-        Long studentsAmount = groupService.getStudentsAmount(groupId);
-        if (studentsAmount > 0) {
-            return "";
+    public AjaxResponse deleteGroup(@RequestParam Long groupId) {
+        GroupDto groupDto = new GroupDto(groupId);
+        DataBinder dataBinder = new WebDataBinder(groupDto);
+        dataBinder.setValidator(groupDeleteValidator);
+        dataBinder.validate();
+        BindingResult result = dataBinder.getBindingResult();
+        AjaxResponse response = new AjaxResponse();
+        if (!result.hasErrors()) {
+            Group group = groupService.getById(groupId);
+            groupService.deleteGroup(group);
+            response.setCode("200");
+        } else {
+            response.setCode("204");
+            result.getFieldErrors().stream().forEach((FieldError error) -> {
+                    response.addMessage(error.getField(),
+                            messageSource.getMessage(error.getCode(),
+                                    null, LocaleContextHolder.getLocale()));
+                });
+            result.getGlobalErrors().stream().forEach((ObjectError error) -> {
+                response.addMessage("general", messageSource.getMessage(error.getCode(),
+                        null, LocaleContextHolder.getLocale()));
+            });
         }
-        Group group = groupService.getById(groupId);
-        groupService.deleteGroup(group);
-        return "";
+        return response;
     }
 
     @RequestMapping(value = "/group", method = RequestMethod.GET)
