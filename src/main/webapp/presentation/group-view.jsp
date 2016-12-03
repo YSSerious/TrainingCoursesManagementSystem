@@ -66,7 +66,6 @@
 								id="meetingId-${meeting.id}">
 								<a href="/meeting/${meeting.id}" class="col-md-2"
 								id="editMeetingNameId-${meeting.id}">${meeting.name}</a>
-								<%--<div class="col-md-2" id="editMeetingDateId-${meeting.id}">${meeting.time}</div>--%>
 								<div class="col-md-2" id="editMeetingDateId-${meeting.id}"><fmt:formatDate pattern="yyyy-MM-dd, HH:mm"
 																										   value="${meeting.time}" /></div>
 								<div class="col-md-4" id="editMeetingPlaceId-${meeting.id}">${meeting.place}</div>
