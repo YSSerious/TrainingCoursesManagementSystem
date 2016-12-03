@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 import ua.ukma.nc.entity.Role;
+import ua.ukma.nc.entity.SecurityUser;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.UserService;
 
@@ -38,19 +40,21 @@ public class AuthController {
     public String setRole(HttpServletRequest request, Principal principal) {
         User user = userService.getByEmail(principal.getName());
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<GrantedAuthority>(4);
+        List<Role> availableRoles = user.getRoles();
+        availableRoles.removeIf(r -> (r.getId()==4));   //removing 'STUDENT_ROLE'
         String chosenRole = request.getParameter("chosenRole");
         if (chosenRole != null) {
-            for (Role role : user.getRoles())              //one more validation for security reasons
+            for (Role role : availableRoles)              //one more validation for security reasons
                 if (role.getTitle().equals(chosenRole))
                     grantedAuthorityList.add(new SimpleGrantedAuthority(role.getTitle()));
         }
         //if role not chosen or chosen incorrectly
         else {
-            if (user.getRoles().get(0) != null)
+            if (availableRoles.get(0) != null)
                 grantedAuthorityList.add(new SimpleGrantedAuthority(user.getRoles().get(0).getTitle()));
         }
         //set the authentication of the current Session context
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal.getName(), user.getPassword(), grantedAuthorityList));
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(new SecurityUser(user.getEmail(), user.getPassword(), grantedAuthorityList, (availableRoles.size()==1)?true:false), user.getPassword(), grantedAuthorityList));
         return "redirect:/cookie";
     }
 
@@ -81,8 +85,7 @@ public class AuthController {
     @RequestMapping(value = "/roles_def", method = {RequestMethod.GET, RequestMethod.POST})
     public String rolesHandler(HttpServletRequest request) {
         //check if it's remember-me-token auth or not
-        for (Cookie cookie : request.getCookies())
-            if (cookie.getName().equals("tcms-chosen-role"))
+        if(WebUtils.getCookie(request, "tcms-remember-me")!=null)
                 return "redirect:/";
         return "redirect:/roles";
     }
