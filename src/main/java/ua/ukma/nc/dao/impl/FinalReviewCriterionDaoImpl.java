@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ua.ukma.nc.dao.FinalReviewCriterionDao;
+import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.FinalReviewCriterion;
 import ua.ukma.nc.entity.impl.proxy.CriterionProxy;
 import ua.ukma.nc.entity.impl.proxy.FinalReviewProxy;
@@ -56,6 +57,8 @@ public class FinalReviewCriterionDaoImpl implements FinalReviewCriterionDao {
 
 	private static final String UPDATE_FRC = "UPDATE tcms.final_review_criterion SET id_final_review = ?, id_criterion = ?, id_mark = ?, commentary =? WHERE id = ?";
 
+	private static final String IS_EXISTS = "select exists (select * from tcms.final_review_criterion where id_criterion = ? and id_final_review = (select id from tcms.final_review where id_project = ?))";
+
 	@Override
 	public FinalReviewCriterion getById(Long id) {
 		log.info("Getting FRC with id = {}", id);
@@ -88,6 +91,12 @@ public class FinalReviewCriterionDaoImpl implements FinalReviewCriterionDao {
 		return jdbcTemplate.update(CREATE_FRC, finalReviewCriterion.getFinalReview().getId(),
 				finalReviewCriterion.getCriterion().getId(), finalReviewCriterion.getMark().getValue(),
 				finalReviewCriterion.getCommentary());
+	}
+
+	@Override
+	public boolean isExists(Criterion criterion, Long projectId) {
+		log.info("Is criterion with id = {} has final_review throughout the project {}", criterion.getId(), projectId);
+		return jdbcTemplate.queryForObject(IS_EXISTS, boolean.class, criterion.getId(), projectId);
 	}
 
 	@Override

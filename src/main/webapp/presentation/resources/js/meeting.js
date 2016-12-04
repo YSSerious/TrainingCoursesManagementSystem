@@ -41,14 +41,16 @@ $(document).ready(function () {
             url: "/deleteMeetingCriteria",
             type: "POST",
             data: {meetingId: meetingId, criteriaTitle: criteria.title},
-            success: function (data) {
-                console.log(data);
-                $('#criteriaaMId-' + criteria.id).remove();
-            },
-            error: function (textStatus) {
-                console.log(textStatus);
-                $('#criteriaMeetingDeleteErrorModal').modal('show');
-
+            statusCode: {
+                200: function (data) {
+                    console.log(data);
+                    $('#criteriaaMId-' + criteria.id).remove();
+                },
+                409: function (textStatus) {
+                    console.log(textStatus);
+                    $('#criteriaMeetingDeleteError').html(textStatus.responseText);
+                    $('#criteriaMeetingDeleteErrorModal').modal('show');
+                }
             }
         });
     });

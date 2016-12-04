@@ -175,11 +175,11 @@
                 	data-toggle="modal" data-target="#addProjectAttachmentModal"><b>Add Attach</b>
                 </div>
             </div>
-	        <div class="panel-collapse collapse" id="att-collapse">
+	        <div class="panel-collapse collapse clearfix" id="att-collapse">
 		        <ul class="list-group " id="attachment-group">
 		            <c:forEach items="${attachments}" var="attachment">
-		                <li class="list-group-item">
-		                    <a href="/projectAttachment/${ attachment.id}">${attachment.name } </a>
+		                <li class="list-group-item clearfix">
+		                    <a href="/projectAttachment/${ attachment.id}" class="col-md-2">${attachment.name } </a>
 		                    <div class="btn rmv-btn col-md-1" role='button' data-button='{"id_attachment": "${attachment.id}"}'>
 		                        <span class="glyphicon glyphicon-remove"></span>
 		                    </div>

@@ -313,8 +313,7 @@
                 <button class="close" type="button" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
-                <h4 class="modal-title">This criteria was rated, and cannot be
-                    deleted.</h4>
+                <h4 class="modal-title" id="criteriaMeetingDeleteError"></h4>
                 <button data-dismiss="modal" class="btn btn-link">Close</button>
             </div>
         </div>

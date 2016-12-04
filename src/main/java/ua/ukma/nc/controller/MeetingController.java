@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -174,12 +176,12 @@ public class MeetingController {
 
 	@RequestMapping(value = "/deleteMeetingCriteria", method = RequestMethod.POST)
 	@ResponseBody
-	public String deleteProjectCriteria(@RequestParam Long meetingId, @RequestParam String criteriaTitle)
-			throws CriteriaDeleteException {
-		if (criterionService.isRatedInMeeting(meetingId, criterionService.getByName(criteriaTitle)))
-			throw new CriteriaDeleteException("This criteria was rated and cannot be deleted");
-		meetingService.deleteMeetingCriterion(meetingId, criterionService.getByName(criteriaTitle));
-		return "success";
+	public ResponseEntity deleteProjectCriteria(@RequestParam Long meetingId, @RequestParam String criteriaTitle){
+		Criterion criterion = criterionService.getByName(criteriaTitle);
+		if (criterionService.isRatedInMeeting(meetingId, criterion))
+		return ResponseEntity.status(HttpStatus.CONFLICT).body("This criteria was rated and cannot be deleted");
+		meetingService.deleteMeetingCriterion(meetingId, criterion);
+		return ResponseEntity.ok().body("Success");
 	}
 
 	@RequestMapping(value = "/ajax/post/evaluate/{id}", method = RequestMethod.POST, consumes = "application/json")

@@ -3,6 +3,7 @@ package ua.ukma.nc.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.ukma.nc.dao.FinalReviewCriterionDao;
+import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.FinalReviewCriterion;
 import ua.ukma.nc.service.FinalReviewCriterionService;
 
@@ -41,7 +42,12 @@ public class FinalReviewCriterionServiceImpl implements FinalReviewCriterionServ
         return finalReviewCriterionDao.createFinalReviewCriterion(finalReviewCriterion);
     }
 
-	@Override
+    @Override
+    public boolean isExists(Criterion criterion, Long projectId) {
+        return finalReviewCriterionDao.isExists(criterion, projectId);
+    }
+
+    @Override
 	public List<FinalReviewCriterion> getByFinalReview(Long id) {
 		return finalReviewCriterionDao.getByFinalReview(id);
 	}

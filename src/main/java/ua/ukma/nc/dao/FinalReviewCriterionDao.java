@@ -1,5 +1,6 @@
 package ua.ukma.nc.dao;
 
+import ua.ukma.nc.entity.Criterion;
 import ua.ukma.nc.entity.FinalReviewCriterion;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface FinalReviewCriterionDao {
     List<FinalReviewCriterion> getAll();
 
     int createFinalReviewCriterion(FinalReviewCriterion finalReviewCriterion);
+
+    boolean isExists(Criterion criterion, Long projectId);
 }

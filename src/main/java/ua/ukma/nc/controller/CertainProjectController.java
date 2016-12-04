@@ -24,18 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import ua.ukma.nc.dto.*;
-import ua.ukma.nc.entity.Criterion;
-import ua.ukma.nc.entity.Group;
-import ua.ukma.nc.entity.Meeting;
-import ua.ukma.nc.entity.Project;
-import ua.ukma.nc.entity.ProjectAttachment;
-import ua.ukma.nc.service.CategoryService;
-import ua.ukma.nc.service.CriterionService;
-import ua.ukma.nc.service.GroupService;
-import ua.ukma.nc.service.MeetingService;
-import ua.ukma.nc.service.ProjectAttachmentService;
-import ua.ukma.nc.service.ProjectService;
-import ua.ukma.nc.service.UserService;
+import ua.ukma.nc.entity.*;
+import ua.ukma.nc.service.*;
 import ua.ukma.nc.util.exception.CriteriaDeleteException;
 import ua.ukma.nc.validator.ProjectAttachmentFormValidator;
 import ua.ukma.nc.vo.AjaxResponse;
@@ -66,35 +56,38 @@ public class CertainProjectController {
 
     private Long project_id;
 
-	@Autowired
+    @Autowired
     private ProjectAttachmentFormValidator projectAttachmentFormValidator;
 
-	@Autowired
-	private MessageSource messageSource;
-     
+    @Autowired
+    private MessageSource messageSource;
+
+    @Autowired
+    private FinalReviewCriterionService finalReviewCriterionService;
+
     @InitBinder("projectAttachmentForm")
     protected void initBinderFileBucket(WebDataBinder binder) {
-       binder.setValidator(projectAttachmentFormValidator);
+        binder.setValidator(projectAttachmentFormValidator);
     }
 
     @RequestMapping(value = "/certainProject/{id}", method = RequestMethod.GET)
     public ModelAndView viewProject(@PathVariable("id") Long id) {
         ModelAndView model = new ModelAndView();
-        
-		List<CategoryDto> categories = categoryService.getByProjectId(id).stream().map(CategoryDto::new)
-				.collect(Collectors.toList());
-		
-		List<CriterionDto> criteria = criterionService.getByProject(id).stream().map(CriterionDto::new)
-				.collect(Collectors.toList());
-		
-		List<UserDto> students = userService.studentsByProjectId(id).stream().map(UserDto::new)
-				.collect(Collectors.toList());
-		
-		model.addObject("projectAttachmentForm", new ProjectAttachmentFormDto());
-		model.addObject("categories", categories);
-		model.addObject("criteria", criteria);
-		model.addObject("students", students);
-		
+
+        List<CategoryDto> categories = categoryService.getByProjectId(id).stream().map(CategoryDto::new)
+                .collect(Collectors.toList());
+
+        List<CriterionDto> criteria = criterionService.getByProject(id).stream().map(CriterionDto::new)
+                .collect(Collectors.toList());
+
+        List<UserDto> students = userService.studentsByProjectId(id).stream().map(UserDto::new)
+                .collect(Collectors.toList());
+
+        model.addObject("projectAttachmentForm", new ProjectAttachmentFormDto());
+        model.addObject("categories", categories);
+        model.addObject("criteria", criteria);
+        model.addObject("students", students);
+
         project_id = id;
 
         ProjectDto prDto = new ProjectDto(projectService.getById(id));
@@ -116,7 +109,8 @@ public class CertainProjectController {
         //Criteria set
         List<CriterionDto> criterionDtos = new ArrayList<>();
         for (Criterion criterion : criterionService.getByProject(id)) {
-            criterionDtos.add(new CriterionDto(criterion.getId(), criterion.getTitle(), criterionService.isRatedInProject(id, criterion)));
+            boolean isRated = false;
+            criterionDtos.add(new CriterionDto(criterion.getId(), criterion.getTitle(), isCriterionRated(id, criterion)));
         }
         model.addObject("criterions", criterionDtos);
 
@@ -126,6 +120,10 @@ public class CertainProjectController {
 
         model.setViewName("certainProject");
         return model;
+    }
+
+    private boolean isCriterionRated(Long id, Criterion criterion) {
+        return criterionService.isRatedInProject(id, criterion) || finalReviewCriterionService.isExists(criterion, id);
     }
 
     @RequestMapping(value = "/updateProjectName", method = RequestMethod.POST)
@@ -173,49 +171,49 @@ public class CertainProjectController {
     }
 
     @RequestMapping(value = "/addProjectAttachment", method = RequestMethod.POST)
-	@ResponseBody
-	public AjaxResponse addProjectAttachment(@Valid @ModelAttribute("projectAttachmentForm") ProjectAttachmentFormDto attachmentDto,
-			BindingResult result) throws IOException {
-		AjaxResponse response = new AjaxResponse();
-		
-		if (result.hasErrors()) {
-			
-			result.getFieldErrors().stream().forEach((FieldError error) -> {
+    @ResponseBody
+    public AjaxResponse addProjectAttachment(@Valid @ModelAttribute("projectAttachmentForm") ProjectAttachmentFormDto attachmentDto,
+                                             BindingResult result) throws IOException {
+        AjaxResponse response = new AjaxResponse();
+
+        if (result.hasErrors()) {
+
+            result.getFieldErrors().stream().forEach((FieldError error) -> {
                 response.addMessage(error.getField(),
                         messageSource.getMessage(error.getCode(),
                                 null, LocaleContextHolder.getLocale()));
             });
-			
-			response.setCode("204");
-			
-			return response;
-		} else {
-			response.setCode("200");
-			
-			ProjectAttachment attachment = new ProjectAttachment();
-			
-			attachment.setAttachmentScope(attachmentDto.getFile().getOriginalFilename());
-			attachment.setProject(projectService.getById(attachmentDto.getProjectId()));
-			attachment.setName(attachmentDto.getName());
-			attachment.setAttachment(attachmentDto.getFile().getBytes());
-			attachmentService.createProjectAttachment(attachment);
 
-			return response;
-		}
-	}
+            response.setCode("204");
 
-	@RequestMapping(value = "/projectAttachment/{attachmentId}", method = RequestMethod.GET)
-	@ResponseBody
-	public String downloadDocument(HttpServletResponse response, @PathVariable("attachmentId") Long attachmentId)
-			throws IOException {
-		ProjectAttachment document = attachmentService.getById(attachmentId);
+            return response;
+        } else {
+            response.setCode("200");
 
-		response.setContentLength(document.getAttachment().length);
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + document.getAttachmentScope() + "\"");
+            ProjectAttachment attachment = new ProjectAttachment();
 
-		FileCopyUtils.copy(document.getAttachment(), response.getOutputStream());
-		return "";
-	}
+            attachment.setAttachmentScope(attachmentDto.getFile().getOriginalFilename());
+            attachment.setProject(projectService.getById(attachmentDto.getProjectId()));
+            attachment.setName(attachmentDto.getName());
+            attachment.setAttachment(attachmentDto.getFile().getBytes());
+            attachmentService.createProjectAttachment(attachment);
+
+            return response;
+        }
+    }
+
+    @RequestMapping(value = "/projectAttachment/{attachmentId}", method = RequestMethod.GET)
+    @ResponseBody
+    public String downloadDocument(HttpServletResponse response, @PathVariable("attachmentId") Long attachmentId)
+            throws IOException {
+        ProjectAttachment document = attachmentService.getById(attachmentId);
+
+        response.setContentLength(document.getAttachment().length);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + document.getAttachmentScope() + "\"");
+
+        FileCopyUtils.copy(document.getAttachment(), response.getOutputStream());
+        return "";
+    }
 
     @RequestMapping(value = "/removeProjectAttachment", method = RequestMethod.POST)
     public void removeGroupAttachment(@RequestParam("id_attachment") Long id) {
@@ -245,7 +243,9 @@ public class CertainProjectController {
     @ResponseBody
     public ResponseEntity deleteProjectCriteria(@RequestParam Long projectId, @RequestParam String criteriaTitle) throws CriteriaDeleteException {
         if (criterionService.isRatedInProject(projectId, criterionService.getByName(criteriaTitle)))
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("This criteria was rated and cannot be deleted");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("This criteria has meeting result and cannot be deleted");
+        if (finalReviewCriterionService.isExists(criterionService.getByName(criteriaTitle), projectId))
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("This criteria has final review and cannot be deleted");
         projectService.deleteProjectCriterion(projectId, criterionService.getByName(criteriaTitle));
         return ResponseEntity.ok().body("Success");
     }
@@ -259,7 +259,7 @@ public class CertainProjectController {
     @RequestMapping(value = "/saveMeeting", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity saveMeeting(@RequestBody AddCriteriaDto dto) {
-        if(meetingService.addMeetings(dto) == 0)
+        if (meetingService.addMeetings(dto) == 0)
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Meetings with this date already created.");
         return ResponseEntity.ok().body("Success");
     }
