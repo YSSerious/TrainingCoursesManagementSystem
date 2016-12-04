@@ -22,6 +22,8 @@ public interface ProjectService {
 
 	List<Project> getAll();
 
+	List<Project> getAllFinished();
+
 	List<Project> search(ProjectSearch projectSearch);
 
 	Integer getMaxPage(ProjectSearch projectSearch);

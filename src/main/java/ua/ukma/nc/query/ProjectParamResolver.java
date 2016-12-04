@@ -50,7 +50,7 @@ public class ProjectParamResolver {
 		}
 
 		if (text != null) {
-			String[] words = text.split(" ");
+			String[] words = text.split("[^\\p{L}]+");
 
 			for (String word : words) {
 				OrClause orClause = new OrClause();

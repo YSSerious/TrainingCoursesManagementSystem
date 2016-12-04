@@ -44,6 +44,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		}
 	}
 
+	private static final String GET_ALL_FINISHED = "SELECT * FROM tcms.project WHERE finish < current_date";
+
 	private static final String GET_MENTOR_PROJECTS = "SELECT * FROM tcms.project WHERE id IN (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?)) AND id NOT IN (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?)) ORDER by start DESC";
 	
 	private static final String GET_STUDENT_PROJECTS = "SELECT * FROM tcms.project WHERE id IN (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?)) ORDER by start DESC";
@@ -153,6 +155,11 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Project> getMentorProjects(Long userId) {
 		return jdbcTemplate.query(GET_MENTOR_PROJECTS, new ProjectMapper(), userId, userId);
+	}
+
+	@Override
+	public List<Project> getAllFinished() {
+		return jdbcTemplate.query(GET_ALL_FINISHED, new ProjectMapper());
 	}
 
 	public List<Project> getMentorStudentProjects(Long mentorId, Long studentId){

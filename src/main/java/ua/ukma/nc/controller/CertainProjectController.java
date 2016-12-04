@@ -96,7 +96,7 @@ public class CertainProjectController {
         //Group set
         List<Group> groupList = groupService.getByProjectId(id);
 
-        List<GroupProjectDto> groupDtos = new ArrayList();
+        List<GroupProjectDto> groupDtos = new ArrayList<>();
         for (Group group : groupList) {
 
             Meeting upcomingMeeting = meetingService.getUpcomingByGroup(group.getId());
@@ -109,7 +109,6 @@ public class CertainProjectController {
         //Criteria set
         List<CriterionDto> criterionDtos = new ArrayList<>();
         for (Criterion criterion : criterionService.getByProject(id)) {
-            boolean isRated = false;
             criterionDtos.add(new CriterionDto(criterion.getId(), criterion.getTitle(), isCriterionRated(id, criterion)));
         }
         model.addObject("criterions", criterionDtos);
@@ -196,8 +195,10 @@ public class CertainProjectController {
             attachment.setProject(projectService.getById(attachmentDto.getProjectId()));
             attachment.setName(attachmentDto.getName());
             attachment.setAttachment(attachmentDto.getFile().getBytes());
-            attachmentService.createProjectAttachment(attachment);
-
+            Long id = attachmentService.createProjectAttachment(attachment);
+            
+            response.addMessage("id", String.valueOf(id));
+            response.addMessage("name", attachment.getName());
             return response;
         }
     }
@@ -216,7 +217,8 @@ public class CertainProjectController {
     }
 
     @RequestMapping(value = "/removeProjectAttachment", method = RequestMethod.POST)
-    public void removeGroupAttachment(@RequestParam("id_attachment") Long id) {
+    @ResponseBody
+    public void removeProjectAttachment(@RequestParam("id_attachment") Long id) {
         attachmentService.deleteProjectAttachment(attachmentService.getById(id));
     }
 

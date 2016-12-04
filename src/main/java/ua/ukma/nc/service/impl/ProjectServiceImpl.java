@@ -67,6 +67,11 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+	public List<Project> getAllFinished() {
+		return projectDao.getAllFinished();
+	}
+
+	@Override
 	public int createProject(Project project) {
 		return projectDao.createProject(project);
 	}

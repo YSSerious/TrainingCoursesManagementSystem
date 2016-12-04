@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html;charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@include file="header.jsp" %>
 <%@include file="projectDataEditingModals.jsp" %>
 <%@include file="projectGroupsModals.jsp" %>
@@ -148,10 +150,10 @@
                             <li class="list-group-item  clearfix" id="criteriaId-${criterion.id}">
                                 <div class="col-md-11">${criterion.title}</div>
                                 <c:if test="${!criterion.rated}">
-                                    <div class="btn rmv-cr-btn col-md-1" type='button'
+                                    <button class="btn rmv-cr-btn col-md-1"
                                          data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
                                         <span class="glyphicon glyphicon-remove"></span>
-                                    </div>
+                                    </button>
                                 </c:if>
                             </li>
                         </c:forEach>
@@ -189,10 +191,9 @@
 		                </li>
 		            </c:forEach>
 		        </ul>
-	        <div>
-        </div>
-    </div>
+    		</div>
     <hr>
+    </div>
 
     <div id="addMeetingModal" class="modal fade">
         <div class="modal-dialog">
@@ -243,6 +244,7 @@
             </div>
         </div>
     </div>
+    </div>
     <!-- finish ErrorModal modal -->
     <!-- start create Meeting modal -->
     <div id="meetingCreateModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
@@ -286,6 +288,7 @@
         </div>
     </div>
 </div>
+
 <!-- finish create Meeting modal -->
 <div id="addProjectAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog" role="document">
@@ -301,7 +304,7 @@
 			<form:form id="addAttachmentFormSend" method="POST" action="/addProjectAttachment" modelAttribute="projectAttachmentForm"
 						enctype="multipart/form-data" class="form-horizontal">
 			
-			<form:input type="hidden" path="projectId" value="${project.id }" />
+			<form:input type="hidden" path="projectId" value="${project.id }"/>
 						
             <div class="row">
                 <div class="form-project col-md-12">
@@ -311,14 +314,14 @@
                     <div style="color:red;" id="file-error">
                             
                     </div>
-                    <form:input type="file" path="file" name="file" id="file" class="form-control"/>
+                    <form:input type="file" path="file" name="file" id="upload-file" class="form-control"/>
                     
                     <br/>
                     <b>Name:</b>
                     <div style="color:red;" id="name-error">
                             
                     </div>
-                    <form:input type="text" path="name" id="name" class="form-control"/>
+                    <form:input type="text" path="name" id="upload-name" class="form-control"/>
   
                     <div style="color:red;" id="project-error">
                             
@@ -330,7 +333,7 @@
             <div class="row">
                 <div class="text-center">
                 	<br/>
-                    <button type=button onclick="uploadProjectAttachment()" class="btn btn-primary">Upload</button>
+                    <button id="uploadAttachmentButton" type="button" onclick="uploadProjectAttachment()" class="btn btn-primary">Upload</button>
                 </div>
             </div>
         </form:form>
@@ -342,17 +345,7 @@
 
 <script>
     $(document).ready(function () {
-
-        $('.rmv-btn').click(function () {
-            $(this).parent().remove();
-            var id = $(this).data('button').id_attachment;
-            $.ajax({
-                url: "/removeProjectAttachment",
-                type: "POST",
-                data: {"id_attachment": id}
-
-            });
-        });
+		bindRemove(); 
     });
 </script>
 <script>
@@ -385,12 +378,32 @@
                         </c:forEach>
                     </select> <br/>
                         <hr/>
+                       <spring:message code="report.select.criteria"/>:<br /> <select style="width: 100%;" multiple
+						name="criteria">
+ 						<c:forEach items="${criteria}" var="criterion">
+ 							<option value="${criterion.id}">${criterion.title}</option>
+ 						</c:forEach>
+ 					</select> <br />
+					<hr />
+ 					* <spring:message code="report.note.students"/><br/>
+ 					* <spring:message code="report.note.criteria"/><br/>
+ 					<br/>
+ 					<input type="hidden" name="projectId" value="${project.id}" />
+ 					<input onclick="getProjectReport()" class="btn btn-primary pull-right" type="submit" value="<spring:message code="report.submit"/>"/>
+ 					<br/>
+ 					<br/>
+ 				</form>
+ 			</div>
+ 		</div>
+ 	</div>
+ </div>
 
 <script>
 function uploadProjectAttachment(){
-		
-	var formData = new FormData($("#addAttachmentFormSend")[0]);
+	$('#uploadAttachmentButton').prop('disabled', true);
 
+	var formData = new FormData($("#addAttachmentFormSend")[0]);
+	
 	$.ajax({
     	type:"post",
     	data:formData,
@@ -403,8 +416,23 @@ function uploadProjectAttachment(){
                 console.log(response);
                 switch (response.code) {
                     case '200':
-                    	location.reload();
-                        break;
+                    	var newAttach = getAttachDiv(response.messages['name'], response.messages['id']);
+                    	$('#attachment-group').html(newAttach+$('#attachment-group').html());
+                    	$('.rmv-btn').unbind('click');
+                    	
+                    	$('#file-error').html('');
+                    	$('#name-error').html('');
+                    	$('#project-error').html('');
+                    	
+                    	$('#addProjectAttachmentModal').modal('hide');
+                    	
+                    	bindRemove();
+                    	
+                    	$('#upload-file').prop('value', '');
+                    	$('#upload-name').prop('value', '');
+                    	
+                    	$('#uploadAttachmentButton').prop('disabled', false);
+                    	break;
                     case '204':
                     	$('#file-error').html('');
                     	$('#name-error').html('');
@@ -418,13 +446,52 @@ function uploadProjectAttachment(){
                     			  $('#project-error').html(value);
                     		  }
                     		});
+                    	$('#uploadAttachmentButton').prop('disabled', false);
                     	break;
                 }
             }
         }
 
 	});
+}
 
+function bindRemove(){
+	$('.rmv-btn').click(function () {
+
+		var div = $(this);
+		var id = div.data('button').id_attachment;
+		
+		div.unbind('click');
+		
+		function removeAttach(){
+        	div.parent().remove();
+		}
+		
+        $.ajax({
+            url: "/removeProjectAttachment",
+            type: "POST",
+            data: {"id_attachment": id},
+            success: function(){ 
+                removeAttach();
+            },
+            error: function(){
+            	alert('Try again later!');
+            }
+			
+        });
+    });
+	
+}
+
+function getAttachDiv(name, id){
+    var div = '<li style="background-color:#EDF8FC;" class="list-group-item clearfix">';
+    div += '<a href="/projectAttachment/'+id+'" class="col-md-2">'+name+' </a>';
+    div += '<div class="btn rmv-btn col-md-1" role="button" data-button=\'{"id_attachment": "'+id+'"}\'>';
+    div += '<span class="glyphicon glyphicon-remove"></span>';
+    div += '</div>';
+    div += '</li>';
+    
+    return div;
 }
 </script>
 

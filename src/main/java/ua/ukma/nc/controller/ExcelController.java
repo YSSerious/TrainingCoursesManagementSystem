@@ -153,10 +153,7 @@ public class ExcelController {
 	@RequestMapping(value = "/reports")
     public ModelAndView getReport(){
         ModelAndView mv = new ModelAndView("projectReports");
-		List<Project> projects = projectService.getAll();
-		java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
-		projects.removeIf(proj -> proj.getFinishDate().compareTo(date)>0);
-        mv.addObject("projects", projects);
+        mv.addObject("projects", projectService.getAllFinished());
 		return mv;
     }
 

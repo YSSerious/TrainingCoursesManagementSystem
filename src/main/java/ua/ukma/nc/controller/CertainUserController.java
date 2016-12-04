@@ -151,6 +151,11 @@ public class CertainUserController {
 	@RequestMapping(value = "/ajax/post/final_review_form/{id}", method = RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
 	public String postFinRev(Principal principal, @PathVariable("id") Long userId, @RequestBody JsonWrapperFinRev data){
+		//if input validation cheated on the client side
+		for(FinalReviewCriterion frc : data.getData())
+			if(frc.getCommentary().length()>255||frc.getCommentary().isEmpty())
+				return "false";
+
 		User mentor = userService.getByEmail(principal.getName());
 		List<Project> all = projectService.getStudentProjects(userId);
 		Date date = new Date(System.currentTimeMillis());
@@ -180,6 +185,8 @@ public class CertainUserController {
 				review = finalReviewService.getByStudent(current.getId(), userId, "F");
 			}
 			for(FinalReviewCriterion frc : data.getData()){
+				if(frc.getCommentary().length()>255)
+					return "false";
 				frc.setFinalReview(review);
 				finalReviewCriterionService.createFinalReviewCriterion(frc);
 			}
