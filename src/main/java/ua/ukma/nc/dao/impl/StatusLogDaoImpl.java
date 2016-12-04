@@ -61,11 +61,11 @@ public class StatusLogDaoImpl implements StatusLogDao{
 
     private static final String UPDATE_STATUS_LOG = "UPDATE tcms.status_log SET id_old_status = ?, id_new_status = ?, commentary = ?, id_student = ?, id_employee = ?, date = ?, id_group = ? WHERE id = ?";
 
-    private static final String GET_NUM_STARTED = "SELECT COUNT(*) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project=?) AND id_new_status=2";
+    private static final String GET_NUM_STARTED = "SELECT COUNT(*) FROM (SELECT DISTINCT id_group, id_student FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project=?) AND id_new_status=2) AS temp";
 
-    private static final String GET_NUM_INVITED = "SELECT COUNT(*) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project=?) AND id_new_status=3";
+    private static final String GET_NUM_INVITED = "SELECT COUNT(*) FROM (SELECT DISTINCT id_group, id_student FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project=?) AND id_new_status=3) AS temp";
 
-    private static final String GET_NUM_JOB_OFFER = "SELECT COUNT(*) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project=?) AND id_new_status=4";
+    private static final String GET_NUM_JOB_OFFER = "SELECT COUNT(*) FROM (SELECT DISTINCT id_group, id_student FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project=?) AND id_new_status=4) AS temp";
 
     @Override
     public StatusLog getById(Long id) {
