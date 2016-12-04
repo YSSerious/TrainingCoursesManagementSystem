@@ -57,7 +57,7 @@ public class FinalReviewCriterionDaoImpl implements FinalReviewCriterionDao {
 
 	private static final String UPDATE_FRC = "UPDATE tcms.final_review_criterion SET id_final_review = ?, id_criterion = ?, id_mark = ?, commentary =? WHERE id = ?";
 
-	private static final String IS_EXISTS = "select exists (select * from tcms.final_review_criterion where id_criterion = ? and id_final_review = (select id from tcms.final_review where id_project = ?))";
+	private static final String IS_EXISTS = "select exists (select * from tcms.final_review_criterion where id_criterion = ? and id_final_review in (select id from tcms.final_review where id_project = ?))";
 
 	@Override
 	public FinalReviewCriterion getById(Long id) {
