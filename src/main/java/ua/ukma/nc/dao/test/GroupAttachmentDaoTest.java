@@ -66,6 +66,6 @@ public class GroupAttachmentDaoTest {
         groupAttachment.setName("Name");
         groupAttachment.setGroup(group);
         groupAttachment.setAttachmentScope("attachScope");
-        Assert.assertEquals(1, groupAttachmentDao.createGroupAttachment(groupAttachment));
+        Assert.assertNotNull(groupAttachmentDao.createGroupAttachment(groupAttachment));
     }
 }

@@ -288,8 +288,10 @@ public class GroupController {
             attachment.setGroup(groupService.getById(attachmentDto.getGroupId()));
             attachment.setName(attachmentDto.getName());
             attachment.setAttachment(attachmentDto.getFile().getBytes());
-            groupAttachmentService.createGroupAttachment(attachment);
+            Long id = groupAttachmentService.createGroupAttachment(attachment);
 
+            response.addMessage("id", String.valueOf(id));
+            response.addMessage("name", attachment.getName());
             return response;
         }
     }

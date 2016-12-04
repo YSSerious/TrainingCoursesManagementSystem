@@ -263,37 +263,31 @@
 			<spring:message code="group.button.add" />
 		</button>
 		<div data-toggle="collapse" data-target="#collapseAttachment"
-			class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
+			class="arrow col-md-1" style="color: black"
+			onclick="changeSpan(this)">
 			<span class="glyphicon glyphicon-chevron-down"></span>
 		</div>
 	</div>
 
 
-		<div id="collapseAttachment" class="panel-collapse collapse">
-			<ul id="listAttachments" class="list-group">
-			 
-						<c:forEach items="${attachments}" var="attachment">
-						<li  id="attachment-${attachment.id}" class="list-group-item group-attachment clearfix">
-						 <!-- 	${attachment.name} <span style='padding-left: 10px;'> </span> -->
-						 <a href="/groups/groupAttachment/${ attachment.id}">${attachment.name } </a>
-					 
-						<div id="${attachment.id}" class="btn rmv-cr-btn col-md-1 pull-right delete"
-							type='button'>
-							<span class="glyphicon glyphicon-remove "></span>
-						</div> 
-						
-					</li>
-							 
-							
-						</c:forEach>
-						</ul>
-					 
-				</div>
+	<div id="collapseAttachment" class="panel-collapse collapse">
+		<ul class="list-group " id="attachment-group">
+			<c:forEach items="${attachments}" var="attachment">
+				<li class="list-group-item clearfix">
+				<a href="/groups/groupAttachment/${ attachment.id}" class="col-md-2">${attachment.name }
+				</a>
+					<div class="btn rmv-btn col-md-1" role='button'
+						data-button='{"id_attachment": "${attachment.id}"}'>
+						<span class="glyphicon glyphicon-remove"></span>
+					</div></li>
+			</c:forEach>
+		</ul>
+	</div>
 </div>
 
 
-		 
- 
+
+
 
 <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
 	<div id="group-report-modal" class="modal fade" role="dialog">
@@ -432,14 +426,14 @@
                     <div style="color:red;" id="file-error">
                             
                     </div>
-                    <form:input type="file" path="file" name="file" id="file" class="form-control"/>
+                    <form:input type="file" id="upload-file" path="file" name="file" class="form-control"/>
                     
                     <br/>
                     <b>Name:</b>
                     <div style="color:red;" id="name-error">
                             
                     </div>
-                    <form:input type="text" path="name" id="name" class="form-control"/>
+                    <form:input type="text" id="upload-name" path="name" class="form-control"/>
   
                     <div style="color:red;" id="group-error">
                             
@@ -469,8 +463,14 @@
 </sec:authorize>
 
 <script>
+
+$(document).ready(function () {
+	bindRemove(); 
+});
+
 function uploadGroupAttachment(){
-		
+	$('#uploadAttachmentButton').prop('disabled', true);
+
 	var formData = new FormData($("#addAttachmentFormSend")[0]);
 
 	$.ajax({
@@ -485,8 +485,23 @@ function uploadGroupAttachment(){
                 console.log(response);
                 switch (response.code) {
                     case '200':
-                    	location.reload();
-                        break;
+                    	var newAttach = getAttachDiv(response.messages['name'], response.messages['id']);
+                    	$('#attachment-group').html(newAttach+$('#attachment-group').html());
+                    	$('.rmv-btn').unbind('click');
+                    	
+                    	$('#file-error').html('');
+                    	$('#name-error').html('');
+                    	$('#group-error').html('');
+                    	
+                    	$('#addGroupAttachmentModal').modal('hide');
+                    	
+                    	bindRemove();
+                    	
+                    	$('#upload-file').prop('value', '');
+                    	$('#upload-name').prop('value', '');
+                    	
+                    	$('#uploadAttachmentButton').prop('disabled', false);
+                    	break;
                     case '204':
                     	$('#file-error').html('');
                     	$('#name-error').html('');
@@ -500,13 +515,52 @@ function uploadGroupAttachment(){
                     			  $('#group-error').html(value);
                     		  }
                     		});
+                    	$('#uploadAttachmentButton').prop('disabled', false);
                     	break;
                 }
             }
         }
 
 	});
+}
 
+function bindRemove(){
+	$('.rmv-btn').click(function () {
+
+		var div = $(this);
+		var id = div.data('button').id_attachment;
+		
+		div.unbind('click');
+		
+		function removeAttach(){
+        	div.parent().remove();
+		}
+		
+        $.ajax({
+            url: "/groups/deleteAttachment",
+            type: "POST",
+            data: {"id": id},
+            success: function(){ 
+                removeAttach();
+            },
+            error: function(){
+            	alert('Try again later!');
+            }
+			
+        });
+    });
+	
+}
+
+function getAttachDiv(name, id){
+    var div = '<li style="background-color:#EDF8FC;" class="list-group-item clearfix">';
+    div += '<a href="/groupAttachment/'+id+'" class="col-md-2">'+name+' </a>';
+    div += '<div class="btn rmv-btn col-md-1" role="button" data-button=\'{"id_attachment": "'+id+'"}\'>';
+    div += '<span class="glyphicon glyphicon-remove"></span>';
+    div += '</div>';
+    div += '</li>';
+    
+    return div;
 }
 </script>
 <%@include file="footer.jsp"%>

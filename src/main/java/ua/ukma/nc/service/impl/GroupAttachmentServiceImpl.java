@@ -37,7 +37,7 @@ public class GroupAttachmentServiceImpl implements GroupAttachmentService{
     }
 
     @Override
-    public int createGroupAttachment(GroupAttachment groupAttachment) {
+    public Long createGroupAttachment(GroupAttachment groupAttachment) {
         return groupAttachmentDao.createGroupAttachment(groupAttachment);
     }
 

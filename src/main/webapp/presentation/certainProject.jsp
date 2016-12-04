@@ -342,12 +342,6 @@
     </div>
 </div>	
 
-
-<script>
-    $(document).ready(function () {
-		bindRemove(); 
-    });
-</script>
 <script>
     var projectId = "${project.id}"
 </script>
@@ -399,11 +393,16 @@
  </div>
 
 <script>
+
+$(document).ready(function () {
+	bindRemove(); 
+});
+
 function uploadProjectAttachment(){
 	$('#uploadAttachmentButton').prop('disabled', true);
 
 	var formData = new FormData($("#addAttachmentFormSend")[0]);
-	
+
 	$.ajax({
     	type:"post",
     	data:formData,
