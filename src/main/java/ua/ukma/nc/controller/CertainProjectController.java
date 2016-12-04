@@ -197,7 +197,7 @@ public class CertainProjectController {
             attachment.setAttachment(attachmentDto.getFile().getBytes());
             Long id = attachmentService.createProjectAttachment(attachment);
             
-            response.addMessage("id", String.valueOf(id));;
+            response.addMessage("id", String.valueOf(id));
             response.addMessage("name", attachment.getName());
             return response;
         }

@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html;charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@include file="header.jsp" %>
 <%@include file="projectDataEditingModals.jsp" %>
 <%@include file="projectGroupsModals.jsp" %>
@@ -302,7 +304,7 @@
 			<form:form id="addAttachmentFormSend" method="POST" action="/addProjectAttachment" modelAttribute="projectAttachmentForm"
 						enctype="multipart/form-data" class="form-horizontal">
 			
-			<form:input type="hidden" path="projectId" value="${project.id }" />
+			<form:input type="hidden" path="projectId" value="${project.id }"/>
 						
             <div class="row">
                 <div class="form-project col-md-12">
@@ -444,6 +446,7 @@ function uploadProjectAttachment(){
                     			  $('#project-error').html(value);
                     		  }
                     		});
+                    	$('#uploadAttachmentButton').prop('disabled', false);
                     	break;
                 }
             }
@@ -455,9 +458,10 @@ function uploadProjectAttachment(){
 function bindRemove(){
 	$('.rmv-btn').click(function () {
 
-		var id = $(this).data('button').id_attachment;
 		var div = $(this);
-		$(this).unbind('click');
+		var id = div.data('button').id_attachment;
+		
+		div.unbind('click');
 		
 		function removeAttach(){
         	div.parent().remove();
@@ -476,12 +480,13 @@ function bindRemove(){
 			
         });
     });
+	
 }
 
 function getAttachDiv(name, id){
     var div = '<li style="background-color:#EDF8FC;" class="list-group-item clearfix">';
     div += '<a href="/projectAttachment/'+id+'" class="col-md-2">'+name+' </a>';
-    div += '<div class="btn rmv-btn col-md-1" role="button" data-button=""{"id_attachment": '+id+'}">';
+    div += '<div class="btn rmv-btn col-md-1" role="button" data-button=\'{"id_attachment": "'+id+'"}\'>';
     div += '<span class="glyphicon glyphicon-remove"></span>';
     div += '</div>';
     div += '</li>';
