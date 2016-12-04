@@ -7,14 +7,13 @@ div.custom-modal form {
     margin: 0;
 }
 
-div.custom-modal form > div:nth-child(n - 1),
-div.custom-modal form > div:nth-child(n - 1) div{
+div.custom-modal form > div,
+div.custom-modal form > div:not(:last-child) > div{
     padding: 0;
 }
 
 div.custom-modal form > div:last-child{
     text-align: center;
-    padding: 0;
     line-height: 30px;
 }
 
@@ -34,4 +33,27 @@ div.custom-modal form div:last-child > *:not(.loading) {
 
 div.custom-modal .loading {
     display: none;
+}
+
+div.custom-modal form .form-error{
+    margin-left: 10px;
+    margin-bottom: 0;
+    vertical-align: middle;
+    font-size: 0.9em;
+    color: #ff0000;
+}
+
+div.custom-modal form .general-error-wrapper {
+    text-align: center;
+    display: inline-block;
+}
+
+div.custom-modal form .form-error.general-error {
+    text-align: center;
+    margin-left: 0;
+    font-size: 1.1em;
+}
+
+div.custom-modal div.bottom-controls {
+    padding: 0;
 }

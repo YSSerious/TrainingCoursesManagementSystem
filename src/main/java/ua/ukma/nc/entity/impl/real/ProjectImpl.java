@@ -3,6 +3,7 @@ package ua.ukma.nc.entity.impl.real;
 import ua.ukma.nc.entity.Project;
 
 import java.sql.Date;
+import ua.ukma.nc.dto.ProjectDto;
 
 /**
  * Created by Алексей on 30.10.2016.
@@ -19,6 +20,13 @@ public class ProjectImpl implements Project {
 	public ProjectImpl() {
 	}
 
+        public ProjectImpl(ProjectDto project) {
+		this.name = project.getName();
+		this.description = project.getDescription();
+		this.startDate = project.getStartDate();
+		this.finishDate = project.getFinishDate();
+	}
+        
 	public ProjectImpl(String name, String description, Date startDate, Date finishDate) {
 		this.name = name;
 		this.description = description;

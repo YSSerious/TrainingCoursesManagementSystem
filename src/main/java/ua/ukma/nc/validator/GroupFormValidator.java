@@ -6,6 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import ua.ukma.nc.service.GroupService;
+import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.vo.GroupVo;
 
 /**
@@ -13,11 +14,13 @@ import ua.ukma.nc.vo.GroupVo;
  * @author michael
  */
 @Component
-public class GroupFormValidator implements Validator{
+public class GroupFormValidator implements Validator {
 
     @Autowired
     GroupService groupService;
-    
+
+    ProjectService projectService;
+
     @Override
     public boolean supports(Class<?> arg0) {
         return GroupVo.class.equals(arg0);
@@ -33,6 +36,11 @@ public class GroupFormValidator implements Validator{
         if ((group.getName() != null) && (groupService.getByName(group.getName()) != null)) {
             errors.rejectValue("name", "NotAvailable.groupForm.name");
         }
+//        if ((group.getId() <= 0)
+//                || (group.getId() > 0)
+//                && (projectService.exist(group.getProjectId()) == false)) {
+//            errors.reject("NotFound.groupForm.project");
+//        }
     }
-    
+
 }

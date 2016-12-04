@@ -56,8 +56,8 @@ import ua.ukma.nc.service.StudentStatusService;
 import ua.ukma.nc.service.UserService;
 import ua.ukma.nc.util.exception.MeetingDeleteException;
 import ua.ukma.nc.util.exception.RemoveStudentFromGroupException;
-import ua.ukma.nc.validator.GroupAttachmentFormValidator;
 import ua.ukma.nc.validator.GroupDeleteValidator;
+import ua.ukma.nc.validator.GroupAttachmentFormValidator;
 import ua.ukma.nc.validator.GroupFormValidator;
 import ua.ukma.nc.vo.AjaxResponse;
 import ua.ukma.nc.vo.GroupVo;
@@ -140,11 +140,29 @@ public class GroupController {
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
-    public String editGroup(@RequestParam Long groupId, @RequestParam String groupName) {
-        Group group = groupService.getById(groupId);
-        group.setName(groupName);
-        groupService.updateGroup(group);
-        return "";
+    public AjaxResponse editGroup(@RequestBody GroupVo groupVo) {
+        DataBinder dataBinder = new WebDataBinder(groupVo);
+        dataBinder.setValidator(groupFormValidator);
+        dataBinder.validate();
+        BindingResult result = dataBinder.getBindingResult();
+        AjaxResponse response = new AjaxResponse();
+        if (!result.hasErrors()) {
+            Project project = new ProjectImpl();
+            project.setId(groupVo.getProjectId());
+            Group group = new GroupImpl();
+            group.setProject(project);
+            group.setName(groupVo.getName());
+            groupService.createGroup(group);
+            response.setCode("200");
+            response.addMessage("groupId", Long.toString(groupService.getByName(groupVo.getName()).getId()));
+        } else {
+            response.setCode("204");
+            result.getFieldErrors().stream().forEach((FieldError error) -> {
+                response.addMessage(error.getField(),
+                        messageSource.getMessage(error.getCode(), null, LocaleContextHolder.getLocale()));
+            });
+        }
+        return response;
     }
 
     @RequestMapping(value = "/delete")

@@ -226,7 +226,6 @@ $(document).ready(function () {
 });
 
 $('#project-groups .panel-heading').first().on('click', function (e) {
-    console.log(e.target.tagName);
     if ((e.target.tagName !== "BUTTON") && (e.target.tagName !== "B")) {
         $('#collapse-group').collapse('toggle');
     }
@@ -568,78 +567,98 @@ function sendProjectAjax(ajaxParams) {
 }
 
 // GROUPS EDITING AND DELETION
-$('button.edit-group').each(function () {
-    $(this).on('click', function (e) {
+function addEditGroupClickListener(button) {
+    button.on('click', function (e) {
         var id = $(this).closest('tr').attr('id');
-        var groupIdSpan = $('<span id="group-id"></span>').
-                appendTo('#editGroupModal .modal-body');
-        groupIdSpan.css("display", "none");
-        groupIdSpan.attr('data-group-id', id);
+        $('#editGroupModal').attr('data-group-id', id);
         $('#editGroupModal').modal('show');
     });
+}
+$('button.edit-group').each(function () {
+    addEditGroupClickListener($(this));
 });
 
 $('#editGroupModal form').on('submit', function (e) {
     e.preventDefault();
-    var groupId = $('#editGroupModal .modal-body #group-id').
-            attr('data-group-id');
+    var groupId = $('#editGroupModal').attr('data-group-id');
     var groupName = $('#editGroupModal form #group-name').val();
     editGroupViaAjax(groupId, groupName);
 });
 
 function editGroupViaAjax(id, name) {
-    console.log({"groupId": id, "groupName": name});
-    $.ajax({
+    $.ajax($.extend({
         type: 'POST',
-        url: '/groups/edit.ajax',
+        url: '/groups/edit',
         data: {groupId: id, groupName: name},
         dataType: 'json',
         timeout: 100000,
-        statusCode: {
-            200: function () {
-                $('#editGroupModal').modal('hide');
-                $('#project-groups table tr#' + id + ' td:first-child a').
-                        text(name);
-            }
-        }
-    });
+        success:
+                function (response) {
+                    switch (response.code) {
+                        case 200:
+                            $('#editGroupModal').modal('hide');
+                            cleanModalForm('#editGroupModal');
+                            $('#project-groups table tr#' + id +
+                                    ' td:first-child a').
+                                    text(name);
+                            break;
+                        case 204:
+                            showModalErrors(response.messages, '#editGroupModal');
+                            break;
+                    }
+                }
+    }, getModalAjaxAnimation('#editGroupModal')));
 }
 
-$('button.delete-group').each(function () {
-    $(this).on('click', function (e) {
+function addDeleteGroupClickListener(button) {
+    button.on('click', function (e) {
         var parentTr = $(this).closest('tr');
         var groupId = parentTr.attr('id');
         var studentsAmount = parseInt(parentTr.attr('data-students-amount'));
         if (studentsAmount > 0) {
             $('#cannotDeleteGroupModal').modal('show');
         } else {
-            var groupIdSpan = $('<span id="group-id"></span>').
-                    appendTo('#deleteGroupModal .modal-body');
-            groupIdSpan.css("display", "none");
-            groupIdSpan.attr('data-group-id', groupId);
+            $('#deleteGroupModal').attr('data-group-id', groupId);
             $('#deleteGroupModal').modal('show');
         }
     });
+}
+
+$('button.delete-group').each(function () {
+    addDeleteGroupClickListener($(this));
 });
 
-$('#deleteGroupModal #delete-group').on('click', function (e) {
-    var groupId = $('#deleteGroupModal .modal-body #group-id').
-            attr('data-group-id');
+$('#deleteGroupModal form').on('submit', function (e) {
+    e.preventDefault();
+    var groupId = $('#deleteGroupModal').attr('data-group-id');
     deleteGroupViaAjax(groupId);
 });
 
 function deleteGroupViaAjax(id) {
-    $.ajax({
+    $.ajax($.extend({
         type: 'POST',
-        url: '/groups/delete.ajax',
+        url: '/groups/delete',
         data: {groupId: id},
         dataType: 'json',
         timeout: 100000,
-        statusCode: {
-            200: function () {
-                $('#deleteGroupModal').modal('hide');
-                $('#project-groups table tr#' + id).remove();
-            }
-        }
-    });
+        success:
+                function (response) {
+                    console.log(response.code);
+                    switch (response.code) {
+                        case '200':
+                            $('#deleteGroupModal').modal('hide');
+                            deleteGroupFromPage(id);
+                            cleanModalForm('#deleteGroupModal');
+                            break;
+                        case '204':
+                            showModalErrors(response.messages, '#deleteGroupModal');
+                            break;
+                    }
+                }
+    }, getModalAjaxAnimation('#deleteGroupModal')));
+}
+
+function deleteGroupFromPage(groupId) {
+    var groupTr = $('div#project-groups table tr#' + groupId);
+    groupTr.remove();
 }

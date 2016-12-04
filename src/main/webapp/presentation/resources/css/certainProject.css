@@ -182,10 +182,11 @@ div#project-name > *{
     padding: 0;
     border: 1px solid #ddd;
     border-top: none;
+    max-height: none;
 }
 
 .panel#project-groups .panel-collapse .panel-body{
-    padding: 0;
+    padding: 0 15px 0 15px;
 }
 
 .panel#project-groups .panel-heading {
@@ -204,22 +205,33 @@ div#project-name > *{
     margin-bottom: 0;
 }
 
+.panel#project-groups .panel-body table tr th:nth-child(2),
+.panel#project-groups .panel-body table tr td:nth-child(2),
+.panel#project-groups .panel-body table tr td:nth-child(4),
+.panel#project-groups .panel-body table tr td:nth-child(5)
+{
+    text-align: center;
+}
+
+.panel#project-groups .panel-body table tr td:nth-child(1){
+    width: 30%;
+}
+
+.panel#project-groups .panel-body table tr td:nth-child(2){
+    width: 12%;
+}
+
 .panel#project-groups .panel-body table tr:first-child th{
     border: none;
 }
 
-.panel#project-groups .panel-body table tr:nth-child(n + 2) td:last-child{
-    width: 1%;
-    white-space: nowrap;
-}
-
-.panel#project-groups .panel-body table tr:nth-child(n + 2) td:last-child > span:last-child{
+/*.panel#project-groups .panel-body table tr:nth-child(n + 2) td:last-child > span:last-child{
     display: none;
     visibility: hidden;
     overflow: hidden;
-}
+}*/
 
-div.modal#editGroupModal form {
+/*div.modal#editGroupModal form {
     margin: 0;
 }
 
@@ -231,7 +243,7 @@ div.modal#deleteGroupModal .modal-dialog{
 div.modal#deleteGroupModal .modal-body h4 {
     text-align: center;
     margin-bottom: 20px;
-}
+}*/
 
 /*div#project-name h3 {
     font-size: 2em;

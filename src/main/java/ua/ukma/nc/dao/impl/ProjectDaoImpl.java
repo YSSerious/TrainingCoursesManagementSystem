@@ -74,6 +74,12 @@ public class ProjectDaoImpl implements ProjectDao {
 		log.info("Getting project with id = {}", id);
 		return jdbcTemplate.queryForObject(GET_BY_ID, new ProjectMapper(), id);
 	}
+        
+        @Override
+        public boolean exist(Long id) {
+            List<Project> projects = jdbcTemplate.query(GET_BY_ID, new Object[] { id }, new ProjectMapper());
+            return !projects.isEmpty();
+        }
 
 	@Override
 	public Project getByName(String name) {

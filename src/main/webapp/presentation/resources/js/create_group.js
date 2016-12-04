@@ -16,7 +16,7 @@ $("#createGroupModal form").on('submit', function (event) {
     $.ajax($.extend({
         type: "POST",
         contentType: "application/json",
-        url: "/groups/add.ajax",
+        url: "/groups/add",
         data: JSON.stringify(group),
         dataType: 'json',
         timeout: 100000,

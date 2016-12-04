@@ -41,6 +41,11 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDao.getById(id);
 	}
 	
+        @Override
+        public boolean exist(Long id) {
+            return projectDao.exist(id);
+        }
+        
 	@Override
 	public Project getByName(String name){
 		return projectDao.getByName(name);

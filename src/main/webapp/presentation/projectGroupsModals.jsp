@@ -9,7 +9,9 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <form class="default-form" id='create-group-form' method="post">
-                        <label path="general" class="form-error"></label>
+                        <div>
+                            <label path="general" class="form-error general-error"></label>
+                        </div>
                         <div class="form-group col-sm-12 required">
                             <div class="col-sm-12">
                                 <label for="group-name" path="name">Name</label>
@@ -45,16 +47,17 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <form class="default-form" id='edit-group-form' method="post">
-                        <label path="general" class="form-error"></label>
+                        <div>
+                            <label path="general" class="form-error general-error"></label>
+                        </div>
                         <div class="form-group col-sm-12 required">
                             <div class="col-sm-12">
                                 <label for="group-name" path="name">Name</label>
-                                <!--<errors path="name" class="form-error"/>-->
+                                <label path="name" class="form-error"></label>
                             </div>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="group-name"
                                        path="name" />
-                                <label id="name-message"></label>
                             </div>
                         </div> 
                         <div class="col-sm-12 bottom-controls">
@@ -81,11 +84,13 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">  
-                    <div class="col-sm-12">
-                        <h4>Are you sure? You can not undo this action.</h4>
-                    </div>
                     <form>
-                        <label path="general" class="form-error"></label>
+                        <div>
+                            <label path="general" class="form-error general-error"></label>
+                        </div>
+                        <div class="col-sm-12">
+                            <h4>Are you sure? You can not undo this action.</h4>
+                        </div>
                         <div class="col-sm-12 bottom-controls">
                             <button type="submit" class="btn btn-primary pull-right"><spring:message code="btn.delete"/></button>
                             <button type="button" class="btn btn-default pull-right" data-dismiss="modal"><spring:message code="btn.cancel"/></button>
