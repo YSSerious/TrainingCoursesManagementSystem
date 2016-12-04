@@ -5,15 +5,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ua.ukma.nc.dao.ProjectAttachmentDao;
 import ua.ukma.nc.entity.ProjectAttachment;
 import ua.ukma.nc.entity.impl.proxy.ProjectProxy;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Алексей on 30.10.2016.
@@ -78,9 +86,24 @@ public class ProjectAttachmentDaoImpl implements ProjectAttachmentDao{
     }
 
     @Override
-    public int createProjectAttachment(ProjectAttachment projectAttachment) {
-        log.info("Create new project attachment with name = {}", projectAttachment.getName());
-        return jdbcTemplate.update(CREATE_PROJECT_ATTACHMENT, projectAttachment.getName(), projectAttachment.getProject().getId(), projectAttachment.getAttachmentScope(), projectAttachment.getAttachment());
+    public Long createProjectAttachment(ProjectAttachment projectAttachment) {
+    	KeyHolder holder = new GeneratedKeyHolder();
+
+    	jdbcTemplate.update(new PreparedStatementCreator() {           
+
+    	                @Override
+    	                public PreparedStatement createPreparedStatement(Connection connection)
+    	                        throws SQLException {
+    	                    PreparedStatement ps = connection.prepareStatement(CREATE_PROJECT_ATTACHMENT, Statement.RETURN_GENERATED_KEYS);
+    	                    ps.setString(1, projectAttachment.getName());
+    	                    ps.setLong(2, projectAttachment.getProject().getId());
+    	                    ps.setString(3, projectAttachment.getAttachmentScope());
+    	                    ps.setBytes(4, projectAttachment.getAttachment());
+    	                    return ps;
+    	                }
+    	            }, holder);
+
+    	return (Long) holder.getKeys().get("id");
     }
     
     @Override

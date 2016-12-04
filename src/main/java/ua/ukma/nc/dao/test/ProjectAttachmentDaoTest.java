@@ -67,6 +67,6 @@ public class ProjectAttachmentDaoTest {
         projectAttachment.setName("name");
         projectAttachment.setProject(project);
         projectAttachment.setAttachmentScope("attScope");
-        Assert.assertEquals(1, projectAttachmentDao.createProjectAttachment(projectAttachment));
+        Assert.assertNotNull(projectAttachmentDao.createProjectAttachment(projectAttachment));
     }
 }

@@ -18,5 +18,5 @@ public interface ProjectAttachmentService {
     
     List<ProjectAttachment> getAllById(Long id_project);
 
-    int createProjectAttachment(ProjectAttachment projectAttachment);
+    Long createProjectAttachment(ProjectAttachment projectAttachment);
 }

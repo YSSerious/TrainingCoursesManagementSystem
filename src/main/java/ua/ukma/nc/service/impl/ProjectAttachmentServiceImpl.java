@@ -38,7 +38,7 @@ public class ProjectAttachmentServiceImpl implements ProjectAttachmentService{
     }
 
     @Override
-    public int createProjectAttachment(ProjectAttachment projectAttachment) {
+    public Long createProjectAttachment(ProjectAttachment projectAttachment) {
         return projectAttachmentDao.createProjectAttachment(projectAttachment);
     }
 

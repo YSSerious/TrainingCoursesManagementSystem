@@ -16,7 +16,7 @@ public interface ProjectAttachmentDao {
 
     List<ProjectAttachment> getAll();
 
-    int createProjectAttachment(ProjectAttachment projectAttachment);
+    Long createProjectAttachment(ProjectAttachment projectAttachment);
 
 	List<ProjectAttachment> getAllById(Long id_project);
 }
