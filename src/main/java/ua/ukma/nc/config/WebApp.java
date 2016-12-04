@@ -53,6 +53,7 @@ public class WebApp extends WebMvcConfigurerAdapter {
     public CommonsMultipartResolver getResolver() throws IOException{
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setMaxUploadSizePerFile(5242880);//5MB
+        resolver.setDefaultEncoding("UTF-8");
          
         return resolver;
     }

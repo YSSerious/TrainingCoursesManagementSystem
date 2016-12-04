@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ua.ukma.nc.dto.CriterionDto;
@@ -75,8 +76,9 @@ public class MeetingController {
 	private MarkService markService;
 
 	@RequestMapping(value = "/meeting/{id}", method = RequestMethod.GET)
-	public String getMeetings(Model model, Principal principal, @PathVariable long id) {
+	public ModelAndView getMeetings(Principal principal, @PathVariable long id) {
 
+		ModelAndView model = new ModelAndView("certainMeeting");
 		Meeting meeting = meetingService.getById(id);
 		List<User> all = (groupService.getById(meeting.getGroup().getId())).getUsers();
 		List<MeetingReview> meetingReviews = meetingReviewService.getByMeeting(id);
@@ -124,14 +126,14 @@ public class MeetingController {
 			unevaluatedCriteria.put(user, cri);
 		}
 
-		model.addAttribute("unevaluatedCriteria", unevaluatedCriteria);
-		model.addAttribute("criteria", criterionDtos);
-		model.addAttribute("marks", markInformation);
-		model.addAttribute("students", unevaluated);
-		model.addAttribute("meeting", meetingService.getById(id));
-		model.addAttribute("categories", category);
-		model.addAttribute("absent", absent);
-		return "certainMeeting";
+		model.addObject("unevaluatedCriteria", unevaluatedCriteria);
+		model.addObject("criteria", criterionDtos);
+		model.addObject("marks", markInformation);
+		model.addObject("students", unevaluated);
+		model.addObject("meeting", meetingService.getById(id));
+		model.addObject("categories", category);
+		model.addObject("absent", absent);
+		return model;
 	}
 
 	@RequestMapping(value = "/create-meeting", method = RequestMethod.GET)

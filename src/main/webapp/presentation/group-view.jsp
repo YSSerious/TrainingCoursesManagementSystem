@@ -554,7 +554,7 @@ function bindRemove(){
 
 function getAttachDiv(name, id){
     var div = '<li style="background-color:#EDF8FC;" class="list-group-item clearfix">';
-    div += '<a href="/groupAttachment/'+id+'" class="col-md-2">'+name+' </a>';
+    div += '<a href="/groups/groupAttachment/'+id+'" class="col-md-2">'+name+' </a>';
     div += '<div class="btn rmv-btn col-md-1" role="button" data-button=\'{"id_attachment": "'+id+'"}\'>';
     div += '<span class="glyphicon glyphicon-remove"></span>';
     div += '</div>';
