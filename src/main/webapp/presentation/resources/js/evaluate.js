@@ -1,6 +1,5 @@
 function guf228(userId, meeting) {
 	function sendAjax(data, comment, meetingId) {
-		console.log(comment);
 		$.ajax({
 			url : '/ajax/post/evaluate/' + userId,
 			type : 'POST',
@@ -13,6 +12,7 @@ function guf228(userId, meeting) {
 			}),
 			success : function(data) {
 				console.log('success');
+				window.location.reload(true);
 			},
 			error : function(error) {
 				console.log(error.responseText);
@@ -45,15 +45,13 @@ function guf228(userId, meeting) {
 		$('#evaluateModal' + userId).modal('toggle');
 		sendAjax(data, comment, meetingId);
 	} else {
-		//$("table tr:nth-child(2) td:nth-child("+count+")").html($(value).find('select').val());
 		$('#rev-err' + userId).text(error);
 		$('#rev-err' + userId).removeClass('hidden');
 	}
 }
 
 function absent(userId, meeting) {
-	function sendAjax(meetingId) {
-		console.log(comment);
+	function sendAjaxus(meetingId) {
 		$.ajax({
 			url : '/ajax/post/absent/' + userId,
 			type : 'POST',
@@ -64,19 +62,20 @@ function absent(userId, meeting) {
 			}),
 			success : function(data) {
 				console.log('success');
+				window.location.reload(true);
 			},
 			error : function(error) {
 				console.log(error.responseText);
 			}
 		});
 	}
-	var meetingId = meeting;
-
+	;
 	$('#rev-err' + userId).addClass('hidden');
 	$('#evaluateModal' + userId).modal('toggle');
-	sendAjax(meetingId);
-	alert(meetingId);
+	sendAjaxus(meeting);
 }
+
+
 
 function app_handle_listing_horisontal_scroll(listing_obj) {
 	table_obj = $('.table', listing_obj);

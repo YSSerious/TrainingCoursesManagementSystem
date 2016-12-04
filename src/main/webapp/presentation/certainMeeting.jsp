@@ -27,7 +27,7 @@
         </div>
     </div>
 </div>
-
+<c:if test="${!students.isEmpty() || !marks.isEmpty() || !absent.isEmpty()}">
 <div id="table-listing">
     <div class="panel panel-primary  table-responsive table-scrollable">
         <div class="panel-heading">
@@ -161,7 +161,7 @@
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                <h4 class="modal-title" id="myModalLabel">Evaluate ${entry.key.firstName} ${entry.key.lastName}</h4>
                             </div>
                             <div class="modal-body edit-content">
                                 <ul class="list-group">
@@ -210,7 +210,8 @@
                                     </c:if>
                                 </ul>
                                 <label>General: </label>
-                                <textarea class="form-control" id="rev-com" rows="5"></textarea>
+                                <textarea class="form-control" id="rev-com" rows="5">
+                                </textarea>
 									<span id="rev-err" class="text-danger hidden">Unknown
 										error</span></div>
                             <div class="modal-footer">
@@ -228,10 +229,24 @@
 
                 <!-- finish evaluate Student modal -->
             </c:forEach>
+            <c:forEach items="${absent}" var="user">
+                <tr id = "absent">
+                    <td><font size="3"><b><a href="#" data-toggle="tooltip" data-placement="top"
+                               title="Absent">${user.firstName}
+                            ${user.secondName} ${user.lastName}</a></b> </font></td>
+                    <c:forEach items="${criteria}" var="criterion">
+                        <td></td>
+                    </c:forEach>
+                </tr>
+                </c:forEach>
             </tbody>
         </table>
     </div>
 </div>
+</c:if>
+<c:if test="${students.isEmpty() && marks.isEmpty() && absent.isEmpty()}">
+<h1>No students here yet</h1>
+</c:if>
 <br>
 
 

@@ -3,10 +3,12 @@ package ua.ukma.nc.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -82,18 +84,20 @@ public class MeetingController {
 		List<Long> evaluated = new ArrayList<>();
 		for (MeetingReview mr : meetingReviews)
 			evaluated.add(mr.getStudent().getId());
-
 		List<User> unevaluated = new ArrayList<>();
-		for (User user : (all))
+		for (User user : all)
 			for (Role role : user.getRoles())
 				if (role.getId() == 4)
 					if (!evaluated.contains(user.getId()))
 						unevaluated.add(user);
-
-		Map<User, List<MarkInformation>> markInformation = new HashMap<>();
-		for (Long user : evaluated)
+		Map<User, List<MarkInformation>> markInformation = new TreeMap<>();
+		List<User> absent = new ArrayList<>();
+		for (Long user : evaluated){
+			if(!meetingReviewService.getByMeetingStudent(id, user).getType().equals("A"))
 			markInformation.put(userService.getById(user), meetingResultService.getByMeeting(user, id));
-
+			else
+				absent.add(userService.getById(user));
+		}
 		// Criteria set
 		List<Criterion> criteria = criterionService.getByMeeting(id);
 		List<CriterionDto> criterionDtos = new ArrayList<>();
@@ -126,6 +130,7 @@ public class MeetingController {
 		model.addAttribute("students", unevaluated);
 		model.addAttribute("meeting", meetingService.getById(id));
 		model.addAttribute("categories", category);
+		model.addAttribute("absent", absent);
 		return "certainMeeting";
 	}
 
@@ -198,7 +203,6 @@ public class MeetingController {
 			review.setMeeting(meetingService.getById(data.getMeetingId()));
 			review.setMentor(mentor);
 			review.setCommentary(data.getComment());
-			System.out.println(review);
 			meetingReviewService.createMeetingReview(review);
 			for (MarkCommentDto value : data.getData()) {
 				MeetingResult result = new MeetingResult();
@@ -211,6 +215,11 @@ public class MeetingController {
 			}
 		} else {
 			review = meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId);
+			if(data.getComment()!=null){
+				review.setCommentary(data.getComment());
+				meetingReviewService.updateMeetingReview(review);
+			}
+				
 			Iterator<MarkCommentDto> value = data.getData().iterator();
 			Iterator<MeetingResult> result = meetingResultService.getByReview(review.getId()).iterator();
 			while (value.hasNext() && result.hasNext()) {
@@ -229,8 +238,14 @@ public class MeetingController {
 	@ResponseBody
 	public String postAbsent(Principal principal, @PathVariable("id") Long userId,
 			@RequestBody JsonWrapperAbsent data) {
-		
-		System.out.println(userId+"  "+data.getMeetingId());
+		User mentor = userService.getByEmail(principal.getName());
+		MeetingReview review = null;
+		review = new MeetingReviewImpl((long) 0, "A");
+		review.setStudent(userService.getById(userId));
+		review.setMeeting(meetingService.getById(data.getMeetingId()));
+		review.setMentor(mentor);
+		review.setCommentary("");
+		meetingReviewService.createMeetingReview(review);
 				return "true";
 		
 	}
