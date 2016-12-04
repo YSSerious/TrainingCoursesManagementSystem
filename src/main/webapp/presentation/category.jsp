@@ -108,23 +108,26 @@
                         </button>
                         <h4 class="modal-title">New Category</h4>
                         <div>
-                            <form name="addCategoryForm" id="addCategoryFormId">
-                                <table class="table">
-                                    <tr>
-                                        <td>Name</td>
-                                        <td><input type="text" id="categoryName"></td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>Description</td>
-                                        <td><input type="text" id="categoryDescription"></td>
-                                    </tr>
-                                </table>
+                            <form name="addCategoryForm" id="addCategoryFormId" class="form-horizontal">
+                                    <div class="form-group" id="form-group-name-id">
+                                        <label class="control-label col-sm-2" for="categoryName">Name</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" id="categoryName" placeholder="Enter name">
+                                        </div>
+                                        <h5 id="categoryNameErrorId" class="text-danger hidden"></h5>
+                                    </div>
+                                    <div class="form-group" id="form-group-description-id">
+                                        <label class="control-label col-sm-2" for="categoryDescription">Description</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" id="categoryDescription" placeholder="Enter description">
+                                        </div>
+                                        <h5 id="categoryDescriptionErrorId" class="text-danger hidden"></h5>
+                                    </div>
                             </form>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" id="saveCategory" type="button" data-dismiss="modal">
+                        <button class="btn btn-primary" id="saveCategory" type="button" >
                             Add
                         </button>
                     </div>
@@ -142,19 +145,26 @@
                         </button>
                         <h4 class="modal-title">New Criteria</h4>
                         <div>
-                            <form name="addCriteriaForm" id="addCriteriaFormId">
-                                <table class="table">
-                                    <tr>
-                                        <td>Name</td>
-                                        <td><input type="text" id="criteriaName"></td>
+                            <form name="addCriteriaForm" id="addCriteriaFormId" class="form-horizontal">
+                                <%--<table class="table">--%>
+                                    <%--<tr>--%>
+                                        <%--<td>Name</td>--%>
+                                        <%--<td><input type="text" id="criteriaName"></td>--%>
 
-                                    </tr>
-                                </table>
+                                    <%--</tr>--%>
+                                <%--</table>--%>
+                                    <div class="form-group" id="form-criteria-name-id">
+                                        <label class="control-label col-sm-2" for="criteriaName">Name</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" id="criteriaName" placeholder="Enter name">
+                                        </div>
+                                        <h5 id="criteriaNameErrorId" class="text-danger hidden"></h5>
+                                    </div>
                             </form>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" id="saveCriteria" type="button" data-dismiss="modal">
+                        <button class="btn btn-primary" id="saveCriteria" type="button">
                             Add
                         </button>
                     </div>

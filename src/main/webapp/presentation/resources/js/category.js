@@ -1,45 +1,4 @@
 $(document).ready(function () {
-
-    $("#saveCategory").click(function () {
-        $.ajax({
-            url: "/addCategory",
-            type: "POST",
-            data: {name: $("#categoryName").val(), "description": $("#categoryDescription").val()},
-            statusCode: {
-                200: function (data) {
-                    console.log(data);
-                        buildCategory(data.id, data.name, data.description);
-                        $('#panelGroupId').append(newCategory);
-                },
-                409: function (textStatus) {
-                    console.log(textStatus);
-                    $('#responseErrorModal').html(textStatus.responseText);
-                    $('#errorModal').modal('show');
-                }
-            }
-        });
-    });
-
-    $("#saveCriteria").click(function () {
-        $.ajax({
-            url: "/saveCriteria",
-            type: "POST",
-            data: {categoryId: categoryId, name: $("#criteriaName").val()},
-            statusCode: {
-                200: function (data) {
-                    console.log(data);
-                        buildCriteria(data.id, data.title);
-                        $('#collapseIn-' + data.categoryId).append(newCriteria);
-                },
-                409: function (textStatus) {
-                    console.log(textStatus);
-                    $('#responseErrorModal').html(textStatus.responseText);
-                    $('#errorModal').modal('show');
-                }
-            }
-        });
-    });
-
     $("#deleteCategoryModal").click(function () {
         $.ajax({
             url: "/deleteCategory",
@@ -51,13 +10,11 @@ $(document).ready(function () {
                     $('#categoryPanelId-' + categoryId).remove();
                 },
                 409: function (textStatus) {
-                        console.log(textStatus);
-                        $('#responseErrorModal').html(textStatus.responseText);
-                        $('#errorModal').modal('show');
+                    console.log(textStatus);
+                    $('#responseErrorModal').html(textStatus.responseText);
+                    $('#errorModal').modal('show');
                 }
             }
-            // , success: function () {
-            // }
         });
     });
 
@@ -100,36 +57,111 @@ $(document).ready(function () {
         });
     });
 
-    var namePattern = new RegExp('^[a-zA-Z0-9_-\\s]{3,15}$');
-    var descriptionPattern = new RegExp('^[a-zA-Z0-9_-\\s]{3,25}$');
+    var namePattern = new RegExp('^[\\w\\s-]{2,20}$');
+    var descriptionPattern = new RegExp('^[\\w\\s-]{5,35}$');
 
-    $('#saveCategory').attr('disabled', true);
-    $('#categoryName, #categoryDescription').on('keyup', function () {
+    $("#saveCategory").click(function () {
+
+        if(!namePattern.test($("#categoryName").val())){
+            $('#categoryNameErrorId').html("name must be 2-20 symbols, under/dash or space.");
+            $('#form-group-name-id').addClass('has-error');
+            $('#categoryNameErrorId').removeClass('hidden');
+        }
+
+        if($("#categoryName").val()==''){
+            $('#categoryNameErrorId').html("required field");
+            $('#categoryNameErrorId').removeClass('hidden');
+            $('#form-group-name-id').addClass('has-error');
+        }
+
+        if(!namePattern.test($("#categoryDescription").val())){
+            $('#categoryDescriptionErrorId').html("description must be 5-35 symbols, under/dash or space.");
+            $('#form-group-description-id').addClass('has-error');
+            $('#categoryDescriptionErrorId').removeClass('hidden');
+        }
+
+        if($("#categoryDescription").val()==''){
+            $('#categoryDescriptionErrorId').html("required field");
+            $('#form-group-description-id').addClass('has-error');
+            $('#categoryDescriptionErrorId').removeClass('hidden');
+        }
+
+
         if (namePattern.test($("#categoryName").val()) && descriptionPattern.test($("#categoryDescription").val())) {
-            $('#saveCategory').attr('disabled', false);
-        } else {
-            $('#saveCategory').attr('disabled', true);
+            $.ajax({
+                url: "/addCategory",
+                type: "POST",
+                data: {name: $("#categoryName").val(), "description": $("#categoryDescription").val()},
+                statusCode: {
+                    200: function (data) {
+                        console.log(data);
+                        //Validation Success
+                        $('#form-group-name-id').removeClass('has-error');
+                        $('#form-group-description-id').removeClass('has-error');
+                        $('#categoryNameErrorId').addClass('hidden');
+                        $('#categoryDescriptionErrorId').addClass('hidden');
+                        $('#addCategory').modal('toggle');
+
+                        buildCategory(data.id, data.name, data.description);
+                        $('#panelGroupId').append(newCategory);
+                    },
+                    400: function (textStatus) {
+                        console.log(textStatus);
+                    },
+                    409: function (textStatus) {
+                        console.log(textStatus);
+                        $('#responseErrorModal').html(textStatus.responseText);
+                        $('#errorModal').modal('show');
+                    }
+                }
+            });
         }
+
     });
 
-    $('#saveCriteria').attr('disabled', true);
-    $('#criteriaName').on('keyup', function () {
+
+    $("#saveCriteria").click(function () {
+
+        if(!namePattern.test($("#criteriaName").val())){
+            $('#criteriaNameErrorId').html("name must be 2-20 symbols, under/dash or space.");
+            $('#form-criteria-name-id').addClass('has-error');
+            $('#criteriaNameErrorId').removeClass('hidden');
+        }
+
+        if($("#criteriaName").val()==''){
+            $('#criteriaNameErrorId').html("required field");
+            $('#criteriaNameErrorId').removeClass('hidden');
+            $('#form-criteria-name-id').addClass('has-error');
+        }
+
         if (namePattern.test($("#criteriaName").val())) {
-            $('#saveCriteria').attr('disabled', false);
-        } else {
-            $('#saveCriteria').attr('disabled', true);
+            $.ajax({
+                url: "/saveCriteria",
+                type: "POST",
+                data: {categoryId: categoryId, name: $("#criteriaName").val()},
+                statusCode: {
+                    200: function (data) {
+                        console.log(data);
+                        //Validation Success
+                        $('#form-criteria-name-id').removeClass('has-error');
+                        $('#criteriaNameErrorId').addClass('hidden');
+                        $('#addCriteria').modal('toggle');
+
+                        buildCriteria(data.id, data.title);
+                        $('#collapseIn-' + data.categoryId).append(newCriteria);
+                    },
+                    400: function (textStatus) {
+                        console.log(textStatus);
+                    },
+                    409: function (textStatus) {
+                        console.log(textStatus);
+                        $('#responseErrorModal').html(textStatus.responseText);
+                        $('#errorModal').modal('show');
+                    }
+                }
+            });
         }
     });
-
-    $('#editCategoryModal').attr('disabled', true);
-    $('#editCategoryName, #editCategoryDescription').on('keyup', function () {
-        if (namePattern.test($("#editCategoryName").val()) && descriptionPattern.test($("#editCategoryDescription").val())) {
-            $('#editCategoryModal').attr('disabled', false);
-        } else {
-            $('#editCategoryModal').attr('disabled', true);
-        }
-    });
-
 
 });
 
@@ -148,8 +180,8 @@ function setCategory(id, name, description) {
     categoryId = id;
     categoryName = name;
     categoryDescription = description;
-    
-        console.log(id, name, description);
+
+    console.log(id, name, description);
     $('#editCategoryName').val(categoryName);
     $('#editCategoryDescription').val(categoryDescription);
 }
@@ -166,7 +198,6 @@ function buildCriteria(criteriaId, criteriaTitle) {
         "</div>";
 }
 
-
 function buildCategory(id, name, desc) {
     newCategory = "<div class='panel panel-default' id='categoryPanelId-" + id + "'>" +
         "<div class='panel-heading'>" +
@@ -179,21 +210,21 @@ function buildCategory(id, name, desc) {
         " type='button'" +
         " data-toggle='modal'" +
         " data-target='#deleteCategory'" +
-        " onclick='setCategory(\""+id+"\", \""+name+"\", \""+desc+"\")'  >" +
+        " onclick='setCategory(\"" + id + "\", \"" + name + "\", \"" + desc + "\")'  >" +
         "<span class='glyphicon glyphicon-remove'></span>" +
         "</button>" +
         "<button class='btn btn-lg pull-right-btn'" +
         " type='button'" +
         " data-toggle='modal'" +
         " data-target='#editCategory'" +
-        " onclick='setCategory(\""+id+"\", \""+name+"\", \""+desc+"\")'>" +
+        " onclick='setCategory(\"" + id + "\", \"" + name + "\", \"" + desc + "\")'>" +
         "<span class='glyphicon glyphicon-edit'></span>" +
         "</button>" +
         "<button class='btn btn-lg pull-right-btn'" +
         " type='button'" +
         " data-toggle='modal'" +
         " data-target='#addCriteria'" +
-        " onclick='setCategory(\""+id+"\", \""+name+"\", \""+desc+"\")'>" +
+        " onclick='setCategory(\"" + id + "\", \"" + name + "\", \"" + desc + "\")'>" +
         "<span class='glyphicon glyphicon-plus'></span>" +
         "</button>" +
         "</h4>" +

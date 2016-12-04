@@ -16,6 +16,7 @@ import ua.ukma.nc.entity.impl.real.CriterionImpl;
 import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.util.exception.CriteriaDeleteException;
+import ua.ukma.nc.validator.CategoryValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,8 @@ public class CategoryController {
     private CategoryService categoryService;
     @Autowired
     private CriterionService criterionService;
+    @Autowired
+    private CategoryValidator categoryValidator;
 
     @RequestMapping("/category")
     public ModelAndView getUser() {
@@ -45,6 +48,9 @@ public class CategoryController {
     @RequestMapping(value = "/addCategory", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity addCategory(@RequestParam String name, @RequestParam String description) {
+        if(!categoryValidator.checkCategoryName(name) && !categoryValidator.checkCategoryDescription(description)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Validation failed");
+        }
         if(categoryService.isExist(name)){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Category with this name already exist");
         }
@@ -60,6 +66,9 @@ public class CategoryController {
     @RequestMapping(value = "/saveCriteria", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity saveCriteria(@RequestParam Long categoryId, @RequestParam String name) {
+        if(!categoryValidator.checkCriteriaName(name)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Validation failed");
+        }
         if(criterionService.isExist(name)){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Criteria with this name already exist");
         }
