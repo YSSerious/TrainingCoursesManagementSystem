@@ -81,7 +81,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <%--<%@include file="createGroup.jsp"%>--%>
-                <div id="collapse-group" class="panel-collapse col-sm-12">
+                <div id="collapse-group" class="panel-collapse collapse clearfix">
                     <div class="panel-body">
                         <table class="table table-hover">
                             <tr>
@@ -125,43 +125,43 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
-            <h2>Criteria List </h2>
-            <div class="panel-group" id="panelGroupId">
-                <div class="panel panel-default">
-                    <div class="panel-heading clearfix">
-                        <div role="button" data-toggle="collapse" data-target="#collapseIn"
-                             class="arrow col-md-1" onclick="changeSpan(this)">
-                            <span id="spanId" class="pull-left glyphicon glyphicon-chevron-down"></span>
-                        </div>
-                        <sec:authorize access="hasRole('ADMIN')">
-                            <button type="button" class="btn btn-default btn-sm pull-right"
-                                    id="showAvailableCriteria"
-                                    data-toggle="modal"
-                                    data-target="#showAvailableCriteriaModal">
-                                <b>Add criteria</b>
-                            </button>
-                        </sec:authorize>
+    <div class="col-md-12">
+        <h2>Criteria List </h2>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div role="button" data-toggle="collapse" data-target="#collapseIn"
+                         class="arrow col-md-1" onclick="changeSpan(this)">
+                        <span id="spanId" class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
                     </div>
-                    <div id="collapseIn" class="panel-collapse collapse clearfix">
-                        <ul class="list-group" id="collapseUL">
-                            <c:forEach items="${criterions}" var="criterion">
-                                <li class="list-group-item  clearfix" id="criteriaId-${criterion.id}">
-                                    <div class="col-md-11">${criterion.title}</div>
-                                    <c:if test="${!criterion.rated}">
-                                        <div class="btn rmv-cr-btn col-md-1" type='button'
-                                             data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
-                                            <span class="glyphicon glyphicon-remove"></span>
-                                        </div>
-                                    </c:if>
-                                </li>
-                            </c:forEach>
-                        </ul>
-                    </div>
+                    <sec:authorize access="hasRole('ADMIN')">
+                        <button type="button" class="btn btn-default btn-sm pull-right"
+                                id="showAvailableCriteria"
+                                data-toggle="modal"
+                                data-target="#showAvailableCriteriaModal">
+                            <b>Add criteria</b>
+                        </button>
+                    </sec:authorize>
+                </div>
+                <div id="collapseIn" class="panel-collapse collapse clearfix">
+                    <ul class="list-group" id="collapseUL">
+                        <c:forEach items="${criterions}" var="criterion">
+                            <li class="list-group-item  clearfix" id="criteriaId-${criterion.id}">
+                                <div class="col-md-11">${criterion.title}</div>
+                                <c:if test="${!criterion.rated}">
+                                    <div class="btn rmv-cr-btn col-md-1" type='button'
+                                         data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </div>
+                                </c:if>
+                            </li>
+                        </c:forEach>
+                    </ul>
                 </div>
             </div>
-        </div>
     </div>
+</div>
+
+
 
 
 

@@ -7,7 +7,7 @@
 	 }
 	 return true;
 	};
-	
+
 
 	var max = ${noOfPages};
 	var curr = ${currentPage};
