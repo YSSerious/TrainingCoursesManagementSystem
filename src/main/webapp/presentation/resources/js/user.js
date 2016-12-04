@@ -367,21 +367,21 @@ function getReviewForm(userId, projectId) {
 		'success' : function(resp) {
 			var s = '';
 			$.each( resp.data, function( key, value ) {
-				s+='<tr class="fin-rev-res-item"><td>'+value.criterion.title+'</td><td><select id="sel'
+				s+='<tr class="fin-rev-res-item"><td><label>'+value.criterion.title+'</label></td><td><select id="sel'
 				+value.criterion.id+'">';
-				for(var i=1; i<6; ++i){
+				for(var i=0; i<6; ++i){
 					s+='<option val='+i;
 					if(value.mark&&i==value.mark.value)
 						s+=' selected';
 					s+='>'+i+'</option>';
 				}
-				s+='</select></td><td><input required type="text" id="'
+				s+='</select></td><td><input maxlength="255" required type="text" id="'
 					+value.criterion.id+'"';
 				if(value.commentary)
 					s+=' value="'+value.commentary+'"';
 				s+='></td></tr>';
 			});
-			s+='<tr><td colspan="3"><label>'+lang.final_review_comment_general+'</label><textarea class="form-control" id="fin-rev-com" rows="5">';
+			s+='<tr><td colspan="3"><label>'+lang.final_review_comment_general+'</label><textarea maxlength="255" class="form-control" id="fin-rev-com" rows="5">';
 			if(resp.comment)
 				s+=resp.comment;
 			s+='</textarea></td></tr>';
@@ -439,6 +439,13 @@ function doFinalReview(userId) {
 	var error = null;
 	var data = [];
 	var comment = $('#fin-rev-com').val();
+	if(!comment){
+		error = lang.final_review_error_input_required;
+		$('#fin-rev-com').addClass('error');
+	}
+	else
+		if($('#fin-rev-com').hasClass('error'))
+			$('#fin-rev-com').removeClass('error');
 	$('#final-review-form-list').find($('.fin-rev-res-item')).each(function () {
 		var finReview = {"mark": {"value": $(this).find('select').val()}, "criterion": {"id": $(this).find('input').attr('id')}, "commentary": $(this).find('input').val()};
 		if(!$(this).find('input').val()) {

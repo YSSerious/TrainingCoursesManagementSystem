@@ -337,16 +337,16 @@
                 <button class="close" type="button" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
-                <h4 class="modal-title"><spring:message code="final_review.label"/> </h4>
-                <div>
-                    <form>
-                        <table class="table" id="final-review-form-list">
-                            <tr>
-                                <td><spring:message code="loading.label"/></td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
+                <h4 class="modal-title"><spring:message code="final_review.label"/>:  ${user.firstName} ${user.lastName}</h4>
+            </div>
+            <div class="modal-body scroll">
+                <form>
+                    <table class="table" id="final-review-form-list">
+                        <tr>
+                            <td><spring:message code="loading.label"/></td>
+                        </tr>
+                    </table>
+                </form>
             </div>
             <div class="modal-footer">
                 <span id="fin-rev-err" class="text-danger hidden">Unknown error</span>
@@ -367,16 +367,16 @@
                 <button class="close" type="button" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
-                <h4 class="modal-title"><spring:message code="final_review.label.project"/> </h4>
-                <div>
-                    <form>
-                        <table class="table" id="final-review-project-list">
-                            <tr>
-                                <td><spring:message code="loading.label"/></td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
+                <h4 class="modal-title"><spring:message code="final_review.label.project"/>:  ${user.firstName} ${user.lastName} </h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <table class="table" id="final-review-project-list">
+                        <tr>
+                            <td><spring:message code="loading.label"/></td>
+                        </tr>
+                    </table>
+                </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default hidden" onclick="getReviewForm(${user.id})" type="button">
