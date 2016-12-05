@@ -20,13 +20,14 @@ public class ProjectImpl implements Project {
 	public ProjectImpl() {
 	}
 
-        public ProjectImpl(ProjectDto project) {
+	public ProjectImpl(ProjectDto project) {
+		this.id = project.getId();
 		this.name = project.getName();
 		this.description = project.getDescription();
 		this.startDate = project.getStartDate();
 		this.finishDate = project.getFinishDate();
 	}
-        
+
 	public ProjectImpl(String name, String description, Date startDate, Date finishDate) {
 		this.name = name;
 		this.description = description;
@@ -76,21 +77,27 @@ public class ProjectImpl implements Project {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o)
+		if (this == o) {
 			return true;
-		if (o == null || getClass() != o.getClass())
+		}
+		if (o == null || getClass() != o.getClass()) {
 			return false;
+		}
 
 		ProjectImpl project = (ProjectImpl) o;
 
-		if (id != null ? !id.equals(project.id) : project.id != null)
+		if (id != null ? !id.equals(project.id) : project.id != null) {
 			return false;
-		if (name != null ? !name.equals(project.name) : project.name != null)
+		}
+		if (name != null ? !name.equals(project.name) : project.name != null) {
 			return false;
-		if (description != null ? !description.equals(project.description) : project.description != null)
+		}
+		if (description != null ? !description.equals(project.description) : project.description != null) {
 			return false;
-		if (startDate != null ? !startDate.equals(project.startDate) : project.startDate != null)
+		}
+		if (startDate != null ? !startDate.equals(project.startDate) : project.startDate != null) {
 			return false;
+		}
 		return finishDate != null ? finishDate.equals(project.finishDate) : project.finishDate == null;
 
 	}

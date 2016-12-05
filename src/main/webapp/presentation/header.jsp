@@ -60,12 +60,11 @@
     <link rel="stylesheet" type="text/css"
           href="<c:url value="/presentation/resources/css/group.css"/>">
     <!--Own js-->
-    <script src="<c:url value="/presentation/resources/js/general.js"/>" defer="defer"></script>
+    <script src="<c:url value="/presentation/resources/js/general.js"/>"></script>
     <script src="<c:url value="/presentation/resources/js/forms.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/charts.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/user.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/meeting.js"/>" defer="defer"></script>
-    <script src="<c:url value="/presentation/resources/js/projects.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/create_group.js"/>" defer="defer"></script>
     <script src="<c:url value="/presentation/resources/js/evaluate.js"/>" defer="defer"></script>
      <script src="<c:url value="/presentation/resources/js/users.js"/>" defer="defer"></script>

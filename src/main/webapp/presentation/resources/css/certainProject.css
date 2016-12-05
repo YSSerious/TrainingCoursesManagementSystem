@@ -27,8 +27,32 @@
     border-bottom-left-radius: 4px;
     width: min-intrinsic;
     padding-right: 0 !important;
-    width: 150px;
+    width: 1em;
     background-color: white;
+}
+
+.certain-project .project-dates table tr td:nth-child(1) {
+    text-align: center;
+    vertical-align: middle;
+    width: 20%;
+}
+
+.certain-project .project-dates table tr td:nth-child(1) > * {
+    font-size: 1.3em;
+}
+
+.certain-project .project-dates table tr td:nth-child(2) > * {
+    font-size: 1.0em;
+}
+
+.certain-project .project-dates table tr td:nth-child(2) {
+    width: 15%;
+    padding-left: 2.5em;
+/*    padding-right: 2.5em;*/
+}
+
+.certain-project .description-title > h4 {
+    font-size: 1.3em;
 }
 
 .certain-project .editable-label > * {
@@ -115,7 +139,7 @@ div#project-name > *{
 }
 
 .certain-project .glyphicon{
-	font-size: 20px;
+    font-size: 20px;
 }
 
 .panel.add-panel{
@@ -196,7 +220,8 @@ div#project-name > *{
 }
 
 .panel#project-groups .panel-collapse .panel-body{
-    padding: 0 15px 0 15px;
+    /*padding: 0 15px 0 15px;*/
+    padding: 0;
 }
 
 .panel#project-groups .panel-heading {
@@ -223,12 +248,21 @@ div#project-name > *{
     text-align: center;
 }
 
+.panel#project-groups .panel-body table tr th:nth-child(1),
 .panel#project-groups .panel-body table tr td:nth-child(1){
-    width: 30%;
+    width: 35%;
+    padding-left: 2em;
 }
 
+.panel#project-groups .panel-body table tr th:nth-child(2),
 .panel#project-groups .panel-body table tr td:nth-child(2){
-    width: 12%;
+    width: 14%;
+}
+
+.panel#project-groups .panel-body table tr th:nth-child(3),
+.panel#project-groups .panel-body table tr td:nth-child(3){
+    padding-left: 1em;
+    padding-right: 1em;
 }
 
 .panel#project-groups .panel-body table tr:first-child th{
@@ -270,7 +304,7 @@ div.modal#deleteGroupModal .modal-body h4 {
 }
 
 .glyphicon-button .glyphicon {
-    font-size: 15px !important;
+    font-size: 1.2em !important;
     color: #919191;
     cursor: pointer;
 }

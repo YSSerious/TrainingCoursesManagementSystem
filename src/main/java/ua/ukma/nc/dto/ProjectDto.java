@@ -1,6 +1,7 @@
 package ua.ukma.nc.dto;
 
 import java.sql.Date;
+import java.util.Objects;
 
 import ua.ukma.nc.entity.Project;
 
@@ -49,6 +50,47 @@ public class ProjectDto {
 	}
 	public void setFinishDate(Date finishDate) {
 		this.finishDate = finishDate;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 3;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final ProjectDto other = (ProjectDto) obj;
+		if (this.id != other.id) {
+			return false;
+		}
+		if (!Objects.equals(this.name, other.name)) {
+			return false;
+		}
+		if (!Objects.equals(this.description, other.description)) {
+			return false;
+		}
+		if (!Objects.equals(this.startDate, other.startDate)) {
+			return false;
+		}
+		if (!Objects.equals(this.finishDate, other.finishDate)) {
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "ProjectDto{" + "id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate + ", finishDate=" + finishDate + '}';
 	}
 
 }
