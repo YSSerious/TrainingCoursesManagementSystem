@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,7 +40,7 @@ public class UsersController {
 	@RequestMapping(value = "/allUsers", method = RequestMethod.GET)
 	public String getAllUsersPage(Model model, Principal principal,
 			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "value", required = false) String value,
+			@RequestParam(value = "value", required = false) String[] value,
 			@RequestParam(value = "type", required = false) String type) {
 
 		List<User> users = new ArrayList<>();
@@ -54,10 +55,7 @@ public class UsersController {
 		boolean isMentor = authorities.contains(new SimpleGrantedAuthority("ROLE_MENTOR"));
 
 		if (value != null && type.equals("name")) {
-			String[] v = value.split("\\s");
 			if (v.length == 1) {
-				users = userService.getByName(value, limit, limit * (page - 1));
-				count = userService.countName(value);
 			} else if (v.length == 2) {
 				users = userService.getByName(v[0], v[1], limit, limit * (page - 1));
 				count = userService.countHalfName(v[0], v[1]);
@@ -66,24 +64,13 @@ public class UsersController {
 				count = userService.countFullName(v[0], v[1], v[2]);
 			}
 		} else if (value != null && type.equals("role")) {
-			users = userService.getAll();
-			List<User> temp = new ArrayList<>();
-			for (User user : users)
-				for (Role role : user.getRoles())
-					if (role.getTitle().equals(roleService.getByRole(value.toUpperCase()).getTitle()))
-						temp.add(user);
-			users.retainAll(temp);
 			count = users.size();
 			if (limit * page < users.size())
 				users = users.subList(limit * (page - 1), limit * page);
 			else
 				users = users.subList(limit * (page - 1), users.size());
 		} else if (value != null && type.equals("project")) {
-			users = userService.studentsByProjectName(value, limit, limit * (page - 1));
-			count = userService.countProject(value);
 		} else if (value != null && type.equals("group")) {
-			users = userService.studentsByGroupName(value, limit, limit * (page - 1));
-			count = userService.countGroup(value);
 		} else if (!isMentor) {
 			users = userService.getSome(limit, limit * (page - 1));
 			count = userService.count();
@@ -121,7 +108,6 @@ public class UsersController {
 		}
 		return users.removeAll(temp);
 	}
-
 	/*
 	 * @RequestMapping(value = "/allUsers", method = RequestMethod.POST) public
 	 * String getAllUsersPagePost(Model model, Principal principal,

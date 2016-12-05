@@ -70,4 +70,6 @@ public interface UserDao {
 
 	boolean hasHRReviews(Long hrId);
 
+	List<User> getByRole(int role1, int role2, int role3, int role4);
+
 }

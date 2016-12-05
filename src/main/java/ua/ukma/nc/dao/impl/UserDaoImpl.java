@@ -117,6 +117,7 @@ public class UserDaoImpl implements UserDao {
 	
 	private static final String HAS_HR_REVIEWS = "SELECT EXISTS (SELECT * FROM tcms.final_review WHERE id_employee = ? AND (type = 'G' OR type = 'T'))";
 
+	private static final String GET_BY_ROLE = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT id_user FROM tcms.user_role WHERE id_role = ? OR id_role = ? OR id_role = ? OR id_role = ?)";
 	@Override
 	public User getByEmail(String email) {
 		log.info("Getting user with email = {}", email);
@@ -307,5 +308,9 @@ public class UserDaoImpl implements UserDao {
 		return jdbcTemplate.queryForObject(HAS_HR_REVIEWS, Boolean.class, hrId);
 	}
 
+	@Override
+	public List<User> getByRole(int role1, int role2, int role3, int role4){
+		return jdbcTemplate.query(GET_BY_ROLE, new UserMapper(), role1, role2, role3, role4);
+	}
 
 }

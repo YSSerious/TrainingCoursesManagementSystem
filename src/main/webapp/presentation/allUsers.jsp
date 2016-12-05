@@ -59,7 +59,7 @@
 			</button>
 			<br /> <br />
 			<div id="filter-panel" class="collapse filter-panel">
-				<form action="" method="get">
+				<form action="" method="get" onsubmit="return validate();">
 
 
 					<div class="form-group">
@@ -97,21 +97,21 @@
    							</c:if>>
 
 						<div id="check">
-							<input type="checkbox" name="value" value="Admin"
-								<c:if test="${param.value == 'Admin' && param.type == 'role'}">
+							<input type="checkbox" name="value" value="1"
+								<c:if test="${param.value == '1' && param.type == 'role'}">
   									checked
  							    </c:if>>
-							<spring:message code="users.admin"/> <br /> <input type="checkbox" name="value" value="HR"
-								<c:if test="${param.value == 'HR' && param.type == 'role'}">
+							<spring:message code="users.admin"/> <br /> <input type="checkbox" name="value" value="3"
+								<c:if test="${param.value == '3' && param.type == 'role'}">
  									checked
   								</c:if>>
-							<spring:message code="users.hr"/> <br /> <input type="checkbox" name="value" value="Mentor"
-								<c:if test="${param.value == 'Mentor' && param.type == 'role'}">
+							<spring:message code="users.hr"/> <br /> <input type="checkbox" name="value" value="2"
+								<c:if test="${param.value == '2' && param.type == 'role'}">
   									checked
   								</c:if>>
 							<spring:message code="users.mentor"/> <br /> <input type="checkbox" name="value"
-								value="Student"
-								<c:if test="${param.value == 'Student' && param.type == 'role'}">
+								value="4"
+								<c:if test="${param.value == '4' && param.type == 'role'}">
   									checked
   								</c:if>>
 							<spring:message code="users.student"/> <br />
@@ -134,9 +134,38 @@
 <script>
 var max = ${noOfPages};
 var curr = ${currentPage};
+	
+	function getURLParam(key,target){
+        var values = [];
+        if(!target){
+            target = location.href;
+        }
 
-var value = getParameterByName('value');
-var type = getParameterByName('type');
+        key = key.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+
+        var pattern = key + '=([^&#]+)';
+        var o_reg = new RegExp(pattern,'ig');
+        while(true){
+            var matches = o_reg.exec(target);
+            if(matches && matches[1]){
+                values.push(matches[1]);
+            }
+            else{
+                break;
+            }
+        }
+
+        if(!values.length){
+             return null;   
+         }
+        else{
+           return values.length == 1 ? values[0] : values;
+        }
+
+    }
+	
+var value = getURLParam("value");
+var type = getURLParam("type");
 if(max!=1){
 $('#bootstrap-pagination').bootpag({
 	total: max,
@@ -155,8 +184,16 @@ $('#bootstrap-pagination').bootpag({
     firstClass: 'first'
 }).on("page", function(event, num){
 
-	if(value!=null && type!=null)
+	if(value!=null && type!=null && value.length == 1)
 		window.location.href = "?page="+num+"&value="+value+"&type="+type;
+	else if (type == "role" && value.length == 2)
+		window.location.href = "?page="+num+"&value="+value[0]+"&value="+value[1]+"&type="+type;
+	else if (type == "role" && value.length == 3)
+		window.location.href = "?page="+num+"&value="+value[0]+"&value="+value[1]+"&value="
+				+value[2]+"&type="+type;
+	else if (type == "role" && value.length == 4)
+		window.location.href = "?page="+num+"&value="+value[0]+"&value="+value[1]+"&value="
+				+value[2]+"&value="+value[3]+"&type="+type;
 	else
 		window.location.href = "?page="+num;
 	
@@ -167,6 +204,7 @@ function yesnoCheck() {
 		$('#check').removeClass('hidden');
 		$('#submitted').addClass('hidden');
 		document.getElementById('submitted').disabled = true;
+		$('#rev-err').addClass('hidden');
 		$('#check').children('input').each(function() {
 			this.disabled = false;
 		});
@@ -182,20 +220,6 @@ function yesnoCheck() {
 };
 
 $( document ).ready(yesnoCheck()); 
-
-function getParameterByName(name, url) {
-	if (!url) {
-		url = window.location.href;
-	}
-	name = name.replace(/[\[\]]/g, "\\$&");
-	var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex
-			.exec(url);
-	if (!results)
-		return null;
-	if (!results[2])
-		return '';
-	return decodeURIComponent(results[2].replace(/\+/g, " "));
-};
 
 var clicked = false;
 document.getElementById('button').onclick = function() {
@@ -217,6 +241,5 @@ document.getElementById('button').onclick = function() {
 		}, 250);
 	}
 };
-
 </script>
 <%@include file="footer.jsp"%>
