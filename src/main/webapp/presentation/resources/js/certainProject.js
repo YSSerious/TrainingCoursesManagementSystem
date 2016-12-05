@@ -266,6 +266,25 @@ $('#project-groups .panel-heading').first().on('click', function (e) {
     }
 });
 
+$(function () {
+    var hiddenClass = 'glyphicon-chevron-down';
+    var shownClass = 'glyphicon-chevron-up';
+
+    $('#collapse-group').on('show.bs.collapse', function () {
+        $(this).siblings('.panel-heading').first()
+                .find('.' + hiddenClass).first()
+                .removeClass(hiddenClass).
+                addClass(shownClass);
+    });
+    $('#collapse-group').on('hide.bs.collapse', function () {
+        $(this).siblings('.panel-heading').first()
+                .find('.' + shownClass).first()
+                .removeClass(shownClass).
+                addClass(hiddenClass);
+    });
+});
+
+
 function changeSpan(el) {
     var chevron = jQuery(el);
     if (chevron.children('.glyphicon').hasClass("glyphicon-chevron-down")) {
@@ -328,8 +347,8 @@ function turnEditModeOn(button) {
         var editableGroup = thisEditableWrapper.closest('.editable-group');
         var headers = [];
         if (editableGroup.length) {
-            var editableWrappers = editableGroup.children('.editable-wrapper');
-            var editables = editableWrappers.children('.editable');
+            var editableWrappers = editableGroup.find('.editable-wrapper');
+            var editables = editableWrappers.find('.editable');
             headers = editables.map(function () {
                 return $(this).find(':header').first().text();
             }).get();
@@ -619,6 +638,10 @@ $('#editGroupModal form').on('submit', function (e) {
     var groupName = $('#editGroupModal form #group-name').val();
     var groupProjectId = $('.certain-project').first().attr('data-project-id');
     editGroupViaAjax(groupId, groupName, groupProjectId);
+});
+
+$('#editGroupModal').on('hide.bs.modal', function() {
+    cleanModalForm('#editGroupModal'); 
 });
 
 function editGroupViaAjax(id, name, projectId) {
