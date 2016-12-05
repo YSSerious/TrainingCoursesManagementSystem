@@ -202,34 +202,42 @@
 </div>
 
 <div class="attendance_template">
-<h2>
+	<h2>
+		<spring:message code="group.attendance" />
+	</h2>
+	<div class="panel panel-primary" style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
+		<div class="panel-heading clearfix">
 
-	<spring:message code="group.attendance" />
-</h2>
-<div class="panel panel-primary"
-	style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
-	<div class="panel-heading clearfix">
-
-		<div data-toggle="collapse" data-target="#collapseAttendance"
-			class="arrow col-md-1" style="color: black"
-			onclick="changeSpan(this)">
-			<span class="glyphicon glyphicon-chevron-down"></span>
+			<div data-toggle="collapse" data-target="#collapseAttendance" class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
+				<span class="glyphicon glyphicon-chevron-down"></span>
+			</div>
 		</div>
-	</div>
 
 
-	<div id="collapseAttendance" class="panel-collapse collapse">
-		<div style="padding-bottom:0px; margin-bottom:0px;" class="table-responsive">
-			<table style="padding-bottom:0px; margin-bottom:0px;" id="attendance-table" class="table table-bordered user-table">
-				<tr>
-					<th>#</th>
+		<div id="collapseAttendance" class="panel-collapse collapse">
+			<div class="row" style="margin-left:0px;margin-top:10px;margin-bottom:10px;margin-right:0px;">
+				<div class="col-md-10">
+					<select style="width:100%;" multiple class="students-select">
+						<c:forEach items="${attendance.attendance}" var="value">
+							<option value="${value.id}">${value.fullName}</option>
+						</c:forEach>
+					</select>
+				</div>
+				<div class="col-md-2">
+					<button style="min-width:100%;" class="btn btn-default pull-right" onclick="filterAttendance()"><spring:message code="group.attendance.filter" /></button>
+				</div>
+			</div>
+			<div style="padding-bottom:0px; margin-bottom:0px;" class="table-responsive">
+				<table style="padding-bottom:0px; margin-bottom:0px;" id="attendance-table" class="table table-bordered user-table">
+					<tr>
+						<th>#</th>
 
-					<c:forEach items="${attendance.meetings}" var="value">
-						<th align="center"><a href="/meeting/${value.id}"><fmt:formatDate value="${value.time}" pattern="yyyy-MM-dd"/></a></th>
-					</c:forEach>
-
+						<c:forEach items="${attendance.meetings}" var="value">
+							<th align="center"><a href="/meeting/${value.id}"><fmt:formatDate value="${value.time}" pattern="yyyy-MM-dd"/></a></th>
+						</c:forEach>
+					</tr>
 					<c:forEach items="${attendance.attendance}" var="value">
-						<tr>
+						<tr id="us-${value.id}">
 							<td><b><a href="/users/${value.id}">${value.fullName}</a></b></td>
 
 							<c:forEach items="${value.attendance}" var="state">
@@ -246,12 +254,14 @@
 									<td style="background-color: #FC655A"></td>
 								</c:if>
 							</c:forEach>
+						</tr>
 					</c:forEach>
-			</table>
+				</table>
+				
+			</div>
 		</div>
 	</div>
-</div>
-<br/>
+	<br/>
 </div>
 
 <div id="studentDeleteError" class="modal fade">
@@ -629,5 +639,37 @@ $fixedColumn.find('tr').each(function (i, elem) {
 	$(this).height($table.find('tr:eq(' + i + ')').height());
     $(this).width($table.find('tr:eq(' + i + ')').width());
 });
+
+function filterAttendance(){
+	var selectedStudents = []; 
+	
+	$('.students-select :selected').each(function(){
+		selectedStudents.push($(this).val()); 
+    });
+	
+	$('#attendance-table > tbody  > tr').each(function(index, value) {
+		if($(value).css('display') == 'none')
+			$(value).show();
+	});
+	
+	if(selectedStudents.length != 0){
+    
+		$('#attendance-table > tbody  > tr').each(function(index, value) {
+			var id = value.id;
+			var keys = id.split("-");
+ 		
+			if(keys.length == 2 && $.inArray(keys[1], selectedStudents) == -1 ){
+				$(value).hide();
+			}
+ 		
+		});
+ 	
+
+	}
+	
+	
+}
+
+$('select').select2();
 </script>
 <%@include file="footer.jsp"%>

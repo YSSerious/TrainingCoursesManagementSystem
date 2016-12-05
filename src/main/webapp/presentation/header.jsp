@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="sec"
@@ -174,7 +175,7 @@ else
 							<div class="modal-body">
 								<c:forEach items="${unmarkedMeetings}" var="meet">
 									<b><spring:message code="reminder.meeting"/>: </b>${meet.name} <br />
-									<b><spring:message code="reminder.time"/>: </b>${meet.time} <br />
+									<b><spring:message code="reminder.time"/>: </b><fmt:formatDate value="${meet.time}" pattern="yyyy-MM-dd hh:mm"/><br />
 									<b><spring:message code="reminder.place"/>: </b>${meet.place} <br />
 									<b><a href="/meeting/${meet.id}"><spring:message code="reminder.link"/></a></b>
 									<hr />
