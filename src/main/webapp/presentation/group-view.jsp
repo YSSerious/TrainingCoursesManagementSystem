@@ -153,7 +153,9 @@
 	<div class="panel panel-primary"
 		style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
 		<div class="panel-heading clearfix">
-			<button type="button" class="btn btn-default btn-xs pull-right">
+			<button type="button" class="btn btn-default btn-xs pull-right"  id="showAvailableStudents"
+					data-toggle="modal"
+					data-target="#showAvailableStudentsModal">
 				<spring:message code="group.button.add" />
 			</button>
 			<div data-toggle="collapse" data-target="#collapseStudents"
@@ -200,6 +202,37 @@
 	</div>
 	<br />
 </div>
+
+
+<!-- start -->
+<div id="showAvailableStudentsModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal"><span
+						class="glyphicon glyphicon-remove"></span></button>
+				<h4 class="modal-title">Add student</h4>
+				<hr>
+				<div class="row">
+					<input type="text" id="search" placeholder="type search" class="col-md-offset-4">
+				</div>
+				<table id="studentsTable" class="table table-condensed table-hover table-responsive">
+					<thead class="table-head">
+					<tr>
+						<th><b>Name</b></th>
+						<th><b>Add</b></th>
+					</tr>
+					</thead>
+					<tbody id="studentsTableId">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- finish modal -->
+
+
 
 <div class="attendance_template">
 	<h2>
@@ -286,8 +319,10 @@
 	<div class="panel panel-primary"
 		style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
 		<div class="panel-heading clearfix">
-			<button type="button" class="btn btn-default btn-xs pull-right">
-				<spring:message code="group.button.add" />
+			<button type="button" class="btn btn-default btn-xs pull-right"  id="showAvailableMentors"
+					data-toggle="modal"
+					data-target="#showAvailableMentorsModal">
+			<spring:message code="group.button.add" />
 			</button>
 			<div data-toggle="collapse" data-target="#collapseMentors"
 				class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
@@ -316,6 +351,37 @@
 	</div>
 	<br />
 </div>
+
+
+<!-- start -->
+<div id="showAvailableMentorsModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal"><span
+						class="glyphicon glyphicon-remove"></span></button>
+				<h4 class="modal-title">Add mentor</h4>
+				<hr>
+				<div class="row">
+					<input type="text" id="search_mentor" placeholder="type search" class="col-md-offset-4">
+				</div>
+				<table id="mentorsTable" class="table table-condensed table-hover table-responsive">
+					<thead class="table-head">
+					<tr>
+						<th><b>Name</b></th>
+						<th><b>Add</b></th>
+					</tr>
+					</thead>
+					<tbody id="mentorsTableId">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- finish modal -->
+
+
 
 
 <h2>

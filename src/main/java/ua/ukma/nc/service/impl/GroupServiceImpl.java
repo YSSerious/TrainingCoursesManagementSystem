@@ -198,5 +198,11 @@ public class GroupServiceImpl implements GroupService{
 			if(meetings.get(i).getId() == id)
 				return i;
 		return -1;
+
 	}
+	@Override
+	public void addUser(Long groupId, Long userId) {
+		groupDao.addUser(groupId, userId);
+	}
+
 }

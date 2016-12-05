@@ -377,4 +377,16 @@ public class UserServiceImpl implements UserService {
 		return userId == user.getId();
 
 	}
+	@Override
+	public List<User> getFreeMentors() {
+		return userDao.getFreeMentors();
+	}
+
+	@Override
+	public List<User> getInactiveStudents() {
+		return userDao.getInactiveStudents();
+	}
+
+
+
 }
