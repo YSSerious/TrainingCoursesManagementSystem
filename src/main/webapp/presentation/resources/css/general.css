@@ -81,7 +81,9 @@ textarea.error, tr.error input{
 	min-width: 150px;
 }
 
-
+.action-color{
+    color: #383eed;
+}
 /* Prevents modal shifting on hide, but scroll lefts on modal show*/
 /*.modal {
  overflow-y: auto;

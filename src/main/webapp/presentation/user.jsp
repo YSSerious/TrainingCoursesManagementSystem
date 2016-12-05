@@ -42,12 +42,10 @@
                         <b><spring:message code="user.status"/>:</b> ${user.statusTitle} <br/>
 
                         <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
-                            <font class="clickable" color="blue" data-toggle="modal"
+                            <div class="clickable action-color" data-toggle="modal"
                                   data-target="#projects-report-modal">
                                 <b onclick="report(${user.id})"><spring:message code="user.generate.report"/></b>
-                            </font>
-                            <br/>
-
+                            </div>
                             <div id="projects-report-modal" class="modal fade" role="dialog">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -69,9 +67,9 @@
 
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 1}">
-                                <font class="clickable" color="blue" data-toggle="modal" data-target="#switchStatus">
+                                <div class="clickable action-color" color="blue" data-toggle="modal" data-target="#switchStatus">
                                     <b><spring:message code="user.switch.status"/></b>
-                                </font>
+                                </div>
 
                                 <div id="switchStatus" class="modal fade" role="dialog">
                                     <div class="modal-dialog">
@@ -109,9 +107,9 @@
                         <c:if test="${user.statusId eq 2}">
                             <sec:authorize access="hasRole('MENTOR')">
 
-                                <font class="clickable" color="blue" data-toggle="modal" data-target="#switchStatus">
+                                <div class="clickable action-color" color="blue" data-toggle="modal" data-target="#switchStatus">
                                     <b><spring:message code="user.switch.status"/></b>
-                                </font>
+                                </div>
 
                                 <div id="switchStatus" class="modal fade" role="dialog">
                                     <div class="modal-dialog">
@@ -148,9 +146,9 @@
 
                             </sec:authorize>
                             <sec:authorize access="hasRole('HR')">
-                                <font class="clickable" color="blue" data-toggle="modal" data-target="#switchStatus">
+                                <div class="clickable action-color" color="blue" data-toggle="modal" data-target="#switchStatus">
                                     <b><spring:message code="user.switch.status"/></b>
-                                </font>
+                                </div>
 
                                 <div id="switchStatus" class="modal fade" role="dialog">
                                     <div class="modal-dialog">
@@ -195,10 +193,10 @@
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 3}">
                                 <sec:authorize access="hasRole('HR')">
-                                    <font class="clickable" color="blue" data-toggle="modal"
+                                    <div class="clickable action-color" color="blue" data-toggle="modal"
                                           data-target="#switchStatus">
                                         <b><spring:message code="user.switch.status"/></b>
-                                    </font>
+                                    </div>
 
                                     <div id="switchStatus" class="modal fade" role="dialog">
                                         <div class="modal-dialog">
@@ -249,8 +247,8 @@
 
                 <sec:authorize access="hasRole('HR')">
 
-                    <br/>
-                    <div id="createHRreviewBtn" class="clickable">
+
+                    <div id="createHRreviewBtn" class="clickable action-color">
                         <b onclick="getHRReviewProjects(${user.id})">
                             <spring:message code="create.review"/>
                         </b>
@@ -260,8 +258,8 @@
 
                 <sec:authorize access="hasRole('ADMIN')">
 
-                    <font class="clickable" data-toggle="modal" data-target="#chooseRoles"
-                          color="blue"><b><spring:message code="user.choose.roles"/></b></font>
+                    <div class="clickable action-color" data-toggle="modal" data-target="#chooseRoles"
+                          color="blue"><b><spring:message code="user.choose.roles"/></b></div>
 
                     <div id="chooseRoles" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-sm">
@@ -321,7 +319,7 @@
                 <sec:authorize access="hasRole('MENTOR')">
                     <%--<c:if test="${user.statusId eq 2}">--%>
                     <br/><br/>
-                    <div class="clickable" data-toggle="modal" data-target="#finReviewProject"
+                    <div class="clickable action-color" data-toggle="modal" data-target="#finReviewProject"
                          onClick="getMentorStudentProjects(${user.id});"><b><spring:message
                             code="final_Review.label.clckable"/></b>
                     </div>
