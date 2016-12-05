@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,9 @@ import ua.ukma.nc.util.exception.StatusSwitchException;
 public class UserManageController {
 	
 	private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
+	
+	@Autowired  
+    private MessageSource messageSource;
 	
 	@Autowired
 	private RoleService roleService;
@@ -54,8 +59,12 @@ public class UserManageController {
 	}
 	
 	@RequestMapping(value = "/manageRoles", method = RequestMethod.POST)
-	public ModelAndView changeRole(@RequestParam("student") Long student, @RequestParam("roles") List<Long> chRoles){
+	public ModelAndView changeRoles(@RequestParam("student") Long student, @RequestParam("roles") List<Long> chRoles){
 		User user = userService.getById(student);
+		
+		if(chRoles.size() == 0)
+			throw new RoleManageException(student, messageSource.getMessage("error.role.zero", null, LocaleContextHolder.getLocale()));
+		
 		roleService.changeRoles(chRoles, user);
 		
 		return new ModelAndView("redirect:" + "users/"+student);
