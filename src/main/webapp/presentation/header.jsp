@@ -160,7 +160,7 @@ else
 				<div class="text-center">
 					<div data-toggle="modal" data-target="#projet-remind-modal"
 						class="alert alert-danger" style="display: inline-block;">
-						<strong>Warning!</strong> There are unmarked meetings!
+						<strong><spring:message code="reminder.warning"/></strong> <spring:message code="reminder.description"/>
 					</div>
 				</div>
 				<div id="projet-remind-modal" class="modal fade" role="dialog">
@@ -168,14 +168,14 @@ else
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Reminder</h4>
+								<h4 class="modal-title"><spring:message code="reminder.title"/></h4>
 							</div>
 							<div class="modal-body">
 								<c:forEach items="${unmarkedMeetings}" var="meet">
-									<b>Meeting name: </b>${meet.name} <br />
-									<b>Time: </b>${meet.time} <br />
-									<b>Place: </b>${meet.place} <br />
-									<b><a href="/meeting/${meet.id}">Visit meeting page</a></b>
+									<b><spring:message code="reminder.meeting"/>: </b>${meet.name} <br />
+									<b><spring:message code="reminder.time"/>: </b>${meet.time} <br />
+									<b><spring:message code="reminder.place"/>: </b>${meet.place} <br />
+									<b><a href="/meeting/${meet.id}"><spring:message code="reminder.link"/></a></b>
 									<hr />
 								</c:forEach>
 							</div>

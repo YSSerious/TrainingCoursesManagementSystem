@@ -42,6 +42,7 @@ import ua.ukma.nc.service.MarkService;
 import ua.ukma.nc.service.MeetingResultService;
 import ua.ukma.nc.service.MeetingReviewService;
 import ua.ukma.nc.service.MeetingService;
+import ua.ukma.nc.service.StatusLogService;
 import ua.ukma.nc.service.UserService;
 import ua.ukma.nc.util.exception.CriteriaDeleteException;
 
@@ -75,23 +76,26 @@ public class MeetingController {
 	@Autowired
 	private MarkService markService;
 
+	@Autowired
+	private StatusLogService statusService;
+
 	@RequestMapping(value = "/meeting/{id}", method = RequestMethod.GET)
 	public ModelAndView getMeetings(Principal principal, @PathVariable long id) {
 
 		ModelAndView model = new ModelAndView("certainMeeting");
 		Meeting meeting = meetingService.getById(id);
-		List<User> all = (groupService.getById(meeting.getGroup().getId())).getUsers();
+		long groupId = meeting.getGroup().getId();
+		List<User> all = (groupService.getById(groupId)).getUsers();
 		List<MeetingReview> meetingReviews = meetingReviewService.getByMeeting(id);
-
 		List<Long> evaluated = new ArrayList<>();
 		for (MeetingReview mr : meetingReviews)
 			evaluated.add(mr.getStudent().getId());
 		List<User> unevaluated = new ArrayList<>();
 		for (User user : all)
 			for (Role role : user.getRoles())
-				if (role.getId() == 4)
-					if (!evaluated.contains(user.getId()))
-						unevaluated.add(user);
+				if (role.getId() == 4 && !evaluated.contains(user.getId()) && statusService.exists(user.getId())
+						&& groupId == statusService.getNewestGroup(user.getId()))
+					unevaluated.add(user);
 		Map<User, List<MarkInformation>> markInformation = new TreeMap<>();
 		List<User> absent = new ArrayList<>();
 		for (Long user : evaluated) {
@@ -133,6 +137,7 @@ public class MeetingController {
 		model.addObject("meeting", meetingService.getById(id));
 		model.addObject("categories", category);
 		model.addObject("absent", absent);
+		model.addObject("title", "Meeting " + meeting.getName());
 		return model;
 	}
 
@@ -149,14 +154,12 @@ public class MeetingController {
 	@RequestMapping(value = "/create-meeting", method = RequestMethod.POST)
 	public String createMeeting(@ModelAttribute("meetingForm") @Validated MeetingImpl meeting, BindingResult result,
 			final RedirectAttributes redirectAttributes, @RequestParam("project") long projectId) {
-		System.out.println(meeting);
 		if (!result.hasErrors()) {
 			meeting.setGroup(groupService.getByProjectId(projectId).get(0));
 			meetingService.createMeeting(meeting);
 			redirectAttributes.addFlashAttribute("msg", "Meeting added successfully!");
 			return "redirect:/projects";
 		} else {
-			System.out.println(result.getAllErrors());
 			return "createMeeting";
 		}
 	}
@@ -196,8 +199,6 @@ public class MeetingController {
 	public String postEvaluate(Principal principal, @PathVariable("id") Long userId,
 			@RequestBody JsonWrapperReview data) {
 		User mentor = userService.getByEmail(principal.getName());
-		for (MarkCommentDto d : data.getData())
-			System.out.println(d);
 		MeetingReview review = null;
 		if (meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId) == null) {
 			review = new MeetingReviewImpl((long) 0, "E");
@@ -223,17 +224,13 @@ public class MeetingController {
 			}
 			List<MeetingResult> previous = meetingResultService.getByReview(review.getId());
 			List<MarkCommentDto> value = data.getData();
-			
+
 			for (MarkCommentDto mcd : value) {
 				boolean check = true;
 				for (MeetingResult mr : previous)
 					if (mr.getCriterion().getId() == mcd.getCriterionId()) {
-						System.out.println("------------------------------------------");
-						System.out.println(mr);
 						mr.setCommentary(mcd.getCommentary());
 						mr.setMark(markService.getByValue(mcd.getValue()));
-						System.out.println(mr);
-						System.out.println("------------------------------------------");
 						meetingResultService.updateMeetingResult(mr);
 						check = false;
 					}
