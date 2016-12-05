@@ -10,11 +10,9 @@ import org.springframework.stereotype.Repository;
 import ua.ukma.nc.dao.GroupDao;
 import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.User;
-import ua.ukma.nc.entity.impl.proxy.GroupProxy;
 import ua.ukma.nc.entity.impl.proxy.ProjectProxy;
 import ua.ukma.nc.entity.impl.proxy.UserProxy;
 import ua.ukma.nc.entity.impl.real.GroupImpl;
-import ua.ukma.nc.entity.impl.real.ProjectImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -71,6 +69,11 @@ public class GroupDaoImpl implements GroupDao{
     private static final String REMOVE_STUDENT = "delete from tcms.user_group where id_group = ? and id_user = ?";
 
     private static final String GET_BY_USER_PROJECT = "select * from tcms.group where id_project = ? and id in (select id_group from tcms.user_group where id_user = ?)";
+
+    private static final String ADD_USER = "INSERT INTO tcms.user_group (id_group, id_user) VALUES (?,?)";
+
+
+
     @Override
     public Group getById(Long id) {
         log.info("Getting group with id = {}", id);
@@ -162,5 +165,11 @@ public class GroupDaoImpl implements GroupDao{
 	public int removeStudent(Long groupId, Long userId) {
 		return jdbcTemplate.update(REMOVE_STUDENT,groupId,userId);
 	}
+
+    @Override
+    public void addUser(Long groupId, Long userId) {
+        log.info("Adding user with id {} to the group with id {}", userId, groupId);
+        jdbcTemplate.update(ADD_USER, groupId, userId);
+    }
 
 }

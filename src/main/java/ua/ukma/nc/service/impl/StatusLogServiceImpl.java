@@ -2,6 +2,7 @@ package ua.ukma.nc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import ua.ukma.nc.dao.StatusLogDao;
 import ua.ukma.nc.entity.StatusLog;
 import ua.ukma.nc.service.StatusLogService;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by Алексей on 30.10.2016.
  */
-@Repository
+@Service
 public class StatusLogServiceImpl implements StatusLogService{
 
     @Autowired

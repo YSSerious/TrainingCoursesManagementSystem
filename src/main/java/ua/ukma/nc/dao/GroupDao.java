@@ -35,4 +35,6 @@ public interface GroupDao {
     int createGroup(Group group);
 
     Group getByUserProject(Long userId, Long projectId);
+
+    void addUser(Long groupId, Long studentId);
 }

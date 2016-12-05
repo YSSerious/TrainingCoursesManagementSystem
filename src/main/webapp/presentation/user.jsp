@@ -273,8 +273,11 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <form action="/manageRoles" method="post">
+                                        <form id="manageRolesForm" action="/manageRoles" method="post">
                                             <div class="col-sm-12">
+                                            	<div style="color:red;" id="error-roles-text">
+                                            		
+                                            	</div>
                                                 <c:forEach var="role" items="${roles}">
                                                     <div class="checkbox">
                                                         <label>
@@ -302,7 +305,7 @@
                                             <br/>
                                             <input type="hidden" name="student" value="${user.id}">
                                             <div class="text-center">
-                                                <button type="submit" class="btn btn-primary"><spring:message
+                                                <button type="button" onclick="check()" class="btn btn-primary"><spring:message
                                                         code="user.submit"/></button>
                                             </div>
                                         </form>
@@ -477,6 +480,19 @@
         </div>
     </div>
 </div>
+<c:set var="errorTextRoles">
+    <spring:message code="error.role.zero"/>
+</c:set>
 
 
+<script type="text/javascript">
+	function check(){
+		if($("input[name='roles']").is(":checked")){
+			$("#manageRolesForm").submit();
+		}else{
+			var error = "${errorTextRoles}";
+			$("#error-roles-text").html('<div class="text-center">'+error+'</div>');
+		}
+	}
+</script>
 <%@include file="footer.jsp" %>
