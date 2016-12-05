@@ -535,8 +535,10 @@
             </div>
         </div>
         </div>
+        </sec:authorize>
         <!-- finish meetingDeleteError modal -->
         <!-- start add attachment modal -->
+        
         <div id="addGroupAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -599,7 +601,7 @@
             }
             $('select').select2();
         </script>
-        </sec:authorize>
+        
     </div>
     <script>
 
