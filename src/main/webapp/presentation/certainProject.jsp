@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@include file="header.jsp" %>
-<%@include file="projectDataEditingModals.jsp" %>
+<%--<%@include file="projectDataEditingModals.jsp" %>--%>
+<%@include file="createProjectModal.jsp" %>
 <%@include file="projectGroupsModals.jsp" %>
 <script
     src="<c:url value="/presentation/resources/js/certainProject.js"/>"
@@ -33,29 +34,31 @@
                     </div>
                 </sec:authorize>
                 <div class="row">
-                    <div class="col-md-6 editable-group">
-                        <div class="panel panel-default panel-horizontal top-panel editable-wrapper"
-                             id="project-startdate">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Start date</h3>
-                            </div>
-                            <div class="panel-body editable-label editable">
-                                <h5>${project.startDate}</h5>
-                            </div>
-                        </div>
-                        <div class="panel panel-default panel-horizontal bottom-panel editable-wrapper"
-                             id="project-finishdate">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Finish date</h3>
-                            </div>
-                            <div class="panel-body editable-label editable">
-                                <h5>${project.finishDate}</h5>
-                            </div>
-                        </div>
+                    <div class="col-md-4 editable-group project-dates">
+                        <table class="table-bordered">
+                            <tr class="editable-wrapper" id="project-startdate">
+                                <td>
+                                    <h4 class=""><spring:message code="project.startDate"/></h4>
+                                </td>
+                                <td class="editable-label editable">
+                                    <h5>${project.startDate}</h5>
+                                </td>
+                            </tr>
+                            <tr class="editable-wrapper" id="project-finishdate">
+                                <td>
+                                    <h4 class=""><spring:message code="project.finishDate"/></h4>
+                                </td>
+                                <td class="editable-label editable">
+                                    <h5>${project.finishDate}</h5>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="col-md-6 editable-wrapper" id="project-description">
+                    <div class="col-md-6 col-sm-offset-2 editable-wrapper" id="project-description">
                         <div class="description-title editable-label">
-                            <h4 class="desc-label" style="margin-top: 0px;"> Description</h4>
+                            <h4 class="desc-label" style="margin-top: 0px;">
+                                <spring:message code="project.description"/>
+                            </h4>
                         </div>
                         <div class="editable">
                             <h5>${project.description.trim()}</h5>
@@ -69,7 +72,7 @@
     <div class="row">
         <div class="col-sm-12">
             <h2>
-                Groups
+                <spring:message code="project.groups"/>
             </h2>
             <div class="panel panel-default" id="project-groups">
                 <div class="panel-heading collapsed">
@@ -80,10 +83,10 @@
                         <button type="button" class="btn btn-default btn-sm pull-right" id="showGroupsAndCriteria"
                                 data-toggle="modal"
                                 data-target="#meetingCreateModal">
-                            <b>Add Meeting</b>
+                            <b><spring:message code="project.groups.addMeeting"/></b>
                         </button>
                         <button type="button" class="btn btn-default btn-sm pull-right right" id="create-group">
-                            <b>Add</b>
+                            <b><spring:message code="project.groups.add"/></b>
                         </button>
                     </sec:authorize>
                     <div class="clearfix"></div>
@@ -93,9 +96,9 @@
                     <div class="panel-body">
                         <table class="table table-hover">
                             <tr>
-                                <th>Name</th>
-                                <th>Students amount</th>
-                                <th>Upcoming meeting</th>
+                                <th><spring:message code="project.groups.name"/></th>
+                                <th><spring:message code="project.groups.studentsAmount"/></th>
+                                <th><spring:message code="project.groups.upcomingMeeting"/></th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -109,7 +112,7 @@
                                                 <a href="/meeting/${group.upcomingMeeting.id}">${group.upcomingMeeting.name}</a>
                                             </c:when>
                                             <c:otherwise>
-                                                No upcoming meetings
+                                                <spring:message code="project.groups.noUpcomingMeetings"/>
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
