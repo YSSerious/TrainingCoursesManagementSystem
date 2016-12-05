@@ -94,9 +94,9 @@ public class MeetingController {
 						unevaluated.add(user);
 		Map<User, List<MarkInformation>> markInformation = new TreeMap<>();
 		List<User> absent = new ArrayList<>();
-		for (Long user : evaluated){
-			if(!meetingReviewService.getByMeetingStudent(id, user).getType().equals("A"))
-			markInformation.put(userService.getById(user), meetingResultService.getByMeeting(user, id));
+		for (Long user : evaluated) {
+			if (!meetingReviewService.getByMeetingStudent(id, user).getType().equals("A"))
+				markInformation.put(userService.getById(user), meetingResultService.getByMeeting(user, id));
 			else
 				absent.add(userService.getById(user));
 		}
@@ -183,10 +183,10 @@ public class MeetingController {
 
 	@RequestMapping(value = "/deleteMeetingCriteria", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity deleteProjectCriteria(@RequestParam Long meetingId, @RequestParam String criteriaTitle){
+	public ResponseEntity deleteProjectCriteria(@RequestParam Long meetingId, @RequestParam String criteriaTitle) {
 		Criterion criterion = criterionService.getByName(criteriaTitle);
 		if (criterionService.isRatedInMeeting(meetingId, criterion))
-		return ResponseEntity.status(HttpStatus.CONFLICT).body("This criteria was rated and cannot be deleted");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("This criteria was rated and cannot be deleted");
 		meetingService.deleteMeetingCriterion(meetingId, criterion);
 		return ResponseEntity.ok().body("Success");
 	}
@@ -196,9 +196,9 @@ public class MeetingController {
 	public String postEvaluate(Principal principal, @PathVariable("id") Long userId,
 			@RequestBody JsonWrapperReview data) {
 		User mentor = userService.getByEmail(principal.getName());
-		System.out.println(data.getData());
+		for (MarkCommentDto d : data.getData())
+			System.out.println(d);
 		MeetingReview review = null;
-		System.out.println(meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId) == null);
 		if (meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId) == null) {
 			review = new MeetingReviewImpl((long) 0, "E");
 			review.setStudent(userService.getById(userId));
@@ -217,37 +217,41 @@ public class MeetingController {
 			}
 		} else {
 			review = meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId);
-			if(data.getComment()!=null){
+			if (data.getComment() != null) {
 				review.setCommentary(data.getComment());
 				meetingReviewService.updateMeetingReview(review);
 			}
-			List<MeetingResult> previous = 	meetingResultService.getByReview(review.getId());
-			Iterator<MarkCommentDto> value = data.getData().iterator();
-			Iterator<MeetingResult> result = previous.iterator();
-			while (value.hasNext() && result.hasNext()) {
-				MeetingResult resultus = result.next();
-				MarkCommentDto mark = value.next();
-				resultus.setCommentary(mark.getCommentary());
-				resultus.setMark(markService.getByValue(mark.getValue()));
-				meetingResultService.updateMeetingResult(resultus);
-			}
-			while(value.hasNext()){
-				MeetingResult resultus = new MeetingResult();
-				MarkCommentDto mark = value.next();
-				System.out.println(mark);
-				resultus.setId((long) 0);
-				resultus.setCommentary(mark.getCommentary());
-				resultus.setMark(markService.getByValue(mark.getValue()));
-				resultus.setCriterion(criterionService.getById((long) mark.getCriterionId()));
-				resultus.setMeetingReview(review);
-				meetingResultService.createMeetingResult(resultus);
-			}
+			List<MeetingResult> previous = meetingResultService.getByReview(review.getId());
+			List<MarkCommentDto> value = data.getData();
 			
+			for (MarkCommentDto mcd : value) {
+				boolean check = true;
+				for (MeetingResult mr : previous)
+					if (mr.getCriterion().getId() == mcd.getCriterionId()) {
+						System.out.println("------------------------------------------");
+						System.out.println(mr);
+						mr.setCommentary(mcd.getCommentary());
+						mr.setMark(markService.getByValue(mcd.getValue()));
+						System.out.println(mr);
+						System.out.println("------------------------------------------");
+						meetingResultService.updateMeetingResult(mr);
+						check = false;
+					}
+				if (check) {
+					MeetingResult resultus = new MeetingResult();
+					resultus.setId((long) 0);
+					resultus.setCommentary(mcd.getCommentary());
+					resultus.setMark(markService.getByValue(mcd.getValue()));
+					resultus.setCriterion(criterionService.getById((long) mcd.getCriterionId()));
+					resultus.setMeetingReview(review);
+					meetingResultService.createMeetingResult(resultus);
+				}
+			}
 		}
 
 		return "true";
 	}
-	
+
 	@RequestMapping(value = "/ajax/post/absent/{id}", method = RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
 	public String postAbsent(Principal principal, @PathVariable("id") Long userId,
@@ -260,8 +264,8 @@ public class MeetingController {
 		review.setMentor(mentor);
 		review.setCommentary("");
 		meetingReviewService.createMeetingReview(review);
-				return "true";
-		
+		return "true";
+
 	}
-	
+
 }

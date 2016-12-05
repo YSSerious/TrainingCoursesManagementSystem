@@ -354,7 +354,6 @@
         var user = $(this).data('user');
         $(".modal-body #user").val(user);
     });
-    })
 </script>
 
 
