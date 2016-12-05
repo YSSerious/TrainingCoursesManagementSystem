@@ -377,6 +377,12 @@ public class UserServiceImpl implements UserService {
 		return userId == user.getId();
 
 	}
+	
+	@Override
+	public List<User> getByRole(int role1, int role2, int role3, int role4) {
+		return userDao.getByRole(role1, role2, role3, role4);
+	}
+
 	@Override
 	public List<User> getFreeMentors() {
 		return userDao.getFreeMentors();

@@ -2,6 +2,7 @@
 package ua.ukma.nc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ua.ukma.nc.dto.UserDto;
-import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
-import ua.ukma.nc.service.RoleService;
 import ua.ukma.nc.service.UserService;
 
 import java.security.Principal;
@@ -32,15 +31,12 @@ public class UsersController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private RoleService roleService;
-
 	int limit = 10;
 
 	@RequestMapping(value = "/allUsers", method = RequestMethod.GET)
 	public String getAllUsersPage(Model model, Principal principal,
 			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "value", required = false) String value,
+			@RequestParam(value = "value", required = false) String[] value,
 			@RequestParam(value = "type", required = false) String type) {
 
 		List<User> users = new ArrayList<>();
@@ -55,10 +51,10 @@ public class UsersController {
 		boolean isMentor = authorities.contains(new SimpleGrantedAuthority("ROLE_MENTOR"));
 
 		if (value != null && type.equals("name")) {
-			String[] v = value.split("\\s");
+			String[] v = value[0].split("\\s");
 			if (v.length == 1) {
-				users = userService.getByName(value, limit, limit * (page - 1));
-				count = userService.countName(value);
+				users = userService.getByName(value[0], limit, limit * (page - 1));
+				count = userService.countName(value[0]);
 			} else if (v.length == 2) {
 				users = userService.getByName(v[0], v[1], limit, limit * (page - 1));
 				count = userService.countHalfName(v[0], v[1]);
@@ -67,24 +63,28 @@ public class UsersController {
 				count = userService.countFullName(v[0], v[1], v[2]);
 			}
 		} else if (value != null && type.equals("role")) {
-			users = userService.getAll();
-			List<User> temp = new ArrayList<>();
-			for (User user : users)
-				for (Role role : user.getRoles())
-					if (role.getTitle().equals(roleService.getByRole(value.toUpperCase()).getTitle()))
-						temp.add(user);
-			users.retainAll(temp);
+			int role1 = Integer.parseInt(value[0]);
+			int role2 = 0, role3 = 0, role4 = 0;
+			if(value.length>1){
+				role2 = Integer.parseInt(value[1]);
+				if(value.length>2){
+					role3 = Integer.parseInt(value[2]);
+					if(value.length>3)
+						role4 = Integer.parseInt(value[3]);
+				}
+			}
+			users = userService.getByRole(role1, role2, role3, role4);
 			count = users.size();
 			if (limit * page < users.size())
 				users = users.subList(limit * (page - 1), limit * page);
 			else
 				users = users.subList(limit * (page - 1), users.size());
 		} else if (value != null && type.equals("project")) {
-			users = userService.studentsByProjectName(value, limit, limit * (page - 1));
-			count = userService.countProject(value);
+			users = userService.studentsByProjectName(value[0], limit, limit * (page - 1));
+			count = userService.countProject(value[0]);
 		} else if (value != null && type.equals("group")) {
-			users = userService.studentsByGroupName(value, limit, limit * (page - 1));
-			count = userService.countGroup(value);
+			users = userService.studentsByGroupName(value[0], limit, limit * (page - 1));
+			count = userService.countGroup(value[0]);
 		} else if (!isMentor) {
 			users = userService.getSome(limit, limit * (page - 1));
 			count = userService.count();
@@ -121,6 +121,11 @@ public class UsersController {
 				temp.add(user);
 		}
 		return users.removeAll(temp);
+	}
+	
+	@Scheduled (cron = "0 * * * * *")
+	public void hi(){
+	System.out.println("");
 	}
 
 

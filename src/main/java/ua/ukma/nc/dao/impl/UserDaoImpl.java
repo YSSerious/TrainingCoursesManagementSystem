@@ -117,9 +117,12 @@ public class UserDaoImpl implements UserDao {
 	
 	private static final String HAS_HR_REVIEWS = "SELECT EXISTS (SELECT * FROM tcms.final_review WHERE id_employee = ? AND (type = 'G' OR type = 'T'))";
 
+	private static final String GET_BY_ROLE = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT id_user FROM tcms.user_role WHERE id_role = ? OR id_role = ? OR id_role = ? OR id_role = ?)";
+
 	private static final String GET_INACTIVE_STUDENTS = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student LEFT JOIN tcms.user_role ur ON tcms.user.id=ur.id_user WHERE ss.id_status = 1 AND ur.id_role = 4";
 
 	private static final String GET_FREE_MENTORS = "SELECT us.*, ss.id_status FROM tcms.user us LEFT JOIN tcms.student_status ss ON us.id=ss.id_student LEFT JOIN tcms.user_role ur ON us.id=ur.id_user LEFT JOIN tcms.user_group ug ON us.id = ug.id_user LEFT JOIN tcms.group gr ON ug.id_group = gr.id LEFT JOIN tcms.project pr ON pr.id = gr.id_project WHERE ur.id_role = 2 AND (pr.finish is null or pr.finish < current_timestamp)";
+
 
 	@Override
 	public User getByEmail(String email) {
@@ -312,9 +315,14 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
+
+	public List<User> getByRole(int role1, int role2, int role3, int role4){
+		return jdbcTemplate.query(GET_BY_ROLE, new UserMapper(), role1, role2, role3, role4);
+	}
 	public List<User> getInactiveStudents() {
 		log.info("Getting all inactive students");
 		return jdbcTemplate.query(GET_INACTIVE_STUDENTS, new UserMapper());
+
 	}
 
 	@Override

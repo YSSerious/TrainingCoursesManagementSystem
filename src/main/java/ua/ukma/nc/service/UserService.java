@@ -73,7 +73,10 @@ public interface UserService {
 
 	int countFullName(String name, String secondName, String lastName);
 
+	List<User> getByRole(int role1, int role2, int role3, int role4);
+
 	List<User> getFreeMentors();
 
 	List<User> getInactiveStudents();
+
 }
