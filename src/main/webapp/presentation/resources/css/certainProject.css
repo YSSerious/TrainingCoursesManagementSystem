@@ -78,6 +78,15 @@ div#project-name > *{
 
 }
 
+.certain-project .project-controls {
+     display: inline-block;
+     float:right;
+}
+
+.certain-project .project-controls > * {
+    margin-left: 15px;
+} 
+
 /*.certain-project .pull-right-btn {*/
     /*float: right!important;*/
     /*margin-right: 10px;*/

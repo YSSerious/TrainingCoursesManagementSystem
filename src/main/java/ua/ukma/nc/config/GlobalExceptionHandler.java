@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -51,5 +52,21 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
 		modelAndView.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 		log.error(ex.getMessage());
 		return new ModelAndView("error/psql");
+	}
+	
+	@ExceptionHandler(EmptyResultDataAccessException.class)
+	public ModelAndView handleEmpyResultDataAccessException(EmptyResultDataAccessException ex) {
+		ModelAndView modelAndView = new ModelAndView("error/emptyData");
+		modelAndView.setStatus(HttpStatus.NOT_FOUND);
+		log.error(ex.getMessage());
+		return modelAndView;
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public ModelAndView handleDefaultException(EmptyResultDataAccessException ex) {
+		ModelAndView modelAndView = new ModelAndView("error/defaultError");
+		modelAndView.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+		log.error(ex.getMessage());
+		return modelAndView;
 	}
 }

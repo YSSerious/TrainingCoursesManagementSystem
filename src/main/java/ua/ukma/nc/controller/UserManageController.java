@@ -53,12 +53,6 @@ public class UserManageController {
 		return model;
 	}
 	
-	@ExceptionHandler(Exception.class)
-	public ModelAndView handleException(Exception ex) {
-		log.error(ex.getMessage());
-		return new ModelAndView("error/defaultError");
-	}
-	
 	@RequestMapping(value = "/manageRoles", method = RequestMethod.POST)
 	public ModelAndView changeRole(@RequestParam("student") Long student, @RequestParam("roles") List<Long> chRoles){
 		User user = userService.getById(student);

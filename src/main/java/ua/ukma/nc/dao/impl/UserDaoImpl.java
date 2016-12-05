@@ -87,14 +87,13 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String SET_STUDENT_STATUS = "insert into student_status (id_student, id_status) values (?, ?)";
 
-	private static final String HAS_REVIEWS = "SELECT EXISTS (SELECT * FROM (tcms.meeting_review INNER JOIN tcms.user_group ON tcms.meeting_review.id_student = tcms.user_group.id_user ) WHERE (tcms.meeting_review.id_student = ? AND tcms.user_group.id_group = ? ))";
+	private static final String HAS_REVIEWS = "SELECT EXISTS (SELECT * FROM tcms.meeting_review WHERE id_student = ? AND id_meeting IN (SELECT id FROM tcms.meeting WHERE id_group = ?))";
 
 	private static final String GET_BY_NAME = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE (first_name LIKE '";
 
 	private static final String GET_BY_FIRST_NAME = "first_name LIKE '";
 
 	private static final String GET_BY_LAST_NAME = "last_name LIKE '";
-
 
 	private static final String GET_BY_SECOND_NAME = "second_name LIKE '";
 

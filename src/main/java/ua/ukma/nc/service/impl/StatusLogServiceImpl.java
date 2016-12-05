@@ -76,4 +76,9 @@ public class StatusLogServiceImpl implements StatusLogService{
 	public StatusLog getLast(Long groupId, Long studentId) {
 		return statusLogDao.getLast(groupId, studentId);
 	}
+
+	@Override
+	public int removeStatusLogs(Long groupId, Long userId) {
+		return statusLogDao.removeStatusLogs(groupId, userId);
+	}
 }
