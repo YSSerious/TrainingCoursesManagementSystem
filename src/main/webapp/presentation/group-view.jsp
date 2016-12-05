@@ -11,37 +11,42 @@ var groupId = ${group.id};
     border = "#D3D3D3";
 %>
 
-
-<div class="row">
-    <div class="col-md-6 group-header">
-        <div class="panel panel-default panel-horizontal top-panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <spring:message code="group.project.name"/>
-                </h3>
+<div style="padding-top:-20px;" class="container certain-project">
+	<div class="row">
+   		<div class="col-md-12">
+       		<div class="page-header">
+       		<div class="row">
+       			<div class="col-md-6">
+            	<h3 style="font-size: 3rem">${group.name}</h3>
+            	</div>
+            	<div class="col-md-6" style="padding-top:20px;">
+				<sec:authorize access="hasAnyRole('ADMIN', 'HR')">
+					<button class="btn btn-primary pull-right" data-toggle="modal"
+						data-target="#group-report-modal">
+						<b><spring:message code="group.generate.report" /></b>
+					</button>
+				</sec:authorize>
+				</div>
+				</div>
+				<br/>
+                <div class="row">
+                    <div class="col-md-6 editable-group">
+                        <div class="panel panel-default panel-horizontal panel editable-wrapper"
+                             id="project-finishdate">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Project</h3>
+                            </div>
+                            <div class="panel-body editable-label editable">
+                                <h5><a href ="/certainProject/${project.id}">${project.name}</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 editable-wrapper" id="project-description">
+                    </div>
+                </div>
             </div>
-            <div class="panel-body"><a href ="/certainProject/${project.id}">${project.name}</a></div>
-
-        </div>
-        <div class="panel panel-default panel-horizontal bottom-panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <spring:message code="group.group.name"/>
-                </h3>
-            </div>
-            <div class="panel-body">${group.name}</div>
         </div>
     </div>
-    <div class="col-md-6">
-        <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
-            <button class="btn btn-primary pull-right" data-toggle="modal"
-                    data-target="#group-report-modal"><b><spring:message
-                    code="group.generate.report"/></b></button>
-        </sec:authorize>
-    </div>
-</div>
-
-<br/>
 
 <div class="row">
     <div class="col-md-12">
@@ -58,7 +63,7 @@ var groupId = ${group.id};
                     <%--</button>--%>
                     <div data-toggle="collapse" data-target="#collapseMeetings"
                          class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
-                        <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
+                        <span id="spanId" class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
 
                     </div>
                 </div>
@@ -113,58 +118,22 @@ var groupId = ${group.id};
     </div>
 </div>
 
-
-<%--<div id="addMeetingNoteModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">--%>
-    <%--<div class="modal-dialog" role="document">--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header">--%>
-                <%--<button class="close" type="button" data-dismiss="modal"><span--%>
-                        <%--class="glyphicon glyphicon-remove"></span></button>--%>
-                <%--<h4 class="modal-title">New Attachment</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body">--%>
-                <%--<form>--%>
-                    <%--<div class="form-group">--%>
-
-                        <%--<label for="usr">Name:</label>--%>
-                        <%--<input type="text" class="form-control" id="noteAttachmentName"--%>
-                               <%--placeholder="attachment will have prefix 'meeting_note_'">--%>
-                    <%--</div>--%>
-                    <%--<div class="form-group">--%>
-                        <%--<label for="usr">Link:</label>--%>
-                        <%--<input type="text" class="form-control" id="noteAttachment" placeholder="paste link here...">--%>
-                    <%--</div>--%>
-                    <%--<input--%>
-                            <%--type=text id="groupId" style="display:none"--%>
-                            <%--value="${groupId }">--%>
-                    <%--<br>--%>
-                    <%--<div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse"--%>
-                         <%--id="save-att-btn">--%>
-                        <%--Save--%>
-                    <%--</div>--%>
-                    <%--<button id="addNoteSubmitButton" type="button" class="btn btn-primary">Save</button>--%>
-                <%--</form>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
-
-
-<div class="students_template">
+<div class="row">
+	<div class="col-md-12">
 	<h2>
 		<spring:message code="group.students" />
 	</h2>
-	<div class="panel panel-primary"
+	<div class="panel group"
 		style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
 		<div class="panel-heading clearfix">
-			<button type="button" class="btn btn-default btn-xs pull-right"  id="showAvailableStudents"
+			<button type="button" class="btn btn-default btn-sm pull-right"  id="showAvailableStudents"
 					data-toggle="modal"
 					data-target="#showAvailableStudentsModal">
 				<spring:message code="group.button.add" />
 			</button>
 			<div data-toggle="collapse" data-target="#collapseStudents"
 				class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
-				<span class="glyphicon glyphicon-chevron-down"></span>
+				<span class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
 			</div>
 		</div>
 		<div id="collapseStudents" class="panel-collapse collapse">
@@ -204,7 +173,7 @@ var groupId = ${group.id};
 			</ul>
 		</div>
 	</div>
-	<br />
+	</div>
 </div>
 
 
@@ -238,7 +207,8 @@ var groupId = ${group.id};
 
 
 
-<div class="attendance_template">
+<div class="row">
+<div class="col-md-12">
     <h2>
         <spring:message code="group.attendance"/>
     </h2>
@@ -248,7 +218,7 @@ var groupId = ${group.id};
 
             <div data-toggle="collapse" data-target="#collapseAttendance" class="arrow col-md-1" style="color: black"
                  onclick="changeSpan(this)">
-                <span class="glyphicon glyphicon-chevron-down"></span>
+                <span class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
             </div>
         </div>
 
@@ -304,7 +274,7 @@ var groupId = ${group.id};
             </div>
         </div>
     </div>
-    <br/>
+</div>
 </div>
 
 <div id="studentDeleteError" class="modal fade">
@@ -322,21 +292,22 @@ var groupId = ${group.id};
     </div>
 </div>
 
-<div class="mentors_template">
+<div class="row">
+<div class="col-md-12">
 	<h2>
 		<spring:message code="group.mentors" />
 	</h2>
 	<div class="panel panel-primary"
 		style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
 		<div class="panel-heading clearfix">
-			<button type="button" class="btn btn-default btn-xs pull-right"  id="showAvailableMentors"
+			<button type="button" class="btn btn-default btn-sm pull-right"  id="showAvailableMentors"
 					data-toggle="modal"
 					data-target="#showAvailableMentorsModal">
 			<spring:message code="group.button.add" />
 			</button>
 			<div data-toggle="collapse" data-target="#collapseMentors"
 				class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
-				<span class="glyphicon glyphicon-chevron-down"></span>
+				<span class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
 			</div>
 		</div>
 
@@ -361,7 +332,7 @@ var groupId = ${group.id};
             </ul>
         </div>
     </div>
-    <br/>
+</div>
 </div>
 
 
@@ -395,21 +366,21 @@ var groupId = ${group.id};
 
 
 
-
+<div class="row">
+<div class="col-md-12">
 <h2>
     <spring:message code="group.attachments"/>
 </h2>
-<div class="panel panel-primary"
-     style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
+<div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <button type="button" class="btn btn-default btn-xs pull-right"
+        <button type="button" class="btn btn-default btn-sm pull-right"
                 data-target="#addGroupAttachmentModal" data-toggle="modal">
             <spring:message code="group.button.add"/>
         </button>
         <div data-toggle="collapse" data-target="#collapseAttachment"
              class="arrow col-md-1" style="color: black"
              onclick="changeSpan(this)">
-            <span class="glyphicon glyphicon-chevron-down"></span>
+            <span class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
         </div>
     </div>
 
@@ -429,7 +400,8 @@ var groupId = ${group.id};
         </ul>
     </div>
 </div>
-
+</div>
+</div>
 
 <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
     <div id="group-report-modal" class="modal fade" role="dialog">
@@ -609,7 +581,7 @@ var groupId = ${group.id};
         $('select').select2();
     </script>
 </sec:authorize>
-
+</div>
 <script>
 
     $(document).ready(function () {
