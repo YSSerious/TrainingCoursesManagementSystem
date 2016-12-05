@@ -1,4 +1,8 @@
 $(document).ready(function () {
+
+    var namePattern = new RegExp('^[\\w\\s-]{2,20}$');
+    var descriptionPattern = new RegExp('^[\\w\\s-]{5,35}$');
+
     $("#deleteCategoryModal").click(function () {
         $.ajax({
             url: "/deleteCategory",
@@ -19,23 +23,62 @@ $(document).ready(function () {
     });
 
     $("#editCategoryModal").click(function () {
-        $.ajax({
-            url: "/editCategory",
-            type: "POST",
-            data: {
-                id: categoryId,
-                name: $("#editCategoryName").val(),
-                description: $("#editCategoryDescription").val()
-            },
-            success: function (data) {
-                console.log(data);
-                $('#aEditId-' + categoryId).html("<b>" + data.name + "</b>");
-                $('#divEditId-' + categoryId).html(data.description);
-            },
-            error: function (textStatus) {
-                console.log(textStatus);
-            }
-        });
+
+        if(!namePattern.test($("#editCategoryName").val())){
+            $('#editCategoryNameErrorId').html("name must be 2-20 symbols, under/dash or space.");
+            $('#form-edit-categoryName-id').addClass('has-error');
+            $('#editCategoryNameErrorId').removeClass('hidden');
+        }
+
+        if($("#editCategoryName").val()==''){
+            $('#editCategoryNameErrorId').html("required field");
+            $('#editCategoryNameErrorId').removeClass('hidden');
+            $('#form-edit-categoryName-id').addClass('has-error');
+        }
+
+        if(!namePattern.test($("#editCategoryDescription").val())){
+            $('#editCategoryDescriptionErrorId').html("description must be 5-35 symbols, under/dash or space.");
+            $('#form-edit-categoryDescription-id').addClass('has-error');
+            $('#editCategoryDescriptionErrorId').removeClass('hidden');
+        }
+
+        if($("#editCategoryDescription").val()==''){
+            $('#editCategoryDescriptionErrorId').html("required field");
+            $('#form-edit-categoryDescription-id').addClass('has-error');
+            $('#editCategoryDescriptionErrorId').removeClass('hidden');
+        }
+        if (namePattern.test($("#editCategoryName").val()) && descriptionPattern.test($("#editCategoryDescription").val())) {
+            $("#editCategoryModal").attr('disabled', true);
+            $.ajax({
+                url: "/editCategory",
+                type: "POST",
+                data: {
+                    id: categoryId,
+                    name: $("#editCategoryName").val(),
+                    description: $("#editCategoryDescription").val()
+                },
+                statusCode: {
+                    200: function (data) {
+                        console.log(data);
+                        $('#aEditId-' + categoryId).html("<b>" + data.name + "</b>");
+                        $('#divEditId-' + categoryId).html(data.description);
+                        //Validation Success
+                        $('#form-edit-categoryName-id').removeClass('has-error');
+                        $('#form-edit-categoryDescription-id').removeClass('has-error');
+                        $('#editCategoryNameErrorId').addClass('hidden');
+                        $('#editCategoryDescriptionErrorId').addClass('hidden');
+                        $("#editCategoryModal").attr('disabled', false);
+                        $('#editCategory').modal('toggle');
+                    },
+                    400: function (textStatus) {
+                        console.log(textStatus);
+                    },
+                    409: function (textStatus) {
+                        console.log(textStatus);
+                    }
+                }
+            });
+        }
     });
 
     $("#deleteCriteriaModal").click(function () {
@@ -57,8 +100,6 @@ $(document).ready(function () {
         });
     });
 
-    var namePattern = new RegExp('^[\\w\\s-]{2,20}$');
-    var descriptionPattern = new RegExp('^[\\w\\s-]{5,35}$');
 
     $("#saveCategory").click(function () {
 

@@ -86,15 +86,16 @@ public class MeetingEvaluationController {
         mv.addObject("meeting", meeting);
         mv.addObject("student", student);
         mv.addObject("review", review);
+        mv.addObject("title", "Meeting Evaluation");
         return mv;
     }
 
-    @RequestMapping (value = "/do_evaluate", method = RequestMethod.POST)
-    public @ResponseBody String doEvaluate(@ModelAttribute MeetingResult[] results, @RequestParam Long reviewId, @RequestParam String reviewComment){
-        for(MeetingResult result : results)
-            System.out.println(result);
-        System.out.println(reviewId);
-        System.out.println(reviewComment);
-        return "true";
-    }
+//    @RequestMapping (value = "/do_evaluate", method = RequestMethod.POST)
+//    public @ResponseBody String doEvaluate(@ModelAttribute MeetingResult[] results, @RequestParam Long reviewId, @RequestParam String reviewComment){
+//        for(MeetingResult result : results)
+//            System.out.println(result);
+//        System.out.println(reviewId);
+//        System.out.println(reviewComment);
+//        return "true";
+//    }
 }

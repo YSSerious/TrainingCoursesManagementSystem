@@ -8,6 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,6 +55,14 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
 		return new ModelAndView("error/psql");
 	}
 	
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	public ModelAndView handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
+		ModelAndView modelAndView = new ModelAndView("error/noArgument");
+		modelAndView.setStatus(HttpStatus.BAD_REQUEST);
+		log.error(ex.getMessage());
+		return modelAndView;
+	}
+
 	@ExceptionHandler(EmptyResultDataAccessException.class)
 	public ModelAndView handleEmpyResultDataAccessException(EmptyResultDataAccessException ex) {
 		ModelAndView modelAndView = new ModelAndView("error/emptyData");

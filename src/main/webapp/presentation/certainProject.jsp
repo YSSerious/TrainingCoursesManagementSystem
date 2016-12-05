@@ -291,13 +291,13 @@
                             </div>
                             <h5 id="inputDateErrorId" class="text-danger hidden"></h5>
                         </div>
-                        <label class="col-sm-2">Criteria</label>
+                        <label class="col-sm-2 text-right">Criteria</label>
                         <input type='checkbox' id="checkAllCriteriaId">
                         <div class="form-group col-sm-offset-2">
                             <div class="col-sm-12" id="CriteriaCheckBoxId">
                             </div>
                         </div>
-                        <label class="col-sm-2">Groups</label>
+                        <label class="col-sm-2 text-right">Groups</label>
                         <input type='checkbox' id="checkAllGroupsId">
                         <div class="form-group">
                             <div class="col-sm-12" id="GroupsCheckBoxId">

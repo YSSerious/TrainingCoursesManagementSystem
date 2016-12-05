@@ -1,16 +1,6 @@
 
 package ua.ukma.nc.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +8,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
@@ -25,41 +17,28 @@ import org.springframework.validation.DataBinder;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import ua.ukma.nc.dto.*;
-import ua.ukma.nc.entity.Group;
-import ua.ukma.nc.entity.GroupAttachment;
-import ua.ukma.nc.entity.Meeting;
-import ua.ukma.nc.entity.MeetingReview;
-import ua.ukma.nc.entity.Project;
-import ua.ukma.nc.entity.StudentStatus;
-import ua.ukma.nc.entity.User;
+import ua.ukma.nc.entity.*;
 import ua.ukma.nc.entity.impl.real.GroupImpl;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
-import ua.ukma.nc.service.CategoryService;
-import ua.ukma.nc.service.CriterionService;
-import ua.ukma.nc.service.GroupAttachmentService;
-import ua.ukma.nc.service.GroupService;
-import ua.ukma.nc.service.MeetingReviewService;
-import ua.ukma.nc.service.MeetingService;
-import ua.ukma.nc.service.StudentStatusService;
-import ua.ukma.nc.service.UserService;
+import ua.ukma.nc.entity.impl.real.StatusImpl;
+import ua.ukma.nc.service.*;
 import ua.ukma.nc.util.exception.MeetingDeleteException;
 import ua.ukma.nc.util.exception.RemoveStudentFromGroupException;
-import ua.ukma.nc.validator.GroupDeleteValidator;
-import ua.ukma.nc.validator.GroupAttachmentFormValidator;
-import ua.ukma.nc.validator.GroupEditValidator;
-import ua.ukma.nc.validator.GroupFormValidator;
+import ua.ukma.nc.validator.*;
 import ua.ukma.nc.vo.AjaxResponse;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Nastasia on 05.11.2016.
@@ -102,6 +81,12 @@ public class GroupController {
     
     @Autowired
     private MessageSource messageSource;
+
+    @Autowired
+    StatusLogService statusLogService;
+
+    @Autowired
+    NewMeetingValidator newMeetingValidator;
 
     private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
@@ -246,9 +231,10 @@ public class GroupController {
                     meetingService.isReviewed(meeting.getId())));
         }
 
-        String projectName = group.getProject().getName();
+        //String projectName = group.getProject().getName();
+        ProjectDto project = group.getProject();
         model.addObject("group", group);
-        model.addObject("projectName", projectName);
+        model.addObject("project", project);
 
         model.addObject("students", studentAndReviews);
         model.addObject("mentors", mentors);
@@ -257,6 +243,7 @@ public class GroupController {
         model.addObject("attachments", groupAttachments);
         model.addObject("groupId", group.getId());
         model.addObject("attendance", groupService.getAttendaceTable(id));
+        model.addObject("title", "Group");
 
         model.setViewName("group-view");
 
@@ -343,6 +330,9 @@ public class GroupController {
     @ResponseBody
     public ResponseEntity editMeeting(@RequestParam Long id, @RequestParam String name, @RequestParam String date,
                                   @RequestParam String place) {
+        if(!newMeetingValidator.checkMeetingName(name) && !newMeetingValidator.checkMeetingPlace(place) && !newMeetingValidator.checkMeetingDate(date)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Validation failed");
+        }
         int check = meetingService.editMeeting(id, name, date, place);
         if (check == 1) {
             Meeting meeting = meetingService.getById(id);
@@ -359,5 +349,41 @@ public class GroupController {
         meetingService.deleteMeeting(meetingService.getById(meetingId));
         return ResponseEntity.ok().body("Success");
     }
+
+
+    @RequestMapping(value = "add/students", method = RequestMethod.POST)
+    @ResponseBody
+    public UserDto addStudents (@RequestParam Long userId, @RequestParam Long groupId) {
+        groupService.addUser(groupId, userId);
+        Group group = new GroupImpl();
+        group.setId(groupId);
+        User student = userService.getById(userId);
+        Status status = new StatusImpl();
+        status.setId(2L);
+        StudentStatus studentStatus = new StudentStatus(student, status);
+        StatusLog statusLog = new StatusLog();
+        statusLog.setDate(new Timestamp(System.currentTimeMillis()));
+        Status oldStatus = new StatusImpl();
+        oldStatus.setId(1L);
+        statusLog.setOldStatus(oldStatus);
+        statusLog.setNewStatus(status);
+        statusLog.setGroup(group);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        statusLog.setEmployee(userService.getByEmail(name));
+        statusLog.setStudent(student);
+        statusLog.setCommentary("Assigning to the group");
+        statusLogService.createStatusLog(statusLog);
+        studentStatusService.updateStudentStatus(studentStatus);
+        return new UserDto(student);
+    }
+
+    @RequestMapping(value = "add/mentors", method = RequestMethod.POST)
+    @ResponseBody
+    public UserDto addMentor (@RequestParam Long userId, @RequestParam Long groupId) {
+        groupService.addUser(groupId, userId);
+        return new UserDto(userService.getById(userId));
+    }
+
 
 }

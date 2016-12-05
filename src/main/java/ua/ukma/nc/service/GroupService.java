@@ -40,4 +40,6 @@ public interface GroupService {
     int createGroup(Group group);
 
 	int removeStudent(Long groupId, Long userId);
+
+    void addUser(Long groupId, Long userId);
 }

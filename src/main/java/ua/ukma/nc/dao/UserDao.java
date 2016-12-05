@@ -2,7 +2,6 @@ package ua.ukma.nc.dao;
 
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.Status;
-import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
 
 import java.util.List;
@@ -71,5 +70,10 @@ public interface UserDao {
 	boolean hasHRReviews(Long hrId);
 
 	List<User> getByRole(int role1, int role2, int role3, int role4);
+
+	List<User> getInactiveStudents();
+
+	List<User> getFreeMentors();
+
 
 }

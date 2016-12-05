@@ -33,7 +33,9 @@ public interface ProjectDao {
 
 	List<Project> getAllFinished();
 
-	List<Project> getMentorStudentProjects(Long mentorId, Long studentId);
+    List<Project> getAllStudentProjectsWithoutAnyOfHrReviews(Long userId);
+
+    List<Project> getMentorStudentProjects(Long mentorId, Long studentId);
 
 	Integer count(String query);
 

@@ -259,8 +259,8 @@ function getFinalReviews(studentProfile){
 	
 	reviews += '<table class="table table-bordered">';
 	reviews += '<tr>';
-	reviews += '<th style="width:50%">'+lang.user_general_review+'</th>';
 	reviews += '<th style="width:50%">'+lang.user_technical_review+'</th>';
+	reviews += '<th style="width:50%">'+lang.user_general_review+'</th>';
 	reviews += '</tr>';
 
 	if (studentProfile.technicalReview !== null) {
@@ -413,8 +413,12 @@ function getMentorStudentProjects(userId){
 			});
 			s+='</select></td></tr>';
 			$('#final-review-project-list').html(s);
-			if(resp.length>0)
+			if(resp.length>1)
 				$('#finReviewProject').find('.btn').removeClass('hidden');
+		},
+		'error': function (resp) {
+			var s = '<tr><td colspan="3"><label>'+lang.review_no_projects+'</label></td></tr>';
+			$('#final-review-hr-project-list').html(s);
 		}
 	});
 }
@@ -467,24 +471,6 @@ function doFinalReview(userId) {
 		$('#fin-rev-err').removeClass('hidden');
 	}
 };
-
-$(document).ready(function(){
-	$("#createHRreviewBtn").click(function(){
-		$("#createHRreviewModal").modal();
-	});
-});
-
-
-$(document).ready(function() {
-
-	$("#submitreviewBtn").click(function(event) {
-		$.ajax({
-			url: "/createReview",
-			type: "POST",
-			data: {"type" : $("#reviewtype").val(), "commentary" : $("#commentary").val()}
-		});
-	});
-});
 
 function report(studentId){
 	$.ajax({
@@ -651,3 +637,88 @@ function getModal(modalId, modalName, modalTitle, reviewDto){
 	
 	return modal;
 }
+
+function getHRReviewProjects(userId) {
+	$('#finReviewHRProject').modal('toggle');
+	$.ajax({
+		'url': '/ajax/get/hr_review_projects',
+		'type': 'GET',
+		'data': {'studentId': userId},
+		'success': function (resp) {
+			var s = '';
+			if(resp.length>0) {
+				s += '<br/><tr><td colspan="3"><select class="form-control" id="fin-review-hr-proj-switch">';
+				$.each(resp, function (key, value) {
+					s += '<option value="' + value.id + '">' + value.name + '</option>';
+				});
+				s += '</select></td></tr>';
+				$('#finReviewHRProject').find('.btn').removeClass('hidden');
+			}else{
+				s = '<tr><td colspan="3"><label>'+lang.review_no_projects+'</label></td></tr>';
+			}
+				$('#final-review-hr-project-list').html(s);
+		},
+		'error': function (resp) {
+			var s = '<tr><td colspan="3"><label>'+lang.review_no_projects+'</label></td></tr>';
+			$('#final-review-hr-project-list').html(s);
+		}
+	});
+}
+
+function getHRReviewForm(userId) {
+	$('#finReviewHRProject').modal('toggle');
+	$('#createHRreviewModal').modal('toggle');
+	$.ajax({
+		'url': '/ajax/get/hr_review',
+		'type': 'GET',
+		'data': {'studentId': userId, 'projectId': $('#fin-review-hr-proj-switch').val()},
+		'success': function (resp) {
+			var s = '';
+			switch (resp.available){
+				case 'B':
+					s+='<option value="G">General</option><option value="T">Technical</option>';
+					break;
+				case 'G':
+					s+='<option value="G">General</option>';
+					break;
+				case 'T':
+					s+='<option value="T">Technical</option>';
+					break;
+				default:
+					break;
+			}
+			$('#reviewtype').html(s);
+			$('#project-id-hr-rev').val(resp.project.id);
+		},
+		'error': function (resp) {
+			console.warn(resp);
+		}
+	});
+};
+
+function doHRRequest(userId) {
+	if(!$('#hr-rev-commentary').val()){
+		$('#hr-rev-err').removeClass('hidden');
+		$('#hr-rev-commentary').addClass('error');
+		return;
+	}
+	$.ajax({
+		'url': '/ajax/post/hr_review',
+		'type': 'POST',
+		'data': {'studentId': userId, 'projectId': $('#project-id-hr-rev').val(),
+			'comment': $('#hr-rev-commentary').val(), 'type': $('#reviewtype').val()},
+		'success': function (resp) {
+			console.warn(resp);
+			$('#hr-rev-commentary').val('');
+		},
+		'error': function (resp) {
+			console.warn(resp);
+		}
+	});
+	if($('#hr-rev-commentary').hasClass('error')){
+		$('#hr-rev-err').addClass('hidden');
+		$('#hr-rev-commentary').removeClass('error');
+	}
+	$('#createHRreviewModal').modal('toggle');
+	$('#finReviewHRProject').find('.btn').addClass('hidden');
+};

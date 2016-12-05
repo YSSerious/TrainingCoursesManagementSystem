@@ -104,6 +104,7 @@ public class AuthController {
             mv.addObject("chosenRole", available.get(0));
             return mv;
         }
+        mv.addObject("title", "Switch Role");
         mv.addObject("availableRoles", available);
         return mv;
     }

@@ -250,14 +250,12 @@
                 <sec:authorize access="hasRole('HR')">
 
                     <br/>
-                    <font id="createHRreviewBtn" class="clickable" color="blue" data-toggle="modal"
-                          data-target="#addHRreview">
-                        <b onclick="createHRreviewForm(${user.id})">
+                    <div id="createHRreviewBtn" class="clickable">
+                        <b onclick="getHRReviewProjects(${user.id})">
                             <spring:message code="create.review"/>
                         </b>
-                    </font>
+                    </div>
 
-                    <%@include file="reviewHR.jsp" %>
                 </sec:authorize>
 
                 <sec:authorize access="hasRole('ADMIN')">
@@ -275,8 +273,11 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <form action="/manageRoles" method="post">
+                                        <form id="manageRolesForm" action="/manageRoles" method="post">
                                             <div class="col-sm-12">
+                                            	<div style="color:red;" id="error-roles-text">
+                                            		
+                                            	</div>
                                                 <c:forEach var="role" items="${roles}">
                                                     <div class="checkbox">
                                                         <label>
@@ -304,7 +305,7 @@
                                             <br/>
                                             <input type="hidden" name="student" value="${user.id}">
                                             <div class="text-center">
-                                                <button type="submit" class="btn btn-primary"><spring:message
+                                                <button type="button" onclick="check()" class="btn btn-primary"><spring:message
                                                         code="user.submit"/></button>
                                             </div>
                                         </form>
@@ -419,6 +420,36 @@
 </div>
 <!-- end add fin review choose project modal -->
 
+<!-- start fin review hr choose project modal -->
+<div id="finReviewHRProject" class="modal fade" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                <h4 class="modal-title"><spring:message
+                        code="final_review.label.project"/>: ${user.firstName} ${user.lastName} </h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <table class="table" id="final-review-hr-project-list">
+                        <tr>
+                            <td><spring:message code="loading.label"/></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default hidden" onclick="getHRReviewForm(${user.id})" type="button">
+                    <spring:message code="btn.submit"/>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end fin review hr choose project modal -->
+
 <div id="createHRreviewModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -428,24 +459,19 @@
             </div>
             <div class="modal-body">
                 <div class="showactions"></div>
-                <br class="actions"/>
-                <form method="post">
-                    <br/>
                     <label class="col-md-4 control-label">Select type</label>
                     <br class="col-lg-6"/>
-                    <select class="form-control" name="reviewtype" id="reviewtype" onchange="">
-                        <option selected disabled></option>
-                        <option value="G">General</option>
-                        <option value="T">Technical</option>
+                    <select class="form-control" name="reviewtype" id="reviewtype">
                     </select>
-
+                    <input type="hidden" id="project-id-hr-rev">
                     <br/>
                     <br/>
                     <label class="col-md-4 control-label">Write review</label>
-                    <textarea maxlength="500" name="commentary" class="form-control" rows="5" id="commentary"
+                    <textarea maxlength="500" name="commentary" class="form-control" rows="5" id="hr-rev-commentary"
                               required></textarea>
                     <br/>
-                    <button type="submit" class="btn btn-primary pull-right" id="submitreviewBtn"><spring:message
+                <span id="hr-rev-err" class="text-danger hidden">Comment needed!</span>
+                    <button class="btn btn-primary pull-right" id="submitreviewBtn" onclick="doHRRequest(${user.id})"><spring:message
                             code="user.submit"/></button>
                     <br/>
                     <br/>
@@ -454,6 +480,19 @@
         </div>
     </div>
 </div>
+<c:set var="errorTextRoles">
+    <spring:message code="error.role.zero"/>
+</c:set>
 
 
+<script type="text/javascript">
+	function check(){
+		if($("input[name='roles']").is(":checked")){
+			$("#manageRolesForm").submit();
+		}else{
+			var error = "${errorTextRoles}";
+			$("#error-roles-text").html('<div class="text-center">'+error+'</div>');
+		}
+	}
+</script>
 <%@include file="footer.jsp" %>

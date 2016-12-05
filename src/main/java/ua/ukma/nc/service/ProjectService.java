@@ -24,6 +24,8 @@ public interface ProjectService {
 
 	List<Project> getAllFinished();
 
+	List<Project> getAllStudentProjectsWithoutAnyOfHrReviews(Long userId);
+
 	List<Project> search(ProjectSearch projectSearch);
 
 	Integer getMaxPage(ProjectSearch projectSearch);
