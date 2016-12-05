@@ -92,11 +92,6 @@ public class GroupController {
 
 	@Autowired
     private GroupAttachmentFormValidator groupAttachmentFormValidator;
-     
-    @InitBinder("groupAttachmentForm")
-    protected void initBinderFileBucket(WebDataBinder binder) {
-       binder.setValidator(groupAttachmentFormValidator);
-    }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
@@ -254,8 +249,13 @@ public class GroupController {
 
     @RequestMapping(value = "/addAttachment", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResponse addGroupAttachment(@Valid @ModelAttribute("groupAttachmentForm") GroupAttachmentFormDto attachmentDto,
-                                           BindingResult result) throws IOException {
+    public AjaxResponse addGroupAttachment(@ModelAttribute("groupAttachmentForm") GroupAttachmentFormDto attachmentDto) throws IOException {
+        
+    	DataBinder dataBinder = new WebDataBinder(attachmentDto);
+        dataBinder.setValidator(groupAttachmentFormValidator);
+        dataBinder.validate();
+        BindingResult result = dataBinder.getBindingResult();
+        
         AjaxResponse response = new AjaxResponse();
 
         if (result.hasErrors()) {

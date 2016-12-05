@@ -74,7 +74,7 @@ public class UserManageController {
 	public ModelAndView changeStatus(@PathVariable("id") Long id, @RequestParam("commentary") String commentary,
 			@RequestParam("status") Long statusId) throws Exception{
 
-		ModelAndView model = new ModelAndView();
+		ModelAndView model = new ModelAndView("user");
 
 		userService.changeStatus(id, statusId, commentary);
 		

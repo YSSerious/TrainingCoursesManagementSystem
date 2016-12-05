@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -66,11 +67,6 @@ public class CertainProjectController {
 
     @Autowired
     private NewMeetingValidator meetingValidator;
-
-    @InitBinder("projectAttachmentForm")
-    protected void initBinderFileBucket(WebDataBinder binder) {
-        binder.setValidator(projectAttachmentFormValidator);
-    }
 
     @RequestMapping(value = "/certainProject/{id}", method = RequestMethod.GET)
     public ModelAndView viewProject(@PathVariable("id") Long id) {
@@ -188,10 +184,13 @@ public class CertainProjectController {
 	
     @RequestMapping(value = "/addProjectAttachment", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResponse addProjectAttachment(@Valid @ModelAttribute("projectAttachmentForm") ProjectAttachmentFormDto attachmentDto,
-                                             BindingResult result) throws IOException {
+    public AjaxResponse addProjectAttachment(@ModelAttribute("projectAttachmentForm") ProjectAttachmentFormDto attachmentDto) throws IOException {
         AjaxResponse response = new AjaxResponse();
-
+    	DataBinder dataBinder = new WebDataBinder(attachmentDto);
+        dataBinder.setValidator(projectAttachmentFormValidator);
+        dataBinder.validate();
+        
+        BindingResult result = dataBinder.getBindingResult();
         if (result.hasErrors()) {
 
             result.getFieldErrors().stream().forEach((FieldError error) -> {
