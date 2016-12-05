@@ -203,22 +203,39 @@
                         <button class="close" type="button" data-dismiss="modal"><span
                                 class="glyphicon glyphicon-remove"></span></button>
                         <h4 class="modal-title">Edit category</h4>
-
+                        <%--<div>--%>
+                            <%--<table class="table">--%>
+                                <%--<tr>--%>
+                                    <%--<td>Name</td>--%>
+                                    <%--<td><input id="editCategoryName" type="text"></td>--%>
+                                <%--</tr>--%>
+                                <%--<tr>--%>
+                                    <%--<td>Description</td>--%>
+                                    <%--<td><input id="editCategoryDescription" type="text"></td>--%>
+                                <%--</tr>--%>
+                            <%--</table>--%>
+                        <%--</div>--%>
                         <div>
-                            <table class="table">
-                                <tr>
-                                    <td>Name</td>
-                                    <td><input id="editCategoryName" type="text"></td>
-                                </tr>
-                                <tr>
-                                    <td>Description</td>
-                                    <td><input id="editCategoryDescription" type="text"></td>
-                                </tr>
-                            </table>
+                            <form name="editCategoryForm" id="editCategoryFormId" class="form-horizontal">
+                                <div class="form-group" id="form-edit-categoryName-id">
+                                    <label class="control-label col-sm-2" for="editCategoryName">Name</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="editCategoryName" placeholder="Enter name">
+                                    </div>
+                                    <h5 id="editCategoryNameErrorId" class="text-danger hidden"></h5>
+                                </div>
+                                <div class="form-group" id="form-edit-categoryDescription-id">
+                                    <label class="control-label col-sm-2" for="editCategoryDescription">Name</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="editCategoryDescription" placeholder="Enter description">
+                                    </div>
+                                    <h5 id="editCategoryDescriptionErrorId" class="text-danger hidden"></h5>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" type="button" data-dismiss="modal" id="editCategoryModal">Save
+                        <button class="btn btn-primary" type="button" id="editCategoryModal">Save
                             changes
                         </button>
                     </div>

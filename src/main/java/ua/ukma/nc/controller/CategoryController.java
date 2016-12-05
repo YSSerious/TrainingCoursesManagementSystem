@@ -108,11 +108,14 @@ public class CategoryController {
 
     @RequestMapping(value = "/editCategory", method = RequestMethod.POST)
     @ResponseBody
-    public CategoryDto editCategory(@RequestParam Long id, @RequestParam String name, @RequestParam String description) {
+    public ResponseEntity editCategory(@RequestParam Long id, @RequestParam String name, @RequestParam String description) {
+        if (!categoryValidator.checkCategoryName(name) && !categoryValidator.checkCategoryDescription(description)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Validation failed");
+        }
         int check = categoryService.updateCategory(new CategoryImpl(id, name, description));
         if (check == 1)
-            return new CategoryDto(name, description);
-        return null;
+            return ResponseEntity.ok().body(new CategoryDto(name, description));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Fail during editing category");
     }
 
     private boolean isCriteriaUsing(Category category) {

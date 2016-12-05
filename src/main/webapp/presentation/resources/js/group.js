@@ -137,37 +137,93 @@ $("#addNoteSubmitButton").click(function(event) {
 			}
 		});
 	});
+
+	var meetingNamePattern = new RegExp('^[\\w\\s-]{2,20}$');
+	var meetingPlacePattern = new RegExp('^[\\w\\s-]{5,35}$');
 	
 	$("#editMeetingButton").click(function () {
-		$.ajax({
-			url: "/groups/editMeeting",
-			type: "POST",
-			data: {id: chosenMeetingId, name: $("#editMeetingName").val(), date: $("#editMeetingDate").val(), place: $("#editMeetingPlace").val()},
-			statusCode: {
-				200: function (data) {
-					console.log(data);
-					$('#editMeetingNameId-'+data.id).html(data.name);
-					$('#editMeetingDateId-'+data.id).html(convertTimestamp(data.time));
-					$('#editMeetingPlaceId-'+data.id).html(data.place);
+
+		if (!meetingNamePattern.test($("#editMeetingName").val())) {
+			$('#meetingNameErrorId').html("name must be 2-20 symbols, under/dash or space.");
+			$('#form-meeting-name-id').addClass('has-error');
+			$('#meetingNameErrorId').removeClass('hidden');
+		}
+
+		if ($("#editMeetingName").val() == '') {
+			$('#meetingNameErrorId').html("required field");
+			$('#meetingNameErrorId').removeClass('hidden');
+			$('#form-meeting-name-id').addClass('has-error');
+		}
+
+		if (!meetingPlacePattern.test($("#editMeetingPlace").val())) {
+			$('#meetingPlaceErrorId').html("name must be 2-20 symbols, under/dash or space.");
+			$('#form-meeting-place-id').addClass('has-error');
+			$('#meetingPlaceErrorId').removeClass('hidden');
+		}
+
+		if ($("#editMeetingPlace").val() == '') {
+			$('#meetingPlaceErrorId').html("required field");
+			$('#meetingPlaceErrorId').removeClass('hidden');
+			$('#form-meeting-place-id').addClass('has-error');
+		}
+
+		if ($("#editMeetingDate").val() == '') {
+			$('#meetingDateErrorId').html("required field");
+			$('#meetingDateErrorId').removeClass('hidden');
+			$('#form-meeting-date-id').addClass('has-error');
+		}
+
+		if (meetingNamePattern.test($("#editMeetingName").val()) &&
+			meetingPlacePattern.test($("#editMeetingPlace").val()) && $("#editMeetingDate").val() != "") {
+			$("#editMeetingButton").attr('disabled', true);
+			$.ajax({
+				url: "/groups/editMeeting",
+				type: "POST",
+				data: {
+					id: chosenMeetingId,
+					name: $("#editMeetingName").val(),
+					date: $("#editMeetingDate").val(),
+					place: $("#editMeetingPlace").val()
 				},
-				409: function (textStatus) {
-					console.log(textStatus.responseText);
+				statusCode: {
+					200: function (data) {
+						console.log(data);
+						$('#editMeetingNameId-' + data.id).html(data.name);
+						$('#editMeetingDateId-' + data.id).html(convertTimestamp(data.time));
+						$('#editMeetingPlaceId-' + data.id).html(data.place);
+
+						//Validation Success
+						$('#form-meeting-name-id').removeClass('has-error');
+						$('#form-meeting-place-id').removeClass('has-error');
+						$('#form-meeting-date-id').removeClass('has-error');
+						$('#meetingNameErrorId').addClass('hidden');
+						$('#meetingPlaceErrorId').addClass('hidden');
+						$('#meetingDateErrorId').addClass('hidden');
+						$("#editMeetingButton").attr('disabled', false);
+						$('#editMeetingModal').modal('toggle');
+					},
+					400: function (textStatus) {
+						console.log(textStatus);
+					},
+					409: function (textStatus) {
+						console.log(textStatus.responseText);
+					}
 				}
-			}
-		});
-	});
-
-	$('#editMeetingButton').attr('disabled', true);
-	var meetingName = new RegExp('^[a-zA-Z0-9_-\\s]{3,15}$');
-	var meetingPlace = new RegExp('^[a-zA-Z0-9_-\\s]{3,25}$');
-
-	$('#editMeetingFormId').change(function () {
-		if (meetingName.test($("#editMeetingName").val()) && meetingPlace.test($("#editMeetingPlace").val()) && $("#editMeetingDate").val()!=""){
-			$('#editMeetingButton').attr('disabled', false);
-		} else {
-			$('#editMeetingButton').attr('disabled', true);
+			});
 		}
 	});
+
+	// $('#editMeetingButton').attr('disabled', true);
+	// var meetingName = new RegExp('^[a-zA-Z0-9_-\\s]{3,15}$');
+	// var meetingPlace = new RegExp('^[a-zA-Z0-9_-\\s]{3,25}$');
+    //
+	// $('#editMeetingFormId').change(function () {
+	// 	if (meetingName.test($("#editMeetingName").val()) && meetingPlace.test($("#editMeetingPlace").val()) && $("#editMeetingDate").val()!=""){
+	// 		$('#editMeetingButton').attr('disabled', false);
+	// 	} else {
+	// 		$('#editMeetingButton').attr('disabled', true);
+	// 	}
+	// });
 
 	function convertTimestamp(timestamp) {
 		var d = new Date(timestamp);

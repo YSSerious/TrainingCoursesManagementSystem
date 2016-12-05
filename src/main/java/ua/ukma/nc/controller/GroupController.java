@@ -27,10 +27,7 @@ import ua.ukma.nc.entity.impl.real.StatusImpl;
 import ua.ukma.nc.service.*;
 import ua.ukma.nc.util.exception.MeetingDeleteException;
 import ua.ukma.nc.util.exception.RemoveStudentFromGroupException;
-import ua.ukma.nc.validator.GroupAttachmentFormValidator;
-import ua.ukma.nc.validator.GroupDeleteValidator;
-import ua.ukma.nc.validator.GroupEditValidator;
-import ua.ukma.nc.validator.GroupFormValidator;
+import ua.ukma.nc.validator.*;
 import ua.ukma.nc.vo.AjaxResponse;
 
 import javax.servlet.http.HttpServletResponse;
@@ -87,6 +84,9 @@ public class GroupController {
 
     @Autowired
     StatusLogService statusLogService;
+
+    @Autowired
+    NewMeetingValidator newMeetingValidator;
 
     private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
@@ -330,6 +330,9 @@ public class GroupController {
     @ResponseBody
     public ResponseEntity editMeeting(@RequestParam Long id, @RequestParam String name, @RequestParam String date,
                                   @RequestParam String place) {
+        if(!newMeetingValidator.checkMeetingName(name) && !newMeetingValidator.checkMeetingPlace(place) && !newMeetingValidator.checkMeetingDate(date)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Validation failed");
+        }
         int check = meetingService.editMeeting(id, name, date, place);
         if (check == 1) {
             Meeting meeting = meetingService.getById(id);
