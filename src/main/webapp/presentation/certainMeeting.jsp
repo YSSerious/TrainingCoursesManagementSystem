@@ -6,19 +6,19 @@
                 <div class="col-md-6">
                     <div class="panel panel-default panel-horizontal top-panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Meeting</h3>
+                            <h3 class="panel-title"><spring:message code="meeting.name"/></h3>
                         </div>
                         <div class="panel-body">${meeting.name}</div>
                     </div>
                     <div class="panel panel-default panel-horizontal top-panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Place</h3>
+                            <h3 class="panel-title"><spring:message code="meeting.place"/></h3>
                         </div>
                         <div class="panel-body">${meeting.place}</div>
                     </div>
                     <div class="panel panel-default panel-horizontal bottom-panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Time</h3>
+                            <h3 class="panel-title"><spring:message code="meeting.time"/></h3>
                         </div>
                         <div class="panel-body">${meeting.time}</div>
                     </div>
@@ -31,14 +31,14 @@
 <div id="table-listing">
     <div class="panel panel-primary  table-responsive table-scrollable">
         <div class="panel-heading">
-            <h3 class="panel-title">Student list</h3>
+            <h3 class="panel-title"><spring:message code="meeting.table"/></h3>
         </div>
         <table class="table table-striped table-bordered meeting"
                id="pagination" data-count-fixed-columns="1">
             <thead class="header">
 
             <tr>
-                <th>Student</th>
+                <th><spring:message code="meeting.student"/></th>
                 <c:forEach items="${criteria}" var="criterion">
                     <th>${criterion.title}</th>
                 </c:forEach>
@@ -256,14 +256,14 @@
 </div>
 </c:if>
 <c:if test="${students.isEmpty() && marks.isEmpty() && absent.isEmpty()}">
-<h1>No students here yet</h1>
+<h1><spring:message code="meeting.noStudents"/></h1>
 </c:if>
 <br>
 
 
 <div class="row">
     <div class="col-md-12">
-        <h2>Criteria List</h2>
+        <h2><spring:message code="meeting.criteria"/></h2>
         <div class="panel-group" id="panelGroupId">
             <div class="panel panel-primary">
                 <div class="panel-heading clearfix">
