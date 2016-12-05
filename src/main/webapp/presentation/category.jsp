@@ -203,18 +203,6 @@
                         <button class="close" type="button" data-dismiss="modal"><span
                                 class="glyphicon glyphicon-remove"></span></button>
                         <h4 class="modal-title">Edit category</h4>
-                        <%--<div>--%>
-                            <%--<table class="table">--%>
-                                <%--<tr>--%>
-                                    <%--<td>Name</td>--%>
-                                    <%--<td><input id="editCategoryName" type="text"></td>--%>
-                                <%--</tr>--%>
-                                <%--<tr>--%>
-                                    <%--<td>Description</td>--%>
-                                    <%--<td><input id="editCategoryDescription" type="text"></td>--%>
-                                <%--</tr>--%>
-                            <%--</table>--%>
-                        <%--</div>--%>
                         <div>
                             <form name="editCategoryForm" id="editCategoryFormId" class="form-horizontal">
                                 <div class="form-group" id="form-edit-categoryName-id">
