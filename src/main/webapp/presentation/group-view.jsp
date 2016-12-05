@@ -188,7 +188,7 @@
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
-						<div id="${group.id}-${student.key.student.id}"
+						<div id="${group.id}-${studentMap.key.student.id}"
 							class="btn rmv-cr-btn col-md-1 pull-right delete-student"
 							type='button'>
 							<span class="glyphicon glyphicon-remove delete"></span>

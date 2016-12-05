@@ -32,4 +32,6 @@ public interface StatusLogService {
     int getNumOfInvitedByProject(Long projectId);
 
     int getNumOfJobOffersByProject(Long projectId);
+
+	int removeStatusLogs(Long groupId, Long userId);
 }
