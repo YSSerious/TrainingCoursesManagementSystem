@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ua.ukma.nc.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +23,11 @@ public class GroupDeleteValidator implements Validator {
     public void validate(Object arg0, Errors errors) {
         GroupDto group = (GroupDto) arg0;
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "id", "NotEmpty.groupForm.id");
-        if ((group.getId() > 0)) {
-            if (groupService.getById(group.getId()) == null) {
+        if ((group.getId() <= 0) || (group.getId() > 0) && (groupService.getById(group.getId()) == null)) {
                 errors.reject("NotFound.groupForm.id");
             }
-            else if (groupService.getStudentsAmount(group.getId()) != 0) {
+        if ((group.getId() > 0) && (groupService.getStudentsAmount(group.getId()) != 0)) {
                 errors.reject("HasStudents.groupForm.general");
             }
         }
     }
-
-}

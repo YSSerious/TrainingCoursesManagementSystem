@@ -57,9 +57,9 @@ import ua.ukma.nc.util.exception.MeetingDeleteException;
 import ua.ukma.nc.util.exception.RemoveStudentFromGroupException;
 import ua.ukma.nc.validator.GroupDeleteValidator;
 import ua.ukma.nc.validator.GroupAttachmentFormValidator;
+import ua.ukma.nc.validator.GroupEditValidator;
 import ua.ukma.nc.validator.GroupFormValidator;
 import ua.ukma.nc.vo.AjaxResponse;
-import ua.ukma.nc.vo.GroupVo;
 
 /**
  * Created by Nastasia on 05.11.2016.
@@ -95,6 +95,9 @@ public class GroupController {
     private GroupFormValidator groupFormValidator;
 
     @Autowired
+    private GroupEditValidator groupEditValidator;
+    
+    @Autowired
     private GroupDeleteValidator groupDeleteValidator;
     
     @Autowired
@@ -111,86 +114,92 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    @ResponseBody
-    public AjaxResponse addGroup(@RequestBody GroupVo groupVo) {
-        DataBinder dataBinder = new WebDataBinder(groupVo);
-        dataBinder.setValidator(groupFormValidator);
-        dataBinder.validate();
-        BindingResult result = dataBinder.getBindingResult();
-        AjaxResponse response = new AjaxResponse();
-        if (!result.hasErrors()) {
-            Project project = new ProjectImpl();
-            project.setId(groupVo.getProjectId());
-            Group group = new GroupImpl();
-            group.setProject(project);
-            group.setName(groupVo.getName());
-            groupService.createGroup(group);
-            response.setCode("200");
-            response.addMessage("groupId", Long.toString(groupService.getByName(groupVo.getName()).getId()));
-        } else {
-            response.setCode("204");
-            result.getFieldErrors().stream().forEach((FieldError error) -> {
-                response.addMessage(error.getField(),
-                        messageSource.getMessage(error.getCode(), null, LocaleContextHolder.getLocale()));
-            });
-        }
-        return response;
-    }
+	@ResponseBody
+	public AjaxResponse addGroup(@RequestBody GroupDto groupDto) {
+		log.info("GROUP: " + groupDto.toString());
+		DataBinder dataBinder = new WebDataBinder(groupDto);
+		dataBinder.setValidator(groupFormValidator);
+		dataBinder.validate();
+		BindingResult result = dataBinder.getBindingResult();
+		AjaxResponse response = new AjaxResponse();
+		if (!result.hasErrors()) {
+			Project project = new ProjectImpl();
+			project.setId(groupDto.getProjectId());
+			Group group = new GroupImpl();
+			group.setProject(project);
+			group.setName(groupDto.getName());
+			groupService.createGroup(group);
+			response.setCode("200");
+			response.addMessage("groupId", Long.toString(groupService.getByName(groupDto.getName()).getId()));
+		} else {
+			response.setCode("204");
+			result.getFieldErrors().stream().forEach((FieldError error) -> {
+				response.addMessage(error.getField(),
+					messageSource.getMessage(error.getCode(), null, LocaleContextHolder.getLocale()));
+			});
+		}
+		return response;
+	}
 
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    @ResponseBody
-    public AjaxResponse editGroup(@RequestBody GroupVo groupVo) {
-        DataBinder dataBinder = new WebDataBinder(groupVo);
-        dataBinder.setValidator(groupFormValidator);
-        dataBinder.validate();
-        BindingResult result = dataBinder.getBindingResult();
-        AjaxResponse response = new AjaxResponse();
-        if (!result.hasErrors()) {
-            Project project = new ProjectImpl();
-            project.setId(groupVo.getProjectId());
-            Group group = new GroupImpl();
-            group.setProject(project);
-            group.setName(groupVo.getName());
-            groupService.createGroup(group);
-            response.setCode("200");
-            response.addMessage("groupId", Long.toString(groupService.getByName(groupVo.getName()).getId()));
-        } else {
-            response.setCode("204");
-            result.getFieldErrors().stream().forEach((FieldError error) -> {
-                response.addMessage(error.getField(),
-                        messageSource.getMessage(error.getCode(), null, LocaleContextHolder.getLocale()));
-            });
-        }
-        return response;
-    }
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxResponse editGroup(@RequestBody GroupDto groupDto) {
+		DataBinder dataBinder = new WebDataBinder(groupDto);
+		dataBinder.setValidator(groupEditValidator);
+		dataBinder.validate();
+		BindingResult result = dataBinder.getBindingResult();
+		AjaxResponse response = new AjaxResponse();
+		if (!result.hasErrors()) {
+			Project project = new ProjectImpl();
+			project.setId(groupDto.getProjectId());
+			Group group = new GroupImpl();
+			group.setId(groupDto.getId());
+			group.setProject(project);
+			group.setName(groupDto.getName());
+			groupService.updateGroup(group);
+			response.setCode("200");
+			response.addMessage("groupId", Long.toString(groupService.getByName(groupDto.getName()).getId()));
+		} else {
+			response.setCode("204");
+			result.getFieldErrors().stream().forEach((FieldError error) -> {
+				response.addMessage(error.getField(),
+					messageSource.getMessage(error.getCode(), null, LocaleContextHolder.getLocale()));
+			});
+			result.getGlobalErrors().stream().forEach((ObjectError error) -> {
+				response.addMessage("general", messageSource.getMessage(error.getCode(),
+					null, LocaleContextHolder.getLocale()));
+			});
+		}
+		return response;
+	}
 
-    @RequestMapping(value = "/delete")
-    @ResponseBody
-    public AjaxResponse deleteGroup(@RequestParam Long groupId) {
-        GroupDto groupDto = new GroupDto(groupId);
-        DataBinder dataBinder = new WebDataBinder(groupDto);
-        dataBinder.setValidator(groupDeleteValidator);
-        dataBinder.validate();
-        BindingResult result = dataBinder.getBindingResult();
-        AjaxResponse response = new AjaxResponse();
-        if (!result.hasErrors()) {
-            Group group = groupService.getById(groupId);
-            groupService.deleteGroup(group);
-            response.setCode("200");
-        } else {
-            response.setCode("204");
-            result.getFieldErrors().stream().forEach((FieldError error) -> {
-                    response.addMessage(error.getField(),
-                            messageSource.getMessage(error.getCode(),
-                                    null, LocaleContextHolder.getLocale()));
-                });
-            result.getGlobalErrors().stream().forEach((ObjectError error) -> {
-                response.addMessage("general", messageSource.getMessage(error.getCode(),
-                        null, LocaleContextHolder.getLocale()));
-            });
-        }
-        return response;
-    }
+	@RequestMapping(value = "/delete")
+	@ResponseBody
+	public AjaxResponse deleteGroup(@RequestParam Long groupId) {
+		GroupDto groupDto = new GroupDto(groupId);
+		DataBinder dataBinder = new WebDataBinder(groupDto);
+		dataBinder.setValidator(groupDeleteValidator);
+		dataBinder.validate();
+		BindingResult result = dataBinder.getBindingResult();
+		AjaxResponse response = new AjaxResponse();
+		if (!result.hasErrors()) {
+			Group group = groupService.getById(groupId);
+			groupService.deleteGroup(group);
+			response.setCode("200");
+		} else {
+			response.setCode("204");
+			result.getFieldErrors().stream().forEach((FieldError error) -> {
+				response.addMessage(error.getField(),
+					messageSource.getMessage(error.getCode(),
+						null, LocaleContextHolder.getLocale()));
+			});
+			result.getGlobalErrors().stream().forEach((ObjectError error) -> {
+				response.addMessage("general", messageSource.getMessage(error.getCode(),
+					null, LocaleContextHolder.getLocale()));
+			});
+		}
+		return response;
+	}
 
     @RequestMapping(value = "/group", method = RequestMethod.GET)
     public ModelAndView getGroup(@RequestParam Long id) {
@@ -288,8 +297,10 @@ public class GroupController {
             attachment.setGroup(groupService.getById(attachmentDto.getGroupId()));
             attachment.setName(attachmentDto.getName());
             attachment.setAttachment(attachmentDto.getFile().getBytes());
-            groupAttachmentService.createGroupAttachment(attachment);
+            Long id = groupAttachmentService.createGroupAttachment(attachment);
 
+            response.addMessage("id", String.valueOf(id));
+            response.addMessage("name", attachment.getName());
             return response;
         }
     }

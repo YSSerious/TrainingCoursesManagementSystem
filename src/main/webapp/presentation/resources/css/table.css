@@ -26,6 +26,10 @@
 	width: 300px;
 }
 
+#absent{
+	background-color: red;
+}
+
 .meeting th, .meeting td {
 	min-width: 150px;
 	width: auto;

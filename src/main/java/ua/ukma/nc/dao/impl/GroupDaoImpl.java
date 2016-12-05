@@ -64,7 +64,7 @@ public class GroupDaoImpl implements GroupDao{
     
     private static final String GET_MENTORS = "SELECT DISTINCT id_user FROM tcms.user_group WHERE id_group = ? AND id_user NOT IN (SELECT id_student FROM tcms.status_log WHERE id_group = ?)";
     
-    private static final String GET_STUDENTS_AMOUNT = "select DISTINCT COUNT(id_student) FROM tcms.status_log WHERE id_group = ?";
+    private static final String GET_STUDENTS_AMOUNT = "select COUNT(*) FROM (SELECT DISTINCT id_student FROM tcms.status_log WHERE id_group = ?) as students";
     
     private static final String REMOVE_MENTOR = "delete from tcms.user_group where id_group = ? and id_user = ?";
     

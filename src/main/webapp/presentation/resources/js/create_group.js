@@ -33,7 +33,7 @@ $("#createGroupModal form").on('submit', function (event) {
                             showModalErrors(response.messages, '#createGroupModal');
                     }
                 }
-    }, getModalAjaxAnimation('#createGroupModal')));
+    }, getBeforeAndAfterAjaxEvent('#createGroupModal')));
 });
 
 function showNewGroup(groupId, groupName) {

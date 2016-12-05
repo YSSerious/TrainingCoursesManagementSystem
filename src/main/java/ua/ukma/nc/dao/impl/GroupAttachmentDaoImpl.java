@@ -5,14 +5,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ua.ukma.nc.dao.GroupAttachmentDao;
 import ua.ukma.nc.entity.GroupAttachment;
 import ua.ukma.nc.entity.impl.proxy.GroupProxy;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 /**
@@ -77,9 +83,24 @@ public class GroupAttachmentDaoImpl implements GroupAttachmentDao{
     }
 
     @Override
-    public int createGroupAttachment(GroupAttachment groupAttachment) {
-        log.info("Create new group attachment with name = {}", groupAttachment.getName());
-        return jdbcTemplate.update(CREATE_GROUP_ATTACHMENT,groupAttachment.getName(), groupAttachment.getGroup().getId(), groupAttachment.getAttachmentScope(), groupAttachment.getAttachment());
+    public Long createGroupAttachment(GroupAttachment groupAttachment) {
+    	KeyHolder holder = new GeneratedKeyHolder();
+
+    	jdbcTemplate.update(new PreparedStatementCreator() {           
+
+    	                @Override
+    	                public PreparedStatement createPreparedStatement(Connection connection)
+    	                        throws SQLException {
+    	                    PreparedStatement ps = connection.prepareStatement(CREATE_GROUP_ATTACHMENT, Statement.RETURN_GENERATED_KEYS);
+    	                    ps.setString(1, groupAttachment.getName());
+    	                    ps.setLong(2, groupAttachment.getGroup().getId());
+    	                    ps.setString(3, groupAttachment.getAttachmentScope());
+    	                    ps.setBytes(4, groupAttachment.getAttachment());
+    	                    return ps;
+    	                }
+    	            }, holder);
+
+    	return (Long) holder.getKeys().get("id");
     }
 
 	@Override

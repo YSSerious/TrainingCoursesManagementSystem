@@ -1,12 +1,18 @@
-function getModalAjaxAnimation(modalId) {
+function getBeforeAndAfterAjaxEvent(modalId) {
     return {
         beforeSend: function () {
+            $(modalId).find('form').first()
+                    .find('button[type="submit"]').first()
+                    .attr('disabled', 'disabled');
             $(modalId).find('.form-error').empty();
             $(modalId).find('.loading').
                     css('display', 'inline-block');
         },
         complete: function () {
             $(modalId).find('.loading').css('display', 'none');
+            $(modalId).find('form').first()
+                    .find('button[type="submit"]').first()
+                    .removeAttr('disabled');
         }
     };
 }

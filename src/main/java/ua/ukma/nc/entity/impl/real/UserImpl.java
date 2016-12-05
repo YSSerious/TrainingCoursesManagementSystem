@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Алексей on 21.10.2016.
  */
-public class UserImpl implements User{
+public class UserImpl implements User, Comparable{
 
     private static final long serialVersionUID = 1046417900828791006L;
 
@@ -171,4 +171,15 @@ public class UserImpl implements User{
                 ", roles=" + roles +
                 '}';
     }
+
+	@Override
+	public int compareTo(Object o) {
+		User u = (User) o;
+		if(id> u.getId())
+			return 1;
+		if(id< u.getId())
+			return -1;
+		else
+		return 0;
+	}
 }

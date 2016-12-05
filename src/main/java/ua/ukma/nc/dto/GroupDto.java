@@ -38,6 +38,21 @@ public class GroupDto {
 	public void setProject(ProjectDto project) {
 		this.project = project;
 	}
+	
+	public Long getProjectId() {
+		if (this.project == null) {
+			this.project = new ProjectDto();
+		}
+		return this.project.getId();
+	}
+	
+	public void setProjectId(Long id) {
+		if (this.project == null) {
+			this.project = new ProjectDto();
+		}
+		this.project.setId(id);
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -51,5 +66,9 @@ public class GroupDto {
 		this.users = users;
 	}
 
-
+	@Override
+	public String toString() {
+		return "GroupDto{" + "id=" + id + ", project=" + project + ", name=" + name + ", users=" + users + '}';
+	}
+	
 }

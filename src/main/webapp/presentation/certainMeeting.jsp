@@ -27,7 +27,7 @@
         </div>
     </div>
 </div>
-
+<c:if test="${!students.isEmpty() || !marks.isEmpty() || !absent.isEmpty()}">
 <div id="table-listing">
     <div class="panel panel-primary  table-responsive table-scrollable">
         <div class="panel-heading">
@@ -137,20 +137,25 @@
                     >${entry.key.firstName}
                             ${entry.key.secondName} ${entry.key.lastName}</a></b></font></td>
 
-                    <c:forEach items="${entry.value}" var="mark">
-                        <td><font size="3">
-                            <a href="#" data-toggle="tooltip" data-placement="top"
-                               title="${mark.commentary}">${mark.mark}</a>
-                        </font></td>
-                    </c:forEach>
-                    <c:if test="${entry.value.size() < criteria.size()}">
-                        <c:forEach items="${criteria}" begin="${entry.value.size()}">
-                            <td><font size="3">
-                                <a href="#" data-toggle="tooltip" data-placement="top"
-                                   title="No mark, yet">-</a>
-                            </font></td>
-                        </c:forEach>
-                    </c:if>
+               
+                   <c:forEach items="${criteria}" var="criterion" >
+                   <td><font size="3">
+                   <c:set var="check" value="false"/>
+                       <c:forEach items="${entry.value}" var="mark" varStatus="status">
+                       
+                       <c:if test="${criterion.id == mark.criterionId}">
+                           <a href="#" data-toggle="tooltip" data-placement="top"
+                              title="${mark.commentary}">${mark.mark}</a>
+                              <c:set var="check" value="true"/>
+                       </c:if>
+                   	   </c:forEach>
+                   	   <c:if test="${check eq 'false'}">
+                   	   <a href="#" data-toggle="tooltip" data-placement="top"
+                               title="No mark, yet">-</a>
+                   	   </c:if>
+                   	   
+                   	   </font></td>
+				   </c:forEach>
                 </tr>
                 <!-- start evaluate Student modal -->
                 <div id="evaluateModal${entry.key.id}" class="modal fade"
@@ -161,11 +166,14 @@
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                <h4 class="modal-title" id="myModalLabel">Evaluate ${entry.key.firstName} ${entry.key.lastName}</h4>
                             </div>
                             <div class="modal-body edit-content">
                                 <ul class="list-group">
+                                 <c:forEach items="${criteria}" var="criterion" >
+                                 <c:set var="checkus" value="false" />
                                     <c:forEach items="${entry.value}" var="mark">
+                                     <c:if test="${criterion.id == mark.criterionId}">
                                         <li class="list-group-item container-fluid">
                                             <div class="row">
                                                 <label class="col-xs-offset-1">${mark.criterionName}</label>
@@ -184,17 +192,19 @@
                                             </select>
                                             </div>
                                         </li>
+                                        <c:set var="checkus" value="true" />
+                                        </c:if>
                                     </c:forEach>
-                                    <c:if test="${entry.value.size() < criteria.size()}">
-                                        <c:forEach items="${unevaluatedCriteria.get(entry.key)}"
-                                                   var="criterion">
+                                    
+                                    
+                                    <c:if test="${checkus eq 'false'}">
                                             <li class="list-group-item container-fluid">
                                                 <div class="row">
                                                     <label class="col-xs-offset-1">${criterion.title}</label>
                                                 </div>
                                                 <div class="row result${entry.key.id}">
                                                     <input class="col-xs-offset-2 col-sm-6 result-comment"
-                                                           type="text" id="${mark.criterionId}"> <select
+                                                           type="text" id="${criterion.id}"> <select
                                                         class="col-xs-offset-1">
                                                     <option selected>-</option>
                                                     <option>0</option>
@@ -206,11 +216,13 @@
                                                 </select>
                                                 </div>
                                             </li>
+                                            </c:if>
                                         </c:forEach>
-                                    </c:if>
+
                                 </ul>
                                 <label>General: </label>
-                                <textarea class="form-control" id="rev-com" rows="5"></textarea>
+                                <textarea class="form-control" id="rev-com" rows="5">
+                                </textarea>
 									<span id="rev-err" class="text-danger hidden">Unknown
 										error</span></div>
                             <div class="modal-footer">
@@ -228,10 +240,24 @@
 
                 <!-- finish evaluate Student modal -->
             </c:forEach>
+            <c:forEach items="${absent}" var="user">
+                <tr id = "absent">
+                    <td><font size="3"><b><a href="#" data-toggle="tooltip" data-placement="top"
+                               title="Absent">${user.firstName}
+                            ${user.secondName} ${user.lastName}</a></b> </font></td>
+                    <c:forEach items="${criteria}" var="criterion">
+                        <td></td>
+                    </c:forEach>
+                </tr>
+                </c:forEach>
             </tbody>
         </table>
     </div>
 </div>
+</c:if>
+<c:if test="${students.isEmpty() && marks.isEmpty() && absent.isEmpty()}">
+<h1>No students here yet</h1>
+</c:if>
 <br>
 
 
@@ -328,6 +354,7 @@
         var user = $(this).data('user');
         $(".modal-body #user").val(user);
     });
+    })
 </script>
 
 

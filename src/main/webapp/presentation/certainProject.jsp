@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
-         pageEncoding="UTF-8" %>
+	pageEncoding="UTF-8"%>
 <%@include file="header.jsp" %>
 <%@include file="projectDataEditingModals.jsp" %>
 <%@include file="projectGroupsModals.jsp" %>
@@ -313,58 +313,49 @@
                 <h4 class="modal-title">New Attachment</h4>
             </div>
             <div class="modal-body">
-
-
-                <form:form id="addAttachmentFormSend" method="POST" action="/addProjectAttachment"
-                           modelAttribute="projectAttachmentForm"
-                           enctype="multipart/form-data" class="form-horizontal">
-
-                    <form:input type="hidden" path="projectId" value="${project.id }"/>
-
-                    <div class="row">
-                        <div class="form-project col-md-12">
-                            <div class="col-md-12">
-                                <b>Upload a file:</b>
-                                <br/>
-                                <div style="color:red;" id="file-error">
-
-                                </div>
-                                <form:input type="file" path="file" name="file" id="upload-file" class="form-control"/>
-
-                                <br/>
-                                <b>Name:</b>
-                                <div style="color:red;" id="name-error">
-
-                                </div>
-                                <form:input type="text" path="name" id="upload-name" class="form-control"/>
-
-                                <div style="color:red;" id="project-error">
-
-                                </div>
-                            </div>
-                        </div>
+			
+			
+			<form:form id="addAttachmentFormSend" method="POST" action="/addProjectAttachment" modelAttribute="projectAttachmentForm"
+						enctype="multipart/form-data" class="form-horizontal">
+			
+			<form:input type="hidden" path="projectId" value="${project.id }"/>
+						
+            <div class="row">
+                <div class="form-project col-md-12">
+                <div class="col-md-12">
+                    <b>Upload a file:</b>
+                    <br/>
+                    <div style="color:red;" id="file-error">
+                            
                     </div>
-
-                    <div class="row">
-                        <div class="text-center">
-                            <br/>
-                            <button id="uploadAttachmentButton" type="button" onclick="uploadProjectAttachment()"
-                                    class="btn btn-primary">Upload
-                            </button>
-                        </div>
+                    <form:input type="file" path="file" name="file" id="upload-file" class="form-control"/>
+                    
+                    <br/>
+                    <b>Name:</b>
+                    <div style="color:red;" id="name-error">
+                            
                     </div>
-                </form:form>
+                    <form:input type="text" path="name" id="upload-name" class="form-control"/>
+  
+                    <div style="color:red;" id="project-error">
+                            
+                    </div>
+                    </div>
+                </div>
             </div>
+     
+            <div class="row">
+                <div class="text-center">
+                	<br/>
+                    <button id="uploadAttachmentButton" type="button" onclick="uploadProjectAttachment()" class="btn btn-primary">Upload</button>
+                </div>
+            </div>
+        </form:form>
+				</div>
         </div>
     </div>
-</div>
+</div>	
 
-
-<script>
-    $(document).ready(function () {
-        bindRemove();
-    });
-</script>
 <script>
     var projectId = "${project.id}"
 </script>
@@ -395,131 +386,135 @@
                         </c:forEach>
                     </select> <br/>
                         <hr/>
-                        <spring:message code="report.select.criteria"/>:<br/> <select style="width: 100%;" multiple
-                                                                                      name="criteria">
-                        <c:forEach items="${criteria}" var="criterion">
-                            <option value="${criterion.id}">${criterion.title}</option>
-                        </c:forEach>
-                    </select> <br/>
-                        <hr/>
-                        * <spring:message code="report.note.students"/><br/>
-                        * <spring:message code="report.note.criteria"/><br/>
-                        <br/>
-                        <input type="hidden" name="projectId" value="${project.id}"/>
-                        <input onclick="getProjectReport()" class="btn btn-primary pull-right" type="submit"
-                               value="<spring:message code="report.submit"/>"/>
-                        <br/>
-                        <br/>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+                       <spring:message code="report.select.criteria"/>:<br /> <select style="width: 100%;" multiple
+						name="criteria">
+ 						<c:forEach items="${criteria}" var="criterion">
+ 							<option value="${criterion.id}">${criterion.title}</option>
+ 						</c:forEach>
+ 					</select> <br />
+					<hr />
+ 					* <spring:message code="report.note.students"/><br/>
+ 					* <spring:message code="report.note.criteria"/><br/>
+ 					<br/>
+ 					<input type="hidden" name="projectId" value="${project.id}" />
+ 					<input onclick="getProjectReport()" class="btn btn-primary pull-right" type="submit" value="<spring:message code="report.submit"/>"/>
+ 					<br/>
+ 					<br/>
+ 				</form>
+ 			</div>
+ 		</div>
+ 	</div>
+ </div>
 
-    <script>
-        function uploadProjectAttachment() {
-            $('#uploadAttachmentButton').prop('disabled', true);
+<script>
 
-            var formData = new FormData($("#addAttachmentFormSend")[0]);
+$(document).ready(function () {
+	bindRemove();
+});
 
-            $.ajax({
-                type: "post",
-                data: formData,
-                url: "/addProjectAttachment",
-                contentType: false,
-                processData: false,
-                async: false,
-                statusCode: {
-                    200: function (response) {
-                        console.log(response);
-                        switch (response.code) {
-                            case '200':
-                                var newAttach = getAttachDiv(response.messages['name'], response.messages['id']);
-                                $('#attachment-group').html(newAttach + $('#attachment-group').html());
-                                $('.rmv-btn').unbind('click');
+function uploadProjectAttachment(){
+	$('#uploadAttachmentButton').prop('disabled', true);
 
-                                $('#file-error').html('');
-                                $('#name-error').html('');
-                                $('#project-error').html('');
+	var formData = new FormData($("#addAttachmentFormSend")[0]);
 
-                                $('#addProjectAttachmentModal').modal('hide');
-
-                                bindRemove();
-
-                                $('#upload-file').prop('value', '');
-                                $('#upload-name').prop('value', '');
-
-                                $('#uploadAttachmentButton').prop('disabled', false);
-                                break;
-                            case '204':
-                                $('#file-error').html('');
-                                $('#name-error').html('');
-                                $('#project-error').html('');
-                                $.each(response.messages, function (index, value) {
-                                    if (index == 'file') {
-                                        $('#file-error').html(value);
-                                    } else if (index = 'name') {
-                                        $('#name-error').html(value);
-                                    } else if (index = 'project') {
-                                        $('#project-error').html(value);
-                                    }
-                                });
-                                $('#uploadAttachmentButton').prop('disabled', false);
-                                break;
-                        }
-                    }
+	$.ajax({
+    	type:"post",
+    	data:formData,
+    	url:"/addProjectAttachment",
+    	contentType: false,
+    	processData: false,
+    	async: false,
+    	statusCode: {
+            200: function (response) {
+                console.log(response);
+                switch (response.code) {
+                    case '200':
+                    	var newAttach = getAttachDiv(response.messages['name'], response.messages['id']);
+                    	$('#attachment-group').html(newAttach+$('#attachment-group').html());
+                    	$('.rmv-btn').unbind('click');
+                    	
+                    	$('#file-error').html('');
+                    	$('#name-error').html('');
+                    	$('#project-error').html('');
+                    	
+                    	$('#addProjectAttachmentModal').modal('hide');
+                    	
+                    	bindRemove();
+                    	
+                    	$('#upload-file').prop('value', '');
+                    	$('#upload-name').prop('value', '');
+                    	
+                    	$('#uploadAttachmentButton').prop('disabled', false);
+                    	break;
+                    case '204':
+                    	$('#file-error').html('');
+                    	$('#name-error').html('');
+                    	$('#project-error').html('');
+                    	$.each(response.messages, function( index, value ) {
+                    		  if(index=='file'){
+                    			  $('#file-error').html(value);
+                    		  }else if(index='name'){
+                    			  $('#name-error').html(value);
+                    		  }else if(index='project'){
+                    			  $('#project-error').html(value);
+                    		  }
+                    		});
+                    	$('#uploadAttachmentButton').prop('disabled', false);
+                    	break;
                 }
-
-            });
+            }
         }
 
-        function bindRemove() {
-            $('.rmv-btn').click(function () {
+	});
+}
 
-                var div = $(this);
-                var id = div.data('button').id_attachment;
+function bindRemove(){
+	$('.rmv-btn').click(function () {
 
-                div.unbind('click');
+		var div = $(this);
+		var id = div.data('button').id_attachment;
+		
+		div.unbind('click');
+		
+		function removeAttach(){
+        	div.parent().remove();
+		}
+		
+        $.ajax({
+            url: "/removeProjectAttachment",
+            type: "POST",
+            data: {"id_attachment": id},
+            success: function(){ 
+                removeAttach();
+            },
+            error: function(){
+            	alert('Try again later!');
+            }
+			
+        });
+    });
+	
+}
 
-                function removeAttach() {
-                    div.parent().remove();
-                }
+function getAttachDiv(name, id){
+    var div = '<li style="background-color:#EDF8FC;" class="list-group-item clearfix">';
+    div += '<a href="/projectAttachment/'+id+'" class="col-md-2">'+name+' </a>';
+    div += '<div class="btn rmv-btn col-md-1" role="button" data-button=\'{"id_attachment": "'+id+'"}\'>';
+    div += '<span class="glyphicon glyphicon-remove"></span>';
+    div += '</div>';
+    div += '</li>';
+    
+    return div;
+}
+</script>
 
-                $.ajax({
-                    url: "/removeProjectAttachment",
-                    type: "POST",
-                    data: {"id_attachment": id},
-                    success: function () {
-                        removeAttach();
-                    },
-                    error: function () {
-                        alert('Try again later!');
-                    }
-
-                });
-            });
-
-        }
-
-        function getAttachDiv(name, id) {
-            var div = '<li style="background-color:#EDF8FC;" class="list-group-item clearfix">';
-            div += '<a href="/projectAttachment/' + id + '" class="col-md-2">' + name + ' </a>';
-            div += '<div class="btn rmv-btn col-md-1" role="button" data-button=\'{"id_attachment": "' + id + '"}\'>';
-            div += '<span class="glyphicon glyphicon-remove"></span>';
-            div += '</div>';
-            div += '</li>';
-
-            return div;
-        }
-    </script>
-
-    <script type="text/javascript">
-        function getProjectReport() {
-            $('#project-report-modal').modal('hide');
-            $('#project-form-report').submit();
-        }
-        $('select').select2();
-    </script>
+<script type="text/javascript">
+	function getProjectReport(){
+		$('#project-report-modal').modal('hide');
+		$('#project-form-report').submit();
+	}
+   	$('select').select2();
+</script>
 
 </sec:authorize>
 <%@include file="footer.jsp" %>

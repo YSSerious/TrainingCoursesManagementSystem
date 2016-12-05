@@ -18,5 +18,5 @@ public interface GroupAttachmentDao {
     
     List<GroupAttachment> getByGroupId(Long groupId);
 
-    int createGroupAttachment(GroupAttachment groupAttachment);
+    Long createGroupAttachment(GroupAttachment groupAttachment);
 }

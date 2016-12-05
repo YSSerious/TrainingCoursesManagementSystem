@@ -3,10 +3,12 @@ package ua.ukma.nc.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ua.ukma.nc.dto.CriterionDto;
@@ -73,8 +76,9 @@ public class MeetingController {
 	private MarkService markService;
 
 	@RequestMapping(value = "/meeting/{id}", method = RequestMethod.GET)
-	public String getMeetings(Model model, Principal principal, @PathVariable long id) {
+	public ModelAndView getMeetings(Principal principal, @PathVariable long id) {
 
+		ModelAndView model = new ModelAndView("certainMeeting");
 		Meeting meeting = meetingService.getById(id);
 		List<User> all = (groupService.getById(meeting.getGroup().getId())).getUsers();
 		List<MeetingReview> meetingReviews = meetingReviewService.getByMeeting(id);
@@ -82,18 +86,20 @@ public class MeetingController {
 		List<Long> evaluated = new ArrayList<>();
 		for (MeetingReview mr : meetingReviews)
 			evaluated.add(mr.getStudent().getId());
-
 		List<User> unevaluated = new ArrayList<>();
-		for (User user : (all))
+		for (User user : all)
 			for (Role role : user.getRoles())
 				if (role.getId() == 4)
 					if (!evaluated.contains(user.getId()))
 						unevaluated.add(user);
-
-		Map<User, List<MarkInformation>> markInformation = new HashMap<>();
-		for (Long user : evaluated)
+		Map<User, List<MarkInformation>> markInformation = new TreeMap<>();
+		List<User> absent = new ArrayList<>();
+		for (Long user : evaluated){
+			if(!meetingReviewService.getByMeetingStudent(id, user).getType().equals("A"))
 			markInformation.put(userService.getById(user), meetingResultService.getByMeeting(user, id));
-
+			else
+				absent.add(userService.getById(user));
+		}
 		// Criteria set
 		List<Criterion> criteria = criterionService.getByMeeting(id);
 		List<CriterionDto> criterionDtos = new ArrayList<>();
@@ -120,13 +126,14 @@ public class MeetingController {
 			unevaluatedCriteria.put(user, cri);
 		}
 
-		model.addAttribute("unevaluatedCriteria", unevaluatedCriteria);
-		model.addAttribute("criteria", criterionDtos);
-		model.addAttribute("marks", markInformation);
-		model.addAttribute("students", unevaluated);
-		model.addAttribute("meeting", meetingService.getById(id));
-		model.addAttribute("categories", category);
-		return "certainMeeting";
+		model.addObject("unevaluatedCriteria", unevaluatedCriteria);
+		model.addObject("criteria", criterionDtos);
+		model.addObject("marks", markInformation);
+		model.addObject("students", unevaluated);
+		model.addObject("meeting", meetingService.getById(id));
+		model.addObject("categories", category);
+		model.addObject("absent", absent);
+		return model;
 	}
 
 	@RequestMapping(value = "/create-meeting", method = RequestMethod.GET)
@@ -198,7 +205,6 @@ public class MeetingController {
 			review.setMeeting(meetingService.getById(data.getMeetingId()));
 			review.setMentor(mentor);
 			review.setCommentary(data.getComment());
-			System.out.println(review);
 			meetingReviewService.createMeetingReview(review);
 			for (MarkCommentDto value : data.getData()) {
 				MeetingResult result = new MeetingResult();
@@ -211,8 +217,13 @@ public class MeetingController {
 			}
 		} else {
 			review = meetingReviewService.getByMeetingStudent(data.getMeetingId(), userId);
+			if(data.getComment()!=null){
+				review.setCommentary(data.getComment());
+				meetingReviewService.updateMeetingReview(review);
+			}
+			List<MeetingResult> previous = 	meetingResultService.getByReview(review.getId());
 			Iterator<MarkCommentDto> value = data.getData().iterator();
-			Iterator<MeetingResult> result = meetingResultService.getByReview(review.getId()).iterator();
+			Iterator<MeetingResult> result = previous.iterator();
 			while (value.hasNext() && result.hasNext()) {
 				MeetingResult resultus = result.next();
 				MarkCommentDto mark = value.next();
@@ -220,6 +231,18 @@ public class MeetingController {
 				resultus.setMark(markService.getByValue(mark.getValue()));
 				meetingResultService.updateMeetingResult(resultus);
 			}
+			while(value.hasNext()){
+				MeetingResult resultus = new MeetingResult();
+				MarkCommentDto mark = value.next();
+				System.out.println(mark);
+				resultus.setId((long) 0);
+				resultus.setCommentary(mark.getCommentary());
+				resultus.setMark(markService.getByValue(mark.getValue()));
+				resultus.setCriterion(criterionService.getById((long) mark.getCriterionId()));
+				resultus.setMeetingReview(review);
+				meetingResultService.createMeetingResult(resultus);
+			}
+			
 		}
 
 		return "true";
@@ -229,8 +252,14 @@ public class MeetingController {
 	@ResponseBody
 	public String postAbsent(Principal principal, @PathVariable("id") Long userId,
 			@RequestBody JsonWrapperAbsent data) {
-		
-		System.out.println(userId+"  "+data.getMeetingId());
+		User mentor = userService.getByEmail(principal.getName());
+		MeetingReview review = null;
+		review = new MeetingReviewImpl((long) 0, "A");
+		review.setStudent(userService.getById(userId));
+		review.setMeeting(meetingService.getById(data.getMeetingId()));
+		review.setMentor(mentor);
+		review.setCommentary("");
+		meetingReviewService.createMeetingReview(review);
 				return "true";
 		
 	}

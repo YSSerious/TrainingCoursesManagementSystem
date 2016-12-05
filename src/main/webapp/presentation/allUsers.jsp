@@ -149,64 +149,61 @@ $('#bootstrap-pagination').bootpag({
 	
 });
 };
-
-function getParameterByName(name, url) {
-    if (!url) {
-      url = window.location.href;
-    }
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-};
-
-$(document).on("click", ".btn-danger", function () {
-	window.location.href = "/allUsers";
-});
-
 function yesnoCheck() {
-    if (document.getElementById('roles').checked) {
-        $('#check').removeClass('hidden');
-        $('#submitted').addClass('hidden');
-        document.getElementById('submitted').disabled = true;
-        $('#check').children('input').each(function () {
-    	    this.disabled = false;
-    	});
-    }
-    else{ 
+	if (document.getElementById('roles').checked) {
+		$('#check').removeClass('hidden');
+		$('#submitted').addClass('hidden');
+		document.getElementById('submitted').disabled = true;
+		$('#check').children('input').each(function() {
+			this.disabled = false;
+		});
+	} else {
 		$('#check').addClass('hidden');
-    	$('#submitted').removeClass('hidden');
-    	document.getElementById('submitted').disabled = false;
-    	$('#check').children('input').each(function () {
-    	    this.disabled = true;
-    	});
-    	document.getElementById('check').disabled = true;
-    }
+		$('#submitted').removeClass('hidden');
+		document.getElementById('submitted').disabled = false;
+		$('#check').children('input').each(function() {
+			this.disabled = true;
+		});
+		document.getElementById('check').disabled = true;
+	}
 };
+
 $( document ).ready(yesnoCheck()); 
 
+function getParameterByName(name, url) {
+	if (!url) {
+		url = window.location.href;
+	}
+	name = name.replace(/[\[\]]/g, "\\$&");
+	var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex
+			.exec(url);
+	if (!results)
+		return null;
+	if (!results[2])
+		return '';
+	return decodeURIComponent(results[2].replace(/\+/g, " "));
+};
 
 var clicked = false;
 document.getElementById('button').onclick = function() {
-	if(!clicked){
-	 $('#table').removeClass('col-md-11');
-	 $('#search').removeClass('col-md-1');
-     $('#table').addClass('col-md-9');
-     $('#search').addClass('col-md-3');
-     clicked = true;
+	if (!clicked) {
+		$('#table').removeClass('col-md-11');
+		$('#search').removeClass('col-md-1');
+		$('#table').addClass('col-md-9');
+		$('#search').addClass('col-md-3');
+		clicked = true;
+	} else {
+		setTimeout(function() {
+			$('#table').removeClass('col-md-9');
+			$('#search').removeClass('col-md-3');
+			$('#table').addClass('col-md-10');
+			$('#search').addClass('col-md-1');
+			$('#table').removeClass('col-md-10');
+			$('#table').addClass('col-md-11');
+			clicked = false;
+		}, 250);
 	}
-	else{
-		setTimeout(function(){
-		$('#table').removeClass('col-md-9');
-		 $('#search').removeClass('col-md-3');
-	     $('#table').addClass('col-md-10');
-	     $('#search').addClass('col-md-1');
-	     $('#table').removeClass('col-md-10');
-	     $('#table').addClass('col-md-11');
-	     clicked = false;
-		}, 250);}
 };
+
 </script>
 <%@include file="footer.jsp"%>
