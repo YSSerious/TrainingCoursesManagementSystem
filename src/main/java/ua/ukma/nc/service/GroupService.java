@@ -1,5 +1,6 @@
 package ua.ukma.nc.service;
 
+import ua.ukma.nc.dto.AttendanceTable;
 import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.User;
 
@@ -9,6 +10,8 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface GroupService {
+	
+	AttendanceTable getAttendaceTable(Long groupId);
 	
 	List<Group> getByProjectId(Long projectId);
 	

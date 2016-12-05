@@ -45,6 +45,8 @@ public class StatusLogDaoImpl implements StatusLogDao{
             return statusLog;
         }
     }
+    private static final String GET_LAST = "SELECT * FROM tcms.status_log WHERE id_student = ? AND id_group = ? AND date = (SELECT MAX(date) FROM tcms.status_log WHERE id_student = ? AND id_group = ?)";
+    
     private static final String EXISTS = "SELECT EXISTS (SELECT * FROM tcms.status_log WHERE id_student = ?)";
     
     private static final String GET_GROUP_BY_STUDENT_ID = "SELECT id_group FROM tcms.status_log WHERE id_student=? AND date = (SELECT MAX(date) FROM tcms.status_log WHERE id_student = ?)";
@@ -127,5 +129,10 @@ public class StatusLogDaoImpl implements StatusLogDao{
 	@Override
 	public boolean exists(Long userId) {
 		return jdbcTemplate.queryForObject(EXISTS, Boolean.class, userId);
+	}
+
+	@Override
+	public StatusLog getLast(Long groupId, Long studentId) {
+		return jdbcTemplate.queryForObject(GET_LAST, new StatusLogMapper(), studentId, groupId, studentId, groupId);
 	}
 }

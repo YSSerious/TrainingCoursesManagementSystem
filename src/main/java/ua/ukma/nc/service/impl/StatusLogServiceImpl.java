@@ -71,4 +71,9 @@ public class StatusLogServiceImpl implements StatusLogService{
 	public boolean exists(Long userId) {
 		return statusLogDao.exists(userId);
 	}
+
+	@Override
+	public StatusLog getLast(Long groupId, Long studentId) {
+		return statusLogDao.getLast(groupId, studentId);
+	}
 }

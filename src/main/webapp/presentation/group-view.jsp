@@ -10,6 +10,9 @@
 	type = "#fff";
 	border = "#D3D3D3";
 %>
+
+ 	
+ 	
 <div class="row">
 	<div class="col-md-6 group-header">
 		<div class="panel panel-default panel-horizontal top-panel">
@@ -196,6 +199,59 @@
 		</div>
 	</div>
 	<br />
+</div>
+
+<div class="attendance_template">
+<h2>
+
+	<spring:message code="group.attendance" />
+</h2>
+<div class="panel panel-primary"
+	style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
+	<div class="panel-heading clearfix">
+
+		<div data-toggle="collapse" data-target="#collapseAttendance"
+			class="arrow col-md-1" style="color: black"
+			onclick="changeSpan(this)">
+			<span class="glyphicon glyphicon-chevron-down"></span>
+		</div>
+	</div>
+
+
+	<div id="collapseAttendance" class="panel-collapse collapse">
+		<div style="padding-bottom:0px; margin-bottom:0px;" class="table-responsive">
+			<table style="padding-bottom:0px; margin-bottom:0px;" id="attendance-table" class="table table-bordered user-table">
+				<tr>
+					<th>#</th>
+
+					<c:forEach items="${attendance.meetings}" var="value">
+						<th align="center"><a href="/meeting/${value.id}"><fmt:formatDate value="${value.time}" pattern="yyyy-MM-dd"/></a></th>
+					</c:forEach>
+
+					<c:forEach items="${attendance.attendance}" var="value">
+						<tr>
+							<td><b><a href="/users/${value.id}">${value.fullName}</a></b></td>
+
+							<c:forEach items="${value.attendance}" var="state">
+								<c:if test="${state eq 'E'}">
+									<td style="background-color: #93C54B"></td>
+								</c:if>
+								<c:if test="${state eq 'A'}">
+									<td style="background-color: #F4FC5A"></td>
+								</c:if>
+								<c:if test="${empty state}">
+									<td style="background-color: #5ABFFC"></td>
+								</c:if>
+								<c:if test="${state eq 'L'}">
+									<td style="background-color: #FC655A"></td>
+								</c:if>
+							</c:forEach>
+					</c:forEach>
+			</table>
+		</div>
+	</div>
+</div>
+<br/>
 </div>
 
 <div id="studentDeleteError" class="modal fade">
@@ -562,5 +618,16 @@ function getAttachDiv(name, id){
     
     return div;
 }
+
+var $table = $('#attendance-table');
+
+var $fixedColumn = $table.clone().insertBefore($table).addClass('fixed-column');
+$fixedColumn.removeClass('table-bordered');
+$fixedColumn.find('th:not(:first-child),td:not(:first-child)').remove();
+
+$fixedColumn.find('tr').each(function (i, elem) {
+	$(this).height($table.find('tr:eq(' + i + ')').height());
+    $(this).width($table.find('tr:eq(' + i + ')').width());
+});
 </script>
 <%@include file="footer.jsp"%>

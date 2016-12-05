@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface StatusLogService {
 	
+	StatusLog getLast(Long groupId, Long studentId);
+	
 	boolean exists(Long userId);
 	
 	Long getNewestGroup(Long userId);

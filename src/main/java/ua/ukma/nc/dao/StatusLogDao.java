@@ -30,4 +30,6 @@ public interface StatusLogDao {
     int getNumOfInvitedByProject(Long projectId);
 
     int getNumOfJobOffersByProject(Long projectId);
+
+	StatusLog getLast(Long groupId, Long studentId);
 }

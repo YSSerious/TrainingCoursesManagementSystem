@@ -74,7 +74,7 @@ public class MeetingDaoImpl implements MeetingDao{
 
     private static final String GET_CRITERION_BY_ID = "SELECT id_criterion FROM tcms.meeting_criterion WHERE id_meeting = ?";
     
-    private static final String GET_BY_GROUP = "SELECT  id, id_group, name, time, place FROM  tcms.meeting WHERE id_group = ?";
+    private static final String GET_BY_GROUP = "SELECT  id, id_group, name, time, place FROM  tcms.meeting WHERE id_group = ? ORDER BY time ASC";
     
     private static final String GET_UPCOMING_BY_GROUP = "SELECT id, id_group, name, time, place FROM tcms.meeting WHERE id_group = ? AND time > CURRENT_TIMESTAMP ORDER BY time ASC LIMIT 1";
 
