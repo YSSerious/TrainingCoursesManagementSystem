@@ -27,7 +27,6 @@ public class MailConfig {
 	public JavaMailSenderImpl javaMailService() {
 		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 		applyProperties(javaMailSender);
-		System.out.println("check");
 		return javaMailSender;
 	}
 
