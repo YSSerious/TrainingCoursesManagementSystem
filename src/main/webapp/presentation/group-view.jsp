@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script src="<c:url value="/presentation/resources/js/group.js"/>"
         type="text/javascript" defer="defer">
-
+var groupId = ${group.id};
 </script>
 <jsp:useBean id="type" class="java.lang.String"/>
 <jsp:useBean id="border" class="java.lang.String"/>
@@ -11,37 +11,42 @@
     border = "#D3D3D3";
 %>
 
-
-<div class="row">
-    <div class="col-md-6 group-header">
-        <div class="panel panel-default panel-horizontal top-panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <spring:message code="group.project.name"/>
-                </h3>
+<div style="padding-top:-20px;" class="container certain-project">
+	<div class="row">
+   		<div class="col-md-12">
+       		<div class="page-header">
+       		<div class="row">
+       			<div class="col-md-6">
+            	<h3 style="font-size: 3rem">${group.name}</h3>
+            	</div>
+            	<div class="col-md-6" style="padding-top:20px;">
+				<sec:authorize access="hasAnyRole('ADMIN', 'HR')">
+					<button class="btn btn-primary pull-right" data-toggle="modal"
+						data-target="#group-report-modal">
+						<b><spring:message code="group.generate.report" /></b>
+					</button>
+				</sec:authorize>
+				</div>
+				</div>
+				<br/>
+                <div class="row">
+                    <div class="col-md-6 editable-group">
+                        <div class="panel panel-default panel-horizontal panel editable-wrapper"
+                             id="project-finishdate">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Project</h3>
+                            </div>
+                            <div class="panel-body editable-label editable">
+                                <h5><a href ="/certainProject/${project.id}">${project.name}</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 editable-wrapper" id="project-description">
+                    </div>
+                </div>
             </div>
-            <div class="panel-body"><a href="/certainProject/${project.id}">${project.name}</a></div>
-
-        </div>
-        <div class="panel panel-default panel-horizontal bottom-panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <spring:message code="group.group.name"/>
-                </h3>
-            </div>
-            <div class="panel-body">${group.name}</div>
         </div>
     </div>
-    <div class="col-md-6">
-        <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
-            <button class="btn btn-primary pull-right" data-toggle="modal"
-                    data-target="#group-report-modal"><b><spring:message
-                    code="group.generate.report"/></b></button>
-        </sec:authorize>
-    </div>
-</div>
-
-<br/>
 
 <div class="row">
     <div class="col-md-12">
@@ -58,7 +63,7 @@
                     <%--</button>--%>
                     <div data-toggle="collapse" data-target="#collapseMeetings"
                          class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
-                        <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
+                        <span id="spanId" class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
 
                     </div>
                 </div>
@@ -113,136 +118,97 @@
     </div>
 </div>
 
+<div class="row">
+	<div class="col-md-12">
+	<h2>
+		<spring:message code="group.students" />
+	</h2>
+	<div class="panel group"
+		style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
+		<div class="panel-heading clearfix">
+			<button type="button" class="btn btn-default btn-sm pull-right"  id="showAvailableStudents"
+					data-toggle="modal"
+					data-target="#showAvailableStudentsModal">
+				<spring:message code="group.button.add" />
+			</button>
+			<div data-toggle="collapse" data-target="#collapseStudents"
+				class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
+				<span class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
+			</div>
+		</div>
+		<div id="collapseStudents" class="panel-collapse collapse">
+			<ul id ="students-ul" class="list-group">
+				<c:forEach items="${students}" var="studentMap">
 
-<%--<div id="addMeetingNoteModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">--%>
-<%--<div class="modal-dialog" role="document">--%>
-<%--<div class="modal-content">--%>
-<%--<div class="modal-header">--%>
-<%--<button class="close" type="button" data-dismiss="modal"><span--%>
-<%--class="glyphicon glyphicon-remove"></span></button>--%>
-<%--<h4 class="modal-title">New Attachment</h4>--%>
-<%--</div>--%>
-<%--<div class="modal-body">--%>
-<%--<form>--%>
-<%--<div class="form-group">--%>
-
-<%--<label for="usr">Name:</label>--%>
-<%--<input type="text" class="form-control" id="noteAttachmentName"--%>
-<%--placeholder="attachment will have prefix 'meeting_note_'">--%>
-<%--</div>--%>
-<%--<div class="form-group">--%>
-<%--<label for="usr">Link:</label>--%>
-<%--<input type="text" class="form-control" id="noteAttachment" placeholder="paste link here...">--%>
-<%--</div>--%>
-<%--<input--%>
-<%--type=text id="groupId" style="display:none"--%>
-<%--value="${groupId }">--%>
-<%--<br>--%>
-<%--<div role="button" class="btn btn-default btn-xs pull-right-btn btn-save collapse"--%>
-<%--id="save-att-btn">--%>
-<%--Save--%>
-<%--</div>--%>
-<%--<button id="addNoteSubmitButton" type="button" class="btn btn-primary">Save</button>--%>
-<%--</form>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-<%--</div>--%>
-
-
-<div class="students_template">
-    <h2>
-        <spring:message code="group.students"/>
-    </h2>
-    <div class="panel panel-primary"
-         style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
-        <div class="panel-heading clearfix">
-            <button type="button" class="btn btn-default btn-xs pull-right" id="showAvailableStudents"
-                    data-toggle="modal"
-                    data-target="#showAvailableStudentsModal">
-                <spring:message code="group.button.add"/>
-            </button>
-            <div data-toggle="collapse" data-target="#collapseStudents"
-                 class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
-                <span class="glyphicon glyphicon-chevron-down"></span>
-            </div>
-        </div>
-        <div id="collapseStudents" class="panel-collapse collapse">
-            <ul class="list-group">
-                <c:forEach items="${students}" var="studentMap">
-
-                    <li
-                            class="list-group-item group-${group.id}-${studentMap.key.student.id} clearfix">
-                        <c:if test="${studentMap.key.status.id == '1'}">
+					<li
+						class="list-group-item group-${group.id}-${studentMap.key.student.id} clearfix">
+						<c:if test="${studentMap.key.status.id == '1'}">
 							<span class="label label-danger"><spring:message
-                                    code="group.student.expelled"/></span>
-                        </c:if> <a href="/users/${studentMap.key.student.id}">
-                        <!--  -->${studentMap.key.student.firstName}</a>
-                        <span style='padding-left: 10px;'> </span>
-                            ${studentMap.key.student.lastName} <span
-                            style='padding-left: 10px;'> </span>
-                        <c:forEach items="${studentMap.value}" var="review">
-                            <span style='padding-left: 10px;'></span>
-                            <c:choose>
-                                <c:when test="${review.type == 'A'}">
-                                    <span style='padding-left: 5px;' class="label label-danger" data-toggle="tooltip"
-                                          title="Absent">${review.meeting.name}</span>
-                                </c:when>
-                                <c:when test="${review.type == 'E'}">
-                                    <span style='padding-left: 5px;' class="label label-success" data-toggle="tooltip"
-                                          title="Evaluated">${review.meeting.name}</span>
-                                </c:when>
-                                <c:otherwise>
-                                    <span style='padding-left: 5px;' class="label label-primary" data-toggle="tooltip"
-                                          title="Not reviewed">${review.meeting.name}</span>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
-                        <div id="${group.id}-${studentMap.key.student.id}"
-                             class="btn rmv-cr-btn col-md-1 pull-right delete-student"
-                             type='button'>
-                            <span class="glyphicon glyphicon-remove delete"></span>
-                        </div>
-                        <br/>
-                    </li>
-                </c:forEach>
-            </ul>
-        </div>
-    </div>
-    <br/>
+									code="group.student.expelled" /></span>
+						</c:if> <a href="/users/${studentMap.key.student.id}"> <!--  -->${studentMap.key.student.firstName}</a>
+						<span style='padding-left: 10px;'> </span>
+						${studentMap.key.student.lastName} <span
+						style='padding-left: 10px;'> </span>
+						 <c:forEach items="${studentMap.value}" var="review">
+							<span style='padding-left: 10px;'></span>
+							<c:choose>
+								<c:when test="${review.type == 'A'}">
+									<span style='padding-left: 5px;' class="label label-danger" data-toggle="tooltip" title="Absent">${review.meeting.name}</span>
+								</c:when>
+								<c:when test="${review.type == 'E'}">
+									<span style='padding-left: 5px;' class="label label-success" data-toggle="tooltip" title="Evaluated">${review.meeting.name}</span>
+								</c:when>
+								<c:otherwise>
+									<span style='padding-left: 5px;' class="label label-primary" data-toggle="tooltip" title="Not reviewed">${review.meeting.name}</span>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<div id="${group.id}-${studentMap.key.student.id}"
+							class="btn rmv-cr-btn col-md-1 pull-right delete-student"
+							type='button'>
+							<span class="glyphicon glyphicon-remove delete"></span>
+						</div> <br />
+					</li>
+				</c:forEach>
+			</ul>
+		</div>
+	</div>
+	</div>
 </div>
 
 
 <!-- start -->
 <div id="showAvailableStudentsModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" type="button" data-dismiss="modal"><span
-                        class="glyphicon glyphicon-remove"></span></button>
-                <h4 class="modal-title">Add student</h4>
-                <hr>
-                <div class="row">
-                    <input type="text" id="search" placeholder="type search" class="col-md-offset-4">
-                </div>
-                <table id="studentsTable" class="table table-condensed table-hover table-responsive">
-                    <thead class="table-head">
-                    <tr>
-                        <th><b>Name</b></th>
-                        <th><b>Add</b></th>
-                    </tr>
-                    </thead>
-                    <tbody id="studentsTableId">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal"><span
+						class="glyphicon glyphicon-remove"></span></button>
+				<h4 class="modal-title">Add student</h4>
+				<hr>
+				<div class="row">
+					<input type="text" id="search" placeholder="type search" class="col-md-offset-4">
+				</div>
+				<table id="studentsTable" class="table table-condensed table-hover table-responsive">
+					<thead class="table-head">
+					<tr>
+						<th><b>Name</b></th>
+						<th><b>Add</b></th>
+					</tr>
+					</thead>
+					<tbody id="studentsTableId">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
 <!-- finish modal -->
 
 
-<div class="attendance_template">
+
+<div class="row">
+<div class="col-md-12">
     <h2>
         <spring:message code="group.attendance"/>
     </h2>
@@ -252,7 +218,7 @@
 
             <div data-toggle="collapse" data-target="#collapseAttendance" class="arrow col-md-1" style="color: black"
                  onclick="changeSpan(this)">
-                <span class="glyphicon glyphicon-chevron-down"></span>
+                <span class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
             </div>
         </div>
 
@@ -308,7 +274,7 @@
             </div>
         </div>
     </div>
-    <br/>
+</div>
 </div>
 
 <div id="studentDeleteError" class="modal fade">
@@ -326,23 +292,24 @@
     </div>
 </div>
 
-<div class="mentors_template">
-    <h2>
-        <spring:message code="group.mentors"/>
-    </h2>
-    <div class="panel panel-primary"
-         style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
-        <div class="panel-heading clearfix">
-            <button type="button" class="btn btn-default btn-xs pull-right" id="showAvailableMentors"
-                    data-toggle="modal"
-                    data-target="#showAvailableMentorsModal">
-                <spring:message code="group.button.add"/>
-            </button>
-            <div data-toggle="collapse" data-target="#collapseMentors"
-                 class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
-                <span class="glyphicon glyphicon-chevron-down"></span>
-            </div>
-        </div>
+<div class="row">
+<div class="col-md-12">
+	<h2>
+		<spring:message code="group.mentors" />
+	</h2>
+	<div class="panel panel-primary"
+		style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
+		<div class="panel-heading clearfix">
+			<button type="button" class="btn btn-default btn-sm pull-right"  id="showAvailableMentors"
+					data-toggle="modal"
+					data-target="#showAvailableMentorsModal">
+			<spring:message code="group.button.add" />
+			</button>
+			<div data-toggle="collapse" data-target="#collapseMentors"
+				class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
+				<span class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
+			</div>
+		</div>
 
         <div id="collapseMentors" class="panel-collapse collapse">
             <ul class="list-group">
@@ -371,47 +338,49 @@
 
 <!-- start -->
 <div id="showAvailableMentorsModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" type="button" data-dismiss="modal"><span
-                        class="glyphicon glyphicon-remove"></span></button>
-                <h4 class="modal-title">Add mentor</h4>
-                <hr>
-                <div class="row">
-                    <input type="text" id="search_mentor" placeholder="type search" class="col-md-offset-4">
-                </div>
-                <table id="mentorsTable" class="table table-condensed table-hover table-responsive">
-                    <thead class="table-head">
-                    <tr>
-                        <th><b>Name</b></th>
-                        <th><b>Add</b></th>
-                    </tr>
-                    </thead>
-                    <tbody id="mentorsTableId">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal"><span
+						class="glyphicon glyphicon-remove"></span></button>
+				<h4 class="modal-title">Add mentor</h4>
+				<hr>
+				<div class="row">
+					<input type="text" id="search_mentor" placeholder="type search" class="col-md-offset-4">
+				</div>
+				<table id="mentorsTable" class="table table-condensed table-hover table-responsive">
+					<thead class="table-head">
+					<tr>
+						<th><b>Name</b></th>
+						<th><b>Add</b></th>
+					</tr>
+					</thead>
+					<tbody id="mentorsTableId">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
 <!-- finish modal -->
 
 
+
+<div class="row">
+<div class="col-md-12">
 <h2>
     <spring:message code="group.attachments"/>
 </h2>
-<div class="panel panel-primary"
-     style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
+<div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <button type="button" class="btn btn-default btn-xs pull-right"
+        <button type="button" class="btn btn-default btn-sm pull-right"
                 data-target="#addGroupAttachmentModal" data-toggle="modal">
             <spring:message code="group.button.add"/>
         </button>
         <div data-toggle="collapse" data-target="#collapseAttachment"
              class="arrow col-md-1" style="color: black"
              onclick="changeSpan(this)">
-            <span class="glyphicon glyphicon-chevron-down"></span>
+            <span class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
         </div>
     </div>
 
@@ -431,7 +400,8 @@
         </ul>
     </div>
 </div>
-
+</div>
+</div>
 
 <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
     <div id="group-report-modal" class="modal fade" role="dialog">
@@ -620,7 +590,7 @@
         $('select').select2();
     </script>
 </sec:authorize>
-
+</div>
 <script>
 
     $(document).ready(function () {
@@ -756,11 +726,7 @@
                 }
 
             });
-
-
         }
-
-
     }
 
     $('select').select2();
