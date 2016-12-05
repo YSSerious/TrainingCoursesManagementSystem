@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script src="<c:url value="/presentation/resources/js/group.js"/>"
         type="text/javascript" defer="defer">
-
+var groupId = ${group.id};
 </script>
 <jsp:useBean id="type" class="java.lang.String"/>
 <jsp:useBean id="border" class="java.lang.String"/>
@@ -168,7 +168,7 @@
 			</div>
 		</div>
 		<div id="collapseStudents" class="panel-collapse collapse">
-			<ul class="list-group">
+			<ul id ="students-ul" class="list-group">
 				<c:forEach items="${students}" var="studentMap">
 
 					<li
@@ -745,11 +745,7 @@
                 }
 
             });
-
-
         }
-
-
     }
 
     $('select').select2();

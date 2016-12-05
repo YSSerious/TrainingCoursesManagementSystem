@@ -87,37 +87,8 @@ $("#addNoteSubmitButton").click(function(event) {
 	 
 
 
-	$('.delete-mentor').click(function(event){
-		var Id= this.id;
-		var ids = Id.split("-");
-		$.ajax({
-			url: "/groups/removeMentor",
-			type: "POST",
-			data:{ "groupId":ids[0], "userId":ids[1]},
-			success: function (data) {
-				console.log(data);
-				$(".group-"+Id).remove();
-			}
-		});
-	});
-	
-	$('.delete-student').click(function(event){
-		var Id= this.id;
-		var ids = Id.split("-");
-		$.ajax({
-			url: "/groups/removeStudent",
-			type: "POST",
-			data:{ "groupId":ids[0], "userId":ids[1]},
-			success: function (data) {
-				console.log(data);
-				$(".group-"+Id).remove();
-			},
-			error: function(errorText){
-				console.log(errorText);
-				$('#studentDeleteError').modal('show');
-			}
-		});
-	});
+	bindRemoveMentor();
+	bindRemoveStudent();
 
 	$("#deleteMeetingButton").click(function () {
 		$.ajax({
@@ -224,6 +195,8 @@ function appendStudentsTableRows(data) {
 				"<td><button value='" + value.id + "' class='addStudentsButton btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
 				"</tr>");
 	});
+	
+	bindRemoveStudent();
 }
 
 $("#showAvailableStudents").click(function () {
@@ -267,6 +240,7 @@ $(document).on('click', '.addStudentsButton', function () {
 			console.log(data);
 			$('#collapseStudents').append(buildResponseStudent(data));
 			a.parent().parent().remove();
+			bindRemoveStudent();
 		},
 		error: function (textStatus) {
 			console.log(textStatus);
@@ -302,16 +276,20 @@ $("#showAvailableMentors").click(function () {
 });
 
 function buildResponseMentor(data) {
-	return "<li class=\"list-group-item group-" + $("#groupId").val() + "-" + data.id + " clearfix\">"
-			+ "<a href=\"/users/"+ data.id +"\"> " + data.firstName +"</a>"
-			+ "<span style=\"padding-left: 10px;\"> </span>"
-			+ data.lastName
-				// + "<span style=\"padding-left: 10px;\"> </span>"
-			+ "<div id=\""+ $("#groupId").val() + "-"+ data.id + "\" "
-			+ "class=\"btn rmv-cr-btn col-md-1 pull-right delete-student\" type=\"button\">"
-			+ "<span class=\"glyphicon glyphicon-remove delete\"></span>"
-			+ "</div> <br />"
-			+ "</li>";
+	var div = '';
+	
+	div += '<li class="list-group-item group-'+$("#groupId").val()+'-'+data.id+' clearfix">';
+
+	div += '<a href="/users/'+data.id+'">'+data.firstName+'</a>';
+	div += '<span style="padding-left: 10px;"> </span> '+data.lastName;
+	                        
+	div += '<div id="'+$("#groupId").val()+'-'+data.id+'" class="btn rmv-cr-btn col-md-1 pull-right delete-mentor" type="button">';
+	div += '<span class="glyphicon glyphicon-remove delete"></span>';
+	div += '</div>';
+	div += '<br/>';
+	div += '</li>';
+	
+	return div;
 }
 
 $(document).on('click', '.addMentorsButton', function () {
@@ -325,9 +303,48 @@ $(document).on('click', '.addMentorsButton', function () {
 			console.log(data);
 			$('#collapseMentors').append(buildResponseMentor(data));
 			a.parent().parent().remove();
+			bindRemoveMentor();
 		},
 		error: function (textStatus) {
 			console.log(textStatus);
 		}
 	});
 });
+
+function bindRemoveStudent(){
+	$('.delete-student').unbind('click');
+	$('.delete-student').click(function(event){
+		var Id= this.id;
+		var ids = Id.split("-");
+		$.ajax({
+			url: "/groups/removeStudent",
+			type: "POST",
+			data:{ "groupId":ids[0], "userId":ids[1]},
+			success: function (data) {
+				console.log(data);
+				$(".group-"+Id).remove();
+			},
+			error: function(errorText){
+				console.log(errorText);
+				$('#studentDeleteError').modal('show');
+			}
+		});
+	});
+}
+
+function bindRemoveMentor(){
+	$('.delete-mentor').unbind('click');
+	$('.delete-mentor').click(function(event){
+		var Id= this.id;
+		var ids = Id.split("-");
+		$.ajax({
+			url: "/groups/removeMentor",
+			type: "POST",
+			data:{ "groupId":ids[0], "userId":ids[1]},
+			success: function (data) {
+				console.log(data);
+				$(".group-"+Id).remove();
+			}
+		});
+	});
+}
