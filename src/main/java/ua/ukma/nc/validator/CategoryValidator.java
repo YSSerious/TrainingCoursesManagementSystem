@@ -12,18 +12,21 @@ import java.util.regex.Pattern;
 public class CategoryValidator {
 
     public boolean checkCategoryName(String categoryName){
+        if("".equals(categoryName))return false;
         Pattern p = Pattern.compile("^[\\w\\s-]{2,20}$");
         Matcher m = p.matcher(categoryName);
         return m.matches();
     }
 
     public boolean checkCategoryDescription(String categoryDescription){
+        if("".equals(categoryDescription))return false;
         Pattern p = Pattern.compile("^[\\w\\s-]{5,35}$");
         Matcher m = p.matcher(categoryDescription);
         return m.matches();
     }
 
     public boolean checkCriteriaName(String criteriaName){
+        if("".equals(criteriaName))return false;
         Pattern p = Pattern.compile("^[\\w\\s-]{2,20}$");
         Matcher m = p.matcher(criteriaName);
         return m.matches();

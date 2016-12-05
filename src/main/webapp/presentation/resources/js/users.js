@@ -9,8 +9,8 @@
 	};
 
 
-	var max = ${noOfPages};
-	var curr = ${currentPage};
+	// var max = ${noOfPages};
+	// var curr = ${currentPage};
 
 	var value = getParameterByName('value');
 	var type = getParameterByName('type');

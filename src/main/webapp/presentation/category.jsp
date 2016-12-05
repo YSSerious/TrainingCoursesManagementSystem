@@ -146,13 +146,6 @@
                         <h4 class="modal-title">New Criteria</h4>
                         <div>
                             <form name="addCriteriaForm" id="addCriteriaFormId" class="form-horizontal">
-                                <%--<table class="table">--%>
-                                    <%--<tr>--%>
-                                        <%--<td>Name</td>--%>
-                                        <%--<td><input type="text" id="criteriaName"></td>--%>
-
-                                    <%--</tr>--%>
-                                <%--</table>--%>
                                     <div class="form-group" id="form-criteria-name-id">
                                         <label class="control-label col-sm-2" for="criteriaName">Name</label>
                                         <div class="col-sm-5">

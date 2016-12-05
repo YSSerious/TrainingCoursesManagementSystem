@@ -14,15 +14,13 @@ $(document).ready(function () {
                 console.log(data);
                 $("#CriteriaCheckBoxId").children().remove();
                 $.each(data.criterions, function (key, value) {
-                    $('#CriteriaCheckBoxId').
-                            append("<label class='checkbox-inline'><input type='checkbox' class='isCriteriaChecked'>" +
-                            value.title + "</label>");
+                    $('#CriteriaCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox' class='isCriteriaChecked'>" +
+                        value.title + "</label>");
                 });
                 $("#GroupsCheckBoxId").children().remove();
                 $.each(data.groupList, function (key, value) {
-                    $('#GroupsCheckBoxId').
-                            append("<label class='checkbox-inline'><input type='checkbox' class='isGroupChecked'>" +
-                            value.name + "</label>");
+                    $('#GroupsCheckBoxId').append("<label class='checkbox-inline'><input type='checkbox' class='isGroupChecked'>" +
+                        value.name + "</label>");
                 });
             },
             error: function (textStatus) {
@@ -66,61 +64,9 @@ $(document).ready(function () {
     }
     ;
 
-    $("#saveMeeting").click(function () {
+    var meetingNamePattern = new RegExp('^[\\w\\s-]{2,20}$');
+    var meetingPlacePattern = new RegExp('^[\\w\\s-]{5,35}$');
 
-        var dto = {
-            name: '',
-            place: '',
-            date: '',
-            criterions: [],
-            groups: []
-        };
-
-        dto.name = $("#inputName").val();
-        dto.place = $("#inputPlace").val();
-        dto.date = $("#inputDate").val();
-
-        $.each($('.isCriteriaChecked'), function (key, value) {
-            if (value.checked) {
-                dto.criterions.push(value.closest('label').textContent);
-            }
-        });
-
-        $.each($('.isGroupChecked'), function (key, value) {
-            if (value.checked) {
-                dto.groups.push(value.closest('label').textContent);
-            }
-        });
-        console.log(dto);
-
-        $.ajax({
-            url: "/saveMeeting",
-            type: "POST",
-            contentType: "application/json",
-            dataType: 'json',
-            data: JSON.stringify({
-                name: dto.name,
-                place: dto.place,
-                date: dto.date,
-                crit: dto.criterions,
-                gr: dto.groups
-            }),
-            statusCode: {
-                200: function (data) {
-                    console.log(data);
-                },
-                409: function (textStatus) {
-                    console.log(textStatus);
-                    $('#projectErrorModal').html(textStatus.responseText);
-                    $('#ErrorModal').modal('show');
-                }
-            }
-        });
-    });
-
-    $('#saveMeeting').attr('disabled', true);
-    var meetingName = new RegExp('^[a-zA-Z0-9_-\\s]{3,15}$');
-    var meetingPlace = new RegExp('^[a-zA-Z0-9_-\\s]{3,25}$');
     var groupRE = function () {
         var check = false;
         $.each($('.isGroupChecked'), function (key, value) {
@@ -138,13 +84,101 @@ $(document).ready(function () {
         return check;
     };
 
-    $('#newMeetingFormId').change(function () {
-        if (meetingName.test($("#inputName").val()) &&
-                meetingPlace.test($("#inputPlace").val()) && $("#inputDate").
-                val() != "" && groupRE() && criteriaRE()) {
-            $('#saveMeeting').attr('disabled', false);
-        } else {
-            $('#saveMeeting').attr('disabled', true);
+    $("#saveMeeting").click(function () {
+
+        if (!meetingNamePattern.test($("#inputName").val())) {
+            $('#inputNameErrorId').html("name must be 2-20 symbols, under/dash or space.");
+            $('#formMeetingNameId').addClass('has-error');
+            $('#inputNameErrorId').removeClass('hidden');
+        }
+        
+        if ($("#inputName").val() == '') {
+            $('#inputNameErrorId').html("required field");
+            $('#inputNameErrorId').removeClass('hidden');
+            $('#formMeetingNameId').addClass('has-error');
+        }
+        
+        if (!meetingPlacePattern.test($("#inputPlace").val())) {
+            $('#inputPlaceErrorId').html("name must be 2-20 symbols, under/dash or space.");
+            $('#formMeetingPlaceId').addClass('has-error');
+            $('#inputPlaceErrorId').removeClass('hidden');
+        }
+        
+        if ($("#inputPlace").val() == '') {
+            $('#inputPlaceErrorId').html("required field");
+            $('#inputPlaceErrorId').removeClass('hidden');
+            $('#formMeetingPlaceId').addClass('has-error');
+        }
+        
+        if ($("#inputDate").val() == '') {
+            $('#inputDateErrorId').html("required field");
+            $('#inputDateErrorId').removeClass('hidden');
+            $('#formMeetingDateId').addClass('has-error');
+        }
+
+        if (meetingNamePattern.test($("#inputName").val()) &&
+            meetingPlacePattern.test($("#inputPlace").val()) && $("#inputDate").val() != "" && groupRE() && criteriaRE()) {
+            $("#saveMeeting").attr('disabled', true);
+            var dto = {
+                name: '',
+                place: '',
+                date: '',
+                criterions: [],
+                groups: []
+            };
+
+            dto.name = $("#inputName").val();
+            dto.place = $("#inputPlace").val();
+            dto.date = $("#inputDate").val();
+
+            $.each($('.isCriteriaChecked'), function (key, value) {
+                if (value.checked) {
+                    dto.criterions.push(value.closest('label').textContent);
+                }
+            });
+
+            $.each($('.isGroupChecked'), function (key, value) {
+                if (value.checked) {
+                    dto.groups.push(value.closest('label').textContent);
+                }
+            });
+            console.log(dto);
+
+            $.ajax({
+                url: "/saveMeeting",
+                type: "POST",
+                contentType: "application/json",
+                dataType: 'json',
+                data: JSON.stringify({
+                    name: dto.name,
+                    place: dto.place,
+                    date: dto.date,
+                    crit: dto.criterions,
+                    gr: dto.groups
+                }),
+                statusCode: {
+                    200: function (data) {
+                        console.log(data);
+                        //Validation Success
+                        $('#formMeetingNameId').removeClass('has-error');
+                        $('#formMeetingPlaceId').removeClass('has-error');
+                        $('#formMeetingDateId').removeClass('has-error');
+                        $('#inputNameErrorId').addClass('hidden');
+                        $('#inputPlaceErrorId').addClass('hidden');
+                        $('#inputDateErrorId').addClass('hidden');
+                        $("#saveMeeting").attr('disabled', false);
+                        $('#meetingCreateModal').modal('toggle');
+                    },
+                    400: function (textStatus) {
+                        console.log(textStatus);
+                    },
+                    409: function (textStatus) {
+                        console.log(textStatus);
+                        $('#projectErrorModal').html(textStatus.responseText);
+                        $('#ErrorModal').modal('show');
+                    }
+                }
+            });
         }
     });
 
@@ -206,9 +240,9 @@ $(document).ready(function () {
         $("#criterionTable > tbody:last").children().remove();
         $.each(data, function (key, value) {
             $('#criterionTable > tbody:last-child').append("<tr>" +
-                    "<td>" + value.title + "</td>" +
-                    "<td><button class='addButton btn-primary btn-xs'><span class='glyphicon glyphicon-plus'></span></button></td>" +
-                    "</tr>");
+                "<td>" + value.title + "</td>" +
+                "<td><button class='addButton btn-primary btn-xs'><span class='glyphicon glyphicon-plus'></span></button></td>" +
+                "</tr>");
         });
     }
 
@@ -223,7 +257,8 @@ $(document).ready(function () {
         });
     });
 
-});
+})
+;
 
 $('#project-groups .panel-heading').first().on('click', function (e) {
     if ((e.target.tagName !== "BUTTON") && (e.target.tagName !== "B")) {
@@ -233,7 +268,7 @@ $('#project-groups .panel-heading').first().on('click', function (e) {
 
 function changeSpan(el) {
     var chevron = jQuery(el);
-    if(chevron.children('.glyphicon').hasClass("glyphicon-chevron-down")){
+    if (chevron.children('.glyphicon').hasClass("glyphicon-chevron-down")) {
         chevron.children('.glyphicon').removeClass('glyphicon-chevron-down');
         chevron.children('.glyphicon').addClass('glyphicon-chevron-up');
     } else {
@@ -244,17 +279,17 @@ function changeSpan(el) {
 
 function buildResponseCriteria(data) {
     return "<li class='list-group-item  clearfix' id='criteriaId-" + data.id + "'>" +
-            "<div class='col-md-11'>" + data.title + "</div>" +
-            "<sec:authorize access=\"hasRole(\" ADMIN \")\">" +
-            "<c:if test='" + data.rated + "'>" +
-            "<div class='btn rmv-cr-btn col-md-1' type='button'" +
-            " data-button='{\"id\":\"" + data.id + "\", \"title\": \"" +
-            data.title + "\"}'>" +
-            "<span class='glyphicon glyphicon-remove'></span>" +
-            "</div>" +
-            "</c:if>" +
-            "</sec:authorize>" +
-            "</li>";
+        "<div class='col-md-11'>" + data.title + "</div>" +
+        "<sec:authorize access=\"hasRole(\" ADMIN \")\">" +
+        "<c:if test='" + data.rated + "'>" +
+        "<div class='btn rmv-cr-btn col-md-1' type='button'" +
+        " data-button='{\"id\":\"" + data.id + "\", \"title\": \"" +
+        data.title + "\"}'>" +
+        "<span class='glyphicon glyphicon-remove'></span>" +
+        "</div>" +
+        "</c:if>" +
+        "</sec:authorize>" +
+        "</li>";
 };
 
 
@@ -272,13 +307,13 @@ $(document).ready(function () {
 function setEditableWrapperMouseEnter(editableWrapper) {
     editableWrapper.on('mouseenter', function () {
         var button = $('<button class="glyphicon-button"></button>')
-                .css('margin-left', '5px')
-                .appendTo($(this).find('.editable-label').first());
+            .css('margin-left', '5px')
+            .appendTo($(this).find('.editable-label').first());
         button.append('<span class="glyphicon glyphicon-edit"></span>');
         turnEditModeOn(button);
     }).on('mouseleave', function () {
         $(this).find('.editable-label').first()
-                .find('.glyphicon-button').first().remove();
+            .find('.glyphicon-button').first().remove();
     });
 }
 
@@ -300,30 +335,30 @@ function turnEditModeOn(button) {
             }).get();
         } else {
             headers.push(thisEditableWrapper.children('.editable').first()
-                    .find(':header').first().text());
+                .find(':header').first().text());
         }
         //Depending on modal purpose, change the modal
         switch (thisEditableWrapper.attr('id')) {
             case 'project-name':
                 updateDataEditingModal({
-                    title: 'Edit project\'s name',
-                    target: 'project-name',
-                    inputs: [
-                        {
-                            class: "col-sm-12",
-                            label: 'Project name',
-                            input: {
-                                tag: 'input',
-                                paired: false,
-                                val: headers[0],
-                                attrs: {
-                                    type: 'text',
-                                    id: 'project-name',
-                                    class: 'form-control'
+                        title: 'Edit project\'s name',
+                        target: 'project-name',
+                        inputs: [
+                            {
+                                class: "col-sm-12",
+                                label: 'Project name',
+                                input: {
+                                    tag: 'input',
+                                    paired: false,
+                                    val: headers[0],
+                                    attrs: {
+                                        type: 'text',
+                                        id: 'project-name',
+                                        class: 'form-control'
+                                    }
                                 }
-                            }
-                        }]
-                }
+                            }]
+                    }
                 );
                 break;
             case 'project-startdate':
@@ -402,8 +437,8 @@ function updateDataEditingModal(inputs) {
     //Create nesseccary elements based on received information
     $.each(inputs.inputs, function (i, currentInput) {
         var formGroup = $('<div></div')
-                .attr('class', 'form-group')
-                .addClass(currentInput.class);
+            .attr('class', 'form-group')
+            .addClass(currentInput.class);
         //Create wrappers with provided classes (for instance, col-sm-6)
         if ('wrapper' in currentInput) {
             var wrapper = $('<div></div>').insertBefore(firstDivBeforeInputs);
@@ -415,12 +450,11 @@ function updateDataEditingModal(inputs) {
         }
         //Create labels for inputs
         $('<label></label>').text(currentInput.label)
-                .appendTo(formGroup);
+            .appendTo(formGroup);
         //Create inputs or textarea or whatever
         var input = $((currentInput.input.paired === true ? '<' +
-                currentInput.input.tag + '>' : '') + '<' +
-                currentInput.input.tag + '/>').
-                appendTo($(formGroup));
+            currentInput.input.tag + '>' : '') + '<' +
+            currentInput.input.tag + '/>').appendTo($(formGroup));
         $.each(currentInput.input.attrs, function (i, d) {
             input.attr(i, d);
         });
@@ -433,8 +467,7 @@ function updateDataEditingModal(inputs) {
 //Empty modal with little timeout for nice hiding
 $('#editProjectDataModal').on('hide.bs.modal', function () {
     setTimeout(function () {
-        $.each($('#editProjectDataModal').find('form').first().
-                children('div:not(:last)'), function () {
+        $.each($('#editProjectDataModal').find('form').first().children('div:not(:last)'), function () {
             $(this).remove();
         });
     }, 200);
@@ -457,8 +490,8 @@ function ajaxUpdateProject() {
         case 'project-name':
             var newName = form.find('#project-name').val();
             var nameHeader = $('.certain-project #project-name')
-                    .find('.editable').first()
-                    .find(':header').first();
+                .find('.editable').first()
+                .find(':header').first();
             if (newName !== nameHeader.text()) {
                 ajaxParams['url'] = '/updateProjectName';
                 ajaxParams['data'] = {
@@ -480,8 +513,8 @@ function ajaxUpdateProject() {
         case 'project-dates':
             var newStartDate = form.find('#start-date').val();
             var startDateHeader = $('.certain-project #project-startdate')
-                    .find('.editable').first()
-                    .find(':header').first();
+                .find('.editable').first()
+                .find(':header').first();
             if (newStartDate !== startDateHeader.text()) {
                 ajaxParams['url'] = '/updateProjectStartDate';
                 ajaxParams['data'] = {
@@ -501,8 +534,8 @@ function ajaxUpdateProject() {
             }
             var newFinishDate = form.find('#finish-date').val();
             var finishDateHeader = $('.certain-project #project-finishdate')
-                    .find('.editable').first()
-                    .find(':header').first();
+                .find('.editable').first()
+                .find(':header').first();
             if (newFinishDate !== finishDateHeader.text()) {
                 ajaxParams['url'] = '/updateProjectFinishDate';
                 ajaxParams['data'] = {
@@ -524,8 +557,8 @@ function ajaxUpdateProject() {
         case 'project-description':
             var newDescription = form.find('#project-description').val();
             var descriptionHeader = $('.certain-project #project-description')
-                    .find('.editable').first()
-                    .find(':header').first();
+                .find('.editable').first()
+                .find(':header').first();
             if (newDescription !== descriptionHeader.text()) {
                 ajaxParams['url'] = '/updateProjectDescription';
                 ajaxParams['data'] = {
@@ -556,8 +589,7 @@ function sendProjectAjax(ajaxParams) {
         dataType: 'json',
         timeout: 100000,
         beforeSend: function () {
-            $('#editProjectDataModal').find('.loading').
-                    css('display', 'inline-block');
+            $('#editProjectDataModal').find('.loading').css('display', 'inline-block');
         },
         complete: function () {
             $('#editProjectDataModal').find('.loading').css('display', 'none');
@@ -592,21 +624,19 @@ function editGroupViaAjax(id, name) {
         data: {groupId: id, groupName: name},
         dataType: 'json',
         timeout: 100000,
-        success:
-                function (response) {
-                    switch (response.code) {
-                        case 200:
-                            $('#editGroupModal').modal('hide');
-                            cleanModalForm('#editGroupModal');
-                            $('#project-groups table tr#' + id +
-                                    ' td:first-child a').
-                                    text(name);
-                            break;
-                        case 204:
-                            showModalErrors(response.messages, '#editGroupModal');
-                            break;
-                    }
-                }
+        success: function (response) {
+            switch (response.code) {
+                case 200:
+                    $('#editGroupModal').modal('hide');
+                    cleanModalForm('#editGroupModal');
+                    $('#project-groups table tr#' + id +
+                        ' td:first-child a').text(name);
+                    break;
+                case 204:
+                    showModalErrors(response.messages, '#editGroupModal');
+                    break;
+            }
+        }
     }, getModalAjaxAnimation('#editGroupModal')));
 }
 
@@ -641,20 +671,19 @@ function deleteGroupViaAjax(id) {
         data: {groupId: id},
         dataType: 'json',
         timeout: 100000,
-        success:
-                function (response) {
-                    console.log(response.code);
-                    switch (response.code) {
-                        case '200':
-                            $('#deleteGroupModal').modal('hide');
-                            deleteGroupFromPage(id);
-                            cleanModalForm('#deleteGroupModal');
-                            break;
-                        case '204':
-                            showModalErrors(response.messages, '#deleteGroupModal');
-                            break;
-                    }
-                }
+        success: function (response) {
+            console.log(response.code);
+            switch (response.code) {
+                case '200':
+                    $('#deleteGroupModal').modal('hide');
+                    deleteGroupFromPage(id);
+                    cleanModalForm('#deleteGroupModal');
+                    break;
+                case '204':
+                    showModalErrors(response.messages, '#deleteGroupModal');
+                    break;
+            }
+        }
     }, getModalAjaxAnimation('#deleteGroupModal')));
 }
 

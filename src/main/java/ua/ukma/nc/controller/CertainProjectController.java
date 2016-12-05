@@ -27,6 +27,7 @@ import ua.ukma.nc.dto.*;
 import ua.ukma.nc.entity.*;
 import ua.ukma.nc.service.*;
 import ua.ukma.nc.util.exception.CriteriaDeleteException;
+import ua.ukma.nc.validator.NewMeetingValidator;
 import ua.ukma.nc.validator.ProjectAttachmentFormValidator;
 import ua.ukma.nc.vo.AjaxResponse;
 
@@ -64,6 +65,9 @@ public class CertainProjectController {
 
     @Autowired
     private FinalReviewCriterionService finalReviewCriterionService;
+
+    @Autowired
+    private NewMeetingValidator meetingValidator;
 
     @InitBinder("projectAttachmentForm")
     protected void initBinderFileBucket(WebDataBinder binder) {
@@ -261,6 +265,9 @@ public class CertainProjectController {
     @RequestMapping(value = "/saveMeeting", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity saveMeeting(@RequestBody AddCriteriaDto dto) {
+        if(!meetingValidator.checkMeetingName(dto.getName()) && !meetingValidator.checkMeetingPlace(dto.getPlace()) && !meetingValidator.checkMeetingDate(dto.getDate())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Validation failed");
+        }
         if (meetingService.addMeetings(dto) == 0)
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Meetings with this date already created.");
         return ResponseEntity.ok().body("Success");
