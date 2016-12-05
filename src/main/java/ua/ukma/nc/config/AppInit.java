@@ -27,10 +27,12 @@ public class AppInit implements WebApplicationInitializer {
         servletContext.addListener(new RequestContextListener());
         ctx.setServletContext(servletContext);
 
-        ServletRegistration.Dynamic servlet = servletContext.addServlet(DISPATCHER_SERVLET_NAME,
-                new DispatcherServlet(ctx));
-        servlet.addMapping("/");
-        servlet.setLoadOnStartup(1);
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(ctx);
+        dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
+
+        ServletRegistration.Dynamic dispatcher = servletContext.addServlet(DISPATCHER_SERVLET_NAME, dispatcherServlet);
+        dispatcher.setLoadOnStartup(1);
+        dispatcher.addMapping("/");
     }
 
 }
