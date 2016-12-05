@@ -37,16 +37,16 @@
                id="pagination" data-count-fixed-columns="1">
             <thead class="header">
 
-            <tr>
+            <tr id="appendStudentheadId">
                 <th><spring:message code="meeting.student"/></th>
                 <c:forEach items="${criteria}" var="criterion">
-                    <th>${criterion.title}</th>
+                    <th id="thId-${criterion.title}">${criterion.title}</th>
                 </c:forEach>
             </tr>
             </thead>
             <tbody class="results">
             <c:forEach items="${students}" var="user">
-                <tr>
+                <tr class="append-student-body">
                     <td><font size="3"><b> <a href="javascript:;"
                                               data-toggle="modal" class="open-Evaluate"
                             <sec:authorize access="hasRole('MENTOR')">
@@ -54,9 +54,10 @@
                                 data-user="${user.firstName}"
                             </sec:authorize>
                     > ${user.firstName}
-                            ${user.secondName} ${user.lastName} </a></b> </font></td>
+                            ${user.secondName} ${user.lastName} </a></b> </font>
+                    </td>
                     <c:forEach items="${criteria}" var="criterion">
-                        <td><font size="3">
+                        <td class="tdId-${criterion.title}"><font size="3">
                             <a href="#" data-toggle="tooltip" data-placement="top"
                                title="No mark, yet">-</a>
                         </font></td>
