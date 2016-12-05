@@ -28,7 +28,6 @@ import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.validator.ProjectFormValidator;
 import ua.ukma.nc.vo.AjaxResponse;
-import ua.ukma.nc.vo.ProjectVo;
 
 @Controller
 public class ProjectsController {
@@ -72,16 +71,16 @@ public class ProjectsController {
 	
 	@RequestMapping(value = "/projects/add", method = RequestMethod.POST)
         @ResponseBody
-	public AjaxResponse createProject(@RequestBody ProjectVo projectVo) {
-            DataBinder dataBinder = new WebDataBinder(projectVo);
+	public AjaxResponse createProject(@RequestBody ProjectDto projectDto) {
+            DataBinder dataBinder = new WebDataBinder(projectDto);
             dataBinder.setValidator(projectFromValidator);
             dataBinder.validate();
             BindingResult result = dataBinder.getBindingResult();
             AjaxResponse response = new AjaxResponse();
             if (!result.hasErrors()) {
                 Project project = new ProjectImpl(
-                        projectVo.getName(), projectVo.getDescription(),
-                        projectVo.getStartDate(), projectVo.getFinishDate());
+                        projectDto.getName(), projectDto.getDescription(),
+                        projectDto.getStartDate(), projectDto.getFinishDate());
                 projectService.createProject(project);
                 response.setCode("200");
             } else {

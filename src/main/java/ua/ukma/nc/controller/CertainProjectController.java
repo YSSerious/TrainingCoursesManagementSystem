@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +26,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ua.ukma.nc.dto.*;
 import ua.ukma.nc.entity.*;
+import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.service.*;
 import ua.ukma.nc.util.exception.CriteriaDeleteException;
 import ua.ukma.nc.validator.NewMeetingValidator;
 import ua.ukma.nc.validator.ProjectAttachmentFormValidator;
+import ua.ukma.nc.validator.ProjectFormValidator;
 import ua.ukma.nc.vo.AjaxResponse;
 
 @Controller
@@ -66,7 +69,10 @@ public class CertainProjectController {
 
     @Autowired
     private NewMeetingValidator meetingValidator;
-
+	
+	@Autowired
+	private ProjectFormValidator projectFormValidator;
+	
     @InitBinder("projectAttachmentForm")
     protected void initBinderFileBucket(WebDataBinder binder) {
         binder.setValidator(projectAttachmentFormValidator);
@@ -132,50 +138,29 @@ public class CertainProjectController {
         return criterionService.isRatedInProject(id, criterion) || finalReviewCriterionService.isExists(criterion, id);
     }
 
-    @RequestMapping(value = "/updateProjectName", method = RequestMethod.POST)
-    @ResponseBody
-    public String updateProjectName(
-            @RequestParam("projectId") Long projectId,
-            @RequestParam("projectName") String projectName) {
-        Project project = projectService.getById(projectId);
-        project.setName(projectName);
-        projectService.updateProject(project);
-        return "";
-    }
-
-    @RequestMapping(value = "/updateProjectStartDate", method = RequestMethod.POST)
-    @ResponseBody
-    public String updateProjectStartDate(
-            @RequestParam("projectId") Long projectId,
-            @RequestParam("projectStartDate") Date startDate) {
-        Project project = projectService.getById(projectId);
-        project.setStartDate(startDate);
-        projectService.updateProject(project);
-        return "";
-    }
-
-    @RequestMapping(value = "/updateProjectFinishDate", method = RequestMethod.POST)
-    @ResponseBody
-    public String updateProjectFinishDate(
-            @RequestParam("projectId") Long projectId,
-            @RequestParam("projectFinishDate") Date finishDate) {
-        Project project = projectService.getById(projectId);
-        project.setFinishDate(finishDate);
-        projectService.updateProject(project);
-        return "";
-    }
-
-    @RequestMapping(value = "/updateProjectDescription", method = RequestMethod.POST)
-    @ResponseBody
-    public String updateProjectDescription(
-            @RequestParam("projectId") Long projectId,
-            @RequestParam("projectDescription") String description) {
-        Project project = projectService.getById(projectId);
-        project.setDescription(description);
-        projectService.updateProject(project);
-        return "";
-    }
-
+  @RequestMapping(value = "/projects/update", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxResponse updateProject(@RequestBody ProjectDto projectDto) {
+		DataBinder dataBinder = new WebDataBinder(projectDto);
+		dataBinder.setValidator(projectFormValidator);
+		dataBinder.validate();
+		BindingResult result = dataBinder.getBindingResult();
+		AjaxResponse response = new AjaxResponse();
+		if (!result.hasErrors()) {
+			Project project = new ProjectImpl(projectDto);
+			projectService.updateProject(project);
+			response.setCode("200");
+		} else {
+			response.setCode("204");
+			result.getFieldErrors().stream().forEach((FieldError error) -> {
+				response.addMessage(error.getField(),
+						messageSource.getMessage(error.getCode(),
+								null, LocaleContextHolder.getLocale()));
+			});
+		}
+		return response;
+	}
+	
 	@RequestMapping(value = "/projects/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxResponse deleteProject(

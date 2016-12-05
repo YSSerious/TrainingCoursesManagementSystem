@@ -4,10 +4,11 @@ $('#delete-project').on('click', function () {
     $.ajax({
         type: "POST",
         url: "/projects/delete",
-        data: {projectId: projectId},
+        data: {"projectId": projectId},
         dataType: 'json',
         timeout: 100000,
         success: function (response) {
+            console.log('response');
             switch (response.code) {
                 case '200':
                     window.location.href = "/projects";

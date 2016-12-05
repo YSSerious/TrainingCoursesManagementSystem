@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@include file="header.jsp" %>
-<%@include file="projectDataEditingModals.jsp" %>
+<%--<%@include file="projectDataEditingModals.jsp" %>--%>
+<%@include file="createProjectModal.jsp" %>
 <%@include file="projectGroupsModals.jsp" %>
 <script
     src="<c:url value="/presentation/resources/js/certainProject.js"/>"
