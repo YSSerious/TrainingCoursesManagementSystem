@@ -10,29 +10,36 @@
 </script>
 
 <div class="container certain-project" data-project-id="${project.id}">
-    <!-- Example row of columns -->
+
     <div class="row">
         <div class="col-md-12">
             <div class="page-header">
                 <sec:authorize access="hasAnyRole('ADMIN')">
                     <input id="can-edit" type="hidden" value="true"/>
                 </sec:authorize>
+                
                 <div class="editable-wrapper" id="project-name">
-                    <!--                    <h3><b>Project:</b></h3>-->
+
                     <div class="editable-label editable">
                         <h3 style="font-size: 3rem">${project.name}</h3>
                     </div>
                 </div>
-                <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
+                
                     <div class="project-controls">
-                        <c:if test="${isEmpty == true}">
-                            <button class="btn btn-primary pull-right" id="delete-project"><b>Delete project</b></button>
-                            <script src="<c:url value="/presentation/resources/js/delete_project.js"/>" type="text/javascript" defer="defer"></script>
-                        </c:if>
+                    	<sec:authorize access="hasAnyRole('ADMIN')">
+                        	<c:if test="${isEmpty == true}">
+                            	<button class="btn btn-primary pull-right" id="delete-project"><b>Delete project</b></button>
+                            	<script src="<c:url value="/presentation/resources/js/delete_project.js"/>" type="text/javascript" defer="defer"></script>
+                        	</c:if>
+                        </sec:authorize>
+                        
+                        <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
                         <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#project-report-modal">
-                            <b><spring:message code="project.generate.report"/></b></button>
+                            <b><spring:message code="project.generate.report"/></b>
+                        </button>
+                    	</sec:authorize>
                     </div>
-                </sec:authorize>
+                
                 <div class="row">
                     <div class="col-md-4 editable-group project-dates">
                         <table class="table-bordered">
@@ -79,6 +86,7 @@
                     <div class="col-md-1">
                         <span id="spanIdd" class="glyphicon glyphicon-chevron-down"></span>
                     </div>
+                    
                     <sec:authorize access="hasRole('ADMIN')">
                         <button type="button" class="btn btn-default btn-sm pull-right" id="showGroupsAndCriteria"
                                 data-toggle="modal"
@@ -89,9 +97,9 @@
                             <b><spring:message code="project.groups.add"/></b>
                         </button>
                     </sec:authorize>
+                    
                     <div class="clearfix"></div>
                 </div>
-                <%--<%@include file="createGroup.jsp"%>--%>
                 <div id="collapse-group" class="panel-collapse collapse clearfix">
                     <div class="panel-body">
                         <table class="table table-hover">
@@ -116,15 +124,20 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
+                                    
                                     <td>
-                                        <button class="btn btn-collapse edit-group glyphicon-button">
-                                            <span class="glyphicon glyphicon-edit"></span>
-                                        </button>
+                                    	<sec:authorize access="hasAnyRole('ADMIN')">
+                                        	<button class="btn btn-collapse edit-group glyphicon-button">
+                                            	<span class="glyphicon glyphicon-edit"></span>
+                                        	</button>
+                                        </sec:authorize>
                                     </td>
                                     <td>
-                                        <button class="btn btn-collapse delete-group glyphicon-button">
-                                            <span class="glyphicon glyphicon-remove"></span>
-                                        </button>
+                                    	<sec:authorize access="hasAnyRole('ADMIN')">
+                                        	<button class="btn btn-collapse delete-group glyphicon-button">
+                                            	<span class="glyphicon glyphicon-remove"></span>
+                                        	</button>
+                                        </sec:authorize>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -160,10 +173,12 @@
                             <li class="list-group-item  clearfix" id="criteriaId-${criterion.id}">
                                 <div class="col-md-11">${criterion.title}</div>
                                 <c:if test="${!criterion.rated}">
+                                	<sec:authorize access="hasAnyRole('ADMIN')">
                                     <button class="btn rmv-cr-btn col-md-1"
                                             data-button='{"id":"${criterion.id}","title": "${criterion.title}"}'>
                                         <span class="glyphicon glyphicon-remove"></span>
                                     </button>
+                                    </sec:authorize>
                                 </c:if>
                             </li>
                         </c:forEach>
@@ -185,26 +200,30 @@
                     <span id="spanIId" class="pull-left glyphicon glyphicon-chevron-down"
                           style="margin-top:5px;"></span>
                 </div>
-                <div role="button" class="btn btn-default btn-sm pull-right" id="add-att-btn"
-                     data-toggle="modal" data-target="#addProjectAttachmentModal"><b>Add Attach</b>
-                </div>
+                <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
+                	<div role="button" class="btn btn-default btn-sm pull-right" id="add-att-btn" data-toggle="modal" data-target="#addProjectAttachmentModal"><b>Add Attach</b>
+                	</div>
+                </sec:authorize>
             </div>
             <div class="panel-collapse collapse clearfix" id="att-collapse">
                 <ul class="list-group " id="attachment-group">
                     <c:forEach items="${attachments}" var="attachment">
                         <li class="list-group-item clearfix">
                             <a href="/projectAttachment/${ attachment.id}" class="col-md-2">${attachment.name } </a>
-                            <div class="btn rmv-btn col-md-1" role='button'
-                                 data-button='{"id_attachment": "${attachment.id}"}'>
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </div>
+                            
+                            <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
+                            	<div class="btn rmv-btn col-md-1" role='button' data-button='{"id_attachment": "${attachment.id}"}'>
+                                	<span class="glyphicon glyphicon-remove"></span>
+                            	</div>
+                            </sec:authorize>
+                            
                         </li>
                     </c:forEach>
                 </ul>
             </div>
-            <hr>
         </div>
 
+	<sec:authorize access="hasAnyRole('ADMIN')">
         <div id="addMeetingModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-header">
@@ -215,6 +234,7 @@
         </div>
 
         <!-- start showAvailableCriteria modal -->
+        
         <div id="showAvailableCriteriaModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -246,6 +266,8 @@
                 </div>
             </div>
         </div>
+        </sec:authorize>
+        
         <!-- finish showAvailableCriteria modal -->
         <!-- start ErrorModal modal -->
         <div id="ErrorModal" class="modal fade">
@@ -263,6 +285,8 @@
     </div>
     <!-- finish ErrorModal modal -->
     <!-- start create Meeting modal -->
+    
+    <sec:authorize access="hasAnyRole('ADMIN')">
     <div id="meetingCreateModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -316,9 +340,10 @@
             </div>
         </div>
     </div>
+    </sec:authorize>
 </div>
 
-<!-- finish create Meeting modal -->
+<sec:authorize access="hasAnyRole('ADMIN', 'HR')">
 <div id="addProjectAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -370,10 +395,12 @@
         </div>
     </div>
 </div>	
+</sec:authorize>
 
 <script>
     var projectId = "${project.id}"
 </script>
+
 <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
     <div id="project-report-modal" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -420,13 +447,10 @@
  		</div>
  	</div>
  </div>
+</sec:authorize>
 
+<sec:authorize access="hasAnyRole('ADMIN', 'HR')">
 <script>
-
-$(document).ready(function () {
-	bindRemove();
-});
-
 function uploadProjectAttachment(){
 	$('#uploadAttachmentButton').prop('disabled', true);
 
@@ -521,8 +545,14 @@ function getAttachDiv(name, id){
     
     return div;
 }
-</script>
 
+$(document).ready(function () {
+	bindRemove();
+});
+</script>
+</sec:authorize>
+
+<sec:authorize access="hasAnyRole('ADMIN', 'HR')">
 <script type="text/javascript">
 	function getProjectReport(){
 		$('#project-report-modal').modal('hide');
@@ -530,6 +560,5 @@ function getAttachDiv(name, id){
 	}
    	$('select').select2();
 </script>
-
 </sec:authorize>
 <%@include file="footer.jsp" %>
