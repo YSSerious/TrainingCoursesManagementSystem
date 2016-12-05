@@ -2,7 +2,6 @@ package ua.ukma.nc.dao;
 
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.Status;
-import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
 
 import java.util.List;
@@ -69,5 +68,9 @@ public interface UserDao {
 	boolean hasMentorProjects(Long mentorId);
 
 	boolean hasHRReviews(Long hrId);
+
+	List<User> getInactiveStudents();
+
+	List<User> getFreeMentors();
 
 }

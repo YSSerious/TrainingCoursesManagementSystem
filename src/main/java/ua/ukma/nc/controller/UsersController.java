@@ -1,11 +1,6 @@
 
 package ua.ukma.nc.controller;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,11 +11,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.ResponseBody;
+import ua.ukma.nc.dto.UserDto;
 import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.RoleService;
 import ua.ukma.nc.service.UserService;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Oleh Khomandiak on 4 ����. 2016 �.
@@ -121,6 +122,26 @@ public class UsersController {
 		}
 		return users.removeAll(temp);
 	}
+
+
+	@RequestMapping(value = "/students/inactive", method = RequestMethod.GET)
+	@ResponseBody
+	private List<UserDto> getInactiveStudents (){
+		List<UserDto> users = new ArrayList<>();
+		for(User user : userService.getInactiveStudents())
+			users.add(new UserDto(user));
+		return users;
+	}
+
+	@RequestMapping(value = "/mentors/free", method = RequestMethod.GET)
+	@ResponseBody
+	private List<UserDto> getFreeMentors (){
+		List<UserDto> users = new ArrayList<>();
+		for(User user : userService.getFreeMentors())
+			users.add(new UserDto(user));
+		return users;
+	}
+
 
 	/*
 	 * @RequestMapping(value = "/allUsers", method = RequestMethod.POST) public

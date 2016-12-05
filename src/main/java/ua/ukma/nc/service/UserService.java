@@ -73,4 +73,7 @@ public interface UserService {
 
 	int countFullName(String name, String secondName, String lastName);
 
+	List<User> getFreeMentors();
+
+	List<User> getInactiveStudents();
 }

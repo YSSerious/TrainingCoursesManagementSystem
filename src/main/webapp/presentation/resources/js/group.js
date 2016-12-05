@@ -213,3 +213,121 @@ function zeroPadded(val) {
 	else
 		return '0' + val;
 }
+
+
+
+function appendStudentsTableRows(data) {
+	$("#studentsTable > tbody:last").children().remove();
+	$.each(data, function (key, value) {
+		$('#studentsTable > tbody:last-child').append("<tr>" +
+				"<td>" + value.firstName + " " + value.lastName + "</td>" +
+				"<td><button value='" + value.id + "' class='addStudentsButton btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
+				"</tr>");
+	});
+}
+
+$("#showAvailableStudents").click(function () {
+	$.ajax({
+		url: "/students/inactive",
+		type: "GET",
+		data: {groupId: $("#groupId").val()},
+		success: function (data) {
+			console.log(data);
+			appendStudentsTableRows(data);
+		},
+		error: function (textStatus) {
+			console.log(textStatus);
+		}
+	});
+});
+
+function buildResponseStudent(data) {
+	return "<li class=\"list-group-item group-" + $("#groupId").val() + "-" + data.id + " clearfix\">"
+				//+"<c:if test='" + data.key.status.id == 1'>"
+				//+"<span class=\"label label-danger\"><spring:message code='group.student.expelled' /></span>
+				//</c:if>
+			+ "<a href=\"/users/"+ data.id +"\"> " + data.firstName +"</a>"
+			+ "<span style=\"padding-left: 10px;\"> </span>"
+			+ data.lastName + "<span style=\"padding-left: 10px;\"> </span>"
+			+ "<div id=\""+ $("#groupId").val() + "-"+ data.id + "\" "
+			+ "class=\"btn rmv-cr-btn col-md-1 pull-right delete-student\" type=\"button\">"
+			+ "<span class=\"glyphicon glyphicon-remove delete\"></span>"
+			+ "</div> <br />"
+			+ "</li>";
+}
+
+$(document).on('click', '.addStudentsButton', function () {
+	var a = $(this);
+	var groupId = $("#groupId").val();
+	$.ajax({
+		url: "/groups/add/students",
+		type: "POST",
+		data: {groupId: groupId, userId: a.val()},
+		success: function (data) {
+			console.log(data);
+			$('#collapseStudents').append(buildResponseStudent(data));
+			a.parent().parent().remove();
+		},
+		error: function (textStatus) {
+			console.log(textStatus);
+		}
+	});
+});
+
+//***********************************
+
+function appendMentorsTableRows(data) {
+	$("#mentorsTable > tbody:last").children().remove();
+	$.each(data, function (key, value) {
+		$('#mentorsTable > tbody:last-child').append("<tr>" +
+				"<td>" + value.firstName + " " + value.lastName + "</td>" +
+				"<td><button value='" + value.id + "' class='addMentorsButton btn-primary btn-sm'><span class='glyphicon glyphicon-plus'></span></button></td>" +
+				"</tr>");
+	});
+}
+
+$("#showAvailableMentors").click(function () {
+	$.ajax({
+		url: "/mentors/free",
+		type: "GET",
+		data: {groupId: $("#groupId").val()},
+		success: function (data) {
+			console.log(data);
+			appendMentorsTableRows(data);
+		},
+		error: function (textStatus) {
+			console.log(textStatus);
+		}
+	});
+});
+
+function buildResponseMentor(data) {
+	return "<li class=\"list-group-item group-" + $("#groupId").val() + "-" + data.id + " clearfix\">"
+			+ "<a href=\"/users/"+ data.id +"\"> " + data.firstName +"</a>"
+			+ "<span style=\"padding-left: 10px;\"> </span>"
+			+ data.lastName
+				// + "<span style=\"padding-left: 10px;\"> </span>"
+			+ "<div id=\""+ $("#groupId").val() + "-"+ data.id + "\" "
+			+ "class=\"btn rmv-cr-btn col-md-1 pull-right delete-student\" type=\"button\">"
+			+ "<span class=\"glyphicon glyphicon-remove delete\"></span>"
+			+ "</div> <br />"
+			+ "</li>";
+}
+
+$(document).on('click', '.addMentorsButton', function () {
+	var a = $(this);
+	var groupId = $("#groupId").val();
+	$.ajax({
+		url: "/groups/add/mentors",
+		type: "POST",
+		data: {groupId: groupId, userId: a.val()},
+		success: function (data) {
+			console.log(data);
+			$('#collapseMentors').append(buildResponseMentor(data));
+			a.parent().parent().remove();
+		},
+		error: function (textStatus) {
+			console.log(textStatus);
+		}
+	});
+});
