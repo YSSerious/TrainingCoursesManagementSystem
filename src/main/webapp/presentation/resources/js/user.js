@@ -652,12 +652,11 @@ function getHRReviewProjects(userId) {
 					s += '<option value="' + value.id + '">' + value.name + '</option>';
 				});
 				s += '</select></td></tr>';
+				$('#finReviewHRProject').find('.btn').removeClass('hidden');
 			}else{
 				s = '<tr><td colspan="3"><label>'+lang.review_no_projects+'</label></td></tr>';
-				$('#final-review-hr-project-list').html(s);
 			}
 				$('#final-review-hr-project-list').html(s);
-			$('#finReviewHRProject').find('.btn').removeClass('hidden');
 		},
 		'error': function (resp) {
 			var s = '<tr><td colspan="3"><label>'+lang.review_no_projects+'</label></td></tr>';
@@ -670,17 +669,56 @@ function getHRReviewForm(userId) {
 	$('#finReviewHRProject').modal('toggle');
 	$('#createHRreviewModal').modal('toggle');
 	$.ajax({
-		//final-review-hr-project-list
-		'url': '/ajax/get/hr_review_projects',
+		'url': '/ajax/get/hr_review',
 		'type': 'GET',
-		'data': {'studentId': userId},
+		'data': {'studentId': userId, 'projectId': $('#fin-review-hr-proj-switch').val()},
 		'success': function (resp) {
-			$.each(resp, function (key, value) {
-
-			});
+			var s = '';
+			switch (resp.available){
+				case 'B':
+					s+='<option value="G">General</option><option value="T">Technical</option>';
+					break;
+				case 'G':
+					s+='<option value="G">General</option>';
+					break;
+				case 'T':
+					s+='<option value="T">Technical</option>';
+					break;
+				default:
+					break;
+			}
+			$('#reviewtype').html(s);
+			$('#project-id-hr-rev').val(resp.project.id);
 		},
 		'error': function (resp) {
 			console.warn(resp);
 		}
 	});
+};
+
+function doHRRequest(userId) {
+	if(!$('#hr-rev-commentary').val()){
+		$('#hr-rev-err').removeClass('hidden');
+		$('#hr-rev-commentary').addClass('error');
+		return;
+	}
+	$.ajax({
+		'url': '/ajax/post/hr_review',
+		'type': 'POST',
+		'data': {'studentId': userId, 'projectId': $('#project-id-hr-rev').val(),
+			'comment': $('#hr-rev-commentary').val(), 'type': $('#reviewtype').val()},
+		'success': function (resp) {
+			console.warn(resp);
+			$('#hr-rev-commentary').val('');
+		},
+		'error': function (resp) {
+			console.warn(resp);
+		}
+	});
+	if($('#hr-rev-commentary').hasClass('error')){
+		$('#hr-rev-err').addClass('hidden');
+		$('#hr-rev-commentary').removeClass('error');
+	}
+	$('#createHRreviewModal').modal('toggle');
+	$('#finReviewHRProject').find('.btn').addClass('hidden');
 };

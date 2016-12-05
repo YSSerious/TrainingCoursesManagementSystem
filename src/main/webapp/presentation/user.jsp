@@ -456,23 +456,19 @@
             </div>
             <div class="modal-body">
                 <div class="showactions"></div>
-                <br class="actions"/>
-                <form method="post">
                     <label class="col-md-4 control-label">Select type</label>
                     <br class="col-lg-6"/>
-                    <select class="form-control" name="reviewtype" id="reviewtype" onchange="">
-                        <option selected disabled></option>
-                        <option value="G">General</option>
-                        <option value="T">Technical</option>
+                    <select class="form-control" name="reviewtype" id="reviewtype">
                     </select>
-
+                    <input type="hidden" id="project-id-hr-rev">
                     <br/>
                     <br/>
                     <label class="col-md-4 control-label">Write review</label>
-                    <textarea maxlength="500" name="commentary" class="form-control" rows="5" id="commentary"
+                    <textarea maxlength="500" name="commentary" class="form-control" rows="5" id="hr-rev-commentary"
                               required></textarea>
                     <br/>
-                    <button type="submit" class="btn btn-primary pull-right" id="submitreviewBtn"><spring:message
+                <span id="hr-rev-err" class="text-danger hidden">Comment needed!</span>
+                    <button class="btn btn-primary pull-right" id="submitreviewBtn" onclick="doHRRequest(${user.id})"><spring:message
                             code="user.submit"/></button>
                     <br/>
                     <br/>
