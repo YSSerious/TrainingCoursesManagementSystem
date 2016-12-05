@@ -569,8 +569,11 @@ function sendProjectAjax(ajaxParams) {
 // GROUPS EDITING AND DELETION
 function addEditGroupClickListener(button) {
     button.on('click', function (e) {
-        var id = $(this).closest('tr').attr('id');
-        $('#editGroupModal').attr('data-group-id', id);
+        var tr = $(this).closest('tr');
+        $('#editGroupModal').attr('data-group-id', tr.attr('id'));
+        $('#editGroupModal input[path="name"]')
+                .first().val(
+                tr.find('td').first().find('a').first().text());
         $('#editGroupModal').modal('show');
     });
 }
@@ -582,32 +585,40 @@ $('#editGroupModal form').on('submit', function (e) {
     e.preventDefault();
     var groupId = $('#editGroupModal').attr('data-group-id');
     var groupName = $('#editGroupModal form #group-name').val();
-    editGroupViaAjax(groupId, groupName);
+    var groupProjectId = $('.certain-project').first().attr('data-project-id');
+    editGroupViaAjax(groupId, groupName, groupProjectId);
 });
 
-function editGroupViaAjax(id, name) {
+function editGroupViaAjax(id, name, projectId) {
+    var group = {};
+    group['id'] = id;
+    group['name'] = name;
+    group['projectId'] = projectId;
+    console.log('GROUP:', group);
     $.ajax($.extend({
         type: 'POST',
+        contentType: "application/json",
         url: '/groups/edit',
-        data: {groupId: id, groupName: name},
+        data: JSON.stringify(group),
         dataType: 'json',
         timeout: 100000,
         success:
                 function (response) {
+                    console.log(response);
                     switch (response.code) {
-                        case 200:
+                        case '200':
                             $('#editGroupModal').modal('hide');
                             cleanModalForm('#editGroupModal');
                             $('#project-groups table tr#' + id +
                                     ' td:first-child a').
                                     text(name);
                             break;
-                        case 204:
+                        case '204':
                             showModalErrors(response.messages, '#editGroupModal');
                             break;
                     }
                 }
-    }, getModalAjaxAnimation('#editGroupModal')));
+    }, getBeforeAndAfterAjaxEvent('#editGroupModal')));
 }
 
 function addDeleteGroupClickListener(button) {
@@ -655,7 +666,7 @@ function deleteGroupViaAjax(id) {
                             break;
                     }
                 }
-    }, getModalAjaxAnimation('#deleteGroupModal')));
+    }, getBeforeAndAfterAjaxEvent('#deleteGroupModal')));
 }
 
 function deleteGroupFromPage(groupId) {
