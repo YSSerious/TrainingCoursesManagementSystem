@@ -81,6 +81,9 @@ public class GroupController {
     
     @Autowired
     private GroupDeleteValidator groupDeleteValidator;
+
+    @Autowired
+    private StatusLogService statusLogService;
     
     @Autowired
     private MessageSource messageSource;
@@ -367,7 +370,7 @@ public class GroupController {
         statusLog.setEmployee(userService.getByEmail(name));
         statusLog.setStudent(student);
         statusLog.setCommentary("Assigning to the group");
-        StatusLogService.createStatusLog(statusLog);
+        statusLogService.createStatusLog(statusLog);
         studentStatusService.updateStudentStatus(studentStatus);
         return new UserDto(student);
     }

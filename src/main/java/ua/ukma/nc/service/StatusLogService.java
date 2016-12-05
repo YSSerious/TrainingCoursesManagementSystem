@@ -23,7 +23,7 @@ public interface StatusLogService {
 
     List<StatusLog> getAll();
 
-    static int createStatusLog(StatusLog statusLog);
+    int createStatusLog(StatusLog statusLog);
     
     List<StatusLog> getByProjectStudent(Long projectId, Long studentId);
 
