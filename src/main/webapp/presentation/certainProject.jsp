@@ -217,6 +217,9 @@
                         <div class="row">
                             <input type="text" id="search" placeholder="type search" class="col-md-offset-4">
                         </div>
+
+                    </div>
+                    <div class="modal-body">
                         <table id="criterionTable" class="table table-condensed table-hover table-responsive">
                             <thead class="table-head">
                             <tr>
@@ -227,6 +230,9 @@
                             <tbody id="criteriaTableId">
                             </tbody>
                         </table>
+                    </div>
+                    <div class="modal-footer">
+
                     </div>
                 </div>
             </div>
