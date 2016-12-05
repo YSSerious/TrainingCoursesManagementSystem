@@ -42,6 +42,7 @@ import ua.ukma.nc.service.MarkService;
 import ua.ukma.nc.service.MeetingResultService;
 import ua.ukma.nc.service.MeetingReviewService;
 import ua.ukma.nc.service.MeetingService;
+import ua.ukma.nc.service.StatusLogService;
 import ua.ukma.nc.service.UserService;
 import ua.ukma.nc.util.exception.CriteriaDeleteException;
 
@@ -75,17 +76,21 @@ public class MeetingController {
 	@Autowired
 	private MarkService markService;
 
+	@Autowired
+	private StatusLogService statusService;
+
 	@RequestMapping(value = "/meeting/{id}", method = RequestMethod.GET)
 	public ModelAndView getMeetings(Principal principal, @PathVariable long id) {
 
 		ModelAndView model = new ModelAndView("certainMeeting");
 		Meeting meeting = meetingService.getById(id);
-		List<User> all = (groupService.getById(meeting.getGroup().getId())).getUsers();
+		long groupId = meeting.getGroup().getId();
+		List<User> all = (groupService.getById(groupId)).getUsers();
 		List<MeetingReview> meetingReviews = meetingReviewService.getByMeeting(id);
-
 		List<Long> evaluated = new ArrayList<>();
 		for (MeetingReview mr : meetingReviews)
-			evaluated.add(mr.getStudent().getId());
+			if (groupId == statusService.getNewestGroup(mr.getStudent().getId()))
+				evaluated.add(mr.getStudent().getId());
 		List<User> unevaluated = new ArrayList<>();
 		for (User user : all)
 			for (Role role : user.getRoles())
@@ -133,6 +138,7 @@ public class MeetingController {
 		model.addObject("meeting", meetingService.getById(id));
 		model.addObject("categories", category);
 		model.addObject("absent", absent);
+		model.addObject("title", "Meeting " + meeting.getName());
 		return model;
 	}
 
@@ -223,7 +229,7 @@ public class MeetingController {
 			}
 			List<MeetingResult> previous = meetingResultService.getByReview(review.getId());
 			List<MarkCommentDto> value = data.getData();
-			
+
 			for (MarkCommentDto mcd : value) {
 				boolean check = true;
 				for (MeetingResult mr : previous)
