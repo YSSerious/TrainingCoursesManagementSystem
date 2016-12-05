@@ -89,6 +89,7 @@ public class CertainProjectController {
         model.addObject("categories", categories);
         model.addObject("criteria", criteria);
         model.addObject("students", students);
+        model.addObject("title", "Certain Project");
 
         ProjectDto prDto = new ProjectDto(projectService.getById(id));
         model.addObject("project", prDto);

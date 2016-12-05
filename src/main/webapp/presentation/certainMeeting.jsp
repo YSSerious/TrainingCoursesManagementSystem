@@ -276,7 +276,7 @@
         <div class="panel-group" id="panelGroupId">
             <div class="panel panel-primary">
                 <div class="panel-heading clearfix">
-                    <div data-toggle="collapse" data-target="#collapseMIn" style="color:black"
+                    <div data-toggle="collapse" data-target="#collapseMIn" style="margin-top:5px; color:black"
                          class="arrow col-md-1 blc" onclick="changeSpan(this)">
                         <span id="spanId" class="glyphicon glyphicon-chevron-down"></span>
                     </div>

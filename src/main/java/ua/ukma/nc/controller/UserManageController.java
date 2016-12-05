@@ -49,7 +49,7 @@ public class UserManageController {
 		ModelAndView model = new ModelAndView("error/statusSwitch");
 		model.addObject("userId", ex.getUserId());
 		model.addObject("errMsg", ex.getErrMsg());
-
+		model.addObject("title", "User Management");
 		return model;
 	}
 	

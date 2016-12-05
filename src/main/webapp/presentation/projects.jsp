@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="header.jsp"%>
 <%@include file="createProjectModal.jsp"%>
+
 <div class="col-sm-11 col-sm-offset-1">
 	<div class="col-sm-11">
             <div class="top-info">

@@ -86,6 +86,7 @@ public class MeetingEvaluationController {
         mv.addObject("meeting", meeting);
         mv.addObject("student", student);
         mv.addObject("review", review);
+        mv.addObject("title", "Meeting Evaluation");
         return mv;
     }
 

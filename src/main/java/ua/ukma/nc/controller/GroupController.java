@@ -246,9 +246,10 @@ public class GroupController {
                     meetingService.isReviewed(meeting.getId())));
         }
 
-        String projectName = group.getProject().getName();
+        //String projectName = group.getProject().getName();
+        ProjectDto project = group.getProject();
         model.addObject("group", group);
-        model.addObject("projectName", projectName);
+        model.addObject("project", project);
 
         model.addObject("students", studentAndReviews);
         model.addObject("mentors", mentors);
@@ -257,6 +258,7 @@ public class GroupController {
         model.addObject("attachments", groupAttachments);
         model.addObject("groupId", group.getId());
         model.addObject("attendance", groupService.getAttendaceTable(id));
+        model.addObject("title", "Group");
 
         model.setViewName("group-view");
 
