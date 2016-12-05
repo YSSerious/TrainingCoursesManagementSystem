@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ua.ukma.nc.entity.Project;
@@ -42,7 +43,13 @@ public class MailService {
 		catch(MailException e){
 		return e.toString();
 		}
+		
+		
 	}
-	
-	
+	/*
+	@Scheduled(cron = "0 58 16 * * *")
+	public void hi(){
+		System.out.println("");
+	}
+	*/
 }

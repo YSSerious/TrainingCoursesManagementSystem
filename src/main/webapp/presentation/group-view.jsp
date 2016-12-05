@@ -534,6 +534,7 @@
                 </div>
             </div>
         </div>
+        </div>
         <!-- finish meetingDeleteError modal -->
         <!-- start add attachment modal -->
         <div id="addGroupAttachmentModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">

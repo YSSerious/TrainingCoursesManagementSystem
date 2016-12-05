@@ -10,6 +10,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -44,6 +45,7 @@ import javax.sql.DataSource;
 @PropertySource("classpath:database.properties")
 @EnableAspectJAutoProxy
 @MultipartConfig
+@EnableScheduling
 public class WebApp extends WebMvcConfigurerAdapter {
 
     @Autowired
