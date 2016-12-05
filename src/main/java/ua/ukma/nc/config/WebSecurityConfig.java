@@ -52,7 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/","/projects", "/users/*", "/cookie", "/certainProject", "/projectAttachment/*",
                             "/ajaxstudetprofile", "/ajaxstudentprojects", "/ajaxmentorprojects", "/ajaxcriteria",
                              "/groups/addAttachment", "/groups/groupAttachment/*", "/groups/deleteAttachment",
-                            "/meeting/*", "/ajaxcategories", "/allUsers", "/groups/group", "/isMeetingReviewed").authenticated()
+                            "/meeting/*", "/ajaxcategories", "/allUsers", "/groups/group", "/isMeetingReviewed"
+                    ).hasAnyRole("ADMIN", "MENTOR", "HR")
                 .antMatchers("/ajax/get/projects_final_review", "/ajax/get/final_review_form",
                         "/ajax/post/final_review_form/*", "/ajax/pot/evaluate/*", "/ajax/post/absent/*").hasRole("MENTOR")
                 .antMatchers("/ajax/get/hr_review_projects", "/ajax/get/hr_review", "/ajax/post/hr_review").hasRole("HR")
