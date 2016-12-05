@@ -211,10 +211,4 @@ public class CertainUserController {
 		finalHRreview.setStudent(userService.getById((long) 20));
 		finalReviewService.createFinalReview(finalHRreview);
 	}
-	
-	@ExceptionHandler(EmptyResultDataAccessException.class)
-	public ModelAndView handleEmpyResultDataAccessException(EmptyResultDataAccessException ex) {
-		log.error(ex.getMessage());
-		return new ModelAndView("error/userEmptyData");
-	}
 }

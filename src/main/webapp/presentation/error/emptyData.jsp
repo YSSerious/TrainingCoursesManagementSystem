@@ -4,7 +4,7 @@
 <div class = "row">
 	<div class = "col-sm-12">
 		<div class = "text-center">
-			<h2><spring:message code="error.users.not.found"/></h2>
+			<h2><spring:message code="error.empty.not.found"/></h2>
 		</div>
 	</div>
 </div>
@@ -13,7 +13,7 @@
 <div class = "row">
 	<div class = "col-sm-12">
 		<div class="text-center">
-			<h2><a href="/allUsers"><spring:message code="error.users.action.description"/></a></h2>
+			<h2><a href="/"><spring:message code="error.empty.action.description"/></a></h2>
 		</div>
 	</div>
 </div>

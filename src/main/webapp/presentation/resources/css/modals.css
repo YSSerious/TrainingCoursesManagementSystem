@@ -58,7 +58,7 @@ div.custom-modal div.bottom-controls {
     padding: 0;
 }
 
-.modal-body.scroll{
+.modal-body{
     max-height: 500px;
     overflow-y: auto;
 }

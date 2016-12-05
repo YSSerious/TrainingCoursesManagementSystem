@@ -369,7 +369,7 @@
                 <h4 class="modal-title"><spring:message
                         code="final_review.label"/>: ${user.firstName} ${user.lastName}</h4>
             </div>
-            <div class="modal-body scroll">
+            <div class="modal-body">
                 <form>
                     <table class="table" id="final-review-form-list">
                         <tr>

@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
-	pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8"%>
 <%@include file="header.jsp" %>
 <%@include file="projectDataEditingModals.jsp" %>
 <%@include file="projectGroupsModals.jsp" %>
 <script
-        src="<c:url value="/presentation/resources/js/certainProject.js"/>"
-        type="text/javascript" defer="defer">
+    src="<c:url value="/presentation/resources/js/certainProject.js"/>"
+    type="text/javascript" defer="defer">
 </script>
 
 <div class="container certain-project" data-project-id="${project.id}">
@@ -23,8 +23,14 @@
                     </div>
                 </div>
                 <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
-                    <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#project-report-modal">
-                        <b><spring:message code="project.generate.report"/></b></button>
+                    <div class="project-controls">
+                        <c:if test="${isEmpty == true}">
+                            <button class="btn btn-primary pull-right" id="delete-project"><b>Delete project</b></button>
+                            <script src="<c:url value="/presentation/resources/js/delete_project.js"/>" type="text/javascript" defer="defer"></script>
+                        </c:if>
+                        <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#project-report-modal">
+                            <b><spring:message code="project.generate.report"/></b></button>
+                    </div>
                 </sec:authorize>
                 <div class="row">
                     <div class="col-md-6 editable-group">
@@ -217,6 +223,9 @@
                         <div class="row">
                             <input type="text" id="search" placeholder="type search" class="col-md-offset-4">
                         </div>
+
+                    </div>
+                    <div class="modal-body">
                         <table id="criterionTable" class="table table-condensed table-hover table-responsive">
                             <thead class="table-head">
                             <tr>
@@ -227,6 +236,9 @@
                             <tbody id="criteriaTableId">
                             </tbody>
                         </table>
+                    </div>
+                    <div class="modal-footer">
+
                     </div>
                 </div>
             </div>
