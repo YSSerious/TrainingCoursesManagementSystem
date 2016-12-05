@@ -137,20 +137,25 @@
                     >${entry.key.firstName}
                             ${entry.key.secondName} ${entry.key.lastName}</a></b></font></td>
 
-                    <c:forEach items="${entry.value}" var="mark">
-                        <td><font size="3">
-                            <a href="#" data-toggle="tooltip" data-placement="top"
-                               title="${mark.commentary}">${mark.mark}</a>
-                        </font></td>
-                    </c:forEach>
-                    <c:if test="${entry.value.size() < criteria.size()}">
-                        <c:forEach items="${criteria}" begin="${entry.value.size()}">
-                            <td><font size="3">
-                                <a href="#" data-toggle="tooltip" data-placement="top"
-                                   title="No mark, yet">-</a>
-                            </font></td>
-                        </c:forEach>
-                    </c:if>
+               
+                   <c:forEach items="${criteria}" var="criterion" >
+                   <td><font size="3">
+                   <c:set var="check" value="false"/>
+                       <c:forEach items="${entry.value}" var="mark" varStatus="status">
+                       
+                       <c:if test="${criterion.id == mark.criterionId}">
+                           <a href="#" data-toggle="tooltip" data-placement="top"
+                              title="${mark.commentary}">${mark.mark}</a>
+                              <c:set var="check" value="true"/>
+                       </c:if>
+                   	   </c:forEach>
+                   	   <c:if test="${check eq 'false'}">
+                   	   <a href="#" data-toggle="tooltip" data-placement="top"
+                               title="No mark, yet">-</a>
+                   	   </c:if>
+                   	   
+                   	   </font></td>
+				   </c:forEach>
                 </tr>
                 <!-- start evaluate Student modal -->
                 <div id="evaluateModal${entry.key.id}" class="modal fade"
@@ -165,7 +170,10 @@
                             </div>
                             <div class="modal-body edit-content">
                                 <ul class="list-group">
+                                 <c:forEach items="${criteria}" var="criterion" >
+                                 <c:set var="checkus" value="false" />
                                     <c:forEach items="${entry.value}" var="mark">
+                                     <c:if test="${criterion.id == mark.criterionId}">
                                         <li class="list-group-item container-fluid">
                                             <div class="row">
                                                 <label class="col-xs-offset-1">${mark.criterionName}</label>
@@ -184,17 +192,19 @@
                                             </select>
                                             </div>
                                         </li>
+                                        <c:set var="checkus" value="true" />
+                                        </c:if>
                                     </c:forEach>
-                                    <c:if test="${entry.value.size() < criteria.size()}">
-                                        <c:forEach items="${unevaluatedCriteria.get(entry.key)}"
-                                                   var="criterion">
+                                    
+                                    
+                                    <c:if test="${checkus eq 'false'}">
                                             <li class="list-group-item container-fluid">
                                                 <div class="row">
                                                     <label class="col-xs-offset-1">${criterion.title}</label>
                                                 </div>
                                                 <div class="row result${entry.key.id}">
                                                     <input class="col-xs-offset-2 col-sm-6 result-comment"
-                                                           type="text" id="${mark.criterionId}"> <select
+                                                           type="text" id="${criterion.id}"> <select
                                                         class="col-xs-offset-1">
                                                     <option selected>-</option>
                                                     <option>0</option>
@@ -206,8 +216,9 @@
                                                 </select>
                                                 </div>
                                             </li>
+                                            </c:if>
                                         </c:forEach>
-                                    </c:if>
+
                                 </ul>
                                 <label>General: </label>
                                 <textarea class="form-control" id="rev-com" rows="5">
@@ -343,6 +354,7 @@
         var user = $(this).data('user');
         $(".modal-body #user").val(user);
     });
+    })
 </script>
 
 

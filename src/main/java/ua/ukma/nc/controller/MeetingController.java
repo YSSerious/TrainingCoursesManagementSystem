@@ -221,9 +221,9 @@ public class MeetingController {
 				review.setCommentary(data.getComment());
 				meetingReviewService.updateMeetingReview(review);
 			}
-				
+			List<MeetingResult> previous = 	meetingResultService.getByReview(review.getId());
 			Iterator<MarkCommentDto> value = data.getData().iterator();
-			Iterator<MeetingResult> result = meetingResultService.getByReview(review.getId()).iterator();
+			Iterator<MeetingResult> result = previous.iterator();
 			while (value.hasNext() && result.hasNext()) {
 				MeetingResult resultus = result.next();
 				MarkCommentDto mark = value.next();
@@ -231,6 +231,18 @@ public class MeetingController {
 				resultus.setMark(markService.getByValue(mark.getValue()));
 				meetingResultService.updateMeetingResult(resultus);
 			}
+			while(value.hasNext()){
+				MeetingResult resultus = new MeetingResult();
+				MarkCommentDto mark = value.next();
+				System.out.println(mark);
+				resultus.setId((long) 0);
+				resultus.setCommentary(mark.getCommentary());
+				resultus.setMark(markService.getByValue(mark.getValue()));
+				resultus.setCriterion(criterionService.getById((long) mark.getCriterionId()));
+				resultus.setMeetingReview(review);
+				meetingResultService.createMeetingResult(resultus);
+			}
+			
 		}
 
 		return "true";
