@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 	private static final String TECHNICAL_REVIEW = "T";
 	private static final String GENERAL_REVIEW = "G";
 	
-	private static final int MAX_LENGTH_COMMENTARY = 500;
+	private static final int MAX_LENGTH_COMMENTARY = 255;
 
 	@Autowired
 	private UserDao userDao;
@@ -386,7 +386,4 @@ public class UserServiceImpl implements UserService {
 	public List<User> getInactiveStudents() {
 		return userDao.getInactiveStudents();
 	}
-
-
-
 }
