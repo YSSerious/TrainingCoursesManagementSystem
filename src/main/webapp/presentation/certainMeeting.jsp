@@ -348,6 +348,20 @@
 <!-- finish criteriaDeleteError modal -->
 <script>
     var meetingId = "${meeting.id}"
+    function isMeetingReviewed(){
+        $.ajax({
+            url: "/isMeetingReviewed",
+            type: "GET",
+            data: {meetingId: meetingId},
+            success: function (data) {
+                console.log(data);
+                if(data)
+                    $('#showAvailableMeetingCriteria').attr('disabled', true);
+            }
+        });
+    }
+
+    isMeetingReviewed();
 </script>
 <script>
     $(document).on("click", ".open-Evaluate", function () {

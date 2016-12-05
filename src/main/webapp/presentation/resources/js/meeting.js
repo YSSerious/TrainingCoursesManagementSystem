@@ -3,6 +3,7 @@
  */
 
 $(document).ready(function () {
+
     $("#showAvailableMeetingCriteria").click(function () {
         $.ajax({
             url: "/getAvailableMeetingCriteria",
@@ -17,7 +18,8 @@ $(document).ready(function () {
             }
         });
     });
-
+    
+    
     $(document).on('click', '.addMeetingButton', function () {
         var a = $(this);
         $.ajax({

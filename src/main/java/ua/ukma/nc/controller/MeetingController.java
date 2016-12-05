@@ -268,4 +268,10 @@ public class MeetingController {
 
 	}
 
+	@RequestMapping(value = "/isMeetingReviewed", method = RequestMethod.GET)
+	@ResponseBody
+	public boolean isMeetingReviewed(@RequestParam Long meetingId) {
+		return meetingService.isReviewed(meetingId);
+	}
+
 }
