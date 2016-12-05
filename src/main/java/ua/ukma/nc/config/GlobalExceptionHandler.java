@@ -1,13 +1,16 @@
 package ua.ukma.nc.config;
 
+import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -36,10 +39,18 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
-	public ModelAndView handleException(Exception ex) {
+	public ModelAndView handleNotFoundException(Exception ex) {
+		ModelAndView modelAndView = new ModelAndView("error/404");
+		modelAndView.setStatus(HttpStatus.NOT_FOUND);
 		log.error(ex.getMessage());
 		return new ModelAndView("error/404");
 	}
 	
-	
+	@ExceptionHandler(PSQLException.class)
+	public ModelAndView handlePSQLException(Exception ex){
+		ModelAndView modelAndView = new ModelAndView("error/psql");
+		modelAndView.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+		log.error(ex.getMessage());
+		return new ModelAndView("error/psql");
+	}
 }
