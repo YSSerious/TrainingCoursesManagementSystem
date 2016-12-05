@@ -54,8 +54,6 @@ public class CertainProjectController {
     @Autowired
     private UserService userService;
 
-    private Long project_id;
-
     @Autowired
     private ProjectAttachmentFormValidator projectAttachmentFormValidator;
 
@@ -87,8 +85,6 @@ public class CertainProjectController {
         model.addObject("categories", categories);
         model.addObject("criteria", criteria);
         model.addObject("students", students);
-
-        project_id = id;
 
         ProjectDto prDto = new ProjectDto(projectService.getById(id));
         model.addObject("project", prDto);
@@ -128,9 +124,9 @@ public class CertainProjectController {
     @RequestMapping(value = "/updateProjectName", method = RequestMethod.POST)
     @ResponseBody
     public String updateProjectName(
-            @RequestParam("projectId") String projectId,
+            @RequestParam("projectId") Long projectId,
             @RequestParam("projectName") String projectName) {
-        Project project = projectService.getById(project_id);
+        Project project = projectService.getById(projectId);
         project.setName(projectName);
         projectService.updateProject(project);
         return "";
@@ -139,9 +135,9 @@ public class CertainProjectController {
     @RequestMapping(value = "/updateProjectStartDate", method = RequestMethod.POST)
     @ResponseBody
     public String updateProjectStartDate(
-            @RequestParam("projectId") String projectId,
+            @RequestParam("projectId") Long projectId,
             @RequestParam("projectStartDate") Date startDate) {
-        Project project = projectService.getById(project_id);
+        Project project = projectService.getById(projectId);
         project.setStartDate(startDate);
         projectService.updateProject(project);
         return "";
@@ -150,9 +146,9 @@ public class CertainProjectController {
     @RequestMapping(value = "/updateProjectFinishDate", method = RequestMethod.POST)
     @ResponseBody
     public String updateProjectFinishDate(
-            @RequestParam("projectId") String projectId,
+            @RequestParam("projectId") Long projectId,
             @RequestParam("projectFinishDate") Date finishDate) {
-        Project project = projectService.getById(project_id);
+        Project project = projectService.getById(projectId);
         project.setFinishDate(finishDate);
         projectService.updateProject(project);
         return "";
@@ -161,9 +157,9 @@ public class CertainProjectController {
     @RequestMapping(value = "/updateProjectDescription", method = RequestMethod.POST)
     @ResponseBody
     public String updateProjectDescription(
-            @RequestParam("projectId") String projectId,
+            @RequestParam("projectId") Long projectId,
             @RequestParam("projectDescription") String description) {
-        Project project = projectService.getById(project_id);
+        Project project = projectService.getById(projectId);
         project.setDescription(description);
         projectService.updateProject(project);
         return "";

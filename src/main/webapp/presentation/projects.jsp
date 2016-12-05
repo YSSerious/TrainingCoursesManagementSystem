@@ -140,7 +140,7 @@
 						<div class="col-md-12">
 
 							<div class="show-select">
-								<button type="button" style="min-width: 100%;"
+								<button type="button" style="width: 100%;"
 									class="btn btn-default"><spring:message code="projects.criterion.search"/></button>
 							</div>
 						</div>
