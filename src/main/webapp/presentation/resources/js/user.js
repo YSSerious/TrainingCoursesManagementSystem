@@ -259,8 +259,8 @@ function getFinalReviews(studentProfile){
 	
 	reviews += '<table class="table table-bordered">';
 	reviews += '<tr>';
-	reviews += '<th style="width:50%">'+lang.user_general_review+'</th>';
 	reviews += '<th style="width:50%">'+lang.user_technical_review+'</th>';
+	reviews += '<th style="width:50%">'+lang.user_general_review+'</th>';
 	reviews += '</tr>';
 
 	if (studentProfile.technicalReview !== null) {
