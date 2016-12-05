@@ -3,9 +3,7 @@ package ua.ukma.nc.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -44,7 +42,6 @@ import ua.ukma.nc.service.MeetingReviewService;
 import ua.ukma.nc.service.MeetingService;
 import ua.ukma.nc.service.StatusLogService;
 import ua.ukma.nc.service.UserService;
-import ua.ukma.nc.util.exception.CriteriaDeleteException;
 
 /**
  * @author Oleh Khomandiak

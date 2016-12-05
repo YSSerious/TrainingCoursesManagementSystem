@@ -7,13 +7,13 @@
 			<c:if test="${!users.isEmpty()}">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<h3 class="panel-title">Users</h3>
+						<h3 class="panel-title"><spring:message code="users.table"/></h3>
 					</div>
 					<table class="table table-striped table-bordered users"
 						id="pagination">
 						<tr>
-							<th>User</th>
-							<th>User role</th>
+							<th><spring:message code="users.user"/></th>
+							<th><spring:message code="users.role"/></th>
 						</tr>
 
 						<c:forEach items="${users}" var="user">
@@ -23,7 +23,20 @@
 												${user.secondName} ${user.lastName} </a></b></font></td>
 								<td><font size="3"> <c:forEach items="${user.roles}"
 											var="role" varStatus="loop">
-											<b>${role.getTitle().substring(5)} <c:if
+											<b>
+											<c:if test="${role.id == 1}">
+											 <spring:message code="users.admin"/>
+											 </c:if>
+											 <c:if test="${role.id == 2}">
+											 <spring:message code="users.mentor"/>
+											 </c:if>
+											 <c:if test="${role.id == 3}">
+											 <spring:message code="users.hr"/>
+											 </c:if>
+											 <c:if test="${role.id == 4}">
+											 <spring:message code="users.student"/>
+											 </c:if>
+											 <c:if
 													test="${!loop.last}">,</c:if>
 											</b>
 
@@ -35,7 +48,7 @@
 				</div>
 			</c:if>
 			<c:if test="${users.isEmpty()}">
-				<h1>No such users</h1>
+				<h1><spring:message code="users.no"/></h1>
 			</c:if>
 		</div>
 
@@ -50,33 +63,33 @@
 
 
 					<div class="form-group">
-						<label class="filter-col" for="value"> Search by:</label> <br />
+						<label class="filter-col" for="value"><spring:message code="users.searchBy"/>:</label> <br />
 						<input type="radio" name="type" value="name"
 							onclick="yesnoCheck();"
 							<c:if test="${param.type == 'name' || param.type == null}">
   								checked
   							</c:if>>
-						Name <input type="radio" name="type" value="role" id="roles"
+						<spring:message code="users.name"/> <input type="radio" name="type" value="role" id="roles"
 							onclick="yesnoCheck();"
 							<c:if test="${param.type == 'role'}">
   								checked
   							</c:if>>
-						Role <input type="radio" name="type" value="project"
+						<spring:message code="users.role"/> <input type="radio" name="type" value="project"
 							onclick="yesnoCheck();"
 							<c:if test="${param.type == 'project'}">
   								checked
   							</c:if>>
-						Project <input type="radio" name="type" value="group"
+						<spring:message code="users.project"/> <input type="radio" name="type" value="group"
 							onclick="yesnoCheck();"
 							<c:if test="${param.type == 'group'}">
   								checked
   							</c:if>>
-						Group <input type="submit" value="Search!"
+						<spring:message code="users.group"/> <input type="submit" value="Search!"
 							class="btn btn-default filter-col pull-right"> <span
 							id="rev-err" class="text-danger hidden">Unknown error</span>
 					</div>
 					<div class="form-group">
-						<label class="filter-col" for="value"> Search for:</label> <input
+						<label class="filter-col" for="value"><spring:message code="users.searchFor"/>:</label> <input
 							type="text" name="value" class="form-control input-sm"
 							id="submitted"
 							<c:if test="${param.value != null && !param.type.equals('role')}">
@@ -88,20 +101,20 @@
 								<c:if test="${param.value == 'Admin' && param.type == 'role'}">
   									checked
  							    </c:if>>
-							Admin <br /> <input type="checkbox" name="value" value="HR"
+							<spring:message code="users.admin"/> <br /> <input type="checkbox" name="value" value="HR"
 								<c:if test="${param.value == 'HR' && param.type == 'role'}">
  									checked
   								</c:if>>
-							HR <br /> <input type="checkbox" name="value" value="Mentor"
+							<spring:message code="users.hr"/> <br /> <input type="checkbox" name="value" value="Mentor"
 								<c:if test="${param.value == 'Mentor' && param.type == 'role'}">
   									checked
   								</c:if>>
-							Mentor <br /> <input type="checkbox" name="value"
+							<spring:message code="users.mentor"/> <br /> <input type="checkbox" name="value"
 								value="Student"
 								<c:if test="${param.value == 'Student' && param.type == 'role'}">
   									checked
   								</c:if>>
-							Student <br />
+							<spring:message code="users.student"/> <br />
 						</div>
 					</div>
 				</form>

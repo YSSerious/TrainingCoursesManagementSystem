@@ -10,11 +10,15 @@ import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Meeting;
 import ua.ukma.nc.entity.MeetingReview;
 import ua.ukma.nc.entity.StatusLog;
+import ua.ukma.nc.entity.StudentStatus;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.GroupService;
 import ua.ukma.nc.service.MeetingReviewService;
 import ua.ukma.nc.service.MeetingService;
 import ua.ukma.nc.service.StatusLogService;
+import ua.ukma.nc.service.StatusService;
+import ua.ukma.nc.service.StudentStatusService;
+import ua.ukma.nc.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,15 @@ public class GroupServiceImpl implements GroupService{
     
     @Autowired
     private MeetingReviewService meetingReviewService;
+    
+    @Autowired
+    private StudentStatusService studentStatusService;
+    
+    @Autowired
+    private UserService userService;
+    
+    @Autowired
+    private StatusService statusService;
 
     @Override
     public Group getById(Long id) {
@@ -106,6 +119,14 @@ public class GroupServiceImpl implements GroupService{
 
 	@Override
 	public int removeStudent(Long groupId, Long userId) {
+		statusLogService.removeStatusLogs(groupId, userId);
+		
+		StudentStatus studentStatus = new StudentStatus();
+		
+		studentStatus.setStudent(userService.getById(userId));
+		studentStatus.setStatus(statusService.getById(1L));
+		
+		studentStatusService.updateStudentStatus(studentStatus);
 		return groupDao.removeStudent(groupId, userId);
 	}
 

@@ -325,7 +325,7 @@ public class GroupController {
     @ResponseBody
     public String removeStudent(@RequestParam Long groupId, @RequestParam Long userId)
             throws RemoveStudentFromGroupException {
-        if (!userService.hasReview(userId, groupId)) {
+        if (userService.hasReview(userId, groupId)) {
             throw new RemoveStudentFromGroupException("Student has reviews, removing is forbidden");
         } else {
             groupService.removeStudent(groupId, userId);

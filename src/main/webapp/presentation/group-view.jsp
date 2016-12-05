@@ -151,63 +151,58 @@
 
 
 <div class="students_template">
-    <h2>
-        <spring:message code="group.students"/>
-    </h2>
-    <div class="panel panel-primary"
-         style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
-        <div class="panel-heading clearfix">
-            <button type="button" class="btn btn-default btn-xs pull-right">
-                <spring:message code="group.button.add"/>
-            </button>
-            <div data-toggle="collapse" data-target="#collapseStudents"
-                 class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
-                <span class="glyphicon glyphicon-chevron-down"></span>
-            </div>
-        </div>
-        <div id="collapseStudents" class="panel-collapse collapse">
-            <ul class="list-group">
-                <c:forEach items="${students}" var="studentMap">
-                    <li
-                            class="list-group-item group-${group.id}-${studentMap.key.student.id} clearfix">
-                        <%--<c:if test="${studentMap.key.status.id == '1'}">--%>
-							<%--<span class="label label-danger"><spring:message--%>
-                                    <%--code="group.student.expelled"/></span>--%>
-                        <%--</c:if> --%>
-                        <a href="/users/${studentMap.key.student.id}">
-                        ${studentMap.key.student.firstName}</a>
-                        <span style='padding-left: 10px;'> </span>
-                            ${studentMap.key.student.lastName}
-                            <span style='padding-left: 10px;'> </span>
-                        <%--<c:forEach items="${studentMap.value}" var="review">--%>
-                            <%--<span style='padding-left: 10px;'></span>--%>
-                            <%--<c:choose>--%>
-                                <%--<c:when test="${review.type == 'A'}">--%>
-                                    <%--<span style='padding-left: 5px;' class="label label-danger" data-toggle="tooltip"--%>
-                                          <%--title="Absent">${review.meeting.name}</span>--%>
-                                <%--</c:when>--%>
-                                <%--<c:when test="${review.type == 'E'}">--%>
-                                    <%--<span style='padding-left: 5px;' class="label label-success" data-toggle="tooltip"--%>
-                                          <%--title="Evaluated">${review.meeting.name}</span>--%>
-                                <%--</c:when>--%>
-                                <%--<c:otherwise>--%>
-                                    <%--<span style='padding-left: 5px;' class="label label-primary" data-toggle="tooltip"--%>
-                                          <%--title="Not reviewed">${review.meeting.name}</span>--%>
-                                <%--</c:otherwise>--%>
-                            <%--</c:choose>--%>
-                        <%--</c:forEach>--%>
-                        <div id="${group.id}-${student.key.student.id}"
-                             class="btn rmv-cr-btn col-md-1 pull-right delete-student"
-                             type='button'>
-                            <span class="glyphicon glyphicon-remove delete"></span>
-                        </div>
-                        <br/>
-                    </li>
-                </c:forEach>
-            </ul>
-        </div>
-    </div>
-    <br/>
+	<h2>
+		<spring:message code="group.students" />
+	</h2>
+	<div class="panel panel-primary"
+		style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
+		<div class="panel-heading clearfix">
+			<button type="button" class="btn btn-default btn-xs pull-right">
+				<spring:message code="group.button.add" />
+			</button>
+			<div data-toggle="collapse" data-target="#collapseStudents"
+				class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
+				<span class="glyphicon glyphicon-chevron-down"></span>
+			</div>
+		</div>
+		<div id="collapseStudents" class="panel-collapse collapse">
+			<ul class="list-group">
+				<c:forEach items="${students}" var="studentMap">
+
+					<li
+						class="list-group-item group-${group.id}-${studentMap.key.student.id} clearfix">
+						<c:if test="${studentMap.key.status.id == '1'}">
+							<span class="label label-danger"><spring:message
+									code="group.student.expelled" /></span>
+						</c:if> <a href="/users/${studentMap.key.student.id}"> <!--  -->${studentMap.key.student.firstName}</a>
+						<span style='padding-left: 10px;'> </span>
+						${studentMap.key.student.lastName} <span
+						style='padding-left: 10px;'> </span>
+						 <c:forEach items="${studentMap.value}" var="review">
+							<span style='padding-left: 10px;'></span>
+							<c:choose>
+								<c:when test="${review.type == 'A'}">
+									<span style='padding-left: 5px;' class="label label-danger" data-toggle="tooltip" title="Absent">${review.meeting.name}</span>
+								</c:when>
+								<c:when test="${review.type == 'E'}">
+									<span style='padding-left: 5px;' class="label label-success" data-toggle="tooltip" title="Evaluated">${review.meeting.name}</span>
+								</c:when>
+								<c:otherwise>
+									<span style='padding-left: 5px;' class="label label-primary" data-toggle="tooltip" title="Not reviewed">${review.meeting.name}</span>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<div id="${group.id}-${studentMap.key.student.id}"
+							class="btn rmv-cr-btn col-md-1 pull-right delete-student"
+							type='button'>
+							<span class="glyphicon glyphicon-remove delete"></span>
+						</div> <br />
+					</li>
+				</c:forEach>
+			</ul>
+		</div>
+	</div>
+	<br />
 </div>
 
 <div class="attendance_template">
