@@ -97,13 +97,14 @@ public class CertainProjectController {
         List<Group> groupList = groupService.getByProjectId(id);
 
         List<GroupProjectDto> groupDtos = new ArrayList<>();
-        for (Group group : groupList) {
-
-            Meeting upcomingMeeting = meetingService.getUpcomingByGroup(group.getId());
-            Long studentsAmount = groupService.getStudentsAmount(group.getId());
-            GroupProjectDto groupDto = new GroupProjectDto(group, upcomingMeeting, studentsAmount);
-            groupDtos.add(groupDto);
-        }
+		groupList.stream().map((group) -> {
+			Meeting upcomingMeeting = meetingService.getUpcomingByGroup(group.getId());
+			Long studentsAmount = groupService.getStudentsAmount(group.getId());
+			GroupProjectDto groupDto = new GroupProjectDto(group, upcomingMeeting, studentsAmount);
+			return groupDto;
+		}).forEach((groupDto) -> {
+			groupDtos.add(groupDto);
+		});
         model.addObject("groups", groupDtos);
 
         //Criteria set
@@ -118,6 +119,11 @@ public class CertainProjectController {
         model.addObject("attachments", attachmentList);
 
         model.setViewName("certainProject");
+		if (groupDtos.isEmpty() && criterionDtos.isEmpty() && attachmentList.isEmpty()) {
+			model.addObject("isEmpty", true);
+		} else {
+			model.addObject("isEmpty", false);
+		}
         return model;
     }
 
@@ -169,6 +175,16 @@ public class CertainProjectController {
         return "";
     }
 
+	@RequestMapping(value = "/projects/delete", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxResponse deleteProject(
+			@RequestParam("projectId") Long projectId) {
+		AjaxResponse response = new AjaxResponse();
+		projectService.deleteProject(projectService.getById(projectId));
+		response.setCode("200");
+		return response;
+	}
+	
     @RequestMapping(value = "/addProjectAttachment", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResponse addProjectAttachment(@Valid @ModelAttribute("projectAttachmentForm") ProjectAttachmentFormDto attachmentDto,
