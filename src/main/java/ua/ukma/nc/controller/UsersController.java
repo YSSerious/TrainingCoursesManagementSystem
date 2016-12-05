@@ -55,7 +55,10 @@ public class UsersController {
 		boolean isMentor = authorities.contains(new SimpleGrantedAuthority("ROLE_MENTOR"));
 
 		if (value != null && type.equals("name")) {
+			String[] v = value[0].split("\\s");
 			if (v.length == 1) {
+				users = userService.getByName(value[0], limit, limit * (page - 1));
+				count = userService.countName(value[0]);
 			} else if (v.length == 2) {
 				users = userService.getByName(v[0], v[1], limit, limit * (page - 1));
 				count = userService.countHalfName(v[0], v[1]);
@@ -64,13 +67,28 @@ public class UsersController {
 				count = userService.countFullName(v[0], v[1], v[2]);
 			}
 		} else if (value != null && type.equals("role")) {
+			int role1 = Integer.parseInt(value[0]);
+			int role2 = 0, role3 = 0, role4 = 0;
+			if(value.length>1){
+				role2 = Integer.parseInt(value[1]);
+				if(value.length>2){
+					role3 = Integer.parseInt(value[2]);
+					if(value.length>3)
+						role4 = Integer.parseInt(value[3]);
+				}
+			}
+			users = userService.getByRole(role1, role2, role3, role4);
 			count = users.size();
 			if (limit * page < users.size())
 				users = users.subList(limit * (page - 1), limit * page);
 			else
 				users = users.subList(limit * (page - 1), users.size());
 		} else if (value != null && type.equals("project")) {
+			users = userService.studentsByProjectName(value[0], limit, limit * (page - 1));
+			count = userService.countProject(value[0]);
 		} else if (value != null && type.equals("group")) {
+			users = userService.studentsByGroupName(value[0], limit, limit * (page - 1));
+			count = userService.countGroup(value[0]);
 		} else if (!isMentor) {
 			users = userService.getSome(limit, limit * (page - 1));
 			count = userService.count();
@@ -107,6 +125,11 @@ public class UsersController {
 				temp.add(user);
 		}
 		return users.removeAll(temp);
+	}
+	
+	@Scheduled (cron = "0 * * * * *")
+	public void hi(){
+	System.out.println("");
 	}
 	/*
 	 * @RequestMapping(value = "/allUsers", method = RequestMethod.POST) public
