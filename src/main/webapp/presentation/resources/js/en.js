@@ -28,5 +28,6 @@ lang = {
 	user_date: 'Date',
 	final_review_comment_general: 'General comment',
 	final_review_error_no_criteria: 'No criteria found for this project!',
-	final_review_error_input_required: 'All comments are required!'
+	final_review_error_input_required: 'All comments are required!',
+	review_no_projects: 'No projects available'
 };

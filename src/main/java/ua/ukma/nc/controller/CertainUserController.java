@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -197,9 +198,17 @@ public class CertainUserController {
 	}
 
 
-	@RequestMapping(value = "/createReview", method = RequestMethod.POST)
-	public void createHRreview(Principal principal, @RequestParam("type") String type, @RequestParam("commentary") String commentary)
-	{
+	@RequestMapping(value = "/ajax/get/hr_review_projects", method = RequestMethod.GET)
+	@ResponseBody
+	public List<ProjectDto> getProjectsForHRReview(@RequestParam("studentId") Long studentId){
+		List<ProjectDto> response = new LinkedList<ProjectDto>();
+		for (Project project : projectService.getAllStudentProjectsWithoutAnyOfHrReviews(studentId))
+			response.add(new ProjectDto(project));
+		return response;
+	}
+
+	@RequestMapping(value = "/ajax/post/hr_review", method = RequestMethod.POST)
+	public void createHRreview(Principal principal, @RequestParam("type") String type, @RequestParam("commentary") String commentary){
 		FinalReview finalHRreview = new FinalReviewImpl();
 		finalHRreview.setCommentary(commentary);
 		finalHRreview.setType(type);

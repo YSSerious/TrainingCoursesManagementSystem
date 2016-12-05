@@ -413,8 +413,12 @@ function getMentorStudentProjects(userId){
 			});
 			s+='</select></td></tr>';
 			$('#final-review-project-list').html(s);
-			if(resp.length>0)
+			if(resp.length>1)
 				$('#finReviewProject').find('.btn').removeClass('hidden');
+		},
+		'error': function (resp) {
+			var s = '<tr><td colspan="3"><label>'+lang.review_no_projects+'</label></td></tr>';
+			$('#final-review-hr-project-list').html(s);
 		}
 	});
 }
@@ -467,24 +471,6 @@ function doFinalReview(userId) {
 		$('#fin-rev-err').removeClass('hidden');
 	}
 };
-
-$(document).ready(function(){
-	$("#createHRreviewBtn").click(function(){
-		$("#createHRreviewModal").modal();
-	});
-});
-
-
-$(document).ready(function() {
-
-	$("#submitreviewBtn").click(function(event) {
-		$.ajax({
-			url: "/createReview",
-			type: "POST",
-			data: {"type" : $("#reviewtype").val(), "commentary" : $("#commentary").val()}
-		});
-	});
-});
 
 function report(studentId){
 	$.ajax({
@@ -651,3 +637,50 @@ function getModal(modalId, modalName, modalTitle, reviewDto){
 	
 	return modal;
 }
+
+function getHRReviewProjects(userId) {
+	$('#finReviewHRProject').modal('toggle');
+	$.ajax({
+		'url': '/ajax/get/hr_review_projects',
+		'type': 'GET',
+		'data': {'studentId': userId},
+		'success': function (resp) {
+			var s = '';
+			if(resp.length>0) {
+				s += '<br/><tr><td colspan="3"><select class="form-control" id="fin-review-hr-proj-switch">';
+				$.each(resp, function (key, value) {
+					s += '<option value="' + value.id + '">' + value.name + '</option>';
+				});
+				s += '</select></td></tr>';
+			}else{
+				s = '<tr><td colspan="3"><label>'+lang.review_no_projects+'</label></td></tr>';
+				$('#final-review-hr-project-list').html(s);
+			}
+				$('#final-review-hr-project-list').html(s);
+			$('#finReviewHRProject').find('.btn').removeClass('hidden');
+		},
+		'error': function (resp) {
+			var s = '<tr><td colspan="3"><label>'+lang.review_no_projects+'</label></td></tr>';
+			$('#final-review-hr-project-list').html(s);
+		}
+	});
+}
+
+function getHRReviewForm(userId) {
+	$('#finReviewHRProject').modal('toggle');
+	$('#createHRreviewModal').modal('toggle');
+	$.ajax({
+		//final-review-hr-project-list
+		'url': '/ajax/get/hr_review_projects',
+		'type': 'GET',
+		'data': {'studentId': userId},
+		'success': function (resp) {
+			$.each(resp, function (key, value) {
+
+			});
+		},
+		'error': function (resp) {
+			console.warn(resp);
+		}
+	});
+};

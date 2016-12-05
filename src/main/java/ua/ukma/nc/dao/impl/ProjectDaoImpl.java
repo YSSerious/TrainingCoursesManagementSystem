@@ -44,6 +44,8 @@ public class ProjectDaoImpl implements ProjectDao {
 		}
 	}
 
+	private static final String GET_ALL_STUDENT_PROJECTS_WITHOUT_ANY_OF_HR_REVIEWS = "SELECT DISTINCT * FROM tcms.project WHERE id IN (SELECT id_project FROM tcms.group WHERE id IN (SELECT DISTINCT id_group FROM tcms.status_log WHERE id_student = ?)) AND id NOT IN ((SELECT DISTINCT id_project FROM tcms.final_review WHERE id_student = ? AND type='G') INTERSECT (SELECT DISTINCT id_project FROM tcms.final_review WHERE id_student = ? AND type='T'))";
+
 	private static final String GET_ALL_FINISHED = "SELECT * FROM tcms.project WHERE finish < current_date";
 
 	private static final String GET_MENTOR_PROJECTS = "SELECT * FROM tcms.project WHERE id IN (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?)) AND id NOT IN (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?)) ORDER by start DESC";
@@ -160,6 +162,11 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Project> getAllFinished() {
 		return jdbcTemplate.query(GET_ALL_FINISHED, new ProjectMapper());
+	}
+
+	@Override
+	public List<Project> getAllStudentProjectsWithoutAnyOfHrReviews(Long userId){
+		return jdbcTemplate.query(GET_ALL_STUDENT_PROJECTS_WITHOUT_ANY_OF_HR_REVIEWS, new ProjectMapper(), userId, userId, userId);
 	}
 
 	public List<Project> getMentorStudentProjects(Long mentorId, Long studentId){

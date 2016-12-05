@@ -28,5 +28,6 @@ lang = {
 	user_date: 'Дата',
 	final_review_comment_general: 'Загальний коментар',
 	final_review_error_no_criteria: 'Не знайдено критеріїв для даного проекту!',
-	final_review_error_input_required: 'Потрібно вказати всі коментарі!'
+	final_review_error_input_required: 'Потрібно вказати всі коментарі!',
+	review_no_projects: 'Немає доступних проектів'
 };

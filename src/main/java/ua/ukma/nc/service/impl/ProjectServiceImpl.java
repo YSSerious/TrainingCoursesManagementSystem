@@ -72,6 +72,11 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+	public List<Project> getAllStudentProjectsWithoutAnyOfHrReviews(Long userId) {
+		return projectDao.getAllStudentProjectsWithoutAnyOfHrReviews(userId);
+	}
+
+	@Override
 	public int createProject(Project project) {
 		return projectDao.createProject(project);
 	}

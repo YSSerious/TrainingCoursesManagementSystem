@@ -250,14 +250,12 @@
                 <sec:authorize access="hasRole('HR')">
 
                     <br/>
-                    <font id="createHRreviewBtn" class="clickable" color="blue" data-toggle="modal"
-                          data-target="#addHRreview">
-                        <b onclick="createHRreviewForm(${user.id})">
+                    <div id="createHRreviewBtn" class="clickable">
+                        <b onclick="getHRReviewProjects(${user.id})">
                             <spring:message code="create.review"/>
                         </b>
-                    </font>
+                    </div>
 
-                    <%@include file="reviewHR.jsp" %>
                 </sec:authorize>
 
                 <sec:authorize access="hasRole('ADMIN')">
@@ -419,6 +417,36 @@
 </div>
 <!-- end add fin review choose project modal -->
 
+<!-- start fin review hr choose project modal -->
+<div id="finReviewHRProject" class="modal fade" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                <h4 class="modal-title"><spring:message
+                        code="final_review.label.project"/>: ${user.firstName} ${user.lastName} </h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <table class="table" id="final-review-hr-project-list">
+                        <tr>
+                            <td><spring:message code="loading.label"/></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default hidden" onclick="getHRReviewForm(${user.id})" type="button">
+                    <spring:message code="btn.submit"/>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end fin review hr choose project modal -->
+
 <div id="createHRreviewModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -430,7 +458,6 @@
                 <div class="showactions"></div>
                 <br class="actions"/>
                 <form method="post">
-                    <br/>
                     <label class="col-md-4 control-label">Select type</label>
                     <br class="col-lg-6"/>
                     <select class="form-control" name="reviewtype" id="reviewtype" onchange="">
