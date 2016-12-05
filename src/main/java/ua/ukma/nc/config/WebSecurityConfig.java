@@ -38,14 +38,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
                 .authorizeRequests()
-                    .antMatchers("/", "/home").hasAnyRole("ADMIN", "MENTOR", "HR"/*, "STUDENT"*/)
                     .antMatchers("/role_def").hasRole("TEMP")
-                    .antMatchers("/manageRoles").hasRole("ADMIN")
-                    .antMatchers("/roles", "/set_role").hasAnyRole("ADMIN", "MENTOR", "HR", /*"STUDENT",*/ "TEMP")
-                    .antMatchers("/projects").hasAnyRole("ADMIN", "MENTOR", "HR")
-                    .antMatchers("/users/*", "/cookie").hasAnyRole("ADMIN", "MENTOR", "HR")
-                    .antMatchers("/getuser").hasRole("ADMIN")     //for testing
-                    .antMatchers("/reports/*").hasAnyRole("HR", "ADMIN")
+                    .antMatchers("/manageRoles", "/category", "/addCategory", "/saveCriteria", "/deleteCriteria",
+                            "/deleteCategory", "/editCategory", "/updateProjectStartDate", "/updateProjectFinishDate",
+                            "/updateProjectDescription", "/projects/delete",
+                            "/getAvailableCriteria", "/addCriteria", "/deleteProjectCriteria",
+                            "/getCriteriaAndGroups", "/saveMeeting", "/groups/add", "/groups/edit", "/groups/delete",
+                            "/groups/removeMentor", "/groups/editMeeting", "/groups/deleteMeeting",
+                            "/groups/add/*", "/create-meeting", "/getAvailableMeetingCriteria", "/addMeetingCriteria",
+                            "/deleteMeetingCriteria", "/projects/add", "/manageRoles",
+                            "/students/inactive", "/mentors/free").hasRole("ADMIN")
+                    .antMatchers("/roles", "/set_role").hasAnyRole("ADMIN", "MENTOR", "HR", "TEMP")
+                    .antMatchers("/","/projects", "/users/*", "/cookie", "/certainProject", "/projectAttachment/*",
+                            "/ajaxstudetprofile", "/ajaxstudentprojects", "/ajaxmentorprojects", "/ajaxcriteria",
+                             "/groups/addAttachment", "/groups/groupAttachment/*", "/groups/deleteAttachment",
+                            "/meeting/*", "/ajaxcategories", "/allUsers", "/groups/group", "/isMeetingReviewed").authenticated()
+                .antMatchers("/ajax/get/projects_final_review", "/ajax/get/final_review_form",
+                        "/ajax/post/final_review_form/*", "/ajax/pot/evaluate/*", "/ajax/post/absent/*").hasRole("MENTOR")
+                .antMatchers("/ajax/get/hr_review_projects", "/ajax/get/hr_review", "/ajax/post/hr_review").hasRole("HR")
+                    .antMatchers("/reports/*", "/projectReport", "/groupReport", "/studentMarks", "/reports/*",
+                            "/addProjectAttachment", "/removeProjectAttachment").hasAnyRole("HR", "ADMIN")
                     .and()
                 .formLogin()
                     .loginPage("/login")
