@@ -154,6 +154,7 @@ public class ExcelController {
     public ModelAndView getReport(){
         ModelAndView mv = new ModelAndView("projectReports");
         mv.addObject("projects", projectService.getAllFinished());
+		mv.addObject("title", "Reports");
 		return mv;
     }
 
