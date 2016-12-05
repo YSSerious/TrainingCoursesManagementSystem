@@ -12,6 +12,7 @@
 <meta charset="UTF-8">
 <title>${title}</title>
 <!--<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <link rel="icon" href="<c:url value="/presentation/resources/favicon/favicon.ico"/>">
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/presentation/resources/third-party/bootstrap/css/bootstrap.min.css"/>">
 <link
