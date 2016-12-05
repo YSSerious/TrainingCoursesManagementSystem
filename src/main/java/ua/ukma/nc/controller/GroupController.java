@@ -81,12 +81,12 @@ public class GroupController {
     
     @Autowired
     private GroupDeleteValidator groupDeleteValidator;
-
-    @Autowired
-    private StatusLogService statusLogService;
     
     @Autowired
     private MessageSource messageSource;
+
+    @Autowired
+    StatusLogService statusLogService;
 
     private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
