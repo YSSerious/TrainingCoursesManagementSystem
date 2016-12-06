@@ -19,6 +19,8 @@
                         </tr>
                     </table>
                 </div>
+                <button type="button" class="btn btn-primary pull-right" id="comeBack"><spring:message 
+                code="meeting.comeback"/></button>
             </div>
         </div>
     </div>
@@ -124,16 +126,25 @@
                 <c:forEach items="${marks}" var="entry">
                     <tr>
                         <td><font size="3"><b> <span id="fin-rev-err"
-                                                     class="text-danger hidden">Unknown error</span> <a
+                                                     class="text-danger hidden">Unknown error</span> 
+                             <c:if test="${entry.key.getStudentStatus().getStatus().getTitle() ne 'Inactive'}">
+                                                     <a
                                 href="javascript:;"
                                 data-toggle="modal"
                                 class="open-Evaluate"
-                                <sec:authorize access="hasRole('MENTOR')">
+                            <sec:authorize access="hasRole('MENTOR')">
                                     data-target="#evaluateModal${entry.key.id}"
                                     data-user="${entry.key.firstName}"
-                                </sec:authorize>
+                            </sec:authorize>
                         >${entry.key.firstName}
-                                ${entry.key.secondName} ${entry.key.lastName}</a></b></font></td>
+                                ${entry.key.secondName} ${entry.key.lastName}</a>
+                            </c:if>
+                            <c:if test="${entry.key.getStudentStatus().getStatus().getTitle() eq 'Inactive'}">
+                            ${entry.key.firstName}
+                                ${entry.key.secondName} ${entry.key.lastName}
+                                </c:if>
+                                
+                                </b></font></td>
 
 
                         <c:forEach items="${criteria}" var="criterion">
@@ -374,9 +385,8 @@
     isMeetingReviewed();
 </script>
 <script>
-    $(document).on("click", ".open-Evaluate", function () {
-        var user = $(this).data('user');
-        $(".modal-body #user").val(user);
+    $(document).on("click", "#comeBack", function () {
+        location.href = "/groups/group?id="+${meeting.getGroup().getId()};
     });
 </script>
 
