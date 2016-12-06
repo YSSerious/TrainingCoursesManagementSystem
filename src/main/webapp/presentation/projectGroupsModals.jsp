@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal"><span
                         class="glyphicon glyphicon-remove"></span></button>
-                <h4 class="modal-title">Create group</h4>
+                <h4 class="modal-title"><spring:message code="project.groups.createGroup.createGroup"/></h4>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
@@ -14,7 +14,9 @@
                         </div>
                         <div class="form-group col-sm-12 required">
                             <div class="col-sm-12">
-                                <label for="group-name" path="name">Name</label>
+                                <label for="group-name" path="name">
+                                    <spring:message code="project.groups.createGroup.name"/>
+                                </label>
                                 <label path="name" class="form-error"></label>
                             </div>
                             <div class="col-sm-12">
@@ -42,7 +44,9 @@
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal"><span
                         class="glyphicon glyphicon-remove"></span></button>
-                <h4 class="modal-title">Edit group</h4>
+                <h4 class="modal-title">
+                    <spring:message code="project.groups.editGroup.editGroup"/>
+                </h4>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
@@ -52,7 +56,9 @@
                         </div>
                         <div class="form-group col-sm-12 required">
                             <div class="col-sm-12">
-                                <label for="group-name" path="name">Name</label>
+                                <label for="group-name" path="name">
+                                    <spring:message code="project.groups.editGroup.name"/>
+                                </label>
                                 <label path="name" class="form-error"></label>
                             </div>
                             <div class="col-sm-12">
@@ -80,14 +86,18 @@
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal"><span
                         class="glyphicon glyphicon-remove"></span></button>
-                <h4 class="modal-title">Delete group</h4>
+                <h4 class="modal-title">
+                    <spring:message code="project.groups.deleteGroup.deleteGroup"/>
+                </h4>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">  
                     <form>
                         <label path="general" class="form-error general-error"></label>
                         <div class="col-sm-12">
-                            <h4>Are you sure? You can not undo this action.</h4>
+                            <h4>
+                                 <spring:message code="project.groups.deleteGroup.warning"/>
+                            </h4>
                         </div>
                         <div class="col-sm-12 bottom-controls">
                             <button type="submit" class="btn btn-primary pull-right"><spring:message code="btn.delete"/></button>
@@ -109,11 +119,11 @@
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal"><span
                         class="glyphicon glyphicon-remove"></span></button>
-                <h4 class="modal-title">Delete group</h4>
+                <h4 class="modal-title"><spring:message code="project.groups.deleteGroup.deleteGroup"/></h4>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">  
-                    <h4>This group is not empty!</h4>
+                    <h4><spring:message code="project.groups.deleteGroup.error"/></h4>
                 </div>
             </div>
         </div>
