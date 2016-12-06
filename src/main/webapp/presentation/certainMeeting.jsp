@@ -39,7 +39,7 @@
                 <th><spring:message code="meeting.student"/></th>
                 <c:if test="${criteria!=null}">
                 <c:forEach items="${criteria}" var="criterion">
-                    <th id="thId-${criterion.title}">${criterion.title}</th>
+                    <th id="thId-${criterion.id}">${criterion.title}</th>
                 </c:forEach>
                 </c:if>
                 <c:if test="${criteria == null}">
@@ -61,7 +61,7 @@
                     </td>
                     <c:if test="${criteria!=null}">
                     <c:forEach items="${criteria}" var="criterion">
-                        <td class="tdId-${criterion.title}"><font size="3">
+                        <td class="tdId-${criterion.id}"><font size="3">
                             <a href="#" data-toggle="tooltip" data-placement="top"
                                title="No mark, yet">-</a>
                         </font></td>

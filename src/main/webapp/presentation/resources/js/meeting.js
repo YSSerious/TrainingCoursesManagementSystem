@@ -30,8 +30,8 @@ $(document).ready(function () {
                 console.log(data);
                 $('#collapseUL').append(buildResponseCriteria(data));
                 a.parent().parent().remove();
-                $('#appendStudentheadId').append("<th id='thId-"+data.title+"'>"+data.title+"</th>");
-                $('.append-student-body').append("<td class='tdId-"+data.title+"'><font size='3'><a href='#' data-toggle='tooltip' data-placement='top' title='No mark, yet'>-</a></font></td>");
+                $('#appendStudentheadId').append("<th id='thId-"+data.id+"'>"+data.title+"</th>");
+                $('.append-student-body').append("<td class='tdId-"+data.id+"'><font size='3'><a href='#' data-toggle='tooltip' data-placement='top' title='No mark, yet'>-</a></font></td>");
             },
             error: function (textStatus) {
                 console.log(textStatus);
@@ -49,8 +49,8 @@ $(document).ready(function () {
                 200: function (data) {
                     console.log(data);
                     $('#criteriaaMId-' + criteria.id).remove();
-                    $('#thId-' + criteria.title).remove();
-                    $('.tdId-' + criteria.title).remove();
+                    $('#thId-' + criteria.id).remove();
+                    $('.tdId-' + criteria.id).remove();
                 },
                 409: function (textStatus) {
                     console.log(textStatus);
