@@ -51,6 +51,11 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+	public boolean isEmpty(Long id) {
+		return projectDao.isEmpty(id);
+	}
+	
+	@Override
 	public Project getByName(String name) {
 		return projectDao.getByName(name);
 	}

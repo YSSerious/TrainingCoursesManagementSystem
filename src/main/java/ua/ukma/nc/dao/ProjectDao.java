@@ -15,6 +15,8 @@ public interface ProjectDao {
 	Project getById(Long id);
 	
     boolean exist(Long id);
+	
+	boolean isEmpty(Long id);
         
 	Project getByName(String name);
 

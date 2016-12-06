@@ -62,6 +62,8 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	private static final String GET_BY_ID = "SELECT id, name, description, start, finish FROM tcms.project WHERE id = ?";
 
+	private static final String IS_EMPTY = "SELECT NOT EXISTS (SELECT * FROM tcms.\"group\" WHERE id_project = ?) AND (SELECT NOT EXISTS (SELECT * FROM tcms.project_criterion WHERE id_project = ?)) AND (SELECT NOT EXISTS (SELECT * FROM tcms.project_attachment WHERE ID_PROJECT = ?))";
+	
 	private static final String GET_BY_NAME = "SELECT id, name, description, start, finish FROM tcms.project WHERE name=trim(?)";
 
 	private static final String DELETE_PROJECT = "DELETE FROM tcms.project WHERE id = ?";
@@ -89,6 +91,12 @@ public class ProjectDaoImpl implements ProjectDao {
             return !projects.isEmpty();
         }
 
+		@Override
+		public boolean isEmpty(Long id) {
+			Boolean result = jdbcTemplate.queryForObject(IS_EMPTY, new Object[] {id, id, id}, Boolean.class);
+			return result;
+		}
+		
 	@Override
 	public Project getByName(String name) {
 		log.info("Getting project with name = {}", name);

@@ -8,7 +8,6 @@ $('#delete-project').on('click', function () {
         dataType: 'json',
         timeout: 100000,
         success: function (response) {
-            console.log('response');
             switch (response.code) {
                 case '200':
                     window.location.href = "/projects";

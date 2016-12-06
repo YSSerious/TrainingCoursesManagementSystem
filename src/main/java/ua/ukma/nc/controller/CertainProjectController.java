@@ -174,8 +174,14 @@ public class CertainProjectController {
 	public AjaxResponse deleteProject(
 			@RequestParam("projectId") Long projectId) {
 		AjaxResponse response = new AjaxResponse();
-		projectService.deleteProject(projectService.getById(projectId));
-		response.setCode("200");
+		Project project = new ProjectImpl();
+		project.setId(projectId);
+		if (projectService.isEmpty(projectId)) {
+			projectService.deleteProject(projectService.getById(projectId));
+			response.setCode("200");
+		} else {
+			response.setCode("204");
+		}
 		return response;
 	}
 	
