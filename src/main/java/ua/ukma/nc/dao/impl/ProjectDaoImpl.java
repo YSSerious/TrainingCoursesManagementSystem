@@ -43,6 +43,8 @@ public class ProjectDaoImpl implements ProjectDao {
 			return resultSet.getInt("QUANTITY");
 		}
 	}
+	
+	private static final String CAN_VIEW_MENTOR = "SELECT EXISTS (SELECT id FROM tcms.project WHERE id = ? AND id IN (SELECT id_project FROM tcms.group WHERE id IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?)) AND id NOT IN (SELECT id_project FROM tcms.group WHERE id IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?)))";
 
 	private static final String GET_ALL_STUDENT_PROJECTS_WITHOUT_ANY_OF_HR_REVIEWS = "SELECT DISTINCT * FROM tcms.project WHERE id IN (SELECT id_project FROM tcms.group WHERE id IN (SELECT DISTINCT id_group FROM tcms.status_log WHERE id_student = ?)) AND id NOT IN ((SELECT DISTINCT id_project FROM tcms.final_review WHERE id_student = ? AND type='G') INTERSECT (SELECT DISTINCT id_project FROM tcms.final_review WHERE id_student = ? AND type='T'))";
 
@@ -178,5 +180,10 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	public List<Project> getMentorStudentProjects(Long mentorId, Long studentId){
 		return jdbcTemplate.query(GET_MENTOR_STUDENT_PROJECTS, new ProjectMapper(), mentorId, mentorId, studentId);
+	}
+
+	@Override
+	public boolean canView(Long mentorId, Long projectId) {
+		return jdbcTemplate.queryForObject(CAN_VIEW_MENTOR, Boolean.class, projectId, mentorId, mentorId);
 	}
 }

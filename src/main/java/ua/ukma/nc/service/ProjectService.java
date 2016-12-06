@@ -10,6 +10,8 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface ProjectService {
+	boolean canView(Long projectId);
+	
 	Project getById(Long id);
 	
         boolean exist(Long id);

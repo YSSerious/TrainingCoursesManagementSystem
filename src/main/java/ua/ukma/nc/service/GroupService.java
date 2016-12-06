@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface GroupService {
 	
+	boolean canView(Long groupId);
+	
 	AttendanceTable getAttendaceTable(Long groupId);
 	
 	List<Group> getByProjectId(Long projectId);

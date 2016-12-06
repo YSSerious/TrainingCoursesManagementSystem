@@ -43,6 +43,8 @@ public class GroupDaoImpl implements GroupDao{
         }
     }
     
+    private static final String CAN_VIEW_MENTOR = "SELECT EXISTS (SELECT id FROM tcms.group WHERE id = ? AND id IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?) AND id NOT IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?))";
+    
     private static final String GET_BY_PROJECT_ID_MENTOR = "SELECT id, id_project, name FROM tcms.group WHERE id_project = ? AND id IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?) AND id NOT IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?)";
     
     private static final String GET_BY_PROJECT_ID = "SELECT id, id_project, name FROM tcms.group WHERE id_project = ?";
@@ -179,6 +181,11 @@ public class GroupDaoImpl implements GroupDao{
 	public List<Group> getByProjectId(Long projectId, Long mentorId) {
 		log.info("Getting all groups");
         return jdbcTemplate.query(GET_BY_PROJECT_ID_MENTOR, new GroupMapper(), projectId, mentorId, mentorId);
+	}
+
+	@Override
+	public boolean canView(Long mentorId, Long groupId) {
+		return jdbcTemplate.queryForObject(CAN_VIEW_MENTOR, Boolean.class, groupId, mentorId, mentorId);
 	}
 
 }

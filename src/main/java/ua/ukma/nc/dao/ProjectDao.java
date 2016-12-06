@@ -9,9 +9,12 @@ import java.util.List;
  * Created by Алексей on 30.10.2016.
  */
 public interface ProjectDao {
+	
+	boolean canView(Long mentorId, Long projectId);
+	
 	Project getById(Long id);
 	
-        boolean exist(Long id);
+    boolean exist(Long id);
         
 	Project getByName(String name);
 

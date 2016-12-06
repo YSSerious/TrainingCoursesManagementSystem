@@ -30,6 +30,7 @@ import ua.ukma.nc.util.exception.RemoveStudentFromGroupException;
 import ua.ukma.nc.validator.*;
 import ua.ukma.nc.vo.AjaxResponse;
 
+import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -93,6 +94,14 @@ public class GroupController {
 	@Autowired
     private GroupAttachmentFormValidator groupAttachmentFormValidator;
 
+	
+	@ExceptionHandler(NoResultException.class)
+	public ModelAndView handleNotFoundException(Exception ex) {
+		ModelAndView modelAndView = new ModelAndView("error/404");
+		modelAndView.setStatus(HttpStatus.NOT_FOUND);
+		return new ModelAndView("error/404");
+	}
+	
     @RequestMapping(value = "/add", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxResponse addGroup(@RequestBody GroupDto groupDto) {
@@ -184,6 +193,9 @@ public class GroupController {
     @RequestMapping(value = "/group", method = RequestMethod.GET)
     public ModelAndView getGroup(@RequestParam Long id) {
 
+    	if(!groupService.canView(id))
+    		throw new NoResultException();
+    	
         ModelAndView model = new ModelAndView();
         GroupDto group = new GroupDto(groupService.getById(id));
 

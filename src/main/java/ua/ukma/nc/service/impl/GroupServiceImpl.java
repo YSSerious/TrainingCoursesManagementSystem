@@ -221,5 +221,21 @@ public class GroupServiceImpl implements GroupService{
 	public void addUser(Long groupId, Long userId) {
 		groupDao.addUser(groupId, userId);
 	}
+	
+	@Override
+	public boolean canView(Long groupId) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		boolean showAllUsers = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
+				|| authorities.contains(new SimpleGrantedAuthority("ROLE_HR"));
+
+		if (!showAllUsers){
+			String name = authentication.getName();
+			Long mentorId = userService.getByEmail(name).getId();
+			return groupDao.canView(mentorId, groupId);
+		}
+
+		return true;
+	}
 
 }

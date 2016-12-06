@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -23,6 +24,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import ua.ukma.nc.dto.*;
 import ua.ukma.nc.entity.*;
@@ -72,9 +74,20 @@ public class CertainProjectController {
 	
 	@Autowired
 	private ProjectFormValidator projectFormValidator;
+	
+	@ExceptionHandler(NoResultException.class)
+	public ModelAndView handleNotFoundException(Exception ex) {
+		ModelAndView modelAndView = new ModelAndView("error/404");
+		modelAndView.setStatus(HttpStatus.NOT_FOUND);
+		return new ModelAndView("error/404");
+	}
 
     @RequestMapping(value = "/certainProject/{id}", method = RequestMethod.GET)
-    public ModelAndView viewProject(@PathVariable("id") Long id) {
+    public ModelAndView viewProject(@PathVariable("id") Long id) throws Exception {
+    	
+    	if(!projectService.canView(id))
+    		throw new NoResultException();
+
         ModelAndView model = new ModelAndView();
 
         List<CategoryDto> categories = categoryService.getByProjectId(id).stream().map(CategoryDto::new)

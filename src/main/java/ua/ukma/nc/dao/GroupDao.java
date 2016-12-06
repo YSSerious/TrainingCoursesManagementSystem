@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface GroupDao {
 	
+	boolean canView(Long groupId, Long mentorId);
+	
 	List<Group> getByProjectId(Long projectId);
 	
 	List<Group> getByProjectId(Long projectId, Long mentorId);

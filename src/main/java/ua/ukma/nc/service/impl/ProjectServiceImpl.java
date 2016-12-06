@@ -16,6 +16,7 @@ import ua.ukma.nc.query.ProjectParamResolver;
 import ua.ukma.nc.query.ProjectSearch;
 import ua.ukma.nc.service.ProjectService;
 import ua.ukma.nc.service.RoleService;
+import ua.ukma.nc.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +27,7 @@ import java.util.List;
  */
 @Service
 public class ProjectServiceImpl implements ProjectService {
-	
+
 	@Autowired
 	private RoleService roleService;
 
@@ -35,22 +36,25 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Autowired
 	private ProjectDao projectDao;
+	
+	@Autowired
+	private UserService userService;
 
 	@Override
 	public Project getById(Long id) {
 		return projectDao.getById(id);
 	}
-	
-        @Override
-        public boolean exist(Long id) {
-            return projectDao.exist(id);
-        }
-        
+
 	@Override
-	public Project getByName(String name){
+	public boolean exist(Long id) {
+		return projectDao.exist(id);
+	}
+
+	@Override
+	public Project getByName(String name) {
 		return projectDao.getByName(name);
 	}
-	
+
 	@Override
 	public int deleteProject(Project project) {
 		return projectDao.deleteProject(project);
@@ -107,16 +111,16 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<Project> getStudentProjects(Long userId) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String name = authentication.getName();
-		
+
 		List<Role> roles = roleService.getCurrentUserRoles(name, userId);
-		
-		for(Role role: roles)
-			if(role.getTitle().equals("ROLE_STUDENT"))
+
+		for (Role role : roles)
+			if (role.getTitle().equals("ROLE_STUDENT"))
 				return new ArrayList<Project>();
-		
+
 		return projectDao.getStudentProjects(userId);
 	}
-	
+
 	@Override
 	public List<Project> getMentorProjects(Long userId) {
 		return projectDao.getMentorProjects(userId);
@@ -143,5 +147,22 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public int deleteCriterionInAllProjectMeetings(Long projectId, Criterion criterion) {
 		return projectDao.deleteCriterionInAllProjectMeetings(projectId, criterion);
+	}
+
+	@Override
+	public boolean canView(Long projectId) {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		boolean showAllUsers = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
+				|| authorities.contains(new SimpleGrantedAuthority("ROLE_HR"));
+
+		if (!showAllUsers){
+			String name = authentication.getName();
+			Long mentorId = userService.getByEmail(name).getId();
+			return projectDao.canView(mentorId, projectId);
+		}
+
+		return true;
 	}
 }
