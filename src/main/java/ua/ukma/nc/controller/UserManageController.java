@@ -81,7 +81,8 @@ public class UserManageController {
 		User user = userService.getById(id);
 		UserDto userDto = new UserDto(user);
 		
-		model.addObject("success", "Successfully changed!");
+		model.addObject("success", messageSource.getMessage("status.success",
+                null, LocaleContextHolder.getLocale()));
 		model.addObject("user", userDto);
 		model.addObject("title", userDto.getLastName()+" "+userDto.getFirstName());
 		model.addObject("roles", roleService.getRolesDto(user));

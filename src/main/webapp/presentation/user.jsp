@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html;charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@include file="header.jsp" %>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <div class="col-sm-11 col-sm-offset-1">
@@ -67,7 +69,7 @@
 
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 1}">
-                                <div class="clickable action-color" color="blue" data-toggle="modal" data-target="#switchStatus">
+                                <div class="clickable action-color" data-toggle="modal" data-target="#switchStatus">
                                     <b><spring:message code="user.switch.status"/></b>
                                 </div>
 
@@ -82,7 +84,7 @@
                                             <div class="modal-body">
                                                 <div class="showactions"></div>
                                                 <div class="actions">
-                                                    <form method="post">
+                                                    <form method="post" accept-charset="utf-8">
                                                         <br/>
                                                         <input type="radio" name="status" value="3" checked>
                                                         <spring:message code="user.interview.offer"/>
@@ -107,7 +109,7 @@
                         <c:if test="${user.statusId eq 2}">
                             <sec:authorize access="hasRole('MENTOR')">
 
-                                <div class="clickable action-color" color="blue" data-toggle="modal" data-target="#switchStatus">
+                                <div class="clickable action-color" data-toggle="modal" data-target="#switchStatus">
                                     <b><spring:message code="user.switch.status"/></b>
                                 </div>
 
@@ -123,7 +125,7 @@
                                                 <div class="showactions">
                                                 </div>
                                                 <div class="actions">
-                                                    <form method="post">
+                                                    <form method="post" accept-charset="utf-8">
                                                         <br/>
                                                         <input type="radio" name="status" value="1" checked>
                                                         <spring:message code="user.inactive"/>
@@ -146,7 +148,7 @@
 
                             </sec:authorize>
                             <sec:authorize access="hasRole('HR')">
-                                <div class="clickable action-color" color="blue" data-toggle="modal" data-target="#switchStatus">
+                                <div class="clickable action-color" data-toggle="modal" data-target="#switchStatus">
                                     <b><spring:message code="user.switch.status"/></b>
                                 </div>
 
@@ -161,7 +163,7 @@
                                             <div class="modal-body">
                                                 <div class="actions">
                                                     <div class="showactions"></div>
-                                                    <form method="post">
+                                                    <form method="post" accept-charset="utf-8">
                                                         <br/>
                                                         <div class="row">
                                                             <div class="col-sm-6">
@@ -193,7 +195,7 @@
                         <sec:authorize access="hasRole('HR')">
                             <c:if test="${user.statusId eq 3}">
                                 <sec:authorize access="hasRole('HR')">
-                                    <div class="clickable action-color" color="blue" data-toggle="modal"
+                                    <div class="clickable action-color" data-toggle="modal"
                                           data-target="#switchStatus">
                                         <b><spring:message code="user.switch.status"/></b>
                                     </div>
@@ -211,7 +213,7 @@
                                                 <div class="modal-body">
                                                     <div class="showactions"></div>
                                                     <div class="actions">
-                                                        <form method="post">
+                                                        <form method="post" accept-charset="utf-8">
                                                             <br/>
                                                             <div class="row">
                                                                 <div class="col-sm-6">
@@ -258,8 +260,8 @@
 
                 <sec:authorize access="hasRole('ADMIN')">
 
-                    <div class="clickable action-color" data-toggle="modal" data-target="#chooseRoles"
-                          color="blue"><b><spring:message code="user.choose.roles"/></b></div>
+                    <div class="clickable action-color" data-toggle="modal" data-target="#chooseRoles">
+                    <b><spring:message code="user.choose.roles"/></b></div>
 
                     <div id="chooseRoles" class="modal fade" role="dialog">
                         <div class="modal-dialog modal-sm">
@@ -473,7 +475,6 @@
                             code="user.submit"/></button>
                     <br/>
                     <br/>
-                </form>
             </div>
         </div>
     </div>

@@ -57,10 +57,7 @@
                 <div class="panel panel-primary"
                      style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
                     <div class="panel-heading clearfix">
-                        <%--<button type="button" class="btn btn-default btn-xs pull-right"--%>
-                        <%--data-target="#addMeetingNoteModal" data-toggle="modal">--%>
-                        <%--Add note--%>
-                        <%--</button>--%>
+
                         <div data-toggle="collapse" data-target="#collapseMeetings"
                              class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
                             <span id="spanId" class="pull-left glyphicon glyphicon-chevron-down"
@@ -89,12 +86,14 @@
                                             </div>
                                         </c:if>
                                     </sec:authorize>
+                                    <sec:authorize access="hasAnyRole('ADMIN')">
                                     <div class="btn rmv-cr-btn col-md-1 col-md-offset-2 "
                                          type='button' data-toggle="modal"
                                          data-target="#editMeetingModal"
                                          onclick="setMeeting('${meeting.id}','${meeting.name}','${meeting.place}','${meeting.time}')">
                                         <span class="glyphicon glyphicon-edit"></span>
                                     </div>
+                                    </sec:authorize>
                                 </li>
                             </c:forEach>
                         </ul>
@@ -112,11 +111,14 @@
             <div class="panel group"
                  style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
                 <div class="panel-heading clearfix">
+                <sec:authorize access="hasAnyRole('ADMIN')">
                     <button type="button" class="btn btn-default btn-sm pull-right" id="showAvailableStudents"
                             data-toggle="modal"
                             data-target="#showAvailableStudentsModal">
+                            
                         <spring:message code="group.button.add"/>
                     </button>
+                    </sec:authorize>
                     <div data-toggle="collapse" data-target="#collapseStudents"
                          class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
                         <span class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
@@ -126,35 +128,20 @@
                     <ul id="students-ul" class="list-group">
                         <c:forEach items="${students}" var="studentMap">
 
-                            <li
-                                    class="list-group-item group-${group.id}-${studentMap.key.student.id} clearfix">
+                            <li class="list-group-item group-${group.id}-${studentMap.key.student.id} clearfix">
                                 <a href="/users/${studentMap.key.student.id}">
                                 <!--  -->${studentMap.key.student.firstName}</a>
                                 <span style='padding-left: 10px;'> </span>
                                     ${studentMap.key.student.lastName} <span
                                     style='padding-left: 10px;'> </span>
-                                <c:forEach items="${studentMap.value}" var="review">
-                                    <span style='padding-left: 10px;'></span>
-                                    <c:choose>
-                                        <c:when test="${review.type == 'A'}">
-                                            <span style='padding-left: 5px;' class="label label-danger"
-                                                  data-toggle="tooltip" title="Absent">${review.meeting.name}</span>
-                                        </c:when>
-                                        <c:when test="${review.type == 'E'}">
-                                            <span style='padding-left: 5px;' class="label label-success"
-                                                  data-toggle="tooltip" title="Evaluated">${review.meeting.name}</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span style='padding-left: 5px;' class="label label-primary"
-                                                  data-toggle="tooltip"
-                                                  title="Not reviewed">${review.meeting.name}</span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
+
                                 <div id="${group.id}-${studentMap.key.student.id}"
                                      class="btn rmv-cr-btn col-md-1 pull-right delete-student"
                                      type='button'>
-                                    <span class="glyphicon glyphicon-remove delete"></span>
+                                     
+                                    <sec:authorize access="hasAnyRole('ADMIN')">
+                                    	<span class="glyphicon glyphicon-remove delete"></span>
+                                	</sec:authorize>
                                 </div>
                                 <br/>
                             </li>
@@ -166,7 +153,7 @@
     </div>
 
 
-    <!-- start -->
+    <sec:authorize access="hasAnyRole('ADMIN')">
     <div id="showAvailableStudentsModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -192,6 +179,7 @@
             </div>
         </div>
     </div>
+    </sec:authorize>
     <!-- finish modal -->
 
 
@@ -291,11 +279,13 @@
             <div class="panel panel-primary"
                  style="background-color:<%=type%>;border: 1px solid <%=border%>; border-radius: 7px;">
                 <div class="panel-heading clearfix">
+                    <sec:authorize access="hasAnyRole('ADMIN')">
                     <button type="button" class="btn btn-default btn-sm pull-right" id="showAvailableMentors"
                             data-toggle="modal"
                             data-target="#showAvailableMentorsModal">
                         <spring:message code="group.button.add"/>
                     </button>
+                    </sec:authorize>
                     <div data-toggle="collapse" data-target="#collapseMentors"
                          class="arrow col-md-1" style="color: black" onclick="changeSpan(this)">
                         <span class="pull-left glyphicon glyphicon-chevron-down" style="margin-top:5px;"></span>
@@ -315,7 +305,9 @@
                                 <div id="${group.id}-${mentor.id}"
                                      class="btn rmv-cr-btn col-md-1 pull-right delete-mentor"
                                      type='button'>
+                                    <sec:authorize access="hasAnyRole('ADMIN')">
                                     <span class="glyphicon glyphicon-remove delete"></span>
+                                    </sec:authorize>
                                 </div>
                                 <br/>
                             </li>
@@ -323,11 +315,11 @@
                     </ul>
                 </div>
             </div>
-            <br/>
         </div>
     </div>
 
     <!-- start -->
+    <sec:authorize access="hasAnyRole('ADMIN')">
     <div id="showAvailableMentorsModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -353,6 +345,7 @@
             </div>
         </div>
     </div>
+    </sec:authorize>
     <!-- finish modal -->
 
 
@@ -483,6 +476,7 @@
                 </div>
             </div>
         </div>
+        </div>
         <!-- finish edit category modal -->
         <!-- start delete meeting modal -->
         <div id="deleteMeetingModal" class="modal fade" data-backdrop="static">
@@ -516,7 +510,7 @@
                 </div>
             </div>
         </div>
-        </div>
+        
         </sec:authorize>
         <!-- finish meetingDeleteError modal -->
         <!-- start add attachment modal -->
