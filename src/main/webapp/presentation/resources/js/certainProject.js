@@ -99,7 +99,7 @@ $(document).ready(function () {
         }
         
         if (!meetingPlacePattern.test($("#inputPlace").val())) {
-            $('#inputPlaceErrorId').html("name must be 2-20 symbols, under/dash or space.");
+            $('#inputPlaceErrorId').html("place must be 2-20 symbols, under/dash or space.");
             $('#formMeetingPlaceId').addClass('has-error');
             $('#inputPlaceErrorId').removeClass('hidden');
         }

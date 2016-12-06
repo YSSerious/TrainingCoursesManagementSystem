@@ -127,7 +127,7 @@ $("#addNoteSubmitButton").click(function(event) {
 		}
 
 		if (!meetingPlacePattern.test($("#editMeetingPlace").val())) {
-			$('#meetingPlaceErrorId').html("name must be 2-20 symbols, under/dash or space.");
+			$('#meetingPlaceErrorId').html("place must be 2-20 symbols, under/dash or space.");
 			$('#form-meeting-place-id').addClass('has-error');
 			$('#meetingPlaceErrorId').removeClass('hidden');
 		}
@@ -184,17 +184,6 @@ $("#addNoteSubmitButton").click(function(event) {
 		}
 	});
 
-	// $('#editMeetingButton').attr('disabled', true);
-	// var meetingName = new RegExp('^[a-zA-Z0-9_-\\s]{3,15}$');
-	// var meetingPlace = new RegExp('^[a-zA-Z0-9_-\\s]{3,25}$');
-    //
-	// $('#editMeetingFormId').change(function () {
-	// 	if (meetingName.test($("#editMeetingName").val()) && meetingPlace.test($("#editMeetingPlace").val()) && $("#editMeetingDate").val()!=""){
-	// 		$('#editMeetingButton').attr('disabled', false);
-	// 	} else {
-	// 		$('#editMeetingButton').attr('disabled', true);
-	// 	}
-	// });
 
 	function convertTimestamp(timestamp) {
 		var d = new Date(timestamp);
