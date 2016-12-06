@@ -37,9 +37,14 @@
 
             <tr id="appendStudentheadId">
                 <th><spring:message code="meeting.student"/></th>
+                <c:if test="${criteria!=null}">
                 <c:forEach items="${criteria}" var="criterion">
                     <th id="thId-${criterion.title}">${criterion.title}</th>
                 </c:forEach>
+                </c:if>
+                <c:if test="${criteria == null}">
+                	<th>No criteria yet</th>
+                </c:if>
             </tr>
             </thead>
             <tbody class="results">
@@ -54,12 +59,17 @@
                     > ${user.firstName}
                             ${user.secondName} ${user.lastName} </a></b> </font>
                     </td>
+                    <c:if test="${criteria!=null}">
                     <c:forEach items="${criteria}" var="criterion">
                         <td class="tdId-${criterion.title}"><font size="3">
                             <a href="#" data-toggle="tooltip" data-placement="top"
                                title="No mark, yet">-</a>
                         </font></td>
                     </c:forEach>
+                    </c:if>
+                    <c:if test="${criteria == null}">
+                	<td>-</td>
+                </c:if>
                 </tr>
                     <!-- start evaluate Student modal -->
                     <div id="evaluateModal${user.id}" class="modal fade" tabindex="-1"
