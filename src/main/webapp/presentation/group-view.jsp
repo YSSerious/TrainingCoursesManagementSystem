@@ -123,16 +123,16 @@
                 </div>
                 <div id="collapseStudents" class="panel-collapse collapse">
                     <ul id="students-ul" class="list-group">
-                        <c:forEach items="${students}" var="studentMap">
+                        <c:forEach items="${selectStudents}" var="studentMap">
 
-                            <li class="list-group-item group-${group.id}-${studentMap.key.student.id} clearfix">
-                                <a href="/users/${studentMap.key.student.id}">
-                                <!--  -->${studentMap.key.student.firstName}</a>
+                            <li class="list-group-item group-${group.id}-${studentMap.id} clearfix">
+                                <a href="/users/${studentMap.id}">
+                                <!--  -->${studentMap.firstName}</a>
                                 <span style='padding-left: 10px;'> </span>
-                                    ${studentMap.key.student.lastName} <span
+                                    ${studentMap.lastName} <span
                                     style='padding-left: 10px;'> </span>
 
-                                <div id="${group.id}-${studentMap.key.student.id}"
+                                <div id="${group.id}-${studentMap.id}"
                                      class="btn rmv-cr-btn col-md-1 pull-right delete-student"
                                      type='button'>
                                      

@@ -33,13 +33,10 @@ import ua.ukma.nc.vo.AjaxResponse;
 
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -68,9 +65,6 @@ public class GroupController {
 
     @Autowired
     private StudentStatusService studentStatusService;
-
-    @Autowired
-    private MeetingReviewService meetingReviewService;
 
     @Autowired
     private GroupFormValidator groupFormValidator;
@@ -223,13 +217,8 @@ public class GroupController {
         for (User us : students) {
             studentsWithStatus.add(studentStatusService.getByUserId(us.getId()));
         }
+        
 
-        Map<StudentStatus, List<MeetingReview>> studentAndReviews = new HashMap<>();
-        for (StudentStatus us : studentsWithStatus) {
-            List<MeetingReview> list = new ArrayList<>();
-            studentAndReviews.put(us, list);
-        }
-        // studentsWithStatus.get(0).getStatus().
         List<User> mentors = groupService.getMentors(id);
 
         List<GroupAttachment> groupAttachments = groupAttachmentService.getByGroup(id);
@@ -240,12 +229,9 @@ public class GroupController {
                     meetingService.isReviewed(meeting.getId())));
         }
 
-        //String projectName = group.getProject().getName();
         ProjectDto project = group.getProject();
         model.addObject("group", group);
         model.addObject("project", project);
-
-        model.addObject("students", studentAndReviews);
         model.addObject("mentors", mentors);
         model.addObject("meetings", meetingDtos);
         model.addObject("group-id", group.getId());

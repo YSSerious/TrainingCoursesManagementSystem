@@ -99,7 +99,7 @@ public class UserDaoImpl implements UserDao {
 
 	private static final String GET_STUDENTS_BY_PROJECT_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project = ?))";
 
-	private static final String GET_STUDENTS_BY_GROUP_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group = ?)";
+	private static final String GET_STUDENTS_BY_GROUP_ID = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT DISTINCT(id_student) FROM tcms.status_log WHERE id_group = ?) ORDER BY last_name ASC";
 	
 	private static final String GET_STUDENTS_BY_PROJECT_NAME = "SELECT id, email, first_name, second_name, last_name, password, is_active, ss.id_status FROM tcms.user LEFT JOIN tcms.student_status ss ON tcms.user.id=ss.id_student WHERE id IN (SELECT id_user FROM tcms.user_group WHERE id_group IN (SELECT id FROM tcms.group WHERE id_project IN (SELECT id FROM tcms.project WHERE name LIKE '";
 
