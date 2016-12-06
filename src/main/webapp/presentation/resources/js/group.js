@@ -84,8 +84,28 @@ $("#addNoteSubmitButton").click(function(event) {
 
 		});
 	});
-	 
 
+	$("#search_mentor").keyup(function () {
+		var value = this.value.toLowerCase();
+
+		$("table#mentorsTable").find("tr").each(function (index) {
+			if (!index)
+				return;
+			var id = $(this).find("td").first().text().toLowerCase();
+			$(this).toggle(id.indexOf(value) !== -1);
+		});
+	});
+
+	$("#searchStudents").keyup(function () {
+		var value = this.value.toLowerCase();
+
+		$("table#studentsTable").find("tr").each(function (index) {
+			if (!index)
+				return;
+			var id = $(this).find("td").first().text().toLowerCase();
+			$(this).toggle(id.indexOf(value) !== -1);
+		});
+	});
 
 	bindRemoveMentor();
 	bindRemoveStudent();
