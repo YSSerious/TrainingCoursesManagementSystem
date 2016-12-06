@@ -1,8 +1,6 @@
 
 package ua.ukma.nc.mail;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 
@@ -13,6 +11,7 @@ import org.springframework.mail.MailException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import ua.ukma.nc.entity.Group;
 import ua.ukma.nc.entity.Project;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.service.ProjectService;
@@ -30,9 +29,6 @@ public class MailService {
 
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private UserService groupService;
 
 	@Autowired
 	private Environment env;
@@ -55,8 +51,23 @@ public class MailService {
 		}
 
 	}
+	
+	public String newGroup(User user, Group group) {
+		String from = env.getProperty("mail.username");
+		String to = user.getEmail();
+		StringBuilder message = new StringBuilder();
+		message.append("Hello" + user.getFirstName() + " " + user.getLastName());
+		message.append(". Your have been added to group " + group.getName());
+		try {
+			mail.sendMail(from, to, "Your group", message.toString());
+			return "Sent succesfully";
+		} catch (MailException e) {
+			return e.toString();
+		}
 
-	@Scheduled(cron = "0 * * * * *")
+	}
+
+	@Scheduled(cron = "14 28 02 * * *")
 	public void projectStart() {
 		List<Project> projects = projectService.getAllUpcoming();
 		Calendar soon = Calendar.getInstance();

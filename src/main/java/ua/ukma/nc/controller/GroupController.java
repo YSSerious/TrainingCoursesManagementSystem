@@ -24,6 +24,7 @@ import ua.ukma.nc.entity.*;
 import ua.ukma.nc.entity.impl.real.GroupImpl;
 import ua.ukma.nc.entity.impl.real.ProjectImpl;
 import ua.ukma.nc.entity.impl.real.StatusImpl;
+import ua.ukma.nc.mail.MailService;
 import ua.ukma.nc.service.*;
 import ua.ukma.nc.util.exception.MeetingDeleteException;
 import ua.ukma.nc.util.exception.RemoveStudentFromGroupException;
@@ -88,6 +89,9 @@ public class GroupController {
 
     @Autowired
     NewMeetingValidator newMeetingValidator;
+    
+    @Autowired
+    private MailService mailService;
 
     private static Logger log = LoggerFactory.getLogger(HomeController.class.getName());
 
@@ -385,6 +389,7 @@ public class GroupController {
         statusLog.setCommentary("Assigning to the group");
         statusLogService.createStatusLog(statusLog);
         studentStatusService.updateStudentStatus(studentStatus);
+        mailService.newGroup(student, groupService.getById(groupId));
         return new UserDto(student);
     }
 
@@ -392,7 +397,9 @@ public class GroupController {
     @ResponseBody
     public UserDto addMentor (@RequestParam Long userId, @RequestParam Long groupId) {
         groupService.addUser(groupId, userId);
-        return new UserDto(userService.getById(userId));
+        User mentor = userService.getById(userId);
+        mailService.newGroup(mentor, groupService.getById(groupId));
+        return new UserDto(mentor);
     }
 
 
