@@ -3,25 +3,21 @@
     <div class="col-md-12">
         <div class="page-header">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="panel panel-default panel-horizontal top-panel">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><spring:message code="meeting.name"/></h3>
-                        </div>
-                        <div class="panel-body">${meeting.name}</div>
-                    </div>
-                    <div class="panel panel-default panel-horizontal top-panel">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><spring:message code="meeting.place"/></h3>
-                        </div>
-                        <div class="panel-body">${meeting.place}</div>
-                    </div>
-                    <div class="panel panel-default panel-horizontal bottom-panel">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><spring:message code="meeting.time"/></h3>
-                        </div>
-                        <div class="panel-body">${meeting.time}</div>
-                    </div>
+                <div class="col-md-4">
+                    <table class="table-bordered entity-info">
+                        <tr>
+                            <td><h4><spring:message code="meeting.name"/></h4></td>
+                            <td><h5>${meeting.name}</h5></td>
+                        </tr>
+                        <tr>
+                            <td><h4><spring:message code="meeting.place"/></h4></td>
+                            <td><h5>${meeting.place}</h5></td>
+                        </tr>
+                        <tr>
+                            <td><h4><spring:message code="meeting.time"/></h4></td>
+                            <td><h5>${meeting.time}</h5></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

@@ -41,8 +41,8 @@
                     </div>
                 
                 <div class="row">
-                    <div class="col-md-4 editable-group project-dates">
-                        <table class="table-bordered">
+                    <div class="col-md-4 editable-group ">
+                        <table class="table-bordered entity-info">
                             <tr class="editable-wrapper" id="project-startdate">
                                 <td>
                                     <h4 class=""><spring:message code="project.startDate"/></h4>

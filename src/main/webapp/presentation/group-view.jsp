@@ -30,16 +30,13 @@
                 </div>
                 <br/>
                 <div class="row">
-                    <div class="col-md-6 editable-group">
-                        <div class="panel panel-default panel-horizontal panel editable-wrapper"
-                             id="project-finishdate">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Project</h3>
-                            </div>
-                            <div class="panel-body editable-label editable">
-                                <h5><a href="/certainProject/${project.id}">${project.name}</a></h5>
-                            </div>
-                        </div>
+                    <div class="col-md-4 editable-group">
+                        <table class="table-bordered entity-info">
+                            <tr>
+                                <td><h4 class="panel-title">Project</h4></td>
+                                <td><h5><a href="/certainProject/${project.id}">${project.name}</a></h5></td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="col-md-6 editable-wrapper" id="project-description">
                     </div>
