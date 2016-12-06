@@ -158,7 +158,8 @@
                     <button class="close" type="button" data-dismiss="modal"><span
                             class="glyphicon glyphicon-remove"></span></button>
                     <h4 class="modal-title">Add student</h4>
-                    <hr>
+                    </div>
+                    <div class="modal-body">
                     <div class="row">
                         <input type="text" id="search" placeholder="type search" class="col-md-offset-4">
                     </div>
@@ -324,7 +325,8 @@
                     <button class="close" type="button" data-dismiss="modal"><span
                             class="glyphicon glyphicon-remove"></span></button>
                     <h4 class="modal-title">Add mentor</h4>
-                    <hr>
+                    </div>
+                    <div class="modal-body">
                     <div class="row">
                         <input type="text" id="search_mentor" placeholder="type search" class="col-md-offset-4">
                     </div>
