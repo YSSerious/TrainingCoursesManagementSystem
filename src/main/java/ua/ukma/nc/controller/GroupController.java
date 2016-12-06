@@ -223,8 +223,6 @@ public class GroupController {
         Map<StudentStatus, List<MeetingReview>> studentAndReviews = new HashMap<>();
         for (StudentStatus us : studentsWithStatus) {
             List<MeetingReview> list = new ArrayList<>();
-            list.addAll(
-                    (meetingReviewService.getByProjectStudent(group.getProject().getId(), us.getStudent().getId())));
             studentAndReviews.put(us, list);
         }
         // studentsWithStatus.get(0).getStatus().

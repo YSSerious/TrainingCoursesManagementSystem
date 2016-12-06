@@ -128,10 +128,7 @@
 
                             <li
                                     class="list-group-item group-${group.id}-${studentMap.key.student.id} clearfix">
-                                <c:if test="${studentMap.key.status.id == '1'}">
-							<span class="label label-danger"><spring:message
-                                    code="group.student.expelled"/></span>
-                                </c:if> <a href="/users/${studentMap.key.student.id}">
+                                <a href="/users/${studentMap.key.student.id}">
                                 <!--  -->${studentMap.key.student.firstName}</a>
                                 <span style='padding-left: 10px;'> </span>
                                     ${studentMap.key.student.lastName} <span
@@ -249,16 +246,16 @@
 
                                     <c:forEach items="${value.attendance}" var="state">
                                         <c:if test="${state eq 'E'}">
-                                            <td style="background-color: #93C54B"></td>
+                                            <td title="<spring:message code="attendance.evaluated"/>" style="background-color: #93C54B"></td>
                                         </c:if>
                                         <c:if test="${state eq 'A'}">
-                                            <td style="background-color: #F4FC5A"></td>
+                                            <td title="<spring:message code="attendance.absent"/>" style="background-color: #F4FC5A"></td>
                                         </c:if>
                                         <c:if test="${empty state}">
-                                            <td style="background-color: #5ABFFC"></td>
+                                            <td title="<spring:message code="attendance.upcoming"/>" style="background-color: #5ABFFC"></td>
                                         </c:if>
                                         <c:if test="${state eq 'L'}">
-                                            <td style="background-color: #FC655A"></td>
+                                            <td title="<spring:message code="attendance.leaved"/>" style="background-color: #FC655A"></td>
                                         </c:if>
                                     </c:forEach>
                                 </tr>

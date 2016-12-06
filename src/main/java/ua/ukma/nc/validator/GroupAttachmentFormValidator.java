@@ -27,7 +27,7 @@ public class GroupAttachmentFormValidator implements Validator {
 		if (attachment.getName() == null || attachment.getName().isEmpty()) {
 			errors.rejectValue("name", "missing.name");
 		} else if (attachment.getName().length() > 50) {
-			errors.rejectValue("file", "fail.name");
+			errors.rejectValue("name", "fail.name");
 		}
 
 		if (attachment.getGroupId() == null || attachment.getGroupId() <= 0) {
