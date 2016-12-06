@@ -1,6 +1,10 @@
 package ua.ukma.nc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ua.ukma.nc.dao.GroupDao;
 import ua.ukma.nc.dto.Attendance;
@@ -21,6 +25,7 @@ import ua.ukma.nc.service.StudentStatusService;
 import ua.ukma.nc.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -94,6 +99,18 @@ public class GroupServiceImpl implements GroupService{
 
 	@Override
 	public List<Group> getByProjectId(Long projectId) {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		boolean showAllUsers = authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
+				|| authorities.contains(new SimpleGrantedAuthority("ROLE_HR"));
+
+		if (!showAllUsers) {
+			String name = authentication.getName();
+			Long mentorId = userService.getByEmail(name).getId();
+			return groupDao.getByProjectId(projectId, mentorId);
+		}
+		
 		return groupDao.getByProjectId(projectId);
 	}
 

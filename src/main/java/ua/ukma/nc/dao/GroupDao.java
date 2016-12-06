@@ -12,6 +12,8 @@ public interface GroupDao {
 	
 	List<Group> getByProjectId(Long projectId);
 	
+	List<Group> getByProjectId(Long projectId, Long mentorId);
+	
     Group getById(Long id);
 
     Group getByName(String name);

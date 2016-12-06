@@ -42,6 +42,9 @@ public class GroupDaoImpl implements GroupDao{
             return group;
         }
     }
+    
+    private static final String GET_BY_PROJECT_ID_MENTOR = "SELECT id, id_project, name FROM tcms.group WHERE id_project = ? AND id IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?) AND id NOT IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?)";
+    
     private static final String GET_BY_PROJECT_ID = "SELECT id, id_project, name FROM tcms.group WHERE id_project = ?";
 
     private static final String GET_ALL = "SELECT id, id_project, name FROM tcms.group";
@@ -171,5 +174,11 @@ public class GroupDaoImpl implements GroupDao{
         log.info("Adding user with id {} to the group with id {}", userId, groupId);
         jdbcTemplate.update(ADD_USER, groupId, userId);
     }
+
+	@Override
+	public List<Group> getByProjectId(Long projectId, Long mentorId) {
+		log.info("Getting all groups");
+        return jdbcTemplate.query(GET_BY_PROJECT_ID_MENTOR, new GroupMapper(), projectId, mentorId, mentorId);
+	}
 
 }
