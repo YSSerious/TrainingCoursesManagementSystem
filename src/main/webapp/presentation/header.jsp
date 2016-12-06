@@ -11,7 +11,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>${title}</title>
+<title>
+    <c:choose>
+        <c:when test="${not empty title}">
+            ${title}
+        </c:when>
+        <c:when test="${empty title}">
+            TCMS
+        </c:when>
+    </c:choose>
+</title>
 <!--<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
     <link rel="icon" href="<c:url value="/presentation/resources/favicon/favicon.ico"/>">
 <link rel="stylesheet" type="text/css"
