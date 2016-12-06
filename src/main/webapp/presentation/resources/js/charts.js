@@ -348,8 +348,10 @@ function average(array) {
     return sum / array.length;
 }
 
-
 function radarChart(chartData, wrappingDivId) {
+    $('#show-chart').on('click', function () {
+        $('#chart' + wrappingDivId).collapse('toggle');
+    });
     var labels = [];
     var data = [];
     $.each(chartData, function (index, object) {
@@ -373,7 +375,10 @@ function radarChart(chartData, wrappingDivId) {
             }
         ]
     };
-    var canvas = $('<canvas id="myChart" width="400" height="400"></canvas>')
+    var canvas = $('<canvas></canvas>')
+            .attr('id', "radarChart")
+            .attr('width', "400")
+            .attr('height', "400")
             .appendTo('#chart' + wrappingDivId);
     console.log('obj: ', canvas);
     var chartInstance = new Chart(canvas, {

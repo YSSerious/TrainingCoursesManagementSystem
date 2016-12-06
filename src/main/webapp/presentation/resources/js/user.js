@@ -94,8 +94,9 @@ function createStudentProjectsInfo(userId, divInside){
  	    		s+= '<div class="col-sm-12">';
  	    		s+= '<div class="col-sm-12">';
  	    		s+= '<div id="stinf-'+value.id+'"></div>';
- 	    		s+= '<br/><h4>'+value.description+'</h4>';
- 	    		s+= '<div class="col-sm-8 col-sm-offset-2 charts-wrapper" id="chart'+value.id+'">'+lang.user_loading+'...<br/><br/></div>';
+ 	    		s+= '<br/><h4 class="project-description">'+value.description+'</h4>';
+                        s+= '<div id="show-chart" style="margin:auto;"><button class="btn btn-primary">Show chart</button></div>'
+ 	    		s+= '<div class="col-sm-8 col-sm-offset-2 charts-wrapper panel-collapse collapse" id="chart'+value.id+'">'+lang.user_loading+'...<br/><br/></div>';
  	    		s+= '</div></div></div></div>';
 	    	});
 
@@ -127,6 +128,7 @@ function createStudentProjectsInfo(userId, divInside){
     	 	    	    	$('#stinf-'+value.id).html('<h4><b>'+lang.user_status_title+'</b>'+data.studentStatuses[data.studentStatuses.length - 1].statusTitle+'</h4>');
 //                            createCharts(data.chartInfo, value.id);
                             radarChart(data.chartInfo, value.id);
+
     	 	    	    	
                             var reviews = '<br/><div class="row"><div class="col-sm-12"> <div class="col-sm-12">';
     	 	    	    	if(data.technicalReview !== null || data.generalReview !== null){

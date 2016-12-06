@@ -433,7 +433,7 @@
                     </select> <br/>
                         <hr/>
 
-                        <spring:message code="report.select.categories"/>:<br/> <select style="width: 100%;" multipUploadle
+                        <spring:message code="report.select.categories"/>:<br/> <select style="width: 100%;" multiple
                                                                                         name="categories">
                         <c:forEach items="${categories}" var="category">
                             <option value="${category.id}">${category.name}</option>

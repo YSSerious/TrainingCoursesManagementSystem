@@ -9,6 +9,8 @@ and open the template in the editor.
 */
 
 .charts-wrapper {
+    overflow-y: hidden !important;
+    max-height: none !important;
     vertical-align: top;
 }
 
