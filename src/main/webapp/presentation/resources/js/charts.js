@@ -349,9 +349,9 @@ function average(array) {
 }
 
 function radarChart(chartData, wrappingDivId) {
-    $('#show-chart').on('click', function () {
-        $('#chart' + wrappingDivId).collapse('toggle');
-    });
+//    $('#show-chart').on('click', function () {
+//        $('#chart' + wrappingDivId).collapse('toggle');
+//    });
     var labels = [];
     var data = [];
     $.each(chartData, function (index, object) {
@@ -388,7 +388,7 @@ function radarChart(chartData, wrappingDivId) {
             scale: {
                 ticks: {
                     beginAtZero: true,
-                    max: 7
+                    max: 5
                 }
             }
         }
