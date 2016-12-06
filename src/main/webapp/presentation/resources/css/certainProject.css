@@ -312,3 +312,7 @@ div.modal#deleteGroupModal .modal-body h4 {
 .glyphicon-button:hover .glyphicon{
     color: #000;
 }
+
+#uploadAttachmentButton {
+    margin-top: 15px;
+}

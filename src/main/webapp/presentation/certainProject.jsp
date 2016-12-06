@@ -150,7 +150,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h2>Criteria List </h2>
+            <h2><spring:message code="project.criteria"/></h2>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div role="button" data-toggle="collapse" data-target="#collapseIn"
@@ -163,7 +163,7 @@
                                 id="showAvailableCriteria"
                                 data-toggle="modal"
                                 data-target="#showAvailableCriteriaModal">
-                            <b>Add criteria</b>
+                            <b><spring:message code="project.criteria.add"/></b>
                         </button>
                     </sec:authorize>
                 </div>
@@ -192,7 +192,7 @@
     <div class="row">
         <div class="col-md-12">
             <h2>
-                Attachments
+                <spring:message code="project.attachments"/>
             </h2>
             <div class="panel-heading">
                 <div role="button" data-toggle="collapse" data-target="#att-collapse" class="arrow col-md-1"
@@ -201,7 +201,8 @@
                           style="margin-top:5px;"></span>
                 </div>
                 <sec:authorize access="hasAnyRole('ADMIN', 'HR')">
-                	<div role="button" class="btn btn-default btn-sm pull-right" id="add-att-btn" data-toggle="modal" data-target="#addProjectAttachmentModal"><b>Add Attach</b>
+                	<div role="button" class="btn btn-default btn-sm pull-right" id="add-att-btn" data-toggle="modal" data-target="#addProjectAttachmentModal">
+                            <b><spring:message code="project.attachments.add"/></b>
                 	</div>
                 </sec:authorize>
             </div>
@@ -241,10 +242,12 @@
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal"><span
                                 class="glyphicon glyphicon-remove"></span></button>
-                        <h4 class="modal-title">Add some criteria</h4>
+                        <h4 class="modal-title">
+                            <spring:message code="project.criteria.addCriteria.addCriteria"/>
+                        </h4>
                         <hr>
                         <div class="row">
-                            <input type="text" id="search" placeholder="type search" class="col-md-offset-4">
+                            <input type="text" id="search" placeholder="<spring:message code="project.criteria.addCriteria.search"/>" class="col-md-offset-4">
                         </div>
 
                     </div>
@@ -252,8 +255,8 @@
                         <table id="criterionTable" class="table table-condensed table-hover table-responsive">
                             <thead class="table-head">
                             <tr>
-                                <th><b>Name</b></th>
-                                <th><b>Add</b></th>
+                                <th><b><spring:message code="project.criteria.addCriteria.name"/></b></th>
+                                <th><b><spring:message code="project.criteria.addCriteria.add"/></b></th>
                             </tr>
                             </thead>
                             <tbody id="criteriaTableId">
@@ -293,38 +296,46 @@
                 <div class="modal-header">
                     <button class="close" type="button" data-dismiss="modal"><span
                             class="glyphicon glyphicon-remove"></span></button>
-                    <h4 class="modal-title">New Meeting</h4>
+                        <h4 class="modal-title"><spring:message code="project.groups.newMeeting.newMeeting"/></h4>
                 </div>
                 <div class="modal-body">
                     <form id="newMeetingFormId" class="form-horizontal">
                         <div class="form-group" id="formMeetingNameId">
-                            <label for="inputName" class="control-label col-sm-2">Meeting Name</label>
+                            <label for="inputName" class="control-label col-sm-2">
+                                <spring:message code="project.groups.newMeeting.name"/>
+                            </label>
                             <div class="col-sm-5">
                                 <input type="text" class="form-control" id="inputName">
                             </div>
                             <h5 id="inputNameErrorId" class="text-danger hidden"></h5>
                         </div>
                         <div class="form-group" id="formMeetingPlaceId">
-                            <label for="inputPlace" class="control-label col-sm-2">Place</label>
+                            <label for="inputPlace" class="control-label col-sm-2"><spring:message code="project.groups.newMeeting.place"/></label>
                             <div class="col-sm-5">
                                 <input type="text" class="form-control" id="inputPlace">
                             </div>
                             <h5 id="inputPlaceErrorId" class="text-danger hidden"></h5>
                         </div>
                         <div class="form-group" id="formMeetingDateId">
-                            <label for="inputDate" class="control-label col-sm-2">Date/Time</label>
+                            <label for="inputDate" class="control-label col-sm-2">
+                                <spring:message code="project.groups.newMeeting.dateAndTime"/>
+                            </label>
                             <div class="col-sm-5">
                                 <input type="datetime-local" class="form-control" id="inputDate">
                             </div>
                             <h5 id="inputDateErrorId" class="text-danger hidden"></h5>
                         </div>
-                        <label class="col-sm-2 text-right">Criteria</label>
+                        <label class="col-sm-2 text-right">
+                        <spring:message code="project.groups.newMeeting.criteria"/>
+                        </label>
                         <input type='checkbox' id="checkAllCriteriaId">
                         <div class="form-group col-sm-offset-2">
                             <div class="col-sm-12" id="CriteriaCheckBoxId">
                             </div>
                         </div>
-                        <label class="col-sm-2 text-right">Groups</label>
+                        <label class="col-sm-2 text-right">
+                        <spring:message code="project.groups.newMeeting.groups"/>
+                        </label>
                         <input type='checkbox' id="checkAllGroupsId">
                         <div class="form-group">
                             <div class="col-sm-12" id="GroupsCheckBoxId">
@@ -350,7 +361,7 @@
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal"><span
                         class="glyphicon glyphicon-remove"></span></button>
-                <h4 class="modal-title">New Attachment</h4>
+                        <h4 class="modal-title"><spring:message code="project.attachments.addAttachments.addAttachments"/></h4>
             </div>
             <div class="modal-body">
 			
@@ -363,7 +374,7 @@
             <div class="row">
                 <div class="form-project col-md-12">
                 <div class="col-md-12">
-                    <b>Upload a file:</b>
+                    <b><spring:message code="project.attachments.addAttachments.uploadFile"/></b>
                     <br/>
                     <div style="color:red;" id="file-error">
                             
@@ -371,7 +382,7 @@
                     <form:input type="file" path="file" name="file" id="upload-file" class="form-control"/>
                     
                     <br/>
-                    <b>Name:</b>
+                    <b><spring:message code="project.attachments.addAttachments.name"/></b>
                     <div style="color:red;" id="name-error">
                             
                     </div>
@@ -385,9 +396,10 @@
             </div>
      
             <div class="row">
-                <div class="text-center">
-                	<br/>
-                    <button id="uploadAttachmentButton" type="button" onclick="uploadProjectAttachment()" class="btn btn-primary">Upload</button>
+                <div class="col-md-12">
+                    <div class="col-md-12"> 
+                    <button id="uploadAttachmentButton" type="button" onclick="uploadProjectAttachment()" class="btn btn-primary pull-right"><spring:message code="project.attachments.addAttachments.upload"/></button>
+                    </div>
                 </div>
             </div>
         </form:form>
@@ -421,7 +433,7 @@
                     </select> <br/>
                         <hr/>
 
-                        <spring:message code="report.select.categories"/>:<br/> <select style="width: 100%;" multiple
+                        <spring:message code="report.select.categories"/>:<br/> <select style="width: 100%;" multipUploadle
                                                                                         name="categories">
                         <c:forEach items="${categories}" var="category">
                             <option value="${category.id}">${category.name}</option>

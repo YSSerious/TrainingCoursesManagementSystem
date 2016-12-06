@@ -85,9 +85,7 @@
             <div class="modal-body">
                 <div class="container-fluid">  
                     <form>
-                        <div>
-                            <label path="general" class="form-error general-error"></label>
-                        </div>
+                        <label path="general" class="form-error general-error"></label>
                         <div class="col-sm-12">
                             <h4>Are you sure? You can not undo this action.</h4>
                         </div>
