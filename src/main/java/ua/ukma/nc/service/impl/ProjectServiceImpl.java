@@ -70,6 +70,11 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<Project> getAllFinished() {
 		return projectDao.getAllFinished();
 	}
+	
+	@Override
+	public List<Project> getAllUpcoming() {
+		return projectDao.getAllUpcoming();
+	}
 
 	@Override
 	public List<Project> getAllStudentProjectsWithoutAnyOfHrReviews(Long userId) {

@@ -122,12 +122,6 @@ public class UsersController {
 		}
 		return users.removeAll(temp);
 	}
-	
-	@Scheduled (cron = "0 * * * * *")
-	public void hi(){
-	System.out.println("");
-	}
-
 
 	@RequestMapping(value = "/students/inactive", method = RequestMethod.GET)
 	@ResponseBody

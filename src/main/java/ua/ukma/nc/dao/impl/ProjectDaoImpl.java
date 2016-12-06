@@ -48,6 +48,8 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	private static final String GET_ALL_FINISHED = "SELECT * FROM tcms.project WHERE finish < current_date";
 
+	private static final String GET_ALL_UPCOMING = "SELECT * FROM tcms.project WHERE start > current_date";
+	
 	private static final String GET_MENTOR_PROJECTS = "SELECT * FROM tcms.project WHERE id IN (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.user_group WHERE id_user = ?)) AND id NOT IN (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?)) ORDER by start DESC";
 	
 	private static final String GET_STUDENT_PROJECTS = "SELECT * FROM tcms.project WHERE id IN (SELECT id_project FROM tcms.group WHERE tcms.group.id IN (SELECT id_group FROM tcms.status_log WHERE id_student = ?)) ORDER by start DESC";
@@ -162,6 +164,11 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Project> getAllFinished() {
 		return jdbcTemplate.query(GET_ALL_FINISHED, new ProjectMapper());
+	}
+	
+	@Override
+	public List<Project> getAllUpcoming() {
+		return jdbcTemplate.query(GET_ALL_UPCOMING, new ProjectMapper());
 	}
 
 	@Override

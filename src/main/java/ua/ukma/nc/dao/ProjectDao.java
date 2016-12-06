@@ -42,4 +42,6 @@ public interface ProjectDao {
 	int createProject(Project project);
 
 	int addCriteria(Long projectId, Criterion criterion);
+
+	List<Project> getAllUpcoming();
 }

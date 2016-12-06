@@ -43,4 +43,6 @@ public interface ProjectService {
 	int deleteProjectCriterion(Long projectId, Criterion criterion);
 
 	int deleteCriterionInAllProjectMeetings(Long projectId, Criterion criterion);
+
+	List<Project> getAllUpcoming();
 }
