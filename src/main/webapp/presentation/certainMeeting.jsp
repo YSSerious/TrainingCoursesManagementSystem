@@ -37,13 +37,13 @@
 
             <tr id="appendStudentheadId">
                 <th><spring:message code="meeting.student"/></th>
-                <c:if test="${criteria!=null}">
+                <c:if test="${!criteria.isEmpty()}">
                 <c:forEach items="${criteria}" var="criterion">
                     <th id="thId-${criterion.title}">${criterion.title}</th>
                 </c:forEach>
                 </c:if>
-                <c:if test="${criteria == null}">
-                	<th>No criteria yet</th>
+                <c:if test="${criteria.isEmpty()}">
+                	<th class="empty">No criteria yet</th>
                 </c:if>
             </tr>
             </thead>
@@ -59,7 +59,7 @@
                     > ${user.firstName}
                             ${user.secondName} ${user.lastName} </a></b> </font>
                     </td>
-                    <c:if test="${criteria!=null}">
+                    <c:if test="${!criteria.isEmpty()}">
                     <c:forEach items="${criteria}" var="criterion">
                         <td class="tdId-${criterion.title}"><font size="3">
                             <a href="#" data-toggle="tooltip" data-placement="top"
@@ -67,8 +67,8 @@
                         </font></td>
                     </c:forEach>
                     </c:if>
-                    <c:if test="${criteria == null}">
-                	<td>-</td>
+                    <c:if test="${criteria.isEmpty()}">
+                	<td class="empty">-</td>
                 </c:if>
                 </tr>
                     <!-- start evaluate Student modal -->

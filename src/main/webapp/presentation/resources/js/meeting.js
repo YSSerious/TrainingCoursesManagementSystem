@@ -32,6 +32,7 @@ $(document).ready(function () {
                 a.parent().parent().remove();
                 $('#appendStudentheadId').append("<th id='thId-"+data.title+"'>"+data.title+"</th>");
                 $('.append-student-body').append("<td class='tdId-"+data.title+"'><font size='3'><a href='#' data-toggle='tooltip' data-placement='top' title='No mark, yet'>-</a></font></td>");
+                $('.empty').remove();
             },
             error: function (textStatus) {
                 console.log(textStatus);
