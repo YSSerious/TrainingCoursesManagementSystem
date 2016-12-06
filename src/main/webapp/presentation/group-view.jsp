@@ -161,7 +161,7 @@
                     </div>
                     <div class="modal-body">
                     <div class="row">
-                        <input type="text" id="search" placeholder="type search" class="col-md-offset-4">
+                        <input type="text" id="searchStudents" placeholder="type search" class="col-md-offset-4">
                     </div>
                     <table id="studentsTable" class="table table-condensed table-hover table-responsive">
                         <thead class="table-head">

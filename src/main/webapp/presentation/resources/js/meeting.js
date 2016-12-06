@@ -72,7 +72,7 @@ $(document).ready(function () {
         });
     }
 
-    $("#search").keyup(function () {
+    $("#searchMeeting").keyup(function () {
         var value = this.value.toLowerCase();
 
         $("table#criterionMeetingTable").find("tr").each(function (index) {
@@ -82,6 +82,7 @@ $(document).ready(function () {
             $(this).toggle(id.indexOf(value) !== -1);
         });
     });
+    
 });
 
 var setAttendance = function (meetingId, studentId) {
