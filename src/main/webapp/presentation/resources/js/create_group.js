@@ -42,7 +42,7 @@ function showNewGroup(groupId, groupName) {
     tr.attr("data-students-amount", 0);
     var name = $('<td></td>').appendTo(tr);
     var linkToGroup = $('<a>' + groupName + '</a>').appendTo(name);
-    linkToGroup.attr("link", "groups/group?id=" + groupId);
+    linkToGroup.attr("href", "/groups/group?id=" + groupId);
     tr.append('<td>0</td>');
     tr.append('<td>No upcoming meetings</td>');
     var editButtonTd = $("<td></td>").appendTo(tr);
