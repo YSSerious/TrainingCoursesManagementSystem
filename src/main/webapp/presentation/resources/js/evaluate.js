@@ -24,7 +24,7 @@ function guf228(userId, meeting) {
 	var error = null;
 	var meetingId = meeting;
 	var data = [];
-	var comment = $('#rev-com').val();
+	var comment = $('#rev-com' + userId).val();
 	var count = 2;
 	$('.result' + userId).each(function(key, value) {
 		var review = {
@@ -37,7 +37,6 @@ function guf228(userId, meeting) {
 			return false;
 		}
 		data.push(review);
-		
 
 	});
 	if (!error) {
@@ -74,8 +73,6 @@ function absent(userId, meeting) {
 	$('#evaluateModal' + userId).modal('toggle');
 	sendAjaxus(meeting);
 }
-
-
 
 function app_handle_listing_horisontal_scroll(listing_obj) {
 	table_obj = $('.table', listing_obj);

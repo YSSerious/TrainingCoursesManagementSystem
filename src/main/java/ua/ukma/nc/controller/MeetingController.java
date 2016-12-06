@@ -8,13 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.annotation.PostConstruct;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,7 +35,6 @@ import ua.ukma.nc.entity.Role;
 import ua.ukma.nc.entity.User;
 import ua.ukma.nc.entity.impl.real.MeetingImpl;
 import ua.ukma.nc.entity.impl.real.MeetingReviewImpl;
-import ua.ukma.nc.mail.MailService;
 import ua.ukma.nc.service.CategoryService;
 import ua.ukma.nc.service.CriterionService;
 import ua.ukma.nc.service.GroupService;
@@ -80,22 +77,7 @@ public class MeetingController {
 
 	@Autowired
 	private StatusLogService statusService;
-	
-	@Autowired
-	private MailService mailService;
-	
-	private TaskScheduler scheduler = new ConcurrentTaskScheduler();
-	/*
-	@PostConstruct
-	private void executeJob() {
-	    scheduler.scheduleAtFixedRate(new Runnable() {
-	        @Override
-	        public void run() {
-	            System.out.println("hello");
-	        }
-	    }, 200);
-	}
-*/
+
 	@RequestMapping(value = "/meeting/{id}", method = RequestMethod.GET)
 	public ModelAndView getMeetings(Principal principal, @PathVariable long id) {
 
@@ -116,9 +98,12 @@ public class MeetingController {
 		Map<User, List<MarkInformation>> markInformation = new TreeMap<>();
 		List<User> absent = new ArrayList<>();
 		for (Long user : evaluated) {
-			if (!meetingReviewService.getByMeetingStudent(id, user).getType().equals("A"))
-				markInformation.put(userService.getById(user), meetingResultService.getByMeeting(user, id));
-			else
+			MeetingReview mr = meetingReviewService.getByMeetingStudent(id, user);
+			if (!mr.getType().equals("A")){
+				User userok = userService.getById(user);
+				userok.setEmail(mr.getCommentary());
+				markInformation.put(userok, meetingResultService.getByMeeting(user, id));
+			}else
 				absent.add(userService.getById(user));
 		}
 		// Criteria set
@@ -134,20 +119,7 @@ public class MeetingController {
 			if (!category.contains(categoryService.getById(criterion.getCategory().getId())))
 				category.add(categoryService.getById(criterion.getCategory().getId()));
 
-		Map<User, List<Criterion>> unevaluatedCriteria = new HashMap<>();
-		for (User user : markInformation.keySet()) {
-			List<MarkInformation> marks = markInformation.get(user);
-			List<Long> cr = new ArrayList<>();
-			for (MarkInformation mi : marks)
-				cr.add(mi.getCriterionId());
-			List<Criterion> cri = new ArrayList<>();
-			for (Criterion c : criteria)
-				if (!cr.contains(c.getId()))
-					cri.add(c);
-			unevaluatedCriteria.put(user, cri);
-		}
 
-		model.addObject("unevaluatedCriteria", unevaluatedCriteria);
 		model.addObject("criteria", criterionDtos);
 		model.addObject("marks", markInformation);
 		model.addObject("students", unevaluated);

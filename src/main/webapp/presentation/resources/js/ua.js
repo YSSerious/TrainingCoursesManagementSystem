@@ -29,5 +29,6 @@ lang = {
 	final_review_comment_general: 'Загальний коментар',
 	final_review_error_no_criteria: 'Не знайдено критеріїв для даного проекту!',
 	final_review_error_input_required: 'Потрібно вказати всі коментарі!',
-	review_no_projects: 'Немає доступних проектів'
+	review_no_projects: 'Немає доступних проектів',
+	users_validation: 'Пошуковий запит не може бути менеше 1 символу'
 };

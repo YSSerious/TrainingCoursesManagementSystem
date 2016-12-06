@@ -90,19 +90,19 @@
                                                            type="text" id="${criterion.id}"> <select
                                                         class="col-xs-offset-1">
                                                     <option selected>-</option>
-                                                    <option>0</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                    <option>5</option>
+                                                    <option title="NeZnayu">0</option>
+                                                    <option title="Slabovat">1</option>
+                                                    <option title="NeOchen">2</option>
+                                                    <option title="Srednenko">3</option>
+                                                    <option title="NePloh">4</option>
+                                                    <option title="Krasavchik">5</option>
                                                 </select>
                                                 </div>
                                             </li>
                                         </c:forEach>
                                     </ul>
                                     <label>General: </label>
-                                    <textarea class="form-control" id="rev-com" rows="5"></textarea>
+                                    <textarea class="form-control" id="rev-com${user.id}" rows="5"></textarea>
 									<span id="rev-err${user.id}" class="text-danger hidden">Unknown
 										error</span>
                                 </div>
@@ -182,17 +182,23 @@
                                                                    type="text" required value="${mark.commentary}"
                                                                    id="${mark.criterionId}"> <select
                                                                 class="col-xs-offset-1">
-                                                            <option <c:if test="${mark.mark eq 0}">selected</c:if>>0
+                                                            <option title="NeZnayu" 
+                                                            <c:if test="${mark.mark eq 0}">selected</c:if>>0
                                                             </option>
-                                                            <option <c:if test="${mark.mark eq 1}">selected</c:if>>1
+                                                            <option title="Slabovat"
+                                                             <c:if test="${mark.mark eq 1}">selected</c:if>>1
                                                             </option>
-                                                            <option <c:if test="${mark.mark eq 2}">selected</c:if>>2
+                                                            <option title="NeOchen"
+                                                            <c:if test="${mark.mark eq 2}">selected</c:if>>2
                                                             </option>
-                                                            <option <c:if test="${mark.mark eq 3}">selected</c:if>>3
+                                                            <option title="Srednenko"
+                                                            <c:if test="${mark.mark eq 3}">selected</c:if>>3
                                                             </option>
-                                                            <option <c:if test="${mark.mark eq 4}">selected</c:if>>4
+                                                            <option title="NePloh"
+                                                            <c:if test="${mark.mark eq 4}">selected</c:if>>4
                                                             </option>
-                                                            <option <c:if test="${mark.mark eq 5}">selected</c:if>>5
+                                                            <option title="Krasavchik"
+                                                            <c:if test="${mark.mark eq 5}">selected</c:if>>5
                                                             </option>
                                                         </select>
                                                         </div>
@@ -212,12 +218,12 @@
                                                                type="text" id="${criterion.id}"> <select
                                                             class="col-xs-offset-1">
                                                         <option selected>-</option>
-                                                        <option>0</option>
-                                                        <option>1</option>
-                                                        <option>2</option>
-                                                        <option>3</option>
-                                                        <option>4</option>
-                                                        <option>5</option>
+                                                    <option title="NeZnayu">0</option>
+                                                    <option title="Slabovat">1</option>
+                                                    <option title="NeOchen">2</option>
+                                                    <option title="Srednenko">3</option>
+                                                    <option title="NePloh">4</option>
+                                                    <option title="Krasavchik">5</option>
                                                     </select>
                                                     </div>
                                                 </li>
@@ -225,10 +231,9 @@
                                         </c:forEach>
 
                                     </ul>
-                                    <label>General: </label>
-                                <textarea class="form-control" id="rev-com" rows="5">
-                                </textarea>
-									<span id="rev-err" class="text-danger hidden">Unknown
+                                    <label>General (Not necessary): </label>
+                                <textarea class="form-control" id="rev-com${entry.key.id}" rows="5">${entry.key.email}</textarea>
+									<span id="rev-err${entry.key.id}" class="text-danger hidden">Unknown
 										error</span></div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default"

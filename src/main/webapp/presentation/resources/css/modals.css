@@ -58,6 +58,10 @@ div.custom-modal div.bottom-controls {
     padding: 0;
 }
 
+textarea{
+	margin-bottom: 10px;
+}
+
 .modal-body{
     max-height: 500px;
     overflow-y: auto;

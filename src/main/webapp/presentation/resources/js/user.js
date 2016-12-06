@@ -373,6 +373,18 @@ function getReviewForm(userId, projectId) {
 					s+='<option val='+i;
 					if(value.mark&&i==value.mark.value)
 						s+=' selected';
+					if(i==0)
+						s+=' title = "NeZnayu"'
+					if(i==1)
+						s+=' title = "Slabovat"'
+					if(i==2)
+						s+=' title = "NeOchen"'
+					if(i==3)
+						s+=' title = "Srednenko"'
+					if(i==4)
+						s+=' title = "NePloh"'
+					if(i==5)
+						s+=' title = "Krasavchik"'
 					s+='>'+i+'</option>';
 				}
 				s+='</select></td><td><input maxlength="255" required type="text" id="'
